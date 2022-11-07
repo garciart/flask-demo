@@ -1,0 +1,1035 @@
+{
+  "medications": [
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "26"
+          },
+          "generic_name": {
+            "S": "Carisoprodol"
+          },
+          "brand_name": {
+            "S": "Soma"
+          },
+          "action": {
+            "S": "Muscle Relaxer"
+          },
+          "conditions": {
+            "SS": [
+              "Muscle Spasms"
+            ]
+          },
+          "schedule": {
+            "N": "4"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682578.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "27"
+          },
+          "generic_name": {
+            "S": "Carvedilol"
+          },
+          "brand_name": {
+            "S": "Coreg"
+          },
+          "action": {
+            "S": "Beta Blocker"
+          },
+          "conditions": {
+            "SS": [
+              "CHF",
+              "Hypertension"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a697042.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "28"
+          },
+          "generic_name": {
+            "S": "Cefdinir"
+          },
+          "brand_name": {
+            "S": "Omnicef"
+          },
+          "action": {
+            "S": "Antibiotic"
+          },
+          "conditions": {
+            "SS": [
+              "Infection"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a698001.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "29"
+          },
+          "generic_name": {
+            "S": "Cefuroxime"
+          },
+          "brand_name": {
+            "S": "Ceftin"
+          },
+          "action": {
+            "S": "Antibiotic"
+          },
+          "conditions": {
+            "SS": [
+              "Infection"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a601206.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "30"
+          },
+          "generic_name": {
+            "S": "Celecoxib"
+          },
+          "brand_name": {
+            "S": "Celebrex"
+          },
+          "action": {
+            "S": "NSAID"
+          },
+          "conditions": {
+            "SS": [
+              "Pain"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a699022.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "31"
+          },
+          "generic_name": {
+            "S": "Cephalexin"
+          },
+          "brand_name": {
+            "S": "Keflex"
+          },
+          "action": {
+            "S": "Antibiotic"
+          },
+          "conditions": {
+            "SS": [
+              "Infection"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682733.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "32"
+          },
+          "generic_name": {
+            "S": "Cetirizine"
+          },
+          "brand_name": {
+            "S": "Zyrtec"
+          },
+          "action": {
+            "S": "Antihistamine"
+          },
+          "conditions": {
+            "SS": [
+              "Allergies"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a698026.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "33"
+          },
+          "generic_name": {
+            "S": "Ciprofloxacin"
+          },
+          "brand_name": {
+            "S": "Cipro"
+          },
+          "action": {
+            "S": "Antibiotic"
+          },
+          "conditions": {
+            "SS": [
+              "Infection"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a688016.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "34"
+          },
+          "generic_name": {
+            "S": "Citalopram"
+          },
+          "brand_name": {
+            "S": "Celexa"
+          },
+          "action": {
+            "S": "Antidepressant"
+          },
+          "conditions": {
+            "SS": [
+              "Depression",
+              "Anxiety"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a699001.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "35"
+          },
+          "generic_name": {
+            "S": "Clarithromycin"
+          },
+          "brand_name": {
+            "S": "Biaxin"
+          },
+          "action": {
+            "S": "Antibiotic"
+          },
+          "conditions": {
+            "SS": [
+              "Infection"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a692005.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "36"
+          },
+          "generic_name": {
+            "S": "Clindamycin"
+          },
+          "brand_name": {
+            "S": "Cleocin"
+          },
+          "action": {
+            "S": "Antibiotic"
+          },
+          "conditions": {
+            "SS": [
+              "Infection"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682399.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "37"
+          },
+          "generic_name": {
+            "S": "Clobetasol"
+          },
+          "brand_name": {
+            "S": "Clovate"
+          },
+          "action": {
+            "S": "Corticosteroid"
+          },
+          "conditions": {
+            "SS": [
+              "Eczema",
+              "Psoriasis"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a686008.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "38"
+          },
+          "generic_name": {
+            "S": "Clonazepam"
+          },
+          "brand_name": {
+            "S": "Klonopin"
+          },
+          "action": {
+            "S": "Sedative"
+          },
+          "conditions": {
+            "SS": [
+              "Anxiety"
+            ]
+          },
+          "schedule": {
+            "N": "4"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682279.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "39"
+          },
+          "generic_name": {
+            "S": "Clonidine"
+          },
+          "brand_name": {
+            "S": "Catapres"
+          },
+          "action": {
+            "S": "Alpha Agonist"
+          },
+          "conditions": {
+            "SS": [
+              "Hypertension"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682243.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "40"
+          },
+          "generic_name": {
+            "S": "Clopidogrel"
+          },
+          "brand_name": {
+            "S": "Plavix"
+          },
+          "action": {
+            "S": "Anti-Platelet"
+          },
+          "conditions": {
+            "SS": [
+              "Stroke"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": true
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a601040.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "41"
+          },
+          "generic_name": {
+            "S": "Codeine+APAP"
+          },
+          "brand_name": {
+            "S": "Tylenol #2"
+          },
+          "action": {
+            "S": "Narcotic"
+          },
+          "conditions": {
+            "SS": [
+              "Pain Relief"
+            ]
+          },
+          "schedule": {
+            "N": "3"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a601005.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "42"
+          },
+          "generic_name": {
+            "S": "Cyclobenzaprine"
+          },
+          "brand_name": {
+            "S": "Flexeril"
+          },
+          "action": {
+            "S": "Muscle Relaxer"
+          },
+          "conditions": {
+            "SS": [
+              "Muscle Spasms"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682514.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "43"
+          },
+          "generic_name": {
+            "S": "Dabigatran"
+          },
+          "brand_name": {
+            "S": "Pradaxa"
+          },
+          "action": {
+            "S": "Anticoagulant"
+          },
+          "conditions": {
+            "SS": [
+              "Stroke"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": true
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a610024.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "44"
+          },
+          "generic_name": {
+            "S": "Desvenlafaxine"
+          },
+          "brand_name": {
+            "S": "Pristiq"
+          },
+          "action": {
+            "S": "Antidepressant"
+          },
+          "conditions": {
+            "SS": [
+              "Depression"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a608022.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "45"
+          },
+          "generic_name": {
+            "S": "Dexlansoprazole"
+          },
+          "brand_name": {
+            "S": "Dexilant"
+          },
+          "action": {
+            "S": "Proton Pump Inhibitor"
+          },
+          "conditions": {
+            "SS": [
+              "GERD"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a609017.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "46"
+          },
+          "generic_name": {
+            "S": "Dexmethylphenidate"
+          },
+          "brand_name": {
+            "S": "Focalin"
+          },
+          "action": {
+            "S": "Stimulant"
+          },
+          "conditions": {
+            "SS": [
+              "ADHD"
+            ]
+          },
+          "schedule": {
+            "N": "2"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a603014.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "47"
+          },
+          "generic_name": {
+            "S": "Diazepam"
+          },
+          "brand_name": {
+            "S": "Valium"
+          },
+          "action": {
+            "S": "Sedative"
+          },
+          "conditions": {
+            "SS": [
+              "Anxiety",
+              "Muscle Spasms"
+            ]
+          },
+          "schedule": {
+            "N": "4"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682047.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "48"
+          },
+          "generic_name": {
+            "S": "Diclofenac"
+          },
+          "brand_name": {
+            "S": "Voltaren"
+          },
+          "action": {
+            "S": "NSAID"
+          },
+          "conditions": {
+            "SS": [
+              "Pain",
+              "Arthritis"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a689002.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "49"
+          },
+          "generic_name": {
+            "S": "Dicyclomine"
+          },
+          "brand_name": {
+            "S": "Bentyl"
+          },
+          "action": {
+            "S": "Gut antispasmodic"
+          },
+          "conditions": {
+            "SS": [
+              "IBS"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a684007.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "med_id": {
+            "N": "50"
+          },
+          "generic_name": {
+            "S": "Digoxin"
+          },
+          "brand_name": {
+            "S": "Lanoxin"
+          },
+          "action": {
+            "S": "Beta Blocker"
+          },
+          "conditions": {
+            "SS": [
+              "CHF",
+              "Hypertension"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682301.html"
+          }
+        }
+      }
+    }
+  ]
+}

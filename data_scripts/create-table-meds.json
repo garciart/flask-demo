@@ -1,0 +1,28 @@
+{
+  "TableName": "medications",
+  "KeySchema": [
+    {
+      "KeyType": "HASH",
+      "AttributeName": "med_id"
+    },
+    {
+      "KeyType": "RANGE",
+      "AttributeName": "generic_name"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "med_id",
+      "AttributeType": "N"
+    },
+    {
+      "AttributeName": "generic_name",
+      "AttributeType": "S"
+    }
+  ],
+  "BillingMode": "PROVISIONED",
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}
