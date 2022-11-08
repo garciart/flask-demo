@@ -167,3 +167,7 @@ pip list --format=freeze > requirements.txt
 git add --all :/
 git commit -m "Tested on localhost."
 ```
+
+## Deploy to Elastic Beanstalk
+
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-flask.html
