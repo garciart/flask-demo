@@ -11,11 +11,11 @@ mkdir ~/loc_flask_demo
 cd ~/loc_flask_demo
 git init
 git branch -m main
-python3.9 -m venv .venv
+python3.8 -m venv .venv
 cd ~/loc_flask_demo
 source .venv/bin/activate
 wget https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore --output-document=.gitignore
-.venv/bin/python3.9 -m pip install --upgrade pip
+.venv/bin/python3.8 -m pip install --upgrade pip
 pip install flask
 pip install boto3
 pip list --format=freeze > requirements.txt
