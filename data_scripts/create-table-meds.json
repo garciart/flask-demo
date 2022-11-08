@@ -1,0 +1,16 @@
+{
+  "TableName": "medications",
+  "KeySchema": [
+    {
+      "KeyType": "HASH",
+      "AttributeName": "generic_name"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "generic_name",
+      "AttributeType": "S"
+    }
+  ],
+  "BillingMode": "PAY_PER_REQUEST"
+}

@@ -1,0 +1,965 @@
+{
+  "medications": [
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ACYCLOVIR"
+          },
+          "brand_name": {
+            "S": "ZOVIRAX"
+          },
+          "action": {
+            "S": "ANTIVIRAL"
+          },
+          "conditions": {
+            "SS": [
+              "HERPES",
+              "COLD SORES"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a681045.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ADALIMUMAB"
+          },
+          "brand_name": {
+            "S": "HUMIRA"
+          },
+          "action": {
+            "S": "IMMUNOSUPPRESSIVE"
+          },
+          "conditions": {
+            "SS": [
+              "INFLAMMATION"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a603010.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ALBUTEROL"
+          },
+          "brand_name": {
+            "S": "PROAIR HFA"
+          },
+          "action": {
+            "S": "BRONCHODILATOR"
+          },
+          "conditions": {
+            "SS": [
+              "ASTHMA"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a607004.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ALENDRONATE"
+          },
+          "brand_name": {
+            "S": "FOSAMAX"
+          },
+          "action": {
+            "S": "SLOWS BONE LOSS"
+          },
+          "conditions": {
+            "SS": [
+              "OSTEOPOROSIS"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a601011.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ALLOPURINOL"
+          },
+          "brand_name": {
+            "S": "ZYLOPRIM"
+          },
+          "action": {
+            "S": "URIC ACID REDUCER"
+          },
+          "conditions": {
+            "SS": [
+              "GOUT"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682673.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ALPRAZOLAM"
+          },
+          "brand_name": {
+            "S": "XANAX"
+          },
+          "action": {
+            "S": "SEDATIVE"
+          },
+          "conditions": {
+            "SS": [
+              "ANXIETY"
+            ]
+          },
+          "schedule": {
+            "N": "4"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a684001.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "AMITRIPTYLINE"
+          },
+          "brand_name": {
+            "S": "ELAVIL"
+          },
+          "action": {
+            "S": "ANTIDEPRESSANT"
+          },
+          "conditions": {
+            "SS": [
+              "DEPRESSION",
+              "FIBROMYALGIA"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682388.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "AMLODIPINE"
+          },
+          "brand_name": {
+            "S": "NORVASC"
+          },
+          "action": {
+            "S": "CALCIUM CHANNEL BLOCKER"
+          },
+          "conditions": {
+            "SS": [
+              "HYPERTENSION",
+              "ANGINA"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a692044.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "AMOXICILLIN"
+          },
+          "brand_name": {
+            "S": "AMOXIL"
+          },
+          "action": {
+            "S": "ANTIBIOTIC"
+          },
+          "conditions": {
+            "SS": [
+              "INFECTION"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a685001.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "AMOXICILLIN+CLAVULANATE"
+          },
+          "brand_name": {
+            "S": "AUGMENTIN"
+          },
+          "action": {
+            "S": "ANTIBIOTIC"
+          },
+          "conditions": {
+            "SS": [
+              "INFECTION"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a685024.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "AMPHETAMINE"
+          },
+          "brand_name": {
+            "S": "ADDERALL"
+          },
+          "action": {
+            "S": "STIMULANT"
+          },
+          "conditions": {
+            "SS": [
+              "ADHD",
+              "NARCOLEPSY"
+            ]
+          },
+          "schedule": {
+            "N": "2"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a616004.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ARIPIPRAZOLE"
+          },
+          "brand_name": {
+            "S": "ABILIFY"
+          },
+          "action": {
+            "S": "ANTIPSYCHOTIC"
+          },
+          "conditions": {
+            "SS": [
+              "SCHIZOPHRENIA",
+              "BIPOLAR DISORDER",
+              "AUTISM"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a603012.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ATENOLOL"
+          },
+          "brand_name": {
+            "S": "TENORMIN"
+          },
+          "action": {
+            "S": "BETA BLOCKER"
+          },
+          "conditions": {
+            "SS": [
+              "HYPERTENSION",
+              "ANGINA"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a684031.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ATOMOXETINE"
+          },
+          "brand_name": {
+            "S": "STRATTERA"
+          },
+          "action": {
+            "S": "COGNITION ENHANCER"
+          },
+          "conditions": {
+            "SS": [
+              "ADHD"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a603013.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "ATORVASTATIN"
+          },
+          "brand_name": {
+            "S": "LIPITOR"
+          },
+          "action": {
+            "S": "STATIN"
+          },
+          "conditions": {
+            "SS": [
+              "HIGH CHOLESTEROL"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a600045.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "AZITHROMYCIN"
+          },
+          "brand_name": {
+            "S": "ZITHROMAX"
+          },
+          "action": {
+            "S": "ANTIBIOTIC"
+          },
+          "conditions": {
+            "SS": [
+              "INFECTION"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a697037.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BACLOFEN"
+          },
+          "brand_name": {
+            "S": "GABLOFEN"
+          },
+          "action": {
+            "S": "MUSCLE RELAXER"
+          },
+          "conditions": {
+            "SS": [
+              "MUSCLE SPASMS"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682530.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BENAZEPRIL"
+          },
+          "brand_name": {
+            "S": "LOTENSIN"
+          },
+          "action": {
+            "S": "ACE INHIBITOR"
+          },
+          "conditions": {
+            "SS": [
+              "HYPERTENSION"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a692011.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BENZONATATE"
+          },
+          "brand_name": {
+            "S": "TESSALON"
+          },
+          "action": {
+            "S": "ANTITUSSIVE"
+          },
+          "conditions": {
+            "SS": [
+              "COUGHING"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682640.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BENZTROPINE"
+          },
+          "brand_name": {
+            "S": "COGENTIN"
+          },
+          "action": {
+            "S": "ANTI-TREMOR"
+          },
+          "conditions": {
+            "SS": [
+              "PARKINSONS"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a682155.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BUDESONIDE"
+          },
+          "brand_name": {
+            "S": "UCERIS"
+          },
+          "action": {
+            "S": "STEROID"
+          },
+          "conditions": {
+            "SS": [
+              "CROHNS DISEASE",
+              "ULCERATIVE COLITIS"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a608007.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BUDESONIDE+FORMOTEROL"
+          },
+          "brand_name": {
+            "S": "SYMBICORT"
+          },
+          "action": {
+            "S": "BRONCHODILATOR"
+          },
+          "conditions": {
+            "SS": [
+              "ASTHMA",
+              "COPD"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a699056.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BUPRENORPHINE+NALOXONE"
+          },
+          "brand_name": {
+            "S": "SUBOXONE"
+          },
+          "action": {
+            "S": "NARCOTIC"
+          },
+          "conditions": {
+            "SS": [
+              "PAIN",
+              "ADDICTION"
+            ]
+          },
+          "schedule": {
+            "N": "3"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a605002.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BUPROPION"
+          },
+          "brand_name": {
+            "S": "WELLBUTRIN"
+          },
+          "action": {
+            "S": "ANTIDEPRESSANT"
+          },
+          "conditions": {
+            "SS": [
+              "DEPRESSION",
+              "SMOKING"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a695033.html"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "generic_name": {
+            "S": "BUSPIRONE"
+          },
+          "brand_name": {
+            "S": "BUSPAR"
+          },
+          "action": {
+            "S": "SEDATIVE"
+          },
+          "conditions": {
+            "SS": [
+              "ANXIETY"
+            ]
+          },
+          "schedule": {
+            "N": "0"
+          },
+          "blood_thinner": {
+            "BOOL": false
+          },
+          "side_effects": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "interactions": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "warnings": {
+            "S": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          },
+          "link": {
+            "S": "https://medlineplus.gov/druginfo/meds/a688005.html"
+          }
+        }
+      }
+    }
+  ]
+}
