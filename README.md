@@ -175,5 +175,6 @@ http://flask-demo.us-east-1.elasticbeanstalk.com/
 https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-flask.html
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TicTacToe.html
 
-**NOTE** - Elastic Beanstalk uses 'application.py', not 'app.py'.
-**NOTE** - Do not forget to add an instance role with access to DynamoDB.
+> **NOTE** - Elastic Beanstalk uses 'application.py', not 'app.py'.
+
+> **NOTE** - Do not forget to add an instance role with access to DynamoDB.
