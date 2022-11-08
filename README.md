@@ -167,3 +167,13 @@ pip list --format=freeze > requirements.txt
 git add --all :/
 git commit -m "Tested on localhost."
 ```
+
+**TODO**: Instructions on how to deploy to AWS:
+
+http://flask-demo.us-east-1.elasticbeanstalk.com/
+
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-flask.html
+https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TicTacToe.html
+
+**NOTE** - Elastic Beanstalk uses 'application.py', not 'app.py'.
+**NOTE** - Do not forget to add an instance role with access to DynamoDB.

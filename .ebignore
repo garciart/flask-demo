@@ -1,0 +1,6 @@
+.venv
+data_scripts
+images
+.gitignore
+*.zip
+README.md

@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""Module to interact with the DynamoDB NoSQL database.
+"""
+
 import boto3
 from validator import (validate_integer, validate_regex_match, validate_type, )
 
@@ -38,7 +42,10 @@ def create_item(generic_name,
                 schedule,
                 blood_thinner):
     # type: (str, str, str, list, str, str, str, str, object, int, bool) -> dict
-    """
+    """Add an item to the DynamoDB database.
+
+    :return: The response from the DynamoDB database
+    :rtype: dict
     """
     # Validate inputs
     validate_regex_match(generic_name, short_desc_regex, err_msg='Invalid generic name.')
@@ -79,7 +86,10 @@ def create_item(generic_name,
 
 def read_item(generic_name):
     # type: (str) -> dict
-    """
+    """Get an item from the DynamoDB database.
+
+    :return: The response from the DynamoDB database
+    :rtype: dict
     """
     # Validate inputs
     validate_regex_match(generic_name, short_desc_regex, err_msg='Invalid generic name.')
@@ -116,7 +126,10 @@ def update_item(generic_name,
                 schedule=0,
                 blood_thinner=False):
     # type: (str, str, str, list, str, str, str, str, object, int, bool) -> dict
-    """
+    """Update an item in the DynamoDB database.
+
+    :return: The response from the DynamoDB database
+    :rtype: dict
     """
     # Validate inputs
     validate_regex_match(generic_name, short_desc_regex, err_msg='Invalid generic name.')
@@ -182,7 +195,10 @@ def update_item(generic_name,
 
 def delete_item(generic_name):
     # type: (str) -> dict
-    """
+    """Delete an item from the DynamoDB database.
+
+    :return: The data from the DynamoDB database
+    :rtype: dict
     """
     # Validate inputs
     validate_regex_match(generic_name, short_desc_regex, err_msg='Invalid generic name.')

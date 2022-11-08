@@ -1,14 +1,20 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Flask application module.
+"""
+
 from flask import Flask, render_template
 
 import dynamodb_link as db
+from validator import validate_regex_match
 
-app = Flask(__name__)
+# Elastic Beanstalk looks for an 'application' callable by default, not 'app'.
+application = Flask(__name__)
 
 
-@app.route('/')
+@application.route('/')
 def index() -> object:
-    """Displays the landing page and data from the database
+    """Display the landing page and a list of medications
 
     :return: The page and content
     :rtype: object
@@ -17,8 +23,16 @@ def index() -> object:
     return render_template('index.html', items=items)
 
 
-@app.route('/details/<string:generic_name>', methods=['GET'])
+@application.route('/details/<string:generic_name>', methods=['GET'])
 def details(generic_name):
+    # Type: (str) -> object
+    """Display details about a specific medication
+
+    :return: The page and content
+    :rtype: object
+    """
+    # Validate inputs
+    validate_regex_match(generic_name, db.short_desc_regex, err_msg='Invalid generic name.')
     response = db.read_item(generic_name=generic_name)
 
     if response['ResponseMetadata']['HTTPStatusCode'] == 200:
@@ -32,4 +46,4 @@ def details(generic_name):
 
 
 if __name__ == '__main__':
-    app.run()
+    application.run()
