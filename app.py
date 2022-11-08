@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index() -> object:
     """Displays the landing page and data from the database
 
-    :returns: The page and content
+    :return: The page and content
     :rtype: object
     """
     items = db.get_items()

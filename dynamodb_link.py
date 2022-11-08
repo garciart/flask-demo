@@ -16,10 +16,10 @@ details_regex = r'^' + lookahead_regex + r'([A-Z])([A-Z\d\-\+\,\. ]{1,255})([A-Z
 link_regex = r'^http([s]?)\:\/\/[A-Za-z\d\.\_\-\/]{1,255}$'
 
 
-def get_items():
+def get_items() -> object:
     """Gets all the data from the DynamoDB database.
 
-    :returns: The data from the DynamoDB database
+    :return: The data from the DynamoDB database
     :rtype: dict
     """
     all_items = med_table.scan()
