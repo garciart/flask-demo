@@ -3,21 +3,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "26"
-          },
           "generic_name": {
-            "S": "Carisoprodol"
+            "S": "CARISOPRODOL"
           },
           "brand_name": {
-            "S": "Soma"
+            "S": "SOMA"
           },
           "action": {
-            "S": "Muscle Relaxer"
+            "S": "MUSCLE RELAXER"
           },
           "conditions": {
             "SS": [
-              "Muscle Spasms"
+              "MUSCLE SPASMS"
             ]
           },
           "schedule": {
@@ -44,22 +41,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "27"
-          },
           "generic_name": {
-            "S": "Carvedilol"
+            "S": "CARVEDILOL"
           },
           "brand_name": {
-            "S": "Coreg"
+            "S": "COREG"
           },
           "action": {
-            "S": "Beta Blocker"
+            "S": "BETA BLOCKER"
           },
           "conditions": {
             "SS": [
               "CHF",
-              "Hypertension"
+              "HYPERTENSION"
             ]
           },
           "schedule": {
@@ -86,21 +80,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "28"
-          },
           "generic_name": {
-            "S": "Cefdinir"
+            "S": "CEFDINIR"
           },
           "brand_name": {
-            "S": "Omnicef"
+            "S": "OMNICEF"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -127,21 +118,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "29"
-          },
           "generic_name": {
-            "S": "Cefuroxime"
+            "S": "CEFUROXIME"
           },
           "brand_name": {
-            "S": "Ceftin"
+            "S": "CEFTIN"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -168,21 +156,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "30"
-          },
           "generic_name": {
-            "S": "Celecoxib"
+            "S": "CELECOXIB"
           },
           "brand_name": {
-            "S": "Celebrex"
+            "S": "CELEBREX"
           },
           "action": {
             "S": "NSAID"
           },
           "conditions": {
             "SS": [
-              "Pain"
+              "PAIN"
             ]
           },
           "schedule": {
@@ -209,21 +194,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "31"
-          },
           "generic_name": {
-            "S": "Cephalexin"
+            "S": "CEPHALEXIN"
           },
           "brand_name": {
-            "S": "Keflex"
+            "S": "KEFLEX"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -250,21 +232,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "32"
-          },
           "generic_name": {
-            "S": "Cetirizine"
+            "S": "CETIRIZINE"
           },
           "brand_name": {
-            "S": "Zyrtec"
+            "S": "ZYRTEC"
           },
           "action": {
-            "S": "Antihistamine"
+            "S": "ANTIHISTAMINE"
           },
           "conditions": {
             "SS": [
-              "Allergies"
+              "ALLERGIES"
             ]
           },
           "schedule": {
@@ -291,21 +270,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "33"
-          },
           "generic_name": {
-            "S": "Ciprofloxacin"
+            "S": "CIPROFLOXACIN"
           },
           "brand_name": {
-            "S": "Cipro"
+            "S": "CIPRO"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -332,22 +308,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "34"
-          },
           "generic_name": {
-            "S": "Citalopram"
+            "S": "CITALOPRAM"
           },
           "brand_name": {
-            "S": "Celexa"
+            "S": "CELEXA"
           },
           "action": {
-            "S": "Antidepressant"
+            "S": "ANTIDEPRESSANT"
           },
           "conditions": {
             "SS": [
-              "Depression",
-              "Anxiety"
+              "DEPRESSION",
+              "ANXIETY"
             ]
           },
           "schedule": {
@@ -374,21 +347,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "35"
-          },
           "generic_name": {
-            "S": "Clarithromycin"
+            "S": "CLARITHROMYCIN"
           },
           "brand_name": {
-            "S": "Biaxin"
+            "S": "BIAXIN"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -415,21 +385,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "36"
-          },
           "generic_name": {
-            "S": "Clindamycin"
+            "S": "CLINDAMYCIN"
           },
           "brand_name": {
-            "S": "Cleocin"
+            "S": "CLEOCIN"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -456,22 +423,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "37"
-          },
           "generic_name": {
-            "S": "Clobetasol"
+            "S": "CLOBETASOL"
           },
           "brand_name": {
-            "S": "Clovate"
+            "S": "CLOVATE"
           },
           "action": {
-            "S": "Corticosteroid"
+            "S": "CORTICOSTEROID"
           },
           "conditions": {
             "SS": [
-              "Eczema",
-              "Psoriasis"
+              "ECZEMA",
+              "PSORIASIS"
             ]
           },
           "schedule": {
@@ -498,21 +462,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "38"
-          },
           "generic_name": {
-            "S": "Clonazepam"
+            "S": "CLONAZEPAM"
           },
           "brand_name": {
-            "S": "Klonopin"
+            "S": "KLONOPIN"
           },
           "action": {
-            "S": "Sedative"
+            "S": "SEDATIVE"
           },
           "conditions": {
             "SS": [
-              "Anxiety"
+              "ANXIETY"
             ]
           },
           "schedule": {
@@ -539,21 +500,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "39"
-          },
           "generic_name": {
-            "S": "Clonidine"
+            "S": "CLONIDINE"
           },
           "brand_name": {
-            "S": "Catapres"
+            "S": "CATAPRES"
           },
           "action": {
-            "S": "Alpha Agonist"
+            "S": "ALPHA AGONIST"
           },
           "conditions": {
             "SS": [
-              "Hypertension"
+              "HYPERTENSION"
             ]
           },
           "schedule": {
@@ -580,21 +538,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "40"
-          },
           "generic_name": {
-            "S": "Clopidogrel"
+            "S": "CLOPIDOGREL"
           },
           "brand_name": {
-            "S": "Plavix"
+            "S": "PLAVIX"
           },
           "action": {
-            "S": "Anti-Platelet"
+            "S": "ANTI-PLATELET"
           },
           "conditions": {
             "SS": [
-              "Stroke"
+              "STROKE"
             ]
           },
           "schedule": {
@@ -621,21 +576,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "41"
-          },
           "generic_name": {
-            "S": "Codeine+APAP"
+            "S": "CODEINE+APAP"
           },
           "brand_name": {
-            "S": "Tylenol #2"
+            "S": "TYLENOL #2"
           },
           "action": {
-            "S": "Narcotic"
+            "S": "NARCOTIC"
           },
           "conditions": {
             "SS": [
-              "Pain Relief"
+              "PAIN RELIEF"
             ]
           },
           "schedule": {
@@ -662,21 +614,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "42"
-          },
           "generic_name": {
-            "S": "Cyclobenzaprine"
+            "S": "CYCLOBENZAPRINE"
           },
           "brand_name": {
-            "S": "Flexeril"
+            "S": "FLEXERIL"
           },
           "action": {
-            "S": "Muscle Relaxer"
+            "S": "MUSCLE RELAXER"
           },
           "conditions": {
             "SS": [
-              "Muscle Spasms"
+              "MUSCLE SPASMS"
             ]
           },
           "schedule": {
@@ -703,21 +652,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "43"
-          },
           "generic_name": {
-            "S": "Dabigatran"
+            "S": "DABIGATRAN"
           },
           "brand_name": {
-            "S": "Pradaxa"
+            "S": "PRADAXA"
           },
           "action": {
-            "S": "Anticoagulant"
+            "S": "ANTICOAGULANT"
           },
           "conditions": {
             "SS": [
-              "Stroke"
+              "STROKE"
             ]
           },
           "schedule": {
@@ -744,21 +690,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "44"
-          },
           "generic_name": {
-            "S": "Desvenlafaxine"
+            "S": "DESVENLAFAXINE"
           },
           "brand_name": {
-            "S": "Pristiq"
+            "S": "PRISTIQ"
           },
           "action": {
-            "S": "Antidepressant"
+            "S": "ANTIDEPRESSANT"
           },
           "conditions": {
             "SS": [
-              "Depression"
+              "DEPRESSION"
             ]
           },
           "schedule": {
@@ -785,17 +728,14 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "45"
-          },
           "generic_name": {
-            "S": "Dexlansoprazole"
+            "S": "DEXLANSOPRAZOLE"
           },
           "brand_name": {
-            "S": "Dexilant"
+            "S": "DEXILANT"
           },
           "action": {
-            "S": "Proton Pump Inhibitor"
+            "S": "PROTON PUMP INHIBITOR"
           },
           "conditions": {
             "SS": [
@@ -826,17 +766,14 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "46"
-          },
           "generic_name": {
-            "S": "Dexmethylphenidate"
+            "S": "DEXMETHYLPHENIDATE"
           },
           "brand_name": {
-            "S": "Focalin"
+            "S": "FOCALIN"
           },
           "action": {
-            "S": "Stimulant"
+            "S": "STIMULANT"
           },
           "conditions": {
             "SS": [
@@ -867,22 +804,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "47"
-          },
           "generic_name": {
-            "S": "Diazepam"
+            "S": "DIAZEPAM"
           },
           "brand_name": {
-            "S": "Valium"
+            "S": "VALIUM"
           },
           "action": {
-            "S": "Sedative"
+            "S": "SEDATIVE"
           },
           "conditions": {
             "SS": [
-              "Anxiety",
-              "Muscle Spasms"
+              "ANXIETY",
+              "MUSCLE SPASMS"
             ]
           },
           "schedule": {
@@ -909,22 +843,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "48"
-          },
           "generic_name": {
-            "S": "Diclofenac"
+            "S": "DICLOFENAC"
           },
           "brand_name": {
-            "S": "Voltaren"
+            "S": "VOLTAREN"
           },
           "action": {
             "S": "NSAID"
           },
           "conditions": {
             "SS": [
-              "Pain",
-              "Arthritis"
+              "PAIN",
+              "ARTHRITIS"
             ]
           },
           "schedule": {
@@ -951,17 +882,14 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "49"
-          },
           "generic_name": {
-            "S": "Dicyclomine"
+            "S": "DICYCLOMINE"
           },
           "brand_name": {
-            "S": "Bentyl"
+            "S": "BENTYL"
           },
           "action": {
-            "S": "Gut antispasmodic"
+            "S": "GUT ANTISPASMODIC"
           },
           "conditions": {
             "SS": [
@@ -992,22 +920,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "50"
-          },
           "generic_name": {
-            "S": "Digoxin"
+            "S": "DIGOXIN"
           },
           "brand_name": {
-            "S": "Lanoxin"
+            "S": "LANOXIN"
           },
           "action": {
-            "S": "Beta Blocker"
+            "S": "BETA BLOCKER"
           },
           "conditions": {
             "SS": [
               "CHF",
-              "Hypertension"
+              "HYPERTENSION"
             ]
           },
           "schedule": {

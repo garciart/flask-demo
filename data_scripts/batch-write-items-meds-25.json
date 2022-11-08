@@ -3,22 +3,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "1"
-          },
           "generic_name": {
-            "S": "Acyclovir"
+            "S": "ACYCLOVIR"
           },
           "brand_name": {
-            "S": "Zovirax"
+            "S": "ZOVIRAX"
           },
           "action": {
-            "S": "Antiviral"
+            "S": "ANTIVIRAL"
           },
           "conditions": {
             "SS": [
-              "Herpes",
-              "Cold Sores"
+              "HERPES",
+              "COLD SORES"
             ]
           },
           "schedule": {
@@ -45,21 +42,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "2"
-          },
           "generic_name": {
-            "S": "Adalimumab"
+            "S": "ADALIMUMAB"
           },
           "brand_name": {
-            "S": "Humira"
+            "S": "HUMIRA"
           },
           "action": {
-            "S": "Immunosuppressive"
+            "S": "IMMUNOSUPPRESSIVE"
           },
           "conditions": {
             "SS": [
-              "Inflammation"
+              "INFLAMMATION"
             ]
           },
           "schedule": {
@@ -86,21 +80,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "3"
-          },
           "generic_name": {
-            "S": "Albuterol"
+            "S": "ALBUTEROL"
           },
           "brand_name": {
-            "S": "ProAir HFA"
+            "S": "PROAIR HFA"
           },
           "action": {
-            "S": "Bronchodilator"
+            "S": "BRONCHODILATOR"
           },
           "conditions": {
             "SS": [
-              "Asthma"
+              "ASTHMA"
             ]
           },
           "schedule": {
@@ -127,21 +118,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "4"
-          },
           "generic_name": {
-            "S": "Alendronate"
+            "S": "ALENDRONATE"
           },
           "brand_name": {
-            "S": "Fosamax"
+            "S": "FOSAMAX"
           },
           "action": {
-            "S": "Slows bone loss"
+            "S": "SLOWS BONE LOSS"
           },
           "conditions": {
             "SS": [
-              "Osteoporosis"
+              "OSTEOPOROSIS"
             ]
           },
           "schedule": {
@@ -168,21 +156,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "5"
-          },
           "generic_name": {
-            "S": "Allopurinol"
+            "S": "ALLOPURINOL"
           },
           "brand_name": {
-            "S": "Zyloprim"
+            "S": "ZYLOPRIM"
           },
           "action": {
-            "S": "Uric acid reducer"
+            "S": "URIC ACID REDUCER"
           },
           "conditions": {
             "SS": [
-              "Gout"
+              "GOUT"
             ]
           },
           "schedule": {
@@ -209,21 +194,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "6"
-          },
           "generic_name": {
-            "S": "Alprazolam"
+            "S": "ALPRAZOLAM"
           },
           "brand_name": {
-            "S": "Xanax"
+            "S": "XANAX"
           },
           "action": {
-            "S": "Sedative"
+            "S": "SEDATIVE"
           },
           "conditions": {
             "SS": [
-              "Anxiety"
+              "ANXIETY"
             ]
           },
           "schedule": {
@@ -250,22 +232,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "7"
-          },
           "generic_name": {
-            "S": "Amitriptyline"
+            "S": "AMITRIPTYLINE"
           },
           "brand_name": {
-            "S": "Elavil"
+            "S": "ELAVIL"
           },
           "action": {
-            "S": "Antidepressant"
+            "S": "ANTIDEPRESSANT"
           },
           "conditions": {
             "SS": [
-              "Depression",
-              "Fibromyalgia"
+              "DEPRESSION",
+              "FIBROMYALGIA"
             ]
           },
           "schedule": {
@@ -292,22 +271,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "8"
-          },
           "generic_name": {
-            "S": "Amlodipine"
+            "S": "AMLODIPINE"
           },
           "brand_name": {
-            "S": "Norvasc"
+            "S": "NORVASC"
           },
           "action": {
-            "S": "Calcium Channel Blocker"
+            "S": "CALCIUM CHANNEL BLOCKER"
           },
           "conditions": {
             "SS": [
-              "Hypertension",
-              "Angina"
+              "HYPERTENSION",
+              "ANGINA"
             ]
           },
           "schedule": {
@@ -334,21 +310,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "9"
-          },
           "generic_name": {
-            "S": "Amoxicillin"
+            "S": "AMOXICILLIN"
           },
           "brand_name": {
-            "S": "Amoxil"
+            "S": "AMOXIL"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -375,21 +348,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "10"
-          },
           "generic_name": {
-            "S": "Amoxicillin+Clavulanate"
+            "S": "AMOXICILLIN+CLAVULANATE"
           },
           "brand_name": {
-            "S": "Augmentin"
+            "S": "AUGMENTIN"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -416,22 +386,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "11"
-          },
           "generic_name": {
-            "S": "Amphetamine"
+            "S": "AMPHETAMINE"
           },
           "brand_name": {
-            "S": "Adderall"
+            "S": "ADDERALL"
           },
           "action": {
-            "S": "Stimulant"
+            "S": "STIMULANT"
           },
           "conditions": {
             "SS": [
               "ADHD",
-              "Narcolepsy"
+              "NARCOLEPSY"
             ]
           },
           "schedule": {
@@ -458,23 +425,20 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "12"
-          },
           "generic_name": {
-            "S": "Aripiprazole"
+            "S": "ARIPIPRAZOLE"
           },
           "brand_name": {
-            "S": "Abilify"
+            "S": "ABILIFY"
           },
           "action": {
-            "S": "Antipsychotic"
+            "S": "ANTIPSYCHOTIC"
           },
           "conditions": {
             "SS": [
-              "Schizophrenia",
-              "Bipolar Disorder",
-              "Autism"
+              "SCHIZOPHRENIA",
+              "BIPOLAR DISORDER",
+              "AUTISM"
             ]
           },
           "schedule": {
@@ -501,22 +465,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "13"
-          },
           "generic_name": {
-            "S": "Atenolol"
+            "S": "ATENOLOL"
           },
           "brand_name": {
-            "S": "Tenormin"
+            "S": "TENORMIN"
           },
           "action": {
-            "S": "Beta Blocker"
+            "S": "BETA BLOCKER"
           },
           "conditions": {
             "SS": [
-              "Hypertension",
-              "Angina"
+              "HYPERTENSION",
+              "ANGINA"
             ]
           },
           "schedule": {
@@ -543,17 +504,14 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "14"
-          },
           "generic_name": {
-            "S": "Atomoxetine"
+            "S": "ATOMOXETINE"
           },
           "brand_name": {
-            "S": "Strattera"
+            "S": "STRATTERA"
           },
           "action": {
-            "S": "Cognition Enhancer"
+            "S": "COGNITION ENHANCER"
           },
           "conditions": {
             "SS": [
@@ -584,21 +542,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "15"
-          },
           "generic_name": {
-            "S": "Atorvastatin"
+            "S": "ATORVASTATIN"
           },
           "brand_name": {
-            "S": "Lipitor"
+            "S": "LIPITOR"
           },
           "action": {
-            "S": "Statin"
+            "S": "STATIN"
           },
           "conditions": {
             "SS": [
-              "High Cholesterol"
+              "HIGH CHOLESTEROL"
             ]
           },
           "schedule": {
@@ -625,21 +580,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "16"
-          },
           "generic_name": {
-            "S": "Azithromycin"
+            "S": "AZITHROMYCIN"
           },
           "brand_name": {
-            "S": "Zithromax"
+            "S": "ZITHROMAX"
           },
           "action": {
-            "S": "Antibiotic"
+            "S": "ANTIBIOTIC"
           },
           "conditions": {
             "SS": [
-              "Infection"
+              "INFECTION"
             ]
           },
           "schedule": {
@@ -666,21 +618,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "17"
-          },
           "generic_name": {
-            "S": "Baclofen"
+            "S": "BACLOFEN"
           },
           "brand_name": {
-            "S": "Gablofen"
+            "S": "GABLOFEN"
           },
           "action": {
-            "S": "Muscle Relaxer"
+            "S": "MUSCLE RELAXER"
           },
           "conditions": {
             "SS": [
-              "Muscle Spasms"
+              "MUSCLE SPASMS"
             ]
           },
           "schedule": {
@@ -707,21 +656,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "18"
-          },
           "generic_name": {
-            "S": "Benazepril"
+            "S": "BENAZEPRIL"
           },
           "brand_name": {
-            "S": "Lotensin"
+            "S": "LOTENSIN"
           },
           "action": {
-            "S": "ACE Inhibitor"
+            "S": "ACE INHIBITOR"
           },
           "conditions": {
             "SS": [
-              "Hypertension"
+              "HYPERTENSION"
             ]
           },
           "schedule": {
@@ -748,21 +694,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "19"
-          },
           "generic_name": {
-            "S": "Benzonatate"
+            "S": "BENZONATATE"
           },
           "brand_name": {
-            "S": "Tessalon"
+            "S": "TESSALON"
           },
           "action": {
-            "S": "Antitussive"
+            "S": "ANTITUSSIVE"
           },
           "conditions": {
             "SS": [
-              "Coughing"
+              "COUGHING"
             ]
           },
           "schedule": {
@@ -789,21 +732,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "20"
-          },
           "generic_name": {
-            "S": "Benztropine"
+            "S": "BENZTROPINE"
           },
           "brand_name": {
-            "S": "Cogentin"
+            "S": "COGENTIN"
           },
           "action": {
-            "S": "Anti-Tremor"
+            "S": "ANTI-TREMOR"
           },
           "conditions": {
             "SS": [
-              "Parkinsons"
+              "PARKINSONS"
             ]
           },
           "schedule": {
@@ -830,22 +770,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "21"
-          },
           "generic_name": {
-            "S": "Budesonide"
+            "S": "BUDESONIDE"
           },
           "brand_name": {
-            "S": "Uceris"
+            "S": "UCERIS"
           },
           "action": {
-            "S": "Steroid"
+            "S": "STEROID"
           },
           "conditions": {
             "SS": [
-              "Crohns Disease",
-              "Ulcerative colitis"
+              "CROHNS DISEASE",
+              "ULCERATIVE COLITIS"
             ]
           },
           "schedule": {
@@ -872,21 +809,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "22"
-          },
           "generic_name": {
-            "S": "Budesonide+Formoterol"
+            "S": "BUDESONIDE+FORMOTEROL"
           },
           "brand_name": {
-            "S": "Symbicort"
+            "S": "SYMBICORT"
           },
           "action": {
-            "S": "Bronchodilator"
+            "S": "BRONCHODILATOR"
           },
           "conditions": {
             "SS": [
-              "Asthma",
+              "ASTHMA",
               "COPD"
             ]
           },
@@ -914,22 +848,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "23"
-          },
           "generic_name": {
-            "S": "Buprenorphine+Naloxone"
+            "S": "BUPRENORPHINE+NALOXONE"
           },
           "brand_name": {
-            "S": "Suboxone"
+            "S": "SUBOXONE"
           },
           "action": {
-            "S": "Narcotic"
+            "S": "NARCOTIC"
           },
           "conditions": {
             "SS": [
-              "Pain",
-              "Addiction"
+              "PAIN",
+              "ADDICTION"
             ]
           },
           "schedule": {
@@ -956,22 +887,19 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "24"
-          },
           "generic_name": {
-            "S": "Bupropion"
+            "S": "BUPROPION"
           },
           "brand_name": {
-            "S": "Wellbutrin"
+            "S": "WELLBUTRIN"
           },
           "action": {
-            "S": "Antidepressant"
+            "S": "ANTIDEPRESSANT"
           },
           "conditions": {
             "SS": [
-              "Depression",
-              "Smoking"
+              "DEPRESSION",
+              "SMOKING"
             ]
           },
           "schedule": {
@@ -998,21 +926,18 @@
     {
       "PutRequest": {
         "Item": {
-          "med_id": {
-            "N": "25"
-          },
           "generic_name": {
-            "S": "Buspirone"
+            "S": "BUSPIRONE"
           },
           "brand_name": {
-            "S": "Buspar"
+            "S": "BUSPAR"
           },
           "action": {
-            "S": "Sedative"
+            "S": "SEDATIVE"
           },
           "conditions": {
             "SS": [
-              "Anxiety"
+              "ANXIETY"
             ]
           },
           "schedule": {
