@@ -4,8 +4,8 @@ a:link {
 }
 
 .jumbotron {
-    padding: 4rem 2rem;
-    margin-bottom: 2rem;
+    padding: 2rem 1rem;
+    margin-bottom: 1rem;
     background-color: lightblue;
     border-radius: .3rem;
 }
