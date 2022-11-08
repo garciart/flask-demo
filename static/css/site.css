@@ -1,8 +1,11 @@
-html
+a:link {
+    text-decoration: none!important;
+    font-weight: bold;
+}
 
 .jumbotron {
-      padding: 4rem 2rem;
-      margin-bottom: 2rem;
-      background-color: lightblue;
-      border-radius: .3rem;
+    padding: 4rem 2rem;
+    margin-bottom: 2rem;
+    background-color: lightblue;
+    border-radius: .3rem;
 }

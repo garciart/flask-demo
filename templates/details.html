@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Details{% endblock %}
+{% block content %}
+<h1>Medication Details</h1>
+<hr>
+{% if item['blood_thinner'] is true %}
+<h2 class="font-weight-bold text-danger">Warning: This medication is a blood thinner.</h2>
+{% elif item['schedule'] >= 1 %}
+<h2 class="font-weight-bold text-danger">Warning: This medication is a Schedule {{ item['schedule'] }}
+    controlled substance.</h2>
+{% endif %}
+<h4>Generic Name:</h4>
+<p>{{ item['generic_name'] }}</p>
+<h4>Brand Name:</h4>
+<p>{{ item['brand_name'] }}</p>
+<h4>Action:</h4>
+<p>{{ item['action'] }}</p>
+<h4>Conditions:</h4>
+<p>
+    {% for c in item['conditions'] %}
+    {{ c }}<br/>
+    {% endfor %}
+</p>
+<h4>Side Effects:</h4>
+<p>{{ item['side_effects'] }}</p>
+<h4>Interactions:</h4>
+<p>{{ item['interactions'] }}</p>
+<h4>Warnings:</h4>
+<p>{{ item['warnings'] }}</p>
+<h4>Link for more information:</h4>
+<p><a href="{{ item['link'] }}" target="_blank">{{ item['link'] }}</a></p>
+{% endblock %}
