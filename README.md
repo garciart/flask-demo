@@ -1,19 +1,28 @@
 # Flask and DynamoDB Demo
 
+-----
+
 ## Steps:
+
+-----
+
+Requirement:
+
+- An Amazon Web Services (AWS) Developer account
+- Python 3
 
 Create the project and isolate the development environment:
 
-**NOTE** - If you have a development directory in your home directory, use that instead (e.g., ```mkdir ~/Workspace/loc_flask_demo```, etc.).
+**NOTE** - If you have a development directory in your home directory, use that instead (e.g., ```mkdir ~/Workspace/flask-demo```, etc.).
 
 ```
-mkdir ~/loc_flask_demo
-cd ~/loc_flask_demo
+mkdir ~/flask-demo
+cd ~/flask-demo
 git init
 git branch -m main
 python3.8 -m venv .venv
-cd ~/loc_flask_demo
 source .venv/bin/activate
+touch README.md
 wget https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore --output-document=.gitignore
 .venv/bin/python3.8 -m pip install --upgrade pip
 pip install flask
@@ -43,8 +52,8 @@ Default output format [None]: json
 Create a directory to hold the data scripts:
 
 ```
-mkdir -p ~/loc_flask_demo/data_scripts
-cd ~/loc_flask_demo/data_scripts
+mkdir -p ~/flask-demo/data_scripts
+cd ~/flask-demo/data_scripts
 ```
 
 In that directory, create scripts and populate the DynamoDB database:
@@ -62,7 +71,7 @@ aws dynamodb batch-write-item --request-items file://batch-write-items-meds.json
 **OUTPUT:**
 
 ```
-(env) [rgarcia@localhost loc_flask_demo]$ aws dynamodb create-table --cli-input-json file://create-table-meds.json
+(env) [rgarcia@localhost flask-demo]$ aws dynamodb create-table --cli-input-json file://create-table-meds.json
 {
     "TableDescription": {
         "AttributeDefinitions": [
@@ -94,11 +103,11 @@ aws dynamodb batch-write-item --request-items file://batch-write-items-meds.json
         }
     }
 }
-(env) [rgarcia@localhost loc_flask_demo]$ aws dynamodb batch-write-item --request-items file://batch-write-items-meds-25.json
+(env) [rgarcia@localhost flask-demo]$ aws dynamodb batch-write-item --request-items file://batch-write-items-meds-25.json
 {
     "UnprocessedItems": {}
 }
-(env) [rgarcia@localhost loc_flask_demo]$ 
+(env) [rgarcia@localhost flask-demo]$ 
 ```
 
 Continue to add items using **batch-write-item**. If DynamoDB returns any unprocessed items, check your JSON script and try again.
@@ -106,7 +115,7 @@ Continue to add items using **batch-write-item**. If DynamoDB returns any unproc
 Save your work and update your requirements:
 
 ```
-cd ~/loc_flask_demo
+cd ~/flask-demo
 pip list --format=freeze > requirements.txt
 git add --all :/
 git commit -m "Created database in AWS DynamoDB."
