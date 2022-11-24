@@ -1,4 +1,4 @@
-# Flask and DynamoDB Demo
+# Flask and DynamoDB Demo (Linux)
 
 -----
 
@@ -8,12 +8,13 @@
 
 Requirement:
 
+- Linux (Tested using Rocky 8)
 - An Amazon Web Services (AWS) Developer account
 - Python 3
 
 Create the project and isolate the development environment:
 
-**NOTE** - If you have a development directory in your home directory, use that instead (e.g., ```mkdir ~/Workspace/flask-demo```, etc.).
+**NOTE** - If you have a development directory in your home directory, use that instead (e.g., ```mkdir -p ~/Workspace/flask-demo```, etc.).
 
 ```
 mkdir ~/flask-demo
@@ -49,6 +50,11 @@ Default region name [None]: us-east-1
 Default output format [None]: json
 ```
 
+This will create an AWS credentials profile file on your local system:
+
+- Linux: ```~/.aws/credentials```
+- Windows: ```C:\Users\USERNAME\.aws\credentials```
+
 Create a directory to hold the data scripts:
 
 ```
@@ -71,7 +77,7 @@ aws dynamodb batch-write-item --request-items file://batch-write-items-meds.json
 **OUTPUT:**
 
 ```
-(env) [rgarcia@localhost flask-demo]$ aws dynamodb create-table --cli-input-json file://create-table-meds.json
+$ aws dynamodb create-table --cli-input-json file://create-table-meds.json
 {
     "TableDescription": {
         "AttributeDefinitions": [
@@ -103,11 +109,10 @@ aws dynamodb batch-write-item --request-items file://batch-write-items-meds.json
         }
     }
 }
-(env) [rgarcia@localhost flask-demo]$ aws dynamodb batch-write-item --request-items file://batch-write-items-meds-25.json
+$ aws dynamodb batch-write-item --request-items file://batch-write-items-meds-25.json
 {
     "UnprocessedItems": {}
 }
-(env) [rgarcia@localhost flask-demo]$ 
 ```
 
 Continue to add items using **batch-write-item**. If DynamoDB returns any unprocessed items, check your JSON script and try again.
