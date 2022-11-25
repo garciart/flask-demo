@@ -11,12 +11,13 @@ __all__ = ['validate_integer',
 
 import re
 import sre_constants
+import sys
 
 
 def validate_integer(input_val,
                      *,
                      min_val=0,
-                     max_val=255,
+                     max_val=sys.maxsize,
                      err_msg='Invalid integer value.'):
     # type: (int, object, int, int, str) -> None
     """Verify an object is an integer and that it is not None or empty. Optionally,
