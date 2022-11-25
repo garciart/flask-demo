@@ -1,20 +1,20 @@
 # Flask and DynamoDB Demo (Linux)
 
+>**NOTE** - For a similar project, using AWS, Windows, Java, and Spring Boot, see https://github.com/garciart/spring-demo.
+
 -----
 
 ## Steps:
 
------
-
 Requirement:
 
-- Linux (Tested using Rocky 8)
+- Debian 10+ or Fedora 19+ Linux (Tested using Rocky 8)
 - An Amazon Web Services (AWS) Developer account
 - Python 3
 
 Create the project and isolate the development environment:
 
-**NOTE** - If you have a development directory in your home directory, use that instead (e.g., ```mkdir -p ~/Workspace/flask-demo```, etc.).
+**NOTE** - If you have a development subdirectory in your home directory, use that instead (e.g., ```mkdir -p ~/Workspace/flask-demo```, etc.).
 
 ```
 mkdir ~/flask-demo
@@ -64,7 +64,11 @@ cd ~/flask-demo/data_scripts
 
 In that directory, create scripts and populate the DynamoDB database:
 
-**NOTE** - This will create only one record. For multiple records, you can download **create-table-meds.json**, and both **batch-write-items-meds-25.json** and **batch-write-items-meds-50.json**, from the repository instead. Remember, [AWS only accepts 25 item put or delete operations per batch.](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html "BatchWriteItem")
+>**NOTE** - This will create only one record. For multiple records, you can download **create-table-meds.json**, and both **batch-write-items-meds-25.json** and **batch-write-items-meds-50.json**, from the repository instead. Remember, [AWS only accepts 25 item put or delete operations per batch.](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html "BatchWriteItem")
+>
+>- ```wget https://raw.githubusercontent.com/garciart/flask-demo/main/data_scripts/create-table-meds.json```
+>- ```wget https://raw.githubusercontent.com/garciart/flask-demo/main/data_scripts/batch-write-items-meds-25.json```
+>- ```https://github.com/garciart/flask-demo/blob/main/data_scripts/batch-write-items-meds-50.json```
 
 ```
 echo '{ "TableName": "medications", "KeySchema": [ { "KeyType": "HASH", "AttributeName": "generic_name" } ], "AttributeDefinitions": [ { "AttributeName": "generic_name", "AttributeType": "S" } ], "BillingMode": "PAY_PER_REQUEST" }' > create-table-meds.json
