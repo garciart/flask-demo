@@ -1,0 +1,36 @@
+html {
+    font-family: sans-serif;
+}
+
+body {
+    margin-top: 10vh;
+}
+
+a {
+    color: deepskyblue;
+    text-decoration: none;
+}
+
+nav {
+    background-color: black;
+    color: white;
+    /* The header and its height is fixed so the logo appears correctly */
+    height: 10vh;
+}
+
+.nav_logo {
+    height: 6vh !important;
+    padding-right: 1em;
+}
+
+#content {
+    min-height: 85vh;
+    padding-top: 1em;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    /* Ensure the top of the footer appears when content does not fill the page */
+    min-height: 5vh;
+}
