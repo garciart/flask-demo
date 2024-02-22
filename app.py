@@ -1,6 +1,8 @@
-"""Flask Demo
+"""Flask Template
 
-Usage: python3 -m flask --app app run
+Usage:
+- python3 -m flask --app app run
+- python3 -m flask --app app run --debug # Allow hot reload
 """
 from flask import Flask, render_template
 
@@ -17,7 +19,7 @@ def index():
     :return: A string of HTML code
     :rtype: str
     """
-    _page_title = 'Flask Demo'
+    _page_title = 'Flask Template'
     _html = render_template('index.html', page_title=_page_title)
     return _html
 
@@ -30,7 +32,7 @@ def test():
     :return: A string of HTML code
     :rtype: str
     """
-    _page_title = 'Flask Demo'
+    _page_title = 'Test Page'
     _html = render_template('test.html', page_title=_page_title)
     return _html
 
