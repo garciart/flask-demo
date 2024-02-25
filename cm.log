@@ -1,0 +1,78 @@
+2024-02-25 02:08:57,321-werkzeug-INFO-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-02-25 02:08:57,321-werkzeug-INFO-[33mPress CTRL+C to quit[0m
+2024-02-25 02:08:57,322-werkzeug-INFO- * Restarting with stat
+2024-02-25 02:08:57,456-werkzeug-WARNING- * Debugger is active!
+2024-02-25 02:08:57,456-werkzeug-INFO- * Debugger PIN: 123-514-238
+2024-02-25 02:09:00,796-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:09:00] "GET / HTTP/1.1" 200 -
+2024-02-25 02:09:00,874-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:09:00] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:09:00,875-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:09:00] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:09:00,876-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:09:00] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:09:00,960-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:09:00] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:09:49,315-cm_logger-CRITICAL-Dang!
+2024-02-25 02:09:49,319-werkzeug-INFO-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-02-25 02:09:49,319-werkzeug-INFO-[33mPress CTRL+C to quit[0m
+2024-02-25 02:09:49,320-werkzeug-INFO- * Restarting with stat
+2024-02-25 02:09:49,451-cm_logger-CRITICAL-Dang!
+2024-02-25 02:09:49,453-werkzeug-WARNING- * Debugger is active!
+2024-02-25 02:09:49,453-werkzeug-INFO- * Debugger PIN: 123-514-238
+2024-02-25 02:09:59,214-cm_logger-CRITICAL-Dang!
+2024-02-25 02:13:26,787-werkzeug-INFO-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-02-25 02:13:26,787-werkzeug-INFO-[33mPress CTRL+C to quit[0m
+2024-02-25 02:13:26,787-werkzeug-INFO- * Restarting with stat
+2024-02-25 02:13:26,927-werkzeug-WARNING- * Debugger is active!
+2024-02-25 02:13:26,927-werkzeug-INFO- * Debugger PIN: 123-514-238
+2024-02-25 02:13:34,175-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:13:34] "GET / HTTP/1.1" 200 -
+2024-02-25 02:13:34,246-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:13:34] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:13:34,251-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:13:34] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:13:34,251-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:13:34] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:13:34,304-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:13:34] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:20:23,575-werkzeug-INFO-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-02-25 02:20:23,575-werkzeug-INFO-[33mPress CTRL+C to quit[0m
+2024-02-25 02:20:23,576-werkzeug-INFO- * Restarting with stat
+2024-02-25 02:20:23,716-werkzeug-WARNING- * Debugger is active!
+2024-02-25 02:20:23,717-werkzeug-INFO- * Debugger PIN: 123-514-238
+2024-02-25 02:20:27,965-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:27] "GET / HTTP/1.1" 200 -
+2024-02-25 02:20:28,033-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:28] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:20:28,034-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:28] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:20:28,035-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:28] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:20:28,126-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:28] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:20:29,217-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:29] "GET /help HTTP/1.1" 200 -
+2024-02-25 02:20:29,292-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:29] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:20:29,296-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:29] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:20:29,297-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:29] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:20:29,405-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:29] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:20:35,366-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:35] "GET / HTTP/1.1" 200 -
+2024-02-25 02:20:35,468-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:35] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:20:35,469-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:35] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:20:35,470-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:35] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:20:35,493-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:20:35] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:24:56,857-werkzeug-INFO-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-02-25 02:24:56,857-werkzeug-INFO-[33mPress CTRL+C to quit[0m
+2024-02-25 02:24:56,857-werkzeug-INFO- * Restarting with stat
+2024-02-25 02:24:56,995-werkzeug-WARNING- * Debugger is active!
+2024-02-25 02:24:56,995-werkzeug-INFO- * Debugger PIN: 123-514-238
+2024-02-25 02:24:59,732-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:24:59] "GET / HTTP/1.1" 200 -
+2024-02-25 02:24:59,809-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:24:59] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:24:59,812-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:24:59] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:24:59,812-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:24:59] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:24:59,849-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:24:59] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:25:01,884-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:01] "GET /login HTTP/1.1" 200 -
+2024-02-25 02:25:01,941-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:01] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:25:01,947-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:01] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:25:01,948-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:01] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:25:02,000-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:02] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:25:10,787-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:10] "GET / HTTP/1.1" 200 -
+2024-02-25 02:25:10,857-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:10] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:25:10,860-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:10] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:25:10,860-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:10] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:25:10,926-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:10] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2024-02-25 02:25:18,787-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:18] "GET /login HTTP/1.1" 200 -
+2024-02-25 02:25:18,871-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:18] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2024-02-25 02:25:18,872-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:18] "[36mGET /static/css/site.css HTTP/1.1[0m" 304 -
+2024-02-25 02:25:18,874-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:18] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+2024-02-25 02:25:18,964-werkzeug-INFO-127.0.0.1 - - [25/Feb/2024 02:25:18] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -

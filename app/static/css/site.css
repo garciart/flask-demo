@@ -1,0 +1,63 @@
+html {
+    font-family: sans-serif;
+}
+
+body {
+    /* Allow room for fixed navbar */
+    margin-top: 10vh;
+}
+
+@media only screen and (max-height: 512px) {
+    /* Ensure the navbar never hides content */
+    body {
+        margin-top: 60px;
+    }
+    .error_gif {
+        display: none;
+    }
+}
+
+a {
+    /* Do not underline links */
+    text-decoration: none;
+}
+
+nav a,
+footer a {
+    /* Ensure links appear against dark backgrounds */
+    color: deepskyblue;
+}
+
+nav {
+    background-color: black;
+    color: white;
+    /* Fix the header and its height so the logo appears correctly */
+    min-height: 10vh;
+}
+
+.nav_logo {
+    /* Ensure logo fits in header with space between the logo and text */
+    height: 6vh !important;
+    /* min-height is the height of the hamburger menu icon */
+    min-height: 30px;
+}
+
+#content {
+    background-color: white;
+    color: black;
+    min-height: 85vh;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.error_gif {
+    height: 25vh !important;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    /* Ensure the footer is on the bottom of the page when content does not fill the page */
+    min-height: 5vh;
+    padding-top: 1vh;
+}
