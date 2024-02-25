@@ -12,6 +12,6 @@
     <!-- The err_desc is an HTML string -->
     <span class="lead">{{ err_desc | safe }}</span>
     <p class="lead text-danger">{{ additional_info | default('') }}</p>
-    <a href='/' class="btn btn-primary">Return to the Home Page</a>
+    <a href='{{ url_for('index') }}' class="btn btn-primary">Return to the Home Page</a>
 </div>
 {% endblock %}

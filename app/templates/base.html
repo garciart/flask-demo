@@ -11,18 +11,19 @@
     <!-- Bootstrap goes first -->
     <link rel="stylesheet" href="static/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="static/css/site.css"/>
+    <!-- Prevent Firefox FOUC, this must be here -->
+    <script>let FF_FOUC_FIX;</script>
     {% endblock %}
 </head>
-
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <!-- Brand -->
-            <a class="navbar-brand" href="/" title="Home">
+            <a class="navbar-brand" href="{{ url_for('index') }}" title="Home">
                 <img src="static/img/logo.png" alt="RGC" class="nav_logo"/>
             </a>
-            <a class="navbar-brand" href="/" title="Home">Class Manager</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}" title="Home">Class Manager</a>
             <!-- Hamburger Menu Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
@@ -34,13 +35,13 @@
                 <!-- Align to the right -->
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item ">
-                        <a class="nav-link" href="/" title="Home">Home</a>
+                        <a class="nav-link" href="{{ url_for('index') }}" title="Home">Home</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="help" title="About">About</a>
+                        <a class="nav-link" href="{{ url_for('about') }}" title="About">About</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="login" title="Login">Login</a>
+                        <a class="nav-link" href="{{ url_for('login') }}" title="Login">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://github.com/garciart" target="_blank"
@@ -53,13 +54,27 @@
 </header>
 <div class="container">
     <main role="main">
-        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+            <div>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class="flash_block">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
     </main>
 </div>
 <footer class="footer">
     <div class="container text-center">
         &copy; <span id="currentYear"></span> -
-        <a href="/" title="Home">Flask Template</a>
+        <a href="{{ url_for('index') }}" title="Home">Flask Template</a>
     </div>
 </footer>
 <script>
@@ -68,8 +83,6 @@
       var fullYear = date.getFullYear();
       document.getElementById("currentYear").innerHTML =
         (fullYear !== 2024 ? "2024 -" : "") + fullYear;
-
-
 </script>
 <script src="static/js/bootstrap.min.js"></script>
 </body>

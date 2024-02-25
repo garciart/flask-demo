@@ -50,6 +50,17 @@ nav {
     padding-bottom: 1em;
 }
 
+.flash_block {
+    background-color: cornsilk;
+    font-style: italic;
+    padding: 1em;
+    width: 100%;
+}
+
+.flash_block:empty {
+    display: none;
+}
+
 .error_gif {
     height: 25vh !important;
 }

@@ -1,16 +1,17 @@
 """Logging handler for Class Manager
 
 Usage:
-from app import app, cm_logger
-logger = cm_logger.create_logger("cm_logger")
+from app import cm_logger
+logger = cm_logger.create_logger('cm_logger', logging.DEBUG)
 """
 import logging
 import sys
 from logging.handlers import RotatingFileHandler
+from app.cm_utils import validate_inputs
 
 FORMATTER = logging.Formatter(
     '%(asctime)s-%(name)s-%(levelname)s-%(message)s')
-LOG_FILE = "cm.log"
+LOG_FILE = 'cm.log'
 
 
 def _create_console_handler():
@@ -20,9 +21,9 @@ def _create_console_handler():
     :returns: The configured console handler
     :rtype: StreamHandler
     """
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(FORMATTER)
-    return console_handler
+    _console_handler = logging.StreamHandler(sys.stdout)
+    _console_handler.setFormatter(FORMATTER)
+    return _console_handler
 
 
 def _create_file_handler():
@@ -32,10 +33,10 @@ def _create_file_handler():
     :returns: The configured file handler
     :rtype: RotatingFileHandler
     """
-    file_handler = RotatingFileHandler(LOG_FILE, maxBytes=2048,
-                                       backupCount=5)
-    file_handler.setFormatter(FORMATTER)
-    return file_handler
+    _file_handler = RotatingFileHandler(LOG_FILE, maxBytes=2048,
+                                        backupCount=5)
+    _file_handler.setFormatter(FORMATTER)
+    return _file_handler
 
 
 def create_logger(logger_name, logging_level):
@@ -50,20 +51,13 @@ def create_logger(logger_name, logging_level):
     :rtype: logging.Logger
     """
     # Validate inputs
-    if not isinstance(logger_name, str):
-        raise TypeError('logger_name must be type <str>.')
+    validate_inputs('logger_name', logger_name, str)
+    validate_inputs('logging_level', logging_level, int)
 
-    if not isinstance(logging_level, int):
-        raise TypeError('logging_level must be type <int>.')
-
-    if isinstance(logger_name, str) and (
-            logger_name == '' or len(logger_name) == 0):  # noqa E125
-        raise ValueError(f"'{logger_name}' is empty.")
-
-    logger = logging.getLogger(logger_name)
-    logger.setLevel(logging_level)
-    print(logging_level)
-    logger.addHandler(_create_console_handler())
-    logger.addHandler(_create_file_handler())
-    logger.propagate = False
-    return logger
+    _logger = logging.getLogger(logger_name)
+    _logger.setLevel(logging_level)
+    _logger.addHandler(_create_console_handler())
+    _logger.addHandler(_create_file_handler())
+    # Set to true if you want messsages to appear in system log as well
+    _logger.propagate = False
+    return _logger
