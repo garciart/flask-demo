@@ -7,18 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>
-    {% block title %}{% endblock %}
+    {% block title %}{{ page_title }}{% endblock %}
   </title>
   <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
   <link rel="icon" type="image/x-icon" href="static/img/logo.png">
   <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="static/css/base.css">
+  <!-- Using DataTables 2.0.0 -->
+  <link rel="stylesheet" type="text/css" href="static/css/dataTables.dataTables.min.css">
   {% endblock %}
 </head>
 
 <body>
-  <!-- Prevents Firefox FOUC -->
-  <script>0</script>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container">
@@ -62,10 +62,35 @@
   </header>
   <main role="main">
     <div class="container">
+
       <div id="content">
+        <!-- Prevents Firefox FOUC -->
+        <script>let FF_FOUC_FIX;</script>
         {% block content %}
         {% endblock %}
+        <table id="userTable" class="table table-striped display">
+          <caption class="text-center">Users</caption>
+          <thead>
+            <tr>
+              <th scope="col">User ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Group</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            {% for user in users %}
+            <tr>
+              <td>{{ user.user_id }}</th>
+              <td>{{ user.user_name }}</td>
+              <td>{{ user.user_email }}</td>
+              <td>{{ user.user_group }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
+    </div>
   </main>
   <footer class="footer">
     <div class="text-center">
@@ -75,9 +100,14 @@
     {% block footer %}
     {% endblock %}
   </footer>
-  {% block scripts %}
   <script type="text/javascript" src="static/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="static/js/base.js"></script>
+  <script type="text/javascript" src="static/js/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript" src="static/js/dataTables.min.js"></script>
+  <script type="text/javascript">
+    let table = new DataTable('#userTable');
+  </script>
+  {% block scripts %}
   {% endblock %}
 </body>
 

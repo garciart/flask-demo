@@ -29,6 +29,36 @@ def index():
     return _html
 
 
+@app.route('/test_gridjs')
+def test_dt():
+    # type: () -> str
+    """Test of Grid.js with base.html.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'Grid.js Test'
+    _users = User.query.all()
+    _html = render_template('test_gridjs.html', page_title=_page_title,
+                            users=_users)
+    return _html
+
+
+@app.route('/test_one_page')
+def test_bt():
+    # type: () -> str
+    """Test without template inheritance.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'One Page Test'
+    _users = User.query.all()
+    _html = render_template('test_one_page.html', page_title=_page_title,
+                            users=_users)
+    return _html
+
+
 @app.route('/about')
 @login_required
 def about():
