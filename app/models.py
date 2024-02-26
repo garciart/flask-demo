@@ -19,15 +19,17 @@ from app.cm_utils import validate_input
 def load_user(user_id):
     """_summary_
 
-    :param str user_id: The user ID to search for
+    :param int user_id: The user ID to search for
 
-    :return: A session ID for the user
-    :rtype: _type_
+    :return: A user object
+    :rtype: app.models.User
     """
     # Validate inputs
-    validate_input('user_id', user_id, str)
+    validate_input('user_id', user_id, int)
 
-    return db.session.get(User, int(user_id))
+    temp = db.session.get(User, user_id)
+    print('load_user returns', temp, type(temp))
+    return db.session.get(User, user_id)
 
 
 class User(UserMixin, db.Model):
@@ -36,7 +38,7 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     user_id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    user_name: so.Mapped[str] = so.mapped_column(
+    username: so.Mapped[str] = so.mapped_column(
         sa.String(64), index=True, unique=True)
     user_group: so.Mapped[Optional[str]] = so.mapped_column(
         sa.String(64), index=True)
@@ -49,7 +51,15 @@ class User(UserMixin, db.Model):
         back_populates='user')
 
     def __repr__(self):
-        return f'<User {self.user_name}>'
+        return f'<User {self.username}>'
+
+    def get_id(self):
+        """Overrides UserMixin get_id so you can use user_id instead of id.
+
+        :return: The user id
+        :rtype: int
+        """
+        return self.user_id
 
     def set_password(self, password):
         """Hashes a password using scrypt

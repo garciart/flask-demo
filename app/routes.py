@@ -30,7 +30,7 @@ def index():
 
 
 @app.route('/test_gridjs')
-def test_dt():
+def test_gridjs():
     # type: () -> str
     """Test of Grid.js with base.html.
 
@@ -45,7 +45,7 @@ def test_dt():
 
 
 @app.route('/test_one_page')
-def test_bt():
+def test_one_page():
     # type: () -> str
     """Test without template inheritance.
 

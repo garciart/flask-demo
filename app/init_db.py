@@ -9,24 +9,28 @@ from app.models import User, Course, Role, Association
 # pylint: disable=C0301
 
 def main():
+    """Drop and recreate the database
+    """
+
     with app.app_context():
         db.drop_all()
         db.create_all()
 
-        u1 = User(user_name='Leto Atreides', user_group='Atreides', user_email='leto@atreides.com')
-        u2 = User(user_name='Paul Atreides', user_group='Atreides', user_email='paul@atreides.com')
-        u3 = User(user_name='Jessica Nerus', user_group='Atreides', user_email='jessica@atreides.com')
-        u4 = User(user_name='Thufir Hawat', user_group='Atreides', user_email='thufir@atreides.com')
-        u5 = User(user_name='Gurney Halleck', user_group='Atreides', user_email='gurney@atreides.com')
-        u6 = User(user_name='Duncan Idaho', user_group='Atreides', user_email='duncan@atreides.com')
-        u7 = User(user_name='Vladmir Harkonnen', user_group='Harkonnen', user_email='vladmir@harkonnen.com')
-        u8 = User(user_name='Glossu Rabban ', user_group='Harkonnen', user_email='glossu@harkonnen.com')
-        u9 = User(user_name='Feyd-Rautha Rabban', user_group='Harkonnen', user_email='feyd@harkonnen.com')
-        u10 = User(user_name='Piter De Vries', user_group='Harkonnen', user_email='piter@harkonnen.com')
-        u11 = User(user_name='Shaddam Corrino IV', user_group='Corrino', user_email='shaddam@corrino.com')
-        u12 = User(user_name='Liet Kynes', user_group='Fremen', user_email='liet@fremen.com')
-        u13 = User(user_name='Chani Kynes', user_group='Fremen', user_email='chani@fremen.com')
-        u14 = User(user_name='Stilgar Tabr', user_group='Fremen', user_email='Stilgar@fremen.com')
+        u1 = User(username='Leto.Atreides', user_group='Atreides', user_email='leto@atreides.com')
+        u2 = User(username='Paul.Atreides', user_group='Atreides', user_email='paul@atreides.com')
+        u3 = User(username='Jessica.Nerus', user_group='Atreides', user_email='jessica@atreides.com')
+        u4 = User(username='Thufir.Hawat', user_group='Atreides', user_email='thufir@atreides.com')
+        u5 = User(username='Gurney.Halleck', user_group='Atreides', user_email='gurney@atreides.com')
+        u6 = User(username='Duncan.Idaho', user_group='Atreides', user_email='duncan@atreides.com')
+        u7 = User(username='Vladmir.Harkonnen', user_group='Harkonnen', user_email='vladmir@harkonnen.com')
+        u8 = User(username='Glossu.Rabban ', user_group='Harkonnen', user_email='glossu@harkonnen.com')
+        u9 = User(username='Feyd.Rautha.Rabban', user_group='Harkonnen', user_email='feyd@harkonnen.com')
+        u10 = User(username='Piter.De.Vries', user_group='Harkonnen', user_email='piter@harkonnen.com')
+        u11 = User(username='Shaddam.Corrino.IV', user_group='Corrino', user_email='shaddam@corrino.com')
+        u12 = User(username='Irulan.Corrino', user_group='Corrino', user_email='irulan@corrino.com')
+        u13 = User(username='Liet.Kynes', user_group='Fremen', user_email='liet@fremen.com')
+        u14 = User(username='Chani.Kynes', user_group='Fremen', user_email='chani@fremen.com')
+        u15 = User(username='Stilgar.Tabr', user_group='Fremen', user_email='Stilgar@fremen.com')
 
         DEMO_PASSWORD = 'Change.Me.123'
         u1.set_password(DEMO_PASSWORD)
@@ -43,8 +47,9 @@ def main():
         u12.set_password(DEMO_PASSWORD)
         u13.set_password(DEMO_PASSWORD)
         u14.set_password(DEMO_PASSWORD)
+        u15.set_password(DEMO_PASSWORD)
 
-        db.session.add_all([u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12, u13, u14])
+        db.session.add_all([u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12, u13, u14, u15])
 
         c1 = Course(course_name='Building Secure Python Applications',
                     course_code='SDEV300',
@@ -110,8 +115,8 @@ def main():
         a26 = Association(user_id='12', course_id='2', role_id='3')
         a27 = Association(user_id='13', course_id='1', role_id='3')
         a28 = Association(user_id='14', course_id='1', role_id='2')
-        a29 = Association(user_id='1', course_id='2', role_id='1')
-        a30 = Association(user_id='2', course_id='3', role_id='1')
+        a29 = Association(user_id='15', course_id='2', role_id='1')
+        a30 = Association(user_id='15', course_id='3', role_id='2')
 
         db.session.add_all([a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13,
                             a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24,
