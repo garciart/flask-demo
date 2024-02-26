@@ -17,4 +17,5 @@ python3 -m pip install python-dotenv
 python3 -m pip install flask-wtf
 python3 -m pip install flask-sqlalchemy
 python3 -m pip install flask-migrate
+python3 -m pip install flask-login
 ```

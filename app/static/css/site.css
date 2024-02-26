@@ -4,7 +4,7 @@ html {
 
 body {
     /* Allow room for fixed navbar */
-    margin-top: 10vh;
+    margin-top: 10vh !important;
 }
 
 @media only screen and (max-height: 512px) {

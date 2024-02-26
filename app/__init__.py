@@ -8,6 +8,9 @@ import logging
 import os
 import sys
 from flask import Flask
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from app.config import Config
 
 __author__ = 'Rob Garcia'
@@ -16,11 +19,16 @@ __author__ = 'Rob Garcia'
 # to prevent circular import issues
 app = Flask(__name__)
 app.config.from_object(Config)
-from app import routes  # noqa E402 pylint:disable=wrong-import-position
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+login = LoginManager(app)
+login.login_view = 'login'
+
+# Import app modules after configuring app to prevent circular import issues
+from app import routes, models  # noqa E402 pylint:disable=wrong-import-position
 from app import cm_logger  # noqa: E402 pylint:disable=wrong-import-position
 
 
-# Set up logging
 # Attempt to read LOGGING_LEVEL environment variable
 # Leave at logging.DEBUG (10) if variable does not exist
 LOGGING_LEVEL = 10
@@ -39,6 +47,7 @@ if LOG_ROOT:
         format='%(asctime)s-%(name)s-%(levelname)s-%(message)s')
     # Console handler for logger root messages
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
+
 
 # Get Python version and convert to float (e.g., 3.9 -> 3.09)
 PYTHON_VERSION = float(

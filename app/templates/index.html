@@ -6,8 +6,8 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h1>Welcome!</h1>
-  <p class="important">
+  <h1>Welcome, {{ current_user.username }}!</h1>
+    <p class="important">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
     nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -15,5 +15,32 @@
     eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
     in culpa qui officia deserunt mollit anim id est laborum.
     <a href="https://rgcoding.com" title="RG Coding">RG Coding</a>
-   </p>
+    <table id="user_table" class="table table-striped">
+      <caption class="text-center">List of Users</caption>
+      <thead>
+        <tr>
+          <th scope="col">User ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Group</th>
+        <tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <th scope="row">{{ user.user_id }}</th>
+            <td>{{ user.user_name }}</td>
+            <td>{{ user.user_email }}</td>
+            <td>{{ user.user_group }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
+{% block scripts %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#user_table').DataTable();
+    });
+  </script>
 {% endblock %}

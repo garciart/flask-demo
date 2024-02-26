@@ -6,7 +6,7 @@ from types import FrameType
 from app import app
 
 
-def validate_inputs(obj_name, obj_to_check, expected_type):
+def validate_input(obj_name, obj_to_check, expected_type):
     # type: (str, object, type) -> None
     """Validate an input's type and ensure it is not empty. Use this
     function to reduce code complexity in calling functions and methods.

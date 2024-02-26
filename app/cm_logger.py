@@ -7,7 +7,7 @@ logger = cm_logger.create_logger('cm_logger', logging.DEBUG)
 import logging
 import sys
 from logging.handlers import RotatingFileHandler
-from app.cm_utils import validate_inputs
+from app.cm_utils import validate_input
 
 FORMATTER = logging.Formatter(
     '%(asctime)s-%(name)s-%(levelname)s-%(message)s')
@@ -51,8 +51,8 @@ def create_logger(logger_name, logging_level):
     :rtype: logging.Logger
     """
     # Validate inputs
-    validate_inputs('logger_name', logger_name, str)
-    validate_inputs('logging_level', logging_level, int)
+    validate_input('logger_name', logger_name, str)
+    validate_input('logging_level', logging_level, int)
 
     _logger = logging.getLogger(logger_name)
     _logger.setLevel(logging_level)
