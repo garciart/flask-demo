@@ -42,15 +42,12 @@
             <li class="nav-item ">
               <a class="nav-link" href="{{ url_for('about') }}" title="About">About</a>
             </li>
-            {% if current_user.is_anonymous %}
             <li class="nav-item ">
-              <a class="nav-link" href="{{ url_for('login') }}" title="Log In">Login</a>
-            </li>
-            {% else %}
-            <li class="nav-item ">
-              <a class="nav-link" href="{{ url_for('logout') }}" title="Log Out">Login</a>
-            </li>
-            {% endif %}
+              {% if current_user.is_anonymous %}
+              <a class="nav-link" href="{{ url_for('login') }}" title="Log In">Log In</a>
+              {% else %}
+              <a class="nav-link" href="{{ url_for('logout') }}" title="Log Out">Log Out</a>
+              {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="https://github.com/garciart" target="_blank" title="GitHub Repository">GitHub <i
                   class="fab fa-github"></i></a>

@@ -78,7 +78,9 @@ def login():
     # type: () -> str
     """The login page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :return: The HTML code to display with {{ placeholders }} populated,
+    or a redirection if the user is logged in,
+    or a redirection if the user came from another site
     :rtype: str
     """
     if current_user.is_authenticated:
@@ -87,16 +89,16 @@ def login():
     _form = LoginForm()
 
     if _form.validate_on_submit():
-        user = db.session.scalar(
+        _user = db.session.scalar(
             sa.select(User).where(User.username == _form.username.data))
-        if user is None or not user.check_password(_form.password.data):
+        if _user is None or not _user.check_password(_form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
-        login_user(user, remember=_form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or urlsplit(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
+        login_user(_user, remember=_form.remember_me.data)
+        _next_page = request.args.get('next')
+        if not _next_page or urlsplit(_next_page).netloc != '':
+            _next_page = url_for('index')
+        return redirect(_next_page)
 
     _html = render_template('login.html', page_title=_page_title, form=_form)
     return _html

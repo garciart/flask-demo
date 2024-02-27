@@ -6,10 +6,15 @@
 {{ super() }}
 <!-- Using DataTables 2.0.0 -->
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap5.min.css">
 {% endblock %}
 {% block content %}
+{% if current_user.is_anonymous %}
 <h1>Welcome!</h1>
-<table id="userTable" class="table table-striped display">
+{% else %}
+<h1>Welcome, {{ current_user.username }}!</h1>
+{% endif %}
+<table id="userTable" class="table table-striped display caption-top">
   <caption class="text-center">Users</caption>
   <thead>
     <tr>
@@ -22,7 +27,7 @@
   <tbody class="table-group-divider">
     {% for user in users %}
     <tr>
-      <td>{{ user.user_id }}</th>
+      <th scope="row">{{ user.user_id }}</th>
       <td>{{ user.username }}</td>
       <td>{{ user.user_email }}</td>
       <td>{{ user.user_group }}</td>
@@ -35,9 +40,10 @@
 {% endblock %}
 {% block scripts %}
 {{ super() }}
-<script type="text/javascript" src="static/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="static/js/jquery-3.7.0.min.js"></script>
 <!-- Using DataTables 2.0.0 -->
 <script type="text/javascript" src="static/js/dataTables.min.js"></script>
+<script type="text/javascript" src="static/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript">
   let table = new DataTable('#userTable');
 </script>
