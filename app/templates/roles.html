@@ -15,24 +15,18 @@
 {% else %}
 <h1>Welcome, {{ current_user.username }}!</h1>
 <table id="userTable" class="table table-striped display caption-top">
-  <caption class="text-center">List of Courses</caption>
+  <caption class="text-center">List of Roles</caption>
   <thead>
     <tr>
-      <th scope="col">Course ID</th>
+      <th scope="col">Role ID</th>
       <th scope="col">Name</th>
-      <th scope="col">Code</th>
-      <th scope="col">Description</th>
-      <th scope="col">Role</th>
     </tr>
   </thead>
   <tbody class="table-group-divider">
-    {% for course in courses %}
+    {% for role in roles %}
     <tr>
-      <th scope="row">{{ course.course_id }}</th>
-      <td>{{ course.course_name }}</td>
-      <td>{{ course.course_code }}</td>
-      <td>{{ course.course_desc }}</td>
-      <td>{{ course.role_name }}</td>
+      <th scope="row">{{ role.role_id }}</th>
+      <td>{{ role.role_name }}</td>
     </tr>
     {% endfor %}
   </tbody>

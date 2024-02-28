@@ -27,8 +27,6 @@ def load_user(user_id):
     # Validate inputs
     validate_input('user_id', user_id, int)
 
-    temp = db.session.get(User, user_id)
-    print('load_user returns', temp, type(temp))
     return db.session.get(User, user_id)
 
 
@@ -124,17 +122,17 @@ class Association(db.Model):
     """
     __tablename__ = 'associations'
 
-    user_id: so.Mapped[int] = so.mapped_column(
-        sa.ForeignKey(User.user_id), primary_key=True)
     course_id: so.Mapped[int] = so.mapped_column(
         sa.ForeignKey(Course.course_id), primary_key=True)
     role_id: so.Mapped[int] = so.mapped_column(
         sa.ForeignKey(Role.role_id), primary_key=True)
+    user_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey(User.user_id), primary_key=True)
 
-    user: so.Mapped['User'] = so.relationship(back_populates='associations')
     course: so.Mapped['Course'] = so.relationship(
         back_populates='associations')
     role: so.Mapped['Role'] = so.relationship(back_populates='associations')
+    user: so.Mapped['User'] = so.relationship(back_populates='associations')
 
     def __repr__(self):
-        return f'{self.user_id} {self.course_id} {self.role_id}'
+        return f'{self.course_id} {self.role_id} {self.user_id}'

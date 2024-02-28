@@ -1,20 +1,21 @@
 """Routing manager for Class Manager.
 """
 # noqa F401 for type hints Flake8 does not detect
+from urllib.parse import urlsplit
 from flask import (render_template, flash, redirect, Response,  # noqa F401
                    url_for, request)
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 from werkzeug import exceptions  # noqa F401
-from urllib.parse import urlsplit
 from app import app, db
 from app.cm_utils import validate_input
 from app.forms import LoginForm
-from app.models import User
+from app.models import User, Course, Role, Association
 
 
 @app.route('/')
 @app.route('/index')
+@login_required
 def index():
     # type: () -> str
     """The landing page.
@@ -23,8 +24,89 @@ def index():
     :rtype: str
     """
     _page_title = 'Class Manager'
-    _users = User.query.all()
+
+    _user_id = int(current_user.get_id())
+
+    if _user_id == 1:
+        # Get all courses if admin
+        _courses = Course.query.all()
+    else:
+        # Your query
+        _courses = db.session.query(
+            Course.course_id, Course.course_name, Course.course_code,
+            Course.course_desc,
+            Role.role_name).join(
+                Association,
+                Course.course_id == Association.course_id).join(
+                    Role, Role.role_id == Association.role_id).filter(
+                        Association.user_id == _user_id).all()
+
+    # Convert to list if there is only one result
+    _courses = [_courses] if not isinstance(_courses, list) else _courses
+
+    # Send the list to the page
     _html = render_template('index.html', page_title=_page_title,
+                            courses=_courses)
+    return _html
+
+
+@app.route('/courses')
+@login_required
+def courses():
+    # type: () -> str
+    """The course list page.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'List of Courses'
+
+    _courses = Course.query.all()
+
+    _html = render_template('courses.html', page_title=_page_title,
+                            courses=_courses)
+    return _html
+
+
+@app.route('/roles')
+@login_required
+def roles():
+    # type: () -> str
+    """The role list page.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'List of Roles'
+
+    _roles = Role.query.all()
+
+    _html = render_template('roles.html', page_title=_page_title,
+                            roles=_roles)
+    return _html
+
+
+@app.route('/users')
+@login_required
+def users():
+    # type: () -> str
+    """The user list page.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'List of Users'
+
+    if int(current_user.get_id()) == 1:
+        _users = User.query.all()
+    else:
+        _users = User.query.get_or_404(current_user.get_id(),
+                                       'You must log in.')
+
+    # Convert to list if there is only one result
+    _users = [_users] if not isinstance(_users, list) else _users
+
+    _html = render_template('users.html', page_title=_page_title,
                             users=_users)
     return _html
 
@@ -60,7 +142,6 @@ def test_one_page():
 
 
 @app.route('/about')
-@login_required
 def about():
     # type: () -> str
     """The about page.
@@ -90,14 +171,18 @@ def login():
 
     if _form.validate_on_submit():
         _user = db.session.scalar(
-            sa.select(User).where(User.username == _form.username.data))
+            sa.select(User).where(User.username.ilike(_form.username.data)))
+
         if _user is None or not _user.check_password(_form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
+
         login_user(_user, remember=_form.remember_me.data)
         _next_page = request.args.get('next')
+
         if not _next_page or urlsplit(_next_page).netloc != '':
             _next_page = url_for('index')
+
         return redirect(_next_page)
 
     _html = render_template('login.html', page_title=_page_title, form=_form)
