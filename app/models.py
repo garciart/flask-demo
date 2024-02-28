@@ -17,11 +17,12 @@ from app.cm_utils import validate_input
 
 @login.user_loader
 def load_user(user_id):
+    # type: (int) -> User
     """_summary_
 
     :param int user_id: The user ID to search for
 
-    :return: A user object
+    :returns: A user object
     :rtype: app.models.User
     """
     # Validate inputs
@@ -52,17 +53,21 @@ class User(UserMixin, db.Model):
         return f'<User {self.username}>'
 
     def get_id(self):
+        # type: () -> int
         """Overrides UserMixin get_id so you can use user_id instead of id.
 
-        :return: The user id
+        :returns: The user id
         :rtype: int
         """
         return self.user_id
 
     def set_password(self, password):
+        # type: (str) -> None
         """Hashes a password using scrypt
 
         :param str password: A password in plain text
+
+        :returns: None
         """
         # Validate inputs
         validate_input('password', password, str)
@@ -70,9 +75,13 @@ class User(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
+        # type: (str) -> bool
         """Converts input to a hash and compares it against an existing hash
 
         :param str password: A password in plain text
+
+        :returns: True if the password hashes match
+        :rtype: bool
         """
         # Validate inputs
         validate_input('password', password, str)
@@ -117,8 +126,8 @@ class Role(db.Model):
 
 
 class Association(db.Model):
-    """Association database mode
-    Note - This is a ternary association table
+    """Association database model
+    Note: This is a three-way relationship
     """
     __tablename__ = 'associations'
 

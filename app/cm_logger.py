@@ -47,7 +47,7 @@ def create_logger(logger_name, logging_level):
     :param int logging_level: The integer representation of the logging level
     (e.g., logging.DEBUG = 10)
 
-    :return: The configured logging handler
+    :returns: The configured logging handler
     :rtype: logging.Logger
     """
     # Validate inputs

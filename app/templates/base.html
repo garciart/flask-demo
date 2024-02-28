@@ -27,30 +27,39 @@
           <img src="static/img/logo.png" alt="RGC" class="nav_logo" />
         </a>
         <a class="navbar-brand" href="{{ url_for('index') }}" title="Home">Class Manager</a>
-        <!-- Hamburger Menu Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Navbar links -->
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <!-- Align to the right -->
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item ">
+        <div class="dropdown ms-auto">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Menu
+          </button>
+          <ul class="dropdown-menu">
+            {% if current_user.is_anonymous %}
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('login') }}" title="Log In">Log In</a>
+            </li>
+            {% else %}
+            <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('index') }}" title="Home">Home</a>
             </li>
-            <li class="nav-item ">
-              <a class="nav-link" href="{{ url_for('about') }}" title="About">About</a>
+            {% if current_user.get_id() == 1 %}
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('courses') }}" title="Courses">Courses</a>
             </li>
-            <li class="nav-item ">
-              {% if current_user.is_anonymous %}
-              <a class="nav-link" href="{{ url_for('login') }}" title="Log In">Log In</a>
-              {% else %}
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('roles') }}" title="Roles">Roles</a>
+            </li>
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('users') }}" title="Users">Users</a>
+            </li>
+            {% endif %}
+            <li class="dropdown-item"><hr></li>
+            <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('logout') }}" title="Log Out">Log Out</a>
-              {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" href="https://github.com/garciart" target="_blank" title="GitHub Repository">GitHub <i
-                  class="fab fa-github"></i></a>
+            </li>
+            {% endif %}
+            <li class="dropdown-item"><hr></li>
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('about') }}" title="About">About</a>
             </li>
           </ul>
         </div>

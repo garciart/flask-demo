@@ -12,6 +12,8 @@ from app.cm_utils import validate_input
 from app.forms import LoginForm
 from app.models import User, Course, Role, Association
 
+LOGIN_REQ_MSG = 'You must log in.'
+
 
 @app.route('/')
 @app.route('/index')
@@ -20,7 +22,7 @@ def index():
     # type: () -> str
     """The landing page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'Class Manager'
@@ -56,12 +58,19 @@ def courses():
     # type: () -> str
     """The course list page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
+    # Redirect if not an Administrator
+    if int(current_user.get_id()) != 1:
+        return redirect(url_for('index'))
+
     _page_title = 'List of Courses'
 
     _courses = Course.query.all()
+
+    # Convert to list if there is only one result
+    _courses = [_courses] if not isinstance(_courses, list) else _courses
 
     _html = render_template('courses.html', page_title=_page_title,
                             courses=_courses)
@@ -74,12 +83,19 @@ def roles():
     # type: () -> str
     """The role list page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
+    # Redirect if not an Administrator
+    if int(current_user.get_id()) != 1:
+        return redirect(url_for('index'))
+
     _page_title = 'List of Roles'
 
     _roles = Role.query.all()
+
+    # Convert to list if there is only one result
+    _roles = [_roles] if not isinstance(_roles, list) else _roles
 
     _html = render_template('roles.html', page_title=_page_title,
                             roles=_roles)
@@ -92,7 +108,7 @@ def users():
     # type: () -> str
     """The user list page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'List of Users'
@@ -101,7 +117,7 @@ def users():
         _users = User.query.all()
     else:
         _users = User.query.get_or_404(current_user.get_id(),
-                                       'You must log in.')
+                                       LOGIN_REQ_MSG)
 
     # Convert to list if there is only one result
     _users = [_users] if not isinstance(_users, list) else _users
@@ -111,42 +127,12 @@ def users():
     return _html
 
 
-@app.route('/test_gridjs')
-def test_gridjs():
-    # type: () -> str
-    """Test of Grid.js with base.html.
-
-    :return: The HTML code to display with {{ placeholders }} populated
-    :rtype: str
-    """
-    _page_title = 'Grid.js Test'
-    _users = User.query.all()
-    _html = render_template('test_gridjs.html', page_title=_page_title,
-                            users=_users)
-    return _html
-
-
-@app.route('/test_one_page')
-def test_one_page():
-    # type: () -> str
-    """Test without template inheritance.
-
-    :return: The HTML code to display with {{ placeholders }} populated
-    :rtype: str
-    """
-    _page_title = 'One Page Test'
-    _users = User.query.all()
-    _html = render_template('test_one_page.html', page_title=_page_title,
-                            users=_users)
-    return _html
-
-
 @app.route('/about')
 def about():
     # type: () -> str
     """The about page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'About'
@@ -159,7 +145,7 @@ def login():
     # type: () -> str
     """The login page.
 
-    :return: The HTML code to display with {{ placeholders }} populated,
+    :returns: The HTML code to display with {{ placeholders }} populated,
     or a redirection if the user is logged in,
     or a redirection if the user came from another site
     :rtype: str
@@ -194,7 +180,7 @@ def logout():
     # type: () -> Response
     """The logout page.
 
-    :return: A response object
+    :returns: A response object
     :rtype: flask.Response
     """
     logout_user()
@@ -209,7 +195,7 @@ def page_not_found(e):
     :param exceptions.NotFound e: An instance of the
     werkzeug.exceptions.NotFound class
 
-    :return: A string of HTML code with the response code
+    :returns: A string of HTML code with the response code
     :rtype: tuple
     """
     # Validate inputs
@@ -230,7 +216,7 @@ def internal_server_error(e):
     :param exceptions.InternalServerError e: An instance of the
     werkzeug.exceptions.InternalServerError class
 
-    :return: A string of HTML code with the response code
+    :returns: A string of HTML code with the response code
     :rtype: tuple
     """
     # Validate inputs
@@ -242,4 +228,34 @@ def internal_server_error(e):
     _html = render_template('error.html', page_title=_page_title,
                             err_desc=_err_desc,
                             additional_info=_additional_info), 500
+    return _html
+
+
+@app.route('/test_gridjs')
+def test_gridjs():
+    # type: () -> str
+    """Test of Grid.js with base.html.
+
+    :returns: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'Grid.js Test'
+    _users = User.query.all()
+    _html = render_template('test_gridjs.html', page_title=_page_title,
+                            users=_users)
+    return _html
+
+
+@app.route('/test_one_page')
+def test_one_page():
+    # type: () -> str
+    """Test without template inheritance.
+
+    :returns: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'One Page Test'
+    _users = User.query.all()
+    _html = render_template('test_one_page.html', page_title=_page_title,
+                            users=_users)
     return _html
