@@ -1,9 +1,7 @@
-# python-dotenv uses this file to register environment variables
-# for this app
+# code: language=ini
+# Environment variables for this app for python-dotenv
 
-FLASK_APP=cm.py
-SECRET_KEY=crsf_protection_key
+FLASK_APP=app.py
 LOGGING_LEVEL=DEBUG
-# Capture and display root logging messages
-LOG_ROOT=True
-# DATABASE_URL=TBD
+# CRSF protection key
+SECRET_KEY=d0e7d57bccd0bbd3d6157508003a60332ae002ec7a083956c57c0dbf8bd2c7e7

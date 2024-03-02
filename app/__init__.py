@@ -1,59 +1,145 @@
-"""Initialize package and share code with other modules.
-
-Usage:
-- python3 -m flask --app cm run
-- python3 -m flask --app cm run --debug # Allow hot reload
+"""Make this directory a package to allow you to import its files elsewhere
 """
 import logging
 import os
 import sys
+from logging.handlers import RotatingFileHandler
 from flask import Flask
-from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_login import LoginManager
-from app.config import Config
+
 
 __author__ = 'Rob Garcia'
 
-# Create the Flask instance first, then import the app modules,
-# to prevent circular import issues
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-login = LoginManager(app)
-login.login_view = 'login'
-
-# Import app modules after configuring app to prevent circular import issues
-from app import routes, models  # noqa E402 pylint:disable=wrong-import-position
-from app import cm_logger  # noqa: E402 pylint:disable=wrong-import-position
+# Variables accessible to other modules
+# Initialized in create_app()
+db = SQLAlchemy()
+migrate = Migrate()
+login = LoginManager()
+login.login_view = 'auth.login'
 
 
-# Attempt to read LOGGING_LEVEL environment variable
-# Leave at logging.DEBUG (10) if variable does not exist
-LOGGING_LEVEL = 10
-try:
-    LOGGING_LEVEL = getattr(logging, app.config['LOGGING_LEVEL'])
-except AttributeError:
-    pass
-# Create logger for CM user
-logger = cm_logger.create_logger('cm_logger', LOGGING_LEVEL)
-# Capture root logger messages if LOG_ROOT is true
-LOG_ROOT = os.environ.get('LOG_ROOT') == 'True'
-if LOG_ROOT:
-    # File handler for root logger messages
-    logging.basicConfig(
-        filename='cm.log', level=logging.DEBUG,
-        format='%(asctime)s-%(name)s-%(levelname)s-%(message)s')
-    # Console handler for logger root messages
-    logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
+def create_app(alt_config=None):
+    # type: (str) -> Flask
+    """Application Factory.
+
+    :params str alt_config: An alternate configuration file path for
+    testing, etc. Use app/config.py if None
+
+    :return: An application instance
+    :rtype: Flask
+    """
+    # Create and configure the app
+    app = Flask(__name__)
+
+    # Import app modules after init app to prevent circular import problems
+    from app.app_utils import validate_input  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+    from app.config import Config  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+
+    # Validate inputs
+    if alt_config is not None:
+        validate_input('alt_config', alt_config, str)
+
+    # Load the default configuration file if an alternate does not exist
+    if alt_config is None:
+        app.config.from_object(Config)
+    else:
+        app.config.from_mapping(alt_config)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login.init_app(app)
+
+    _setup_logging(app)
+
+    _python_version = _get_python_version()
+
+    if _python_version < 3.08:
+        # Use lazy % formatting in logging functions
+        app.logger.warning(
+            'Python version is %0.2f. Flask 3 requires Python 3.8 or above.',
+            _python_version)
+
+    # _create_instance_folder(app)
+
+    # _initialize_database(app)
+
+    # Test page for http://127.0.0.1/hello
+    @app.route('/hello')
+    def hello():
+        return 'Hello, World!'
+
+    # Start routing
+    # Import app modules after init app to prevent circular import problems
+    from app.main import main_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+    from app.auth import auth_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+    from app.error import error_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+    from app.api import api_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+
+    app.register_blueprint(main_routes.bp)
+    app.register_blueprint(auth_routes.auth_bp)
+    app.register_blueprint(error_routes.error_bp)
+    app.register_blueprint(api_routes.api_bp)
+
+    # For debugging
+    print('Information:')
+    print('_python_version', _python_version, type(_python_version))
+
+    return app
 
 
-# Get Python version and convert to float (e.g., 3.9 -> 3.09)
-PYTHON_VERSION = float(
-    f'{sys.version_info.major}.{sys.version_info.minor:02d}')
-if PYTHON_VERSION < 3.08:
-    # Use lazy % formatting in logging functions
-    logger.warning(
-        'Python version is %f. Flask 3 supports Python 3.8 and newer.',
-        PYTHON_VERSION)
+def _setup_logging(app):
+    # type: (Flask) -> None
+    """Setup logging.
+
+    NOTE - Will not log if using flask --debug run
+
+    :param Flask app: The application instance
+
+    :return: None
+    """
+    # Do not log if using flask --debug run
+    if not app.debug:
+        # Attempt to read LOGGING_LEVEL environment variable
+        # Leave at logging.DEBUG (10) if variable does not exist
+        _logging_level = 10
+
+        try:
+            _logging_level = getattr(logging, app.config['LOGGING_LEVEL'])
+        except (AttributeError, KeyError):
+            pass
+
+        _msg_format = ('%(asctime)s-%(name)s-%(levelname)s: %(message)s'
+                       '[in %(pathname)s:%(lineno)d]')
+
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+        file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240,
+                                           backupCount=10)
+        file_handler.setFormatter(logging.Formatter(_msg_format))
+        file_handler.setLevel(_logging_level)
+
+        app.logger.addHandler(file_handler)
+
+        app.logger.setLevel(_logging_level)
+        app.logger.info('Starting Flask application')
+
+
+def _get_python_version():
+    # type: () -> float
+    """Get the Python version used by the server.
+
+    :return: The Python version used by the server
+    :rtype: float
+    """
+    # Get Python version and convert to float (e.g., 3.9 -> 3.09)
+    _python_version = float(
+        f'{sys.version_info.major}.{sys.version_info.minor:02d}')
+
+    return _python_version
+
+
+# IMPORTANT - This must be last to prevent circular import problems!
+# Flake8 F401: Using model when running flask db init, migrate, and upgrade
+from app import models  # noqa: F401 E402 pylint:disable=wrong-import-position

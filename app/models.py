@@ -1,12 +1,12 @@
 """Database models
 """
 from typing import Optional, List
-import sqlalchemy as sa
-import sqlalchemy.orm as so
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from app.app_utils import validate_input
 from app import db, login
-from app.cm_utils import validate_input
 
 # - 'flask db init' to create migration repository
 # - 'flask db migrate -m "<message>"' to generate a migration script
@@ -15,20 +15,46 @@ from app.cm_utils import validate_input
 # - 'flask db downgrade' to undo migration
 
 
-@login.user_loader
-def load_user(user_id):
-    # type: (int) -> User
-    """_summary_
-
-    :param int user_id: The user ID to search for
-
-    :returns: A user object
-    :rtype: app.models.User
+class Course(db.Model):
+    """Course database model
     """
-    # Validate inputs
-    validate_input('user_id', user_id, int)
+    __tablename__ = 'courses'
 
-    return db.session.get(User, user_id)
+    course_id: Mapped[int] = mapped_column(primary_key=True)
+    course_name: Mapped[str] = mapped_column(
+        String(64), index=True, )
+    course_code: Mapped[str] = mapped_column(
+        String(64), index=True)
+    course_group: Mapped[Optional[str]] = mapped_column(
+        String(64), index=True)
+    course_desc: Mapped[Optional[str]] = mapped_column(
+        String(256), index=True)
+
+    associations: Mapped[List['Association']] = relationship(
+        back_populates='course')
+
+    def __repr__(self):
+        return (f'{{"course_id": "{self.course_id}",'
+                f'"course_name": "{self.course_name}",'
+                f'"course_code": "{self.course_code}",'
+                f'"course_desc": "{self.course_desc}"}}')
+
+
+class Role(db.Model):
+    """Role database model
+    """
+    __tablename__ = 'roles'
+
+    role_id: Mapped[int] = mapped_column(primary_key=True)
+    role_name: Mapped[str] = mapped_column(
+        String(64), index=True, unique=True)
+
+    associations: Mapped[List['Association']] = relationship(
+        back_populates='role')
+
+    def __repr__(self):
+        return (f'{{"role_id": "{self.role_id}",'
+                f'"role_name": "{self.role_name}"}}')
 
 
 class User(UserMixin, db.Model):
@@ -36,21 +62,23 @@ class User(UserMixin, db.Model):
     """
     __tablename__ = 'users'
 
-    user_id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    username: so.Mapped[str] = so.mapped_column(
-        sa.String(64), index=True, unique=True)
-    user_group: so.Mapped[Optional[str]] = so.mapped_column(
-        sa.String(64), index=True)
-    user_email: so.Mapped[Optional[str]] = so.mapped_column(
-        sa.String(128), index=True, unique=True)
-    password_hash: so.Mapped[Optional[str]] = so.mapped_column(
-        sa.String(256))
+    user_id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(
+        String(64), index=True, unique=True)
+    user_email: Mapped[Optional[str]] = mapped_column(
+        String(128), index=True, unique=True)
+    password_hash: Mapped[Optional[str]] = mapped_column(
+        String(256))
 
-    associations: so.Mapped[List['Association']] = so.relationship(
+    associations: Mapped[List['Association']] = relationship(
         back_populates='user')
 
     def __repr__(self):
-        return f'<User {self.username}>'
+        return (f'{{"user_id": "{self.user_id}",'
+                f'"username": "{self.username}",'
+                f'"user_group": "{self.user_group}",'
+                f'"user_email": "{self.user_email}",'
+                f'"password_hash": "{self.password_hash}"}}')
 
     def get_id(self):
         # type: () -> int
@@ -89,59 +117,41 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Course(db.Model):
-    """Course database model
-    """
-    __tablename__ = 'courses'
-
-    course_id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    course_name: so.Mapped[str] = so.mapped_column(
-        sa.String(64), index=True)
-    course_code: so.Mapped[str] = so.mapped_column(
-        sa.String(64), index=True)
-    course_desc: so.Mapped[Optional[str]] = so.mapped_column(
-        sa.String(256), index=True)
-
-    associations: so.Mapped[List['Association']] = so.relationship(
-        back_populates='course')
-
-    def __repr__(self):
-        return f'<Course {self.course_name}>'
-
-
-class Role(db.Model):
-    """Role database model
-    """
-    __tablename__ = 'roles'
-
-    role_id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    role_name: so.Mapped[str] = so.mapped_column(
-        sa.String(64), index=True, unique=True)
-
-    associations: so.Mapped[List['Association']] = so.relationship(
-        back_populates='role')
-
-    def __repr__(self):
-        return f'<Role {self.role_name}>'
-
-
 class Association(db.Model):
     """Association database model
     Note: This is a three-way relationship
     """
     __tablename__ = 'associations'
 
-    course_id: so.Mapped[int] = so.mapped_column(
-        sa.ForeignKey(Course.course_id), primary_key=True)
-    role_id: so.Mapped[int] = so.mapped_column(
-        sa.ForeignKey(Role.role_id), primary_key=True)
-    user_id: so.Mapped[int] = so.mapped_column(
-        sa.ForeignKey(User.user_id), primary_key=True)
+    course_id: Mapped[int] = mapped_column(
+        ForeignKey(Course.course_id), primary_key=True)
+    role_id: Mapped[int] = mapped_column(
+        ForeignKey(Role.role_id), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey(User.user_id), primary_key=True)
 
-    course: so.Mapped['Course'] = so.relationship(
+    course: Mapped['Course'] = relationship(
         back_populates='associations')
-    role: so.Mapped['Role'] = so.relationship(back_populates='associations')
-    user: so.Mapped['User'] = so.relationship(back_populates='associations')
+    role: Mapped['Role'] = relationship(back_populates='associations')
+    user: Mapped['User'] = relationship(back_populates='associations')
 
     def __repr__(self):
-        return f'{self.course_id} {self.role_id} {self.user_id}'
+        return (f'{{"course_id": "{self.course_id}",'
+                f'"role_id": "{self.role_id}",'
+                f'"user_id": "{self.user_id}"}}')
+
+
+@login.user_loader
+def load_user(user_id):
+    # type: (int) -> User
+    """_summary_
+
+    :param int user_id: The user ID to search for
+
+    :returns: A user object
+    :rtype: app.models.User
+    """
+    # Validate inputs
+    validate_input('user_id', user_id, int)
+
+    return db.session.get(User, user_id)

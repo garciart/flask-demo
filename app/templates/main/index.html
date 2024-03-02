@@ -5,8 +5,8 @@
 {% block head %}
 {{ super() }}
 <!-- Using DataTables 2.0.0 -->
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="static/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
 {% endblock %}
 {% block content %}
 {% if current_user.is_anonymous %}
@@ -14,13 +14,14 @@
 <p>You should log in.</p>
 {% else %}
 <h1>Welcome, {{ current_user.username }}!</h1>
-<table id="userTable" class="table table-striped display caption-top">
-  <caption class="text-center">List of Courses</caption>
+<table id="data-table" class="table table-striped display caption-top">
+  <caption class="text-center">List of Your Courses</caption>
   <thead>
     <tr>
       <th scope="col">Course ID</th>
       <th scope="col">Name</th>
       <th scope="col">Code</th>
+      <th scope="col">Group</th>
       <th scope="col">Description</th>
       <th scope="col">Role</th>
     </tr>
@@ -29,8 +30,9 @@
     {% for course in courses %}
     <tr>
       <th scope="row">{{ course.course_id }}</th>
-      <td>{{ course.course_name }}</td>
-      <td>{{ course.course_code }}</td>
+      <td class="text-nowrap">{{ course.course_name }}</td>
+      <td class="text-nowrap">{{ course.course_code }}</td>
+      <td class="text-nowrap">{{ course.course_group }}</td>
       <td>{{ course.course_desc }}</td>
       <td>{{ course.role_name }}</td>
     </tr>
@@ -43,11 +45,11 @@
 {% endblock %}
 {% block scripts %}
 {{ super() }}
-<script type="text/javascript" src="static/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
 <!-- Using DataTables 2.0.0 -->
-<script type="text/javascript" src="static/js/dataTables.min.js"></script>
-<script type="text/javascript" src="static/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
 <script type="text/javascript">
-  let table = new DataTable('#userTable');
+  let table = new DataTable('#data-table');
 </script>
 {% endblock %}

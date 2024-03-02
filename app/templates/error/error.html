@@ -8,10 +8,10 @@
 {% block content %}
 <div class="container text-center">
     <h1 class="mt-3 text-danger">I can't believe that just happened!</h1>
-    <p><img class="error_gif" src="static/img/error.gif" alt="WTF just happened?" /></p>
+    <p><img class="error-gif" src="{{ url_for('static', filename='img/error.gif') }}" alt="WTF just happened?" /></p>
     <!-- The err_desc is an HTML string -->
     <span class="lead">{{ err_desc | safe }}</span>
     <p class="lead text-danger">{{ additional_info | default('') }}</p>
-    <a href="{{ url_for('index') }}" class="btn btn-primary">Return to the Home Page</a>
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary">Return to the Home Page</a>
 </div>
 {% endblock %}

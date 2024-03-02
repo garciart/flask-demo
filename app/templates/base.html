@@ -9,10 +9,10 @@
   <title>
     {% block title %}{% endblock %}
   </title>
-  <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
-  <link rel="icon" type="image/x-icon" href="static/img/logo.png">
-  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="static/css/base.css">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
   {% endblock %}
 </head>
 
@@ -23,10 +23,10 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container">
         <!-- Brand -->
-        <a class="navbar-brand" href="{{ url_for('index') }}" title="Home">
-          <img src="static/img/logo.png" alt="RGC" class="nav_logo" />
+        <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="RGC" class="nav-logo" />
         </a>
-        <a class="navbar-brand" href="{{ url_for('index') }}" title="Home">Class Manager</a>
+        <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">Flask Demo</a>
         <div class="dropdown ms-auto">
           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -35,31 +35,31 @@
           <ul class="dropdown-menu">
             {% if current_user.is_anonymous %}
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('login') }}" title="Log In">Log In</a>
+              <a class="nav-link" href="{{ url_for('auth.login') }}" title="Log In">Log In</a>
             </li>
             {% else %}
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('index') }}" title="Home">Home</a>
+              <a class="nav-link" href="{{ url_for('main.index') }}" title="Home">Home</a>
             </li>
             {% if current_user.get_id() == 1 %}
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('courses') }}" title="Courses">Courses</a>
+              <a class="nav-link" href="{{ url_for('main.courses') }}" title="Courses">Courses</a>
             </li>
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('roles') }}" title="Roles">Roles</a>
+              <a class="nav-link" href="{{ url_for('main.roles') }}" title="Roles">Roles</a>
             </li>
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('users') }}" title="Users">Users</a>
-            </li>
-            {% endif %}
-            <li class="dropdown-item"><hr></li>
-            <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('logout') }}" title="Log Out">Log Out</a>
+              <a class="nav-link" href="{{ url_for('main.users') }}" title="Users">Users</a>
             </li>
             {% endif %}
-            <li class="dropdown-item"><hr></li>
+            <li><hr></li>
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('about') }}" title="About">About</a>
+              <a class="nav-link" href="{{ url_for('auth.logout') }}" title="Log Out">Log Out</a>
+            </li>
+            {% endif %}
+            <li><hr></li>
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('main.about') }}" title="About">About</a>
             </li>
           </ul>
         </div>
@@ -85,14 +85,14 @@
   <footer class="footer">
     <div class="text-center">
       &copy; <span id="currentYear"></span> -
-      <a href="{{ url_for('index') }}" title="Home">Flask Template</a>
+      <a href="{{ url_for('main.index') }}" title="Home">Flask Template</a>
     </div>
     {% block footer %}
     {% endblock %}
   </footer>
   {% block scripts %}
-  <script type="text/javascript" src="static/js/bootstrap.bundle.min.js"></script>
-  <script type="text/javascript" src="static/js/base.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
   {% endblock %}
 </body>
 

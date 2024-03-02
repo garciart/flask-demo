@@ -8,11 +8,13 @@ body {
 }
 
 @media only screen and (max-height: 512px) {
+
     /* Ensure the navbar never hides content */
     body {
         margin-top: 60px;
     }
-    .error_gif {
+
+    .error-gif {
         display: none;
     }
 }
@@ -35,7 +37,7 @@ nav {
     min-height: 10vh;
 }
 
-.nav_logo {
+.nav-logo {
     /* Ensure logo fits in header with space between the logo and text */
     height: 6vh !important;
     /* min-height is the height of the hamburger menu icon */
@@ -50,18 +52,18 @@ nav {
     padding-bottom: 1em;
 }
 
-.flash_block {
+.flash-block {
     background-color: cornsilk;
     font-style: italic;
     padding: 1em;
     width: 100%;
 }
 
-.flash_block:empty {
+.flash-block:empty {
     display: none;
 }
 
-.error_gif {
+.error-gif {
     height: 25vh !important;
 }
 
