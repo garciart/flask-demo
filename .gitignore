@@ -4,6 +4,7 @@
 [Ll]ib
 [Ll]ib64
 pyvenv.cfg
+[Ss]cripts
 
 # Do not add scratch files and directories
 .scratch*
@@ -19,6 +20,7 @@ __pycache__/
 *.py[cod]
 
 # Do not add logs
+logs
 *.log
 
 # Do not add migrations

@@ -51,6 +51,9 @@
             <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('main.users') }}" title="Users">Users</a>
             </li>
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('admin.create_user') }}" title="Create User">Create User</a>
+            </li>
             {% endif %}
             <li><hr></li>
             <li class="dropdown-item">
@@ -69,8 +72,6 @@
   <main role="main">
     <div class="container">
       <div id="content">
-        {% block content %}
-        {% endblock %}
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
@@ -80,6 +81,8 @@
         </ul>
         {% endif %}
         {% endwith %}
+        {% block content %}
+        {% endblock %}
       </div>
   </main>
   <footer class="footer">

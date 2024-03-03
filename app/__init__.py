@@ -74,11 +74,13 @@ def create_app(alt_config=None):
     # Import app modules after init app to prevent circular import problems
     from app.main import main_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
     from app.auth import auth_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+    from app.admin import admin_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
     from app.error import error_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
     from app.api import api_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
 
     app.register_blueprint(main_routes.bp)
     app.register_blueprint(auth_routes.auth_bp)
+    app.register_blueprint(admin_routes.admin_bp)
     app.register_blueprint(error_routes.error_bp)
     app.register_blueprint(api_routes.api_bp)
 
