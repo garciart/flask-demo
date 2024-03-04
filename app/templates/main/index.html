@@ -34,7 +34,7 @@
       <td class="text-nowrap">{{ course.course_code }}</td>
       <td class="text-nowrap">{{ course.course_group }}</td>
       <td>{{ course.course_desc }}</td>
-      {% if (course.role_id | default(0)) <= 2 %}
+      {% if current_user.is_admin or (course.role_id | default(0)) <= 2 %}
       <td class="no-sort text-nowrap">
         <a class="btn btn-primary" href="" title="Edit">Edit</a>
         <a class="btn btn-danger" href="" title="Delete">Delete</a>

@@ -18,6 +18,7 @@ _DUMMY_DATA = [
      'role_name': 'Student'}
 ]
 
+INDEX_PAGE = 'main.index'
 LOGIN_REQ_MSG = 'You must log in.'
 
 
@@ -33,16 +34,19 @@ def index():
     """
     _page_title = 'Flask Demo'
 
-    _user_id = int(current_user.get_id())
+    if current_user.is_admin:
+        _courses = Course.query.all()
+    else:
+        _user_id = int(current_user.get_id())
 
-    _courses = db.session.query(
-        Course.course_id, Course.course_name, Course.course_code,
-        Course.course_group, Course.course_desc,
-        Role.role_id, Role.role_name).join(
-            Association,
-            Course.course_id == Association.course_id).join(
-                Role, Role.role_id == Association.role_id).filter(
-                    Association.user_id == _user_id).all()
+        _courses = db.session.query(
+            Course.course_id, Course.course_name, Course.course_code,
+            Course.course_group, Course.course_desc,
+            Role.role_id, Role.role_name).join(
+                Association,
+                Course.course_id == Association.course_id).join(
+                    Role, Role.role_id == Association.role_id).filter(
+                        Association.user_id == _user_id).all()
 
     # Convert to list if there is only one result
     _courses = [_courses] if not isinstance(_courses, list) else _courses
@@ -76,8 +80,8 @@ def courses():
     :rtype: str
     """
     # Redirect if not an Administrator
-    if int(current_user.get_id()) != 1:
-        return redirect(url_for('main.index'))
+    if not current_user.is_admin:
+        return redirect(url_for(INDEX_PAGE))
 
     _page_title = 'List of Courses'
 
@@ -100,13 +104,14 @@ def roles():
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
-    # Redirect if not an Administrator
-    if int(current_user.get_id()) != 1:
-        return redirect(url_for('main.index'))
+    # An alternate way of preventing non-admins from accessing page
+    if not current_user.is_admin:
+        _roles = Role.query.get_or_404(current_user.get_id(),
+                                       LOGIN_REQ_MSG)
+    else:
+        _roles = Role.query.all()
 
     _page_title = 'List of Roles'
-
-    _roles = Role.query.all()
 
     # Convert to list if there is only one result
     _roles = [_roles] if not isinstance(_roles, list) else _roles
@@ -125,13 +130,13 @@ def users():
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
+    # Redirect if not an Administrator
+    if not current_user.is_admin:
+        return redirect(url_for(INDEX_PAGE))
+
     _page_title = 'List of Users'
 
-    if int(current_user.get_id()) == 1:
-        _users = User.query.all()
-    else:
-        _users = User.query.get_or_404(current_user.get_id(),
-                                       LOGIN_REQ_MSG)
+    _users = User.query.all()
 
     # Convert to list if there is only one result
     _users = [_users] if not isinstance(_users, list) else _users

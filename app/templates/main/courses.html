@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
 {% endblock %}
 {% block content %}
-{% if current_user.get_id() != 1 %}
+{% if not current_user.is_admin %}
 <h1>Welcome!</h1>
 <p>This page is restricted to administrators.</p>
 {% else %}
@@ -23,7 +23,7 @@
       <th scope="col">Code</th>
       <th scope="col">Group</th>
       <th scope="col">Description</th>
-      {% if current_user.get_id() == 1 %}
+      {% if current_user.is_admin %}
       <th scope="col">Actions</th>
       {% endif %}
     </tr>
@@ -36,7 +36,7 @@
       <td class="text-nowrap">{{ course.course_code }}</td>
       <td class="text-nowrap">{{ course.course_group }}</td>
       <td>{{ course.course_desc }}</td>
-      {% if current_user.get_id() == 1 %}
+      {% if current_user.is_admin %}
       <td class="text-nowrap">
         <a class="btn btn-primary" href="" title="Edit">Edit</a>
         <a class="btn btn-danger" href="" title="Delete">Delete</a>
@@ -56,7 +56,7 @@
 <!-- Using DataTables 2.0.0 -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
-{% if current_user.get_id() == 1 %}
+{% if current_user.is_admin %}
 <script type="text/javascript">
   let table = new DataTable('#data-table', {
     columnDefs: [{ orderable: false, targets: 5 }]

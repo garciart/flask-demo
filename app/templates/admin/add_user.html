@@ -32,6 +32,7 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
+    <p>{{ form.is_admin() }} {{ form.is_admin.label }}</p>
     <p>{{ form.submit(class="btn btn-primary") }}</p>
 </form>
 {% endblock %}

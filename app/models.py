@@ -22,13 +22,13 @@ class Course(db.Model):
 
     course_id: Mapped[int] = mapped_column(primary_key=True)
     course_name: Mapped[str] = mapped_column(
-        String(64), index=True, )
+        String(64), index=True, unique=True)
     course_code: Mapped[str] = mapped_column(
-        String(64), index=True)
+        String(64))
     course_group: Mapped[Optional[str]] = mapped_column(
-        String(64), index=True)
+        String(64))
     course_desc: Mapped[Optional[str]] = mapped_column(
-        String(256), index=True)
+        String(256))
 
     associations: Mapped[List['Association']] = relationship(
         back_populates='course')
@@ -66,7 +66,8 @@ class User(UserMixin, db.Model):
     username: Mapped[str] = mapped_column(
         String(64), index=True, unique=True)
     user_email: Mapped[Optional[str]] = mapped_column(
-        String(128), index=True, unique=True)
+        String(128), unique=True)
+    is_admin: Mapped[bool] = mapped_column()
     password_hash: Mapped[Optional[str]] = mapped_column(
         String(256))
 
@@ -77,6 +78,7 @@ class User(UserMixin, db.Model):
         return (f'{{"user_id": "{self.user_id}",'
                 f'"username": "{self.username}",'
                 f'"user_email": "{self.user_email}",'
+                f'"is_admin": "{self.is_admin}",'
                 f'"password_hash": "{self.password_hash}"}}')
 
     def get_id(self):

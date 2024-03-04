@@ -3,9 +3,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
-from sqlalchemy import select
-from app import db
-from app.models import User
 
 
 class LoginForm(FlaskForm):

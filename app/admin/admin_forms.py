@@ -1,11 +1,12 @@
 """Administration Forms Manager
 """
 from flask_wtf import FlaskForm
-from wtforms import HiddenField, StringField, PasswordField, SubmitField
+from wtforms import BooleanField, StringField, PasswordField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from sqlalchemy import select
 from app import db
 from app.models import User, Role
+
 
 class AddUserForm(FlaskForm):
     """Parameters for the Add User form template.
@@ -15,6 +16,7 @@ class AddUserForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    is_admin = BooleanField('This user an administrator')
     submit = SubmitField('Add User')
 
     def validate_username(self, username):
@@ -41,6 +43,7 @@ class AddUserForm(FlaskForm):
         if _user is not None:
             raise ValidationError('Email address already exists.')
 
+
 class EditUserForm(FlaskForm):
     """Parameters for the Edit Role form template.
     """
@@ -49,8 +52,9 @@ class EditUserForm(FlaskForm):
     password = PasswordField('Password')
     password2 = PasswordField(
         'Repeat Password', validators=[EqualTo('password')])
+    is_admin = BooleanField('This user an administrator')
     submit = SubmitField('Update User')
-    
+
     def __init__(self, original_username, *args, **kwargs):
         # type: (str, any, any) -> None
         """Get the username of the user being edited.
@@ -60,7 +64,7 @@ class EditUserForm(FlaskForm):
         """
         super().__init__(*args, **kwargs)
         self.original_username = original_username
-    
+
     def validate_username(self, username):
         """Check if a username already exists in the database.
 
@@ -74,11 +78,13 @@ class EditUserForm(FlaskForm):
             if _user is not None:
                 raise ValidationError('Username already exists.')
 
+
 class DeleteUserForm(FlaskForm):
     """Parameters for the Delete User form template.
     """
     submit = SubmitField('Delete User')
     cancel = SubmitField('Cancel')
+
 
 class AddRoleForm(FlaskForm):
     """Parameters for the Add Role form template.
@@ -97,4 +103,3 @@ class AddRoleForm(FlaskForm):
             Role.role_name == role_name.data))
         if _role is not None:
             raise ValidationError('Role already exists.')
-
