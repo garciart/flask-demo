@@ -18,15 +18,24 @@
   <caption class="text-center">List of Roles</caption>
   <thead>
     <tr>
-      <th scope="col">Role ID</th>
       <th scope="col">Name</th>
+      <th scope="col">ID</th>
+      {% if current_user.get_id() == 1 %}
+      <th scope="col">Actions</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody class="table-group-divider">
     {% for role in roles %}
     <tr>
-      <th scope="row">{{ role.role_id }}</th>
-      <td>{{ role.role_name }}</td>
+      <th scope="row">{{ role.role_name }}</th>
+      <td>{{ role.role_id }}</td>
+      {% if current_user.get_id() == 1 %}
+      <td class="text-nowrap">
+        <a class="btn btn-primary" href="" title="Edit">Edit</a>
+        <a class="btn btn-danger" href="" title="Delete">Delete</a>
+      </td>
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>
@@ -41,7 +50,15 @@
 <!-- Using DataTables 2.0.0 -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+{% if current_user.get_id() == 1 %}
+<script type="text/javascript">
+  let table = new DataTable('#data-table', {
+    columnDefs: [{ orderable: false, targets: 2 }]
+  });
+</script>
+{% else %}
 <script type="text/javascript">
   let table = new DataTable('#data-table');
 </script>
+{% endif %}
 {% endblock %}

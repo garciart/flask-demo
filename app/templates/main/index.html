@@ -18,23 +18,30 @@
   <caption class="text-center">List of Your Courses</caption>
   <thead>
     <tr>
-      <th scope="col">Course ID</th>
       <th scope="col">Name</th>
+      <th scope="col">ID</th>
       <th scope="col">Code</th>
       <th scope="col">Group</th>
       <th scope="col">Description</th>
-      <th scope="col">Role</th>
+      <th scope="col">Role/Actions</th>
     </tr>
   </thead>
   <tbody class="table-group-divider">
     {% for course in courses %}
     <tr>
-      <th scope="row">{{ course.course_id }}</th>
-      <td class="text-nowrap">{{ course.course_name }}</td>
+      <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
+      <td class="text-nowrap">{{ course.course_id }}</td>
       <td class="text-nowrap">{{ course.course_code }}</td>
       <td class="text-nowrap">{{ course.course_group }}</td>
       <td>{{ course.course_desc }}</td>
+      {% if (course.role_id | default(0)) <= 2 %}
+      <td class="no-sort text-nowrap">
+        <a class="btn btn-primary" href="" title="Edit">Edit</a>
+        <a class="btn btn-danger" href="" title="Delete">Delete</a>
+      </td>
+      {% else %}
       <td>{{ course.role_name }}</td>
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>
@@ -50,6 +57,8 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
 <script type="text/javascript">
-  let table = new DataTable('#data-table');
+  let table = new DataTable('#data-table', {
+    order: [[0, 'asc']]
+});
 </script>
 {% endblock %}

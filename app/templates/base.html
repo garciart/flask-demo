@@ -43,16 +43,19 @@
             </li>
             {% if current_user.get_id() == 1 %}
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('main.courses') }}" title="Courses">Courses</a>
+              <a class="nav-link" href="{{ url_for('main.courses') }}" title="View Courses">View Courses</a>
             </li>
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('main.roles') }}" title="Roles">Roles</a>
+              <a class="nav-link" href="{{ url_for('main.roles') }}" title="View Roles">View Roles</a>
             </li>
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('main.users') }}" title="Users">Users</a>
+              <a class="nav-link" href="{{ url_for('main.users') }}" title="View Users">View Users</a>
             </li>
             <li class="dropdown-item">
-              <a class="nav-link" href="{{ url_for('admin.create_user') }}" title="Create User">Create User</a>
+              <a class="nav-link" href="{{ url_for('admin.add_user') }}" title="Add User">Add User</a>
+            </li>
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('admin.add_role') }}" title="Add Role">Add Role</a>
             </li>
             {% endif %}
             <li><hr></li>
@@ -88,7 +91,7 @@
   <footer class="footer">
     <div class="text-center">
       &copy; <span id="currentYear"></span> -
-      <a href="{{ url_for('main.index') }}" title="Home">Flask Template</a>
+      <a href="{{ url_for('main.index') }}" title="Home">Flask Demo</a>
     </div>
     {% block footer %}
     {% endblock %}

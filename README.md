@@ -1,4 +1,4 @@
-# Flask Template
+# Flask Demo
 
 Information about this template.
 

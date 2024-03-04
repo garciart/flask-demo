@@ -18,21 +18,30 @@
   <caption class="text-center">List of Courses</caption>
   <thead>
     <tr>
-      <th scope="col">Course ID</th>
       <th scope="col">Name</th>
+      <th scope="col">ID</th>
       <th scope="col">Code</th>
       <th scope="col">Group</th>
       <th scope="col">Description</th>
+      {% if current_user.get_id() == 1 %}
+      <th scope="col">Actions</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody class="table-group-divider">
     {% for course in courses %}
     <tr>
-      <th scope="row">{{ course.course_id }}</th>
-      <td class="text-nowrap">{{ course.course_name }}</td>
+      <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
+      <td class="text-nowrap">{{ course.course_id }}</td>
       <td class="text-nowrap">{{ course.course_code }}</td>
       <td class="text-nowrap">{{ course.course_group }}</td>
       <td>{{ course.course_desc }}</td>
+      {% if current_user.get_id() == 1 %}
+      <td class="text-nowrap">
+        <a class="btn btn-primary" href="" title="Edit">Edit</a>
+        <a class="btn btn-danger" href="" title="Delete">Delete</a>
+      </td>
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>
@@ -47,7 +56,15 @@
 <!-- Using DataTables 2.0.0 -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+{% if current_user.get_id() == 1 %}
+<script type="text/javascript">
+  let table = new DataTable('#data-table', {
+    columnDefs: [{ orderable: false, targets: 5 }]
+  });
+</script>
+{% else %}
 <script type="text/javascript">
   let table = new DataTable('#data-table');
 </script>
+{% endif %}
 {% endblock %}

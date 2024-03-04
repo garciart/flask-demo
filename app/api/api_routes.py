@@ -27,7 +27,6 @@ def get_test_data():
     """
     _response = jsonify(test_data=_DUMMY_DATA, status=200,
                         mimetype='application/json')
-    print('_response', _response, type(_response))
     return _response
 
 
@@ -85,7 +84,5 @@ def __serialize_query_result(db_object, fields=None):
             del _filtered_dict['_sa_instance_state']
 
         _converted_list.append(_filtered_dict)
-
-    # print('_converted_list[2]', _converted_list[2], type(_converted_list[2]))
 
     return _converted_list

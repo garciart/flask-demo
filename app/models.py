@@ -8,7 +8,7 @@ from flask_login import UserMixin
 from app.app_utils import validate_input
 from app import db, login
 
-# - 'flask db init' to create migration repository
+# - 'flask db init' to   migration repository
 # - 'flask db migrate -m "<message>"' to generate a migration script
 #       after making changes to the schema
 # - 'flask db upgrade' to apply changes
@@ -76,7 +76,6 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return (f'{{"user_id": "{self.user_id}",'
                 f'"username": "{self.username}",'
-                f'"user_group": "{self.user_group}",'
                 f'"user_email": "{self.user_email}",'
                 f'"password_hash": "{self.password_hash}"}}')
 

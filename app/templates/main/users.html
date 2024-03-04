@@ -18,17 +18,26 @@
   <caption class="text-center">List of Users</caption>
   <thead>
     <tr>
-      <th scope="col">User ID</th>
       <th scope="col">Name</th>
+      <th scope="col">ID</th>
       <th scope="col">Email</th>
+      {% if current_user.get_id() == 1 %}
+      <th scope="col">Actions</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody class="table-group-divider">
     {% for user in users %}
     <tr>
-      <th scope="row">{{ user.user_id }}</th>
-      <td>{{ user.username }}</td>
+      <th scope="row">{{ user.username }}</th>
+      <td>{{ user.user_id }}</td>
       <td>{{ user.user_email }}</td>
+      {% if current_user.get_id() == 1 %}
+      <td class="text-nowrap">
+        <a class="btn btn-primary" href="{{ url_for('admin.edit_user', id=user.user_id) }}" title="Edit">Edit</a>
+        <a class="btn btn-danger" href="{{ url_for('admin.delete_user', id=user.user_id) }}" title="Delete">Delete</a>
+      </td>
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>
@@ -43,7 +52,15 @@
 <!-- Using DataTables 2.0.0 -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+{% if current_user.get_id() == 1 %}
+<script type="text/javascript">
+  let table = new DataTable('#data-table', {
+    columnDefs: [{ orderable: false, targets: 3 }]
+  });
+</script>
+{% else %}
 <script type="text/javascript">
   let table = new DataTable('#data-table');
 </script>
+{% endif %}
 {% endblock %}

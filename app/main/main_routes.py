@@ -35,19 +35,14 @@ def index():
 
     _user_id = int(current_user.get_id())
 
-    if _user_id == 1:
-        # Get all courses if admin
-        _courses = Course.query.all()
-    else:
-        # Your query
-        _courses = db.session.query(
-            Course.course_id, Course.course_name, Course.course_code,
-            Course.course_desc,
-            Role.role_name).join(
-                Association,
-                Course.course_id == Association.course_id).join(
-                    Role, Role.role_id == Association.role_id).filter(
-                        Association.user_id == _user_id).all()
+    _courses = db.session.query(
+        Course.course_id, Course.course_name, Course.course_code,
+        Course.course_group, Course.course_desc,
+        Role.role_id, Role.role_name).join(
+            Association,
+            Course.course_id == Association.course_id).join(
+                Role, Role.role_id == Association.role_id).filter(
+                    Association.user_id == _user_id).all()
 
     # Convert to list if there is only one result
     _courses = [_courses] if not isinstance(_courses, list) else _courses
