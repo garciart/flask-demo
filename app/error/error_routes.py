@@ -8,6 +8,32 @@ from werkzeug import exceptions
 from app.app_utils import validate_input
 from app.error import error_bp
 
+ERROR_PAGE = 'error/error.html'
+
+
+@error_bp.app_errorhandler(400)
+def bad_request(e):
+    # type: (exceptions.BadRequest) -> tuple[str, int]
+    """Display the error page if the server cannot process a request.
+
+    :param exceptions.BadRequest e: An instance of the
+    werkzeug.exceptions.BadRequest class
+
+    :return: A string of HTML code with the response code
+    :rtype: tuple
+    """
+    # Validate inputs
+    validate_input('e', e, exceptions.BadRequest)
+
+    _page_title = '400 Error'
+    _err_desc = f'{str(e)}'
+    current_app.logger.error(_err_desc)
+    _additional_info = "We've logged the error and we'll get to it right away."
+    _html = render_template(ERROR_PAGE, page_title=_page_title,
+                            err_desc=_err_desc,
+                            additional_info=_additional_info), 400
+    return _html
+
 
 @error_bp.app_errorhandler(404)
 def page_not_found(e):
@@ -27,7 +53,7 @@ def page_not_found(e):
     _requested_url = f'{request.path}'
     _err_desc = f"'{_requested_url}': {str(e)}"
     current_app.logger.error(_err_desc)
-    _html = render_template('error/error.html', page_title=_page_title,
+    _html = render_template(ERROR_PAGE, page_title=_page_title,
                             err_desc=_err_desc), 404
     return _html
 
@@ -50,7 +76,7 @@ def internal_server_error(e):
     _err_desc = f'{str(e)}'
     current_app.logger.error(_err_desc)
     _additional_info = "We've logged the error and we'll get to it right away."
-    _html = render_template('error/error.html', page_title=_page_title,
+    _html = render_template(ERROR_PAGE, page_title=_page_title,
                             err_desc=_err_desc,
                             additional_info=_additional_info), 500
     return _html

@@ -1,4 +1,4 @@
-"""Administration Forms Manager
+"""Administration forms manager.
 """
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
@@ -20,6 +20,7 @@ class AddUserForm(FlaskForm):
     submit = SubmitField('Add User')
 
     def validate_username(self, username):
+        # type: (StringField) -> None
         """Check if a username already exists in the database.
 
         :param StringField username: The username to check
@@ -32,6 +33,7 @@ class AddUserForm(FlaskForm):
             raise ValidationError('User already exists.')
 
     def validate_email(self, user_email):
+        # type: (StringField) -> None
         """Check if an email address already exists in the database.
 
         :param StringField user_email: The email address to check
@@ -66,6 +68,7 @@ class EditUserForm(FlaskForm):
         self.original_username = original_username
 
     def validate_username(self, username):
+        # type: (StringField) -> None
         """Check if a username already exists in the database.
 
         :param StringField username: The username to check
@@ -89,13 +92,14 @@ class DeleteUserForm(FlaskForm):
 class AddRoleForm(FlaskForm):
     """Parameters for the Add Role form template.
     """
-    role_name = StringField('Role Name', validators=[DataRequired()])
+    role_name = StringField('Role', validators=[DataRequired()])
     submit = SubmitField('Add Role')
 
     def validate_role_name(self, role_name):
+        # type: (StringField) -> None
         """Check if a role already exists in the database.
 
-        :param StringField role: The role to check
+        :param StringField role_name: The role to check
         :return: None
         :raises ValidationError: If the submitted role already exists
         """
@@ -103,3 +107,41 @@ class AddRoleForm(FlaskForm):
             Role.role_name == role_name.data))
         if _role is not None:
             raise ValidationError('Role already exists.')
+
+
+class EditRoleForm(FlaskForm):
+    """Parameters for the Edit Role form template.
+    """
+    role_name = StringField('Role name', validators=[DataRequired()])
+    submit = SubmitField('Update Role')
+
+    def __init__(self, original_role_name, *args, **kwargs):
+        # type: (str, any, any) -> None
+        """Get the name of the role being edited.
+
+        :params str original_role_name: The edited role's name
+        :return: None
+        """
+        super().__init__(*args, **kwargs)
+        self.original_role_name = original_role_name
+
+    def validate_role_name(self, role_name):
+        # type: (StringField) -> None
+        """Check if a role already exists in the database.
+
+        :param StringField role_name: The role to check
+        :return: None
+        :raises ValidationError: If the submitted role already exists
+        """
+        if role_name.data != self.original_role_name:
+            _role = db.session.scalar(select(Role).where(
+                Role.role_name == self.role_name.data))
+            if _role is not None:
+                raise ValidationError('Role already exists.')
+
+
+class DeleteRoleForm(FlaskForm):
+    """Parameters for the Delete Role form template.
+    """
+    submit = SubmitField('Delete Role')
+    cancel = SubmitField('Cancel')
