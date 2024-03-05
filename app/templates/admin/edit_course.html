@@ -1,38 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Add User</h1>
+<h1>Edit Course</h1>
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
-        {{ form.username.label }}<br>
-        {{ form.username(size=64) }}<br>
-        {% for error in form.username.errors %}
+        {{ form.course_name.label }}<br>
+        {{ form.course_name(size=64) }}<br>
+        {% for error in form.course_name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.user_email.label }}<br>
-        {{ form.user_email(size=128) }}<br>
-        {% for error in form.user_email.errors %}
+        {{ form.course_code.label }}<br>
+        {{ form.course_code(size=64) }}<br>
+        {% for error in form.course_code.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}<br>
-        {% for error in form.password.errors %}
+        {{ form.course_group.label }}<br>
+        {{ form.course_group(size=64) }}<br>
+        {% for error in form.course_group.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.password2.label }}<br>
-        {{ form.password2(size=32) }}<br>
-        {% for error in form.password2.errors %}
+        {{ form.course_desc.label }}<br>
+        {{ form.course_desc(size=256, cols="64") }}<br>
+        {% for error in form.course_desc.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    <p>{{ form.is_admin() }} {{ form.is_admin.label }}</p>
     <p>{{ form.submit(class="btn btn-primary") }}   <input type="button" class="btn btn-secondary" value="Cancel" onclick="history.back()"></p>
 </form>
 {% endblock %}

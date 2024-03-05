@@ -12,6 +12,9 @@ class AddCourseForm(FlaskForm):
     """Parameters for the Add Course form template.
     """
     course_name = StringField('Course', validators=[DataRequired()])
+    course_code = StringField('Code', validators=[DataRequired()])
+    course_group = StringField('Group')
+    course_desc = StringField('Description')
     submit = SubmitField('Add Course')
 
     def validate_course_name(self, course_name):
@@ -63,4 +66,3 @@ class DeleteCourseForm(FlaskForm):
     """Parameters for the Delete Course form template.
     """
     submit = SubmitField('Delete Course')
-    cancel = SubmitField('Cancel')

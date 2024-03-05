@@ -1,9 +1,9 @@
-"""Role administration routing manager.
+"""Course administration routing manager.
 
 NOTE - Imports within functions are to prevent a known
 circular import problem in Flask.
 
-Test: http://127.0.0.1:5000/add_role
+Test: http://127.0.0.1:5000/add_course
 """
 # Flake8 F401: imports are used for type hints
 from flask import (Response,  # noqa: F401 pylint:disable=unused-import
@@ -12,95 +12,105 @@ from flask_login import current_user, login_required
 from app import db
 from app.admin import admin_bp
 from app.admin.admin_forms import (
-    AddRoleForm, DeleteRoleForm, EditRoleForm)
-from app.models import Role
+    AddCourseForm, DeleteCourseForm, EditCourseForm)
+from app.models import Course
 
 INDEX_PAGE = 'main.index'
 
 
-@admin_bp.route('/add_role', methods=['GET', 'POST'])
+@admin_bp.route('/add_course', methods=['GET', 'POST'])
 @login_required
-def add_role():
+def add_course():
     # type: () -> str | Response
-    """Use form input to add a role to the database.
+    """Use form input to add a course to the database.
 
     :return: The HTML code to display with {{ placeholders }} populated
     or redirect if the user is not an administrator
     :rtype: str/Response
     """
-    # Only administrators can add roles
+    # Only administrators can add courses
     if not current_user.is_admin:
         return redirect(url_for(INDEX_PAGE))
 
-    form = AddRoleForm()
+    form = AddCourseForm()
 
     if form.validate_on_submit():
-        _role = Role(role_name=form.role_name.data)
-        db.session.add(_role)
+        _course = Course(course_name=form.course_name.data,
+                         course_code=form.course_code.data,
+                         course_group=form.course_group.data,
+                         course_desc=form.course_desc.data)
+        db.session.add(_course)
         db.session.commit()
-        flash('Role added.')
+        flash('Course added.')
         return redirect(url_for(INDEX_PAGE))
     else:
-        return render_template('admin/add_role.html', title='Add Role',
+        return render_template('admin/add_course.html', title='Add Course',
                                form=form)
 
 
-@admin_bp.route('/edit_role/<int:role_id>', methods=['GET', 'POST'])
+@admin_bp.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
-def edit_role(role_id):
+def edit_course(course_id):
     # type: (int) -> str | Response
-    """Use form input to update a role in the database.
+    """Use form input to update a course in the database.
 
     :return: The HTML code to display with {{ placeholders }} populated
     or redirect if the user is not an administrator
     :rtype: str/Response
     """
-    # Only administrators can update roles
+    # Only administrators can update courses
     if not current_user.is_admin:
         return redirect(url_for(INDEX_PAGE))
 
-    _role = Role.query.get_or_404(role_id)
-    form = EditRoleForm(_role.role_name)
+    _course = Course.query.get_or_404(course_id)
+    form = EditCourseForm(_course.course_name)
 
     if form.validate_on_submit():
-        _role.role_name = form.role_name.data
+        _course.course_name = form.course_name.data
+        _course.course_code = form.course_code.data
+        _course.course_group = form.course_group.data
+        _course.course_desc = form.course_desc.dat
         db.session.commit()
-        flash('Role updated.')
-        return redirect(url_for('main.roles'))
+        flash('Course updated.')
+        return redirect(url_for('main.courses'))
     elif request.method == 'GET':
-        form.role_name.data = _role.role_name
-        return render_template('admin/edit_role.html', title='Edit Role',
+        form.course_name.data = _course.course_name
+        form.course_code.data = _course.course_code
+        form.course_group.data = _course.course_group
+        form.course_desc.data = _course.course_desc
+        return render_template('admin/edit_course.html', title='Edit Course',
                                form=form)
     else:
         abort(500)
 
 
-@admin_bp.route('/delete_role/<int:role_id>', methods=['GET', 'POST'])
+@admin_bp.route('/delete_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
-def delete_role(role_id):
+def delete_course(course_id):
     # type: (int) -> str | Response
-    """Use form input to delete a role from the database.
+    """Use form input to delete a course from the database.
 
     :return: The HTML code to display with {{ placeholders }} populated
     or redirect if the user is not an administrator
     :rtype: str/Response
     """
-    # Only administrators can delete roles
+    # Only administrators can delete courses
     if not current_user.is_admin:
         return redirect(url_for(INDEX_PAGE))
 
-    _role = Role.query.get_or_404(role_id)
-    form = DeleteRoleForm()
+    _course = Course.query.get_or_404(course_id)
+    form = DeleteCourseForm()
 
     if form.validate_on_submit():
         if form.submit.data:
-            db.session.delete(_role)
+            db.session.delete(_course)
             db.session.commit()
-            flash('Role deleted.')
-        return redirect(url_for('main.roles'))
+            flash('Course deleted.')
+        return redirect(url_for('main.courses'))
     elif request.method == 'GET':
-        _role_name = _role.role_name
-        return render_template('admin/delete_role.html', title='Delete Role',
-                               role_name=_role_name, form=form)
+        _course_name = _course.course_name
+        return render_template('admin/delete_course.html',
+                               title='Delete Course', course_name=_course_name,
+                               form=form)
     else:
         abort(500)

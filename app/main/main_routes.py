@@ -3,10 +3,11 @@
 Test: http://127.0.0.1:5000
 """
 # Flake8 F401: imports are used for type hints
-from flask import redirect, render_template, url_for  # noqa: F401
+from flask import flash, redirect, render_template, url_for  # noqa: F401
 from flask_login import current_user, login_required
 from app import db
 from app.main import bp
+from app.main.main_forms import SimpleForm
 from app.models import User, Course, Role, Association
 
 _DUMMY_DATA = [
@@ -146,7 +147,6 @@ def users():
     return _html
 
 
-@bp.route('/')
 @bp.route('/test')
 @login_required
 def test():
@@ -162,4 +162,31 @@ def test():
 
     _html = render_template('main/index.html', page_title=_page_title,
                             courses=_courses)
+    return _html
+
+
+@bp.route('/scratch', methods=['GET', 'POST'])
+@login_required
+def scratch():
+    # type: () -> str
+    """Scratch page.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _form = SimpleForm()
+
+    _page_title = 'Flask Demo'
+
+    _form.planets.choices = [('Mercury', 1), ('Venus', 2), ('Earth', 3),
+                             ('Mars', 4), ('Jupiter', 5), ('Saturn', 6),
+                             ('Uranus', 7), ('Neptune', 2), ('Pluto', 2)]
+
+    if _form.validate_on_submit():
+        flash(_form.planets.data)
+    else:
+        flash('Huh?')
+
+    _html = render_template('main/scratch.html', page_title=_page_title,
+                            form=_form)
     return _html

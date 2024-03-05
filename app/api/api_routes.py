@@ -5,6 +5,7 @@ Test: http://127.0.0.1:5000/api/test
 # Flake8 F401: imports are used for type hints
 from flask import (jsonify, Response)  # noqa: F401
 from app.api import api_bp
+from app.app_utils import validate_input
 from app.models import Course
 
 _DUMMY_DATA = [
@@ -40,44 +41,47 @@ def api_courses():
     """
     _courses = Course.query.all()
 
-    # Optional: Only include key-value pairs whose key is in the list of fields
-    _fields = ['course_id', 'course_name', 'course_code', 'course_group']
+    _exclude = ['course_code']
 
-    _json_result = __serialize_query_result(_courses, _fields)
+    _json_result = __serialize_query_result(_courses, _exclude)
     # _json_result = __serialize_query_result(_courses)
 
     return _json_result
 
 
-def __serialize_query_result(db_object, fields=None):
-    # type: (object, list) -> list
-    """Serialize SQLAlchemy query result.
+def __serialize_query_result(query_result, exclude=None):
+    # type: (object, None | str | list) -> list
+    """Serialize SQLAlchemy query result into a JSON string.
 
-    query_all() returns a list of class objects,
-    formatted using the class's __repr__ method.
+    NOTE - Do not tinker! This works and you wasted three hours on this
+
+    NOTE - defer, load_only, etc., do not work
+
+    <model class>.query.all() returns a list of class objects,
+    formatted using the __repr__ method of the class.
 
     You need to convert those class objects to dict objects
     before displaying as json.
 
-    NOTE - jsonify, json.loads and json.dump do not work
-
-    :param object db_object: The SQLAlchemy query result
-    :param list fields: Only include key-value pairs whose key is in the
-    list of fields, defaults to [] for all fields
+    :param list query_result: The SQLAlchemy query result
+    :param str/list exclude: Key(s)/Column(s) to remove from results
 
     :return: The serialized result
     :rtype: list
     """
+    # Validate inputs
+    validate_input('query_result', query_result, list)
+
     # Holds the converted objects
     _converted_list = []
 
-    # _o: object, _k: key, _v: value
-    for _o in db_object:
-        if fields is None:
+    # _o = class object, _k = key, and _v = value
+    for _o in query_result:
+        if exclude is None:
             _filtered_dict = dict(_o.__dict__.items())
         else:
             _filtered_dict = {
-                _k: _v for _k, _v in _o.__dict__.items() if _k in fields}
+                _k: _v for _k, _v in _o.__dict__.items() if _k not in exclude}
 
         # Remove SQLAlchemy internal objects
         if '_sa_instance_state' in _filtered_dict:

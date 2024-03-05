@@ -2,10 +2,131 @@
 """
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
+from wtforms.widgets import TextArea
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from sqlalchemy import select
 from app import db
-from app.models import User, Role
+from app.models import User, Role, Course
+
+
+class AddCourseForm(FlaskForm):
+    """Parameters for the Add Course form template.
+    """
+    course_name = StringField('Course', validators=[DataRequired()])
+    course_code = StringField('Code', validators=[DataRequired()])
+    course_group = StringField('Group')
+    course_desc = StringField('Description', widget=TextArea())
+    submit = SubmitField('Add Course')
+
+    def validate_course_name(self, course_name):
+        # type: (StringField) -> None
+        """Check if a course already exists in the database.
+
+        :param StringField course_name: The course to check
+        :return: None
+        :raises ValidationError: If the submitted course already exists
+        """
+        _course = db.session.scalar(select(Course).where(
+            Course.course_name == course_name.data))
+        if _course is not None:
+            raise ValidationError('Course already exists.')
+
+
+class EditCourseForm(FlaskForm):
+    """Parameters for the Edit Course form template.
+    """
+    course_name = StringField('Course name', validators=[DataRequired()])
+    course_code = StringField('Code', validators=[DataRequired()])
+    course_group = StringField('Group')
+    course_desc = StringField('Description', widget=TextArea())
+    submit = SubmitField('Update Course')
+
+    def __init__(self, original_course_name, *args, **kwargs):
+        # type: (str, any, any) -> None
+        """Get the name of the course being edited.
+
+        :params str original_course_name: The edited course's name
+        :return: None
+        """
+        super().__init__(*args, **kwargs)
+        self.original_course_name = original_course_name
+
+    def validate_course_name(self, course_name):
+        # type: (StringField) -> None
+        """Check if a course already exists in the database.
+
+        :param StringField course_name: The course to check
+        :return: None
+        :raises ValidationError: If the submitted course already exists
+        """
+        if course_name.data != self.original_course_name:
+            _course = db.session.scalar(select(Course).where(
+                Course.course_name == self.course_name.data))
+            if _course is not None:
+                raise ValidationError('Course already exists.')
+
+
+class DeleteCourseForm(FlaskForm):
+    """Parameters for the Delete Course form template.
+    """
+    submit = SubmitField('Delete Course')
+
+
+class AddRoleForm(FlaskForm):
+    """Parameters for the Add Role form template.
+    """
+    role_name = StringField('Role', validators=[DataRequired()])
+    submit = SubmitField('Add Role')
+
+    def validate_role_name(self, role_name):
+        # type: (StringField) -> None
+        """Check if a role already exists in the database.
+
+        :param StringField role_name: The role to check
+        :return: None
+        :raises ValidationError: If the submitted role already exists
+        """
+        _role = db.session.scalar(select(Role).where(
+            Role.role_name == role_name.data))
+        if _role is not None:
+            raise ValidationError('Role already exists.')
+
+
+class EditRoleForm(FlaskForm):
+    """Parameters for the Edit Role form template.
+    """
+    role_name = StringField('Role name', validators=[DataRequired()])
+    submit = SubmitField('Update Role')
+
+    def __init__(self, original_role_name, *args, **kwargs):
+        # type: (str, any, any) -> None
+        """Get the name of the role being edited.
+
+        :params str original_role_name: The edited role's name
+        :return: None
+        """
+        super().__init__(*args, **kwargs)
+        self.original_role_name = original_role_name
+
+    def validate_role_name(self, role_name):
+        # type: (StringField) -> None
+        """Check if a role already exists in the database.
+
+        :param StringField role_name: The role to check
+        :return: None
+        :raises ValidationError: If the submitted role already exists
+        """
+        if role_name.data != self.original_role_name:
+            _role = db.session.scalar(select(Role).where(
+                Role.role_name == self.role_name.data))
+            if _role is not None:
+                raise ValidationError('Role already exists.')
+
+
+class DeleteRoleForm(FlaskForm):
+    """Parameters for the Delete Role form template.
+    """
+    submit = SubmitField('Delete Role')
 
 
 class AddUserForm(FlaskForm):
@@ -86,62 +207,3 @@ class DeleteUserForm(FlaskForm):
     """Parameters for the Delete User form template.
     """
     submit = SubmitField('Delete User')
-    cancel = SubmitField('Cancel')
-
-
-class AddRoleForm(FlaskForm):
-    """Parameters for the Add Role form template.
-    """
-    role_name = StringField('Role', validators=[DataRequired()])
-    submit = SubmitField('Add Role')
-
-    def validate_role_name(self, role_name):
-        # type: (StringField) -> None
-        """Check if a role already exists in the database.
-
-        :param StringField role_name: The role to check
-        :return: None
-        :raises ValidationError: If the submitted role already exists
-        """
-        _role = db.session.scalar(select(Role).where(
-            Role.role_name == role_name.data))
-        if _role is not None:
-            raise ValidationError('Role already exists.')
-
-
-class EditRoleForm(FlaskForm):
-    """Parameters for the Edit Role form template.
-    """
-    role_name = StringField('Role name', validators=[DataRequired()])
-    submit = SubmitField('Update Role')
-
-    def __init__(self, original_role_name, *args, **kwargs):
-        # type: (str, any, any) -> None
-        """Get the name of the role being edited.
-
-        :params str original_role_name: The edited role's name
-        :return: None
-        """
-        super().__init__(*args, **kwargs)
-        self.original_role_name = original_role_name
-
-    def validate_role_name(self, role_name):
-        # type: (StringField) -> None
-        """Check if a role already exists in the database.
-
-        :param StringField role_name: The role to check
-        :return: None
-        :raises ValidationError: If the submitted role already exists
-        """
-        if role_name.data != self.original_role_name:
-            _role = db.session.scalar(select(Role).where(
-                Role.role_name == self.role_name.data))
-            if _role is not None:
-                raise ValidationError('Role already exists.')
-
-
-class DeleteRoleForm(FlaskForm):
-    """Parameters for the Delete Role form template.
-    """
-    submit = SubmitField('Delete Role')
-    cancel = SubmitField('Cancel')
