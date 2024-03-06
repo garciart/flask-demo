@@ -11,6 +11,8 @@ from app.models import User, Role, Course
 
 class AddCourseForm(FlaskForm):
     """Parameters for the Add Course form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     course_name = StringField('Course', validators=[DataRequired()])
     course_code = StringField('Code', validators=[DataRequired()])
@@ -34,6 +36,8 @@ class AddCourseForm(FlaskForm):
 
 class EditCourseForm(FlaskForm):
     """Parameters for the Edit Course form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     course_name = StringField('Course name', validators=[DataRequired()])
     course_code = StringField('Code', validators=[DataRequired()])
@@ -68,12 +72,16 @@ class EditCourseForm(FlaskForm):
 
 class DeleteCourseForm(FlaskForm):
     """Parameters for the Delete Course form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     submit = SubmitField('Delete Course')
 
 
 class AddRoleForm(FlaskForm):
     """Parameters for the Add Role form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     role_name = StringField('Role', validators=[DataRequired()])
     submit = SubmitField('Add Role')
@@ -94,6 +102,8 @@ class AddRoleForm(FlaskForm):
 
 class EditRoleForm(FlaskForm):
     """Parameters for the Edit Role form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     role_name = StringField('Role name', validators=[DataRequired()])
     submit = SubmitField('Update Role')
@@ -125,12 +135,16 @@ class EditRoleForm(FlaskForm):
 
 class DeleteRoleForm(FlaskForm):
     """Parameters for the Delete Role form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     submit = SubmitField('Delete Role')
 
 
 class AddUserForm(FlaskForm):
     """Parameters for the Add User form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     username = StringField('Username', validators=[DataRequired()])
     user_email = StringField('Email', validators=[DataRequired(), Email()])
@@ -169,6 +183,8 @@ class AddUserForm(FlaskForm):
 
 class EditUserForm(FlaskForm):
     """Parameters for the Edit Role form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     username = StringField('Username', validators=[DataRequired()])
     user_email = StringField('Email', validators=[DataRequired(), Email()])
@@ -205,5 +221,7 @@ class EditUserForm(FlaskForm):
 
 class DeleteUserForm(FlaskForm):
     """Parameters for the Delete User form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     submit = SubmitField('Delete User')

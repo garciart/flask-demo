@@ -3,11 +3,12 @@
 Test: http://127.0.0.1:5000
 """
 # Flake8 F401: imports are used for type hints
-from flask import flash, redirect, render_template, url_for  # noqa: F401
+from flask import (abort, redirect, render_template,
+                   request, url_for)
 from flask_login import current_user, login_required
 from app import db
 from app.main import bp
-from app.main.main_forms import SimpleForm
+from app.main.main_forms import CourseAccessForm, UserAccessForm
 from app.models import User, Course, Role, Association
 
 _DUMMY_DATA = [
@@ -165,28 +166,50 @@ def test():
     return _html
 
 
-@bp.route('/scratch', methods=['GET', 'POST'])
+@bp.route('/scratch/<int:course_id>', methods=['GET', 'POST'])
 @login_required
-def scratch():
-    # type: () -> str
+def scratch(course_id):
+    # type: (int) -> str
     """Scratch page.
+
+    :param int course_id: The ID of the course to modify access
 
     :return: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
-    _form = SimpleForm()
+    # Redirect if not an Administrator
+    if not current_user.is_admin:
+        return redirect(url_for(INDEX_PAGE))
 
-    _page_title = 'Flask Demo'
+    _page_title = 'Assign Users to Course'
 
-    _form.planets.choices = [('Mercury', 1), ('Venus', 2), ('Earth', 3),
-                             ('Mars', 4), ('Jupiter', 5), ('Saturn', 6),
-                             ('Uranus', 7), ('Neptune', 2), ('Pluto', 2)]
+    _form = UserAccessForm()
+    _form.title.data = 'Assign Users to Courses'
+    _course = Course.query.get_or_404(course_id)
+    _user_fields = []
 
     if _form.validate_on_submit():
-        flash(_form.planets.data)
-    else:
-        flash('Huh?')
+        pass
+    elif request.method == 'GET':
+        # for _u in User.query.all():
+        #     _a = Association.query.filter(
+        #         Association.course_id == course_id).all()
 
-    _html = render_template('main/scratch.html', page_title=_page_title,
-                            form=_form)
-    return _html
+        for _a in Association.query.filter(
+                Association.course_id == course_id).all():
+
+            _user_fields.append(User.query.filter(
+                User.user_id == _a.user_id).first())
+            _access_form = CourseAccessForm()
+            _access_form.access_code = _a.role_id
+            _form.access_fields.append_entry(_access_form)
+
+        return render_template(
+            'main/scratch.html',
+            page_title=_page_title,
+            form=_form,
+            course_name=_course.course_name,
+            zip_object=zip(_form.access_fields, _user_fields)
+        )
+    else:
+        abort(500)

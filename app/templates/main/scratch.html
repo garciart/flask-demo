@@ -1,39 +1,35 @@
-{% extends "base.html" %}
-{% block title %}
-{{ page_title }}
-{% endblock %}
-{% block head %}
-{{ super() }}
-<!-- Using DataTables 2.0.0 -->
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
-{% endblock %}
-{% block content %}
-{% if current_user.is_anonymous %}
-<h1>Welcome!</h1>
-<p>You should log in.</p>
-{% else %}
-<h1>Welcome, {{ current_user.username }}!</h1>
-<form action="" method="post" novalidata>
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.planets }}<br>
-    </p>
-    <p>{{ form.submit(class="btn btn-primary") }}</p>
-</form>
-{% endif %}
-{% endblock %}
-{% block footer %}
-{% endblock %}
-{% block scripts %}
-{{ super() }}
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
-<!-- Using DataTables 2.0.0 -->
-<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
-<script type="text/javascript">
-    let table = new DataTable('#data-table', {
-        order: [[0, 'asc']]
-    });
-</script>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ page_title }}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body>
+  <form method="GET" action="" enctype="multipart/form-data">
+    <h1>{{ course_name }}</h1>
+    <table class="table table-sm table-hover">
+      <caption class="text-center">Assign Access to Courses</caption>
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">User Name</th>
+          <th scope="col">Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for _access_form, _fixed_fields in zip_object %}
+        <tr>
+          <td> {{ _fixed_fields.username }}</td>
+          <td>
+            {% for subfield in _access_form.access_code %}
+            {{ subfield }}
+            {{ subfield.label }}
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
+</body>
+</html>

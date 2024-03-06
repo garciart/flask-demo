@@ -1,19 +1,34 @@
-"""main forms manager.
+"""Main forms manager.
+
+updateStudentAttendanceForm = CourseAccessForm
+attendanceCode = access_code
+"Attendance Code" = 'Access Code'
+updateClassAttendanceForm = UserAccessForm
+classMembers = access_fields
 """
 from flask_wtf import FlaskForm
-from wtforms import widgets, SelectMultipleField, SubmitField
+from wtforms import FieldList, FormField, RadioField, StringField, SubmitField
 
 
-class MultiCheckboxField(SelectMultipleField):
-    """Create the MultiCheckboxField widget
+class CourseAccessForm(FlaskForm):
+    """Parameters for the sub-form with radio buttons to choose course
+    access privileges.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
-    widget = widgets.ListWidget(prefix_label=False)
-    option_widget = widgets.CheckboxInput()
+    access_code = RadioField(
+        'Access Code',
+        choices=[(1, 'Principal'), (2, 'Teacher'), (3, 'Student'),
+                 (4, 'No Access')],
+    )
+    submit = SubmitField('Assign Course(s) to User(s)')
 
 
-class SimpleForm(FlaskForm):
-    """Parameters for a simple form template.
+class UserAccessForm(FlaskForm):
+    """Parameters for the WTForm that will display the username
+    and course access privileges.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
-    planets = MultiCheckboxField('Label')
-    # example = RadioField('Label')
-    submit = SubmitField('Submit')
+    title = StringField('title')
+    access_fields = FieldList(FormField(CourseAccessForm))

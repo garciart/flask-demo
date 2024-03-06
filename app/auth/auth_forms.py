@@ -7,6 +7,8 @@ from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
     """Parameters for the login form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
