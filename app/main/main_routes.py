@@ -8,7 +8,7 @@ from flask import (abort, redirect, render_template,
 from flask_login import current_user, login_required
 from app import db
 from app.main import bp
-from app.main.main_forms import CourseAccessForm, UserAccessForm
+from app.main.main_forms import AccessChoiceForm, UserAccessForm
 from app.models import User, Course, Role, Association
 
 _DUMMY_DATA = [
@@ -184,24 +184,89 @@ def scratch(course_id):
     _page_title = 'Assign Users to Course'
 
     _form = UserAccessForm()
-    _form.title.data = 'Assign Users to Courses'
+    _course = Course.query.get_or_404(course_id)
+
+    if _form.validate_on_submit():
+        print('Submitted')
+    elif request.method == 'GET':
+        _users = User.query.order_by(User.username).all()
+
+        for _u in _users:
+            print(_u.user_id, _u.username)
+
+        # Convert to list if there is only one result
+        _users = [_users] if not isinstance(_users, list) else _users
+
+        for _u in _users:
+            _a = Association.query.filter(
+                Association.course_id == course_id,
+                Association.user_id == _u.user_id).first()
+
+            _access_form = AccessChoiceForm()
+
+            if _a is None:
+                _access_form.access_code = 4
+            else:
+                _access_form.access_code = _a.role_id
+
+            _form.access_fields.append_entry(_access_form)
+
+        return render_template(
+            'main/scratch.html',
+            page_title=_page_title,
+            form=_form,
+            course_name=_course.course_name,
+            users=_users,
+            zip_object=zip(_form.access_fields, _user_fields)
+        )
+    else:
+        abort(500)
+
+
+@bp.route('/scratch/<int:course_id>', methods=['GET', 'POST'])
+@login_required
+def old_scratch(course_id):
+    # type: (int) -> str
+    """Scratch page.
+
+    :param int course_id: The ID of the course to modify access
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    # Redirect if not an Administrator
+    if not current_user.is_admin:
+        return redirect(url_for(INDEX_PAGE))
+
+    _page_title = 'Assign Users to Course'
+
+    _form = UserAccessForm()
     _course = Course.query.get_or_404(course_id)
     _user_fields = []
 
     if _form.validate_on_submit():
-        pass
+        print('Submitted')
     elif request.method == 'GET':
-        # for _u in User.query.all():
-        #     _a = Association.query.filter(
-        #         Association.course_id == course_id).all()
+        # _users = User.query.order_by(User.username).all()
+        _users = User.query.all()
+        for _u in _users:
+            print(_u.user_id, _u.username)
 
-        for _a in Association.query.filter(
-                Association.course_id == course_id).all():
+        for _u in User.query.all():
 
-            _user_fields.append(User.query.filter(
-                User.user_id == _a.user_id).first())
-            _access_form = CourseAccessForm()
-            _access_form.access_code = _a.role_id
+            _user_fields.append(_u)
+
+            _a = Association.query.filter(
+                Association.course_id == course_id,
+                Association.user_id == _u.user_id).first()
+
+            _access_form = AccessChoiceForm()
+
+            if _a is None:
+                _access_form.access_code = 4
+            else:
+                _access_form.access_code = _a.role_id
+
             _form.access_fields.append_entry(_access_form)
 
         return render_template(
