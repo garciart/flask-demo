@@ -3,12 +3,12 @@
 Test: http://127.0.0.1:5000
 """
 # Flake8 F401: imports are used for type hints
-from flask import (abort, redirect, render_template,
+from flask import (abort, flash, redirect, render_template,
                    request, url_for)
 from flask_login import current_user, login_required
 from app import db
 from app.main import bp
-from app.main.main_forms import AccessChoiceForm, UserAccessForm
+from app.main.main_forms import SimpleForm
 from app.models import User, Course, Role, Association
 
 _DUMMY_DATA = [
@@ -181,100 +181,131 @@ def scratch(course_id):
     if not current_user.is_admin:
         return redirect(url_for(INDEX_PAGE))
 
+    # Set the page title
     _page_title = 'Assign Users to Course'
 
-    _form = UserAccessForm()
+    # Instantiate the form
+    _form = SimpleForm()
+    
+    # Get the course data from the database
     _course = Course.query.get_or_404(course_id)
 
     if _form.validate_on_submit():
         print('Submitted')
     elif request.method == 'GET':
+        # Get a list of roles from the database
+        _roles = Role.query.all()
+        
+        # Ensure the result is a list so you can iterate through it
+        # (One result is a Role object, and you can't iterate Role)
+        _roles = [_roles] if not isinstance(_roles, list) else _roles
+
+        # print('_roles', _roles, type(_roles))
+        # print('_roles[3]', _roles[2], type(_roles[2]))
+
+        # Get a list of users by name from the database
         _users = User.query.order_by(User.username).all()
-
-        for _u in _users:
-            print(_u.user_id, _u.username)
-
-        # Convert to list if there is only one result
+        
+        # Ensure the result is a list so you can iterate through it
         _users = [_users] if not isinstance(_users, list) else _users
+       
+        # print('_users', _users, type(_users))
+        # print('_users[3]', _users[3], type(_users[3]))
+
+        # Create a list to hold user information
+        # You will iterate through this list of dictionaries,
+        # instead of a list of User objects, when you render the webpage
+        _users_list = []
 
         for _u in _users:
+            _user_dict = _u.__dict__
+            _user_dict['role_id'] = 4
             _a = Association.query.filter(
                 Association.course_id == course_id,
-                Association.user_id == _u.user_id).first()
+                Association.user_id == _user_dict['user_id']).first()
 
-            _access_form = AccessChoiceForm()
+            # print("_a", _a, type(_a))
 
-            if _a is None:
-                _access_form.access_code = 4
-            else:
-                _access_form.access_code = _a.role_id
+            if _a is not None:
+                _user_dict['role_id'] = _a.role_id
 
-            _form.access_fields.append_entry(_access_form)
+            # print("_user_dict", _user_dict, type(_user_dict))
+            # print("_user_dict['username']", _user_dict['username'], type(_user_dict['username']))
+            
+            _users_list.append(_user_dict)
+
+        # print("_users_list", _users_list, type(_users_list))
+        # print("_users_list[0]", _users_list[0], type(_users_list[0]))
+        # print("_users_list[0]['username']", _users_list[0]['username'], type(_users_list[0]['username']))
 
         return render_template(
             'main/scratch.html',
             page_title=_page_title,
-            form=_form,
             course_name=_course.course_name,
-            users=_users,
-            zip_object=zip(_form.access_fields, _user_fields)
-        )
-    else:
-        abort(500)
+            form=_form,
+            roles=_roles,
+            users_list=_users_list)
+    elif request.method == 'POST':
+        flash('Check')
 
-
-@bp.route('/scratch/<int:course_id>', methods=['GET', 'POST'])
-@login_required
-def old_scratch(course_id):
-    # type: (int) -> str
-    """Scratch page.
-
-    :param int course_id: The ID of the course to modify access
-
-    :return: The HTML code to display with {{ placeholders }} populated
-    :rtype: str
-    """
-    # Redirect if not an Administrator
-    if not current_user.is_admin:
         return redirect(url_for(INDEX_PAGE))
-
-    _page_title = 'Assign Users to Course'
-
-    _form = UserAccessForm()
-    _course = Course.query.get_or_404(course_id)
-    _user_fields = []
-
-    if _form.validate_on_submit():
-        print('Submitted')
-    elif request.method == 'GET':
-        # _users = User.query.order_by(User.username).all()
-        _users = User.query.all()
-        for _u in _users:
-            print(_u.user_id, _u.username)
-
-        for _u in User.query.all():
-
-            _user_fields.append(_u)
-
-            _a = Association.query.filter(
-                Association.course_id == course_id,
-                Association.user_id == _u.user_id).first()
-
-            _access_form = AccessChoiceForm()
-
-            if _a is None:
-                _access_form.access_code = 4
-            else:
-                _access_form.access_code = _a.role_id
-
-            _form.access_fields.append_entry(_access_form)
-
-        return render_template(
-            'main/scratch.html',
-            page_title=_page_title,
-            form=_form,
-            course_name=_course.course_name,
-            zip_object=zip(_form.access_fields, _user_fields)
-        )
     else:
+        print('Oh.')
         abort(500)
+
+
+# @bp.route('/scratch/<int:course_id>', methods=['GET', 'POST'])
+# @login_required
+# def old_scratch(course_id):
+#     # type: (int) -> str
+#     """Scratch page.
+
+#     :param int course_id: The ID of the course to modify access
+
+#     :return: The HTML code to display with {{ placeholders }} populated
+#     :rtype: str
+#     """
+#     # Redirect if not an Administrator
+#     if not current_user.is_admin:
+#         return redirect(url_for(INDEX_PAGE))
+
+#     _page_title = 'Assign Users to Course'
+
+#     _form = UserAccessForm()
+#     _course = Course.query.get_or_404(course_id)
+#     _user_fields = []
+
+#     if _form.validate_on_submit():
+#         print('Submitted')
+#     elif request.method == 'GET':
+#         # _users = User.query.order_by(User.username).all()
+#         _users = User.query.all()
+#         for _u in _users:
+#             print(_u.user_id, _u.username)
+
+#         for _u in User.query.all():
+
+#             _user_fields.append(_u)
+
+#             _a = Association.query.filter(
+#                 Association.course_id == course_id,
+#                 Association.user_id == _u.user_id).first()
+
+#             _access_form = AccessChoiceForm()
+
+#             if _a is None:
+#                 _access_form.access_code = 4
+#             else:
+#                 _access_form.access_code = _a.role_id
+
+#             _form.access_fields.append_entry(_access_form)
+
+#         return render_template(
+#             'main/scratch.html',
+#             page_title=_page_title,
+#             form=_form,
+#             course_name=_course.course_name,
+#             zip_object=zip(_form.access_fields, _user_fields)
+#         )
+#     else:
+#         abort(500)
