@@ -73,11 +73,13 @@ def main():
         app.db.session.add_all([c1, c2, c3, c4, c5, c6, c7, c8, c9, c10,
                                 c11, c12, c13, c14, c15, c16])
 
-        r1 = Role(role_name='Administrator')
-        r2 = Role(role_name='Teacher')
-        r3 = Role(role_name='Student')
+        r1 = Role(role_name='Administrator', role_privilege='1')
+        r2 = Role(role_name='Teacher', role_privilege='2')
+        r3 = Role(role_name='Student', role_privilege='3')
+        # r4 = Role(role_name='Not Assigned', role_privilege='99')
 
         app.db.session.add_all([r1, r2, r3])
+        # app.db.session.add_all([r1, r2, r3, r4])
 
         u1 = User(username='Admin', user_email='admin@example.com', is_admin=True)
         u2 = User(username='Leto.Atreides', user_email='leto@atreides.com', is_admin=False)

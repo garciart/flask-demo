@@ -1,30 +1,48 @@
 {% extends "base.html" %}
-
+{% block title %}
+{{ page_title }}
+{% endblock %}
+{% block head %}
+{{ super() }}
+<!-- Using DataTables 2.0.0 -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
+{% endblock %}
 {% block content %}
+{% if current_user.is_anonymous %}
+<h1>Welcome!</h1>
+<p>You should log in.</p>
+{% else %}
 <h1>Assign Course to User</h1>
 <h2>{{ course_name }}</h2>
 
 <form action="" method="post">
-  <table class="table table-sm table-hover">
+  <table id="data-table" class="table table-striped display caption-top">
     <caption class="text-center">Assign Access to Courses</caption>
-    <thead class="thead-light">
+    <thead>
       <tr>
         <th scope="col">User Name</th>
+        <th scope="col">User ID</th>
         <th scope="col">Access</th>
       </tr>
     </thead>
     <tbody>
       {% for u in users_list %}
       <tr>
-        <td>{{ u['username'] }}</td>
+        <td scope="row" class="text-nowrap">{{ u['username'] }}</td>
+        <td class="text-nowrap">{{ u['user_id'] }}</td>
         <td>
           {% for r in roles %}
           {% if u['role_id'] == r.role_id %}
-          <input type="radio" name="{{ u['user_id'] }}" id="{{ u['role_id'] }}" value="{{ u['role_id'] }}" checked>{{
-          r.role_name }}</input>
+          <span class="ps-3">
+            <input type="radio" name="{{ u['user_id'] }}" id="{{ u['role_id'] }}" value="{{ u['role_id'] }}" checked>{{
+            r.role_name }}</input>
+          </span>
           {% else %}
-          <input type="radio" name="{{ u['user_id'] }}" id="{{ u['role_id'] }}" value="{{ u['role_id'] }}">{{
-          r.role_name }}</input>
+          <span class="ps-3">
+            <input type="radio" name="{{ u['user_id'] }}" id="{{ u['role_id'] }}" value="{{ u['role_id'] }}">{{
+            r.role_name }}</input>
+          </span>
           {% endif %}
           {% endfor %}
         </td>
@@ -35,4 +53,19 @@
   <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
       onclick="history.back()"></p>
 </form>
+{% endif %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
+<!-- Using DataTables 2.0.0 -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+<script type="text/javascript">
+  let table = new DataTable('#data-table', {
+    order: [[0, 'asc']]
+  });
+</script>
 {% endblock %}
