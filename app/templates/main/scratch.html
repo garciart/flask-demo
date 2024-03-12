@@ -35,12 +35,12 @@
           {% for r in roles %}
           {% if u['role_id'] == r.role_id %}
           <span class="ps-3">
-            <input type="radio" name="{{ u['user_id'] }}" id="{{ u['role_id'] }}" value="{{ u['role_id'] }}" checked>{{
+            <input type="radio" name="{{ u['user_id'] }}" value="{{ r['role_id'] }}" checked>{{
             r.role_name }}</input>
           </span>
           {% else %}
           <span class="ps-3">
-            <input type="radio" name="{{ u['user_id'] }}" id="{{ u['role_id'] }}" value="{{ u['role_id'] }}">{{
+            <input type="radio" name="{{ u['user_id'] }}" value="{{ r['role_id'] }}">{{
             r.role_name }}</input>
           </span>
           {% endif %}
@@ -65,7 +65,10 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
 <script type="text/javascript">
   let table = new DataTable('#data-table', {
-    order: [[0, 'asc']]
+    order: [[0, 'asc']],
+    paging: false,
+    scrollCollapse: true,
+    scrollY: '50vh'
   });
 </script>
 {% endblock %}

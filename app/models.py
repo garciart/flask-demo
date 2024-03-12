@@ -48,13 +48,15 @@ class Role(db.Model):
     role_id: Mapped[int] = mapped_column(primary_key=True)
     role_name: Mapped[str] = mapped_column(
         String(64), index=True, unique=True)
+    role_privilege: Mapped[int] = mapped_column(unique=True)
 
     associations: Mapped[List['Association']] = relationship(
         back_populates='role')
 
     def __repr__(self):
         return (f'{{"role_id": "{self.role_id}",'
-                f'"role_name": "{self.role_name}"}}')
+                f'"role_name": "{self.role_name}",'
+                f'"role_privilege": "{self.role_privilege}"}}')
 
 
 class User(UserMixin, db.Model):

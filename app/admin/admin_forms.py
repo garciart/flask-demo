@@ -1,12 +1,14 @@
 """Administration forms manager.
 """
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, PasswordField, SubmitField
+from wtforms import (BooleanField, StringField, PasswordField, SubmitField,
+                     IntegerField)
 from wtforms.widgets import TextArea
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import (ValidationError, DataRequired, Email, EqualTo,
+                                NumberRange)
 from sqlalchemy import select
 from app import db
-from app.models import User, Role, Course
+from app.models import (User, Role, Course)
 
 
 class AddCourseForm(FlaskForm):
@@ -84,20 +86,36 @@ class AddRoleForm(FlaskForm):
     :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     role_name = StringField('Role', validators=[DataRequired()])
+    role_privilege = IntegerField(
+        'Privilege Level', validators=[DataRequired(),
+                                       NumberRange(min=0, max=15)])
     submit = SubmitField('Add Role')
 
     def validate_role_name(self, role_name):
         # type: (StringField) -> None
-        """Check if a role already exists in the database.
+        """Check if a role name already exists in the database.
 
-        :param StringField role_name: The role to check
+        :param StringField role_name: The role name to check
         :return: None
-        :raises ValidationError: If the submitted role already exists
+        :raises ValidationError: If the submitted role name already exists
         """
         _role = db.session.scalar(select(Role).where(
             Role.role_name == role_name.data))
         if _role is not None:
-            raise ValidationError('Role already exists.')
+            raise ValidationError('Role name already exists.')
+
+    def validate_role_privilege(self, role_privilege):
+        # type: (IntegerField) -> None
+        """Check if a privilege level already exists in the database.
+
+        :param IntegerField role_privilege: The privilege level to check
+        :return: None
+        :raises ValidationError: If the submitted privilege level already exists
+        """
+        _role = db.session.scalar(select(Role).where(
+            Role.role_privilege == role_privilege.data))
+        if _role is not None:
+            raise ValidationError('Privilege level already exists.')
 
 
 class EditRoleForm(FlaskForm):
@@ -106,31 +124,52 @@ class EditRoleForm(FlaskForm):
     :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     role_name = StringField('Role name', validators=[DataRequired()])
+    role_privilege = IntegerField(
+        'Privilege Level', validators=[DataRequired(),
+                                       NumberRange(min=0, max=15)])
     submit = SubmitField('Update Role')
 
-    def __init__(self, original_role_name, *args, **kwargs):
-        # type: (str, any, any) -> None
-        """Get the name of the role being edited.
+    def __init__(self, original_role_name,
+                 original_role_privilege,
+                 *args, **kwargs):
+        # type: (str, int, any, any) -> None
+        """Get the name and privilege of the role being edited.
 
         :params str original_role_name: The edited role's name
+        :params int original_role_privilege: The edited role's privilege level
         :return: None
         """
         super().__init__(*args, **kwargs)
         self.original_role_name = original_role_name
+        self.original_role_privilege = original_role_privilege
 
     def validate_role_name(self, role_name):
         # type: (StringField) -> None
-        """Check if a role already exists in the database.
+        """Check if a role name or already exists in the database.
 
-        :param StringField role_name: The role to check
+        :param StringField role_name: The role name to check
         :return: None
-        :raises ValidationError: If the submitted role already exists
+        :raises ValidationError: If the submitted role name already exists
         """
         if role_name.data != self.original_role_name:
             _role = db.session.scalar(select(Role).where(
                 Role.role_name == self.role_name.data))
             if _role is not None:
-                raise ValidationError('Role already exists.')
+                raise ValidationError('Role name already exists.')
+
+    def validate_role_privilege(self, role_privilege):
+        # type: (IntegerField) -> None
+        """Check if a privilege level already exists in the database.
+
+        :param IntegerField role_privilege: The privilege level to check
+        :return: None
+        :raises ValidationError: If the submitted privilege level already exists
+        """
+        if role_privilege.data != self.original_role_privilege:
+            _role = db.session.scalar(select(Role).where(
+                Role.role_privilege == self.role_privilege.data))
+            if _role is not None:
+                raise ValidationError('Privilege level already exists.')
 
 
 class DeleteRoleForm(FlaskForm):

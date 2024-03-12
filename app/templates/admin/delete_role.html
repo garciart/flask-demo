@@ -5,7 +5,7 @@
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p style="color: red;">
-        <strong><em>Are you sure you want to delete {{ role_name }}?</em></strong>
+        <strong><em>Are you sure you want to delete {{ role_name }} ({{ role_privilege }})?</em></strong>
     </p>
     <p>{{ form.submit(class="btn btn-danger") }}   <input type="button" class="btn btn-secondary" value="Cancel" onclick="history.back()"></p>
 </form>

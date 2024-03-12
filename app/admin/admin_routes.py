@@ -21,9 +21,9 @@ from app.app_utils import validate_input
 INDEX_PAGE = 'main.index'
 USERS_PAGE = 'main.users'
 ROLES_PAGE = 'main.roles'
-NOT_AUTH_MSG1 = 'You must be an administrator to perform this action.'
+NOT_AUTH_MSG1 = 'You must be an administrator to perform that action.'
 NOT_AUTH_MSG2 = (
-    'You must be an administrator or owner to perform this action.')
+    'You must be an administrator or owner to perform that action.')
 SUICIDE_MSG = 'You cannot delete yourself!'
 
 
@@ -54,7 +54,7 @@ def add_course():
 
         # Add the course and owner to the association table
         _user_id = int(current_user.get_id())
-        _assoc = Association(course_id=_new_id, role_id=2, user_id=_user_id)
+        _assoc = Association(course_id=_new_id, role_id=1, user_id=_user_id)
 
         db.session.add(_assoc)
         db.session.commit()
@@ -80,38 +80,39 @@ def edit_course(course_id):
 
     _course = Course.query.get_or_404(course_id)
 
+    _user_id = int(current_user.get_id())
+
     _assoc = Association.query.filter(
-        Association.course_id == _course.course_id).all()
+        Association.course_id == _course.course_id,
+        Association.user_id == _user_id,
+        ((Association.role_id == '1') | (Association.role_id == '2'))).all()
 
     print('_assoc', _assoc, type(_assoc))
 
-    # Only owners and administrators can edit courses
-    if not current_user.is_admin:
-        _user_id = int(current_user.get_id())
-        for _a in _assoc:
-            if _a.user_id != _user_id and _a.role_id > 2:
-                flash(NOT_AUTH_MSG2)
-                return redirect(url_for(INDEX_PAGE))
+    # Only administrators, owners, and teachers can edit courses
+    if current_user.is_admin or len(_assoc) != 0:
+        _form = EditCourseForm(_course.course_name)
 
-    _form = EditCourseForm(_course.course_name)
-
-    if _form.validate_on_submit():
-        _course.course_name = _form.course_name.data
-        _course.course_code = _form.course_code.data
-        _course.course_group = _form.course_group.data
-        _course.course_desc = _form.course_desc.data
-        db.session.commit()
-        flash('Course updated.')
-        return redirect(url_for('main.courses'))
-    elif request.method == 'GET':
-        _form.course_name.data = _course.course_name
-        _form.course_code.data = _course.course_code
-        _form.course_group.data = _course.course_group
-        _form.course_desc.data = _course.course_desc
-        return render_template('admin/edit_course.html', title='Edit Course',
-                               form=_form)
+        if _form.validate_on_submit():
+            _course.course_name = _form.course_name.data
+            _course.course_code = _form.course_code.data
+            _course.course_group = _form.course_group.data
+            _course.course_desc = _form.course_desc.data
+            db.session.commit()
+            flash('Course updated.')
+            return redirect(url_for('main.courses'))
+        elif request.method == 'GET':
+            _form.course_name.data = _course.course_name
+            _form.course_code.data = _course.course_code
+            _form.course_group.data = _course.course_group
+            _form.course_desc.data = _course.course_desc
+            return render_template('admin/edit_course.html', title='Edit Course',
+                                form=_form)
+        else:
+            abort(500)
     else:
-        abort(500)
+        flash(NOT_AUTH_MSG2)
+        return redirect(url_for(INDEX_PAGE))
 
 
 @admin_bp.route('/delete_course/<int:course_id>', methods=['GET', 'POST'])
@@ -132,11 +133,11 @@ def delete_course(course_id):
     _assoc = Association.query.filter(
         Association.course_id == _course.course_id).all()
 
-    # Only owners and administrators can delete courses
+    # Only administrators and owners can delete courses
     if not current_user.is_admin:
         _user_id = int(current_user.get_id())
         for _a in _assoc:
-            if _a.user_id != _user_id and _a.role_id > 2:
+            if _a.user_id != _user_id and _a.role_id != 1:
                 flash(NOT_AUTH_MSG2)
                 return redirect(url_for(INDEX_PAGE))
 
@@ -177,7 +178,8 @@ def add_role():
     _form = AddRoleForm()
 
     if _form.validate_on_submit():
-        _role = Role(role_name=_form.role_name.data)
+        _role = Role(role_name=_form.role_name.data,
+                     role_privilege=_form.role_privilege.data)
         db.session.add(_role)
         db.session.commit()
         flash('Role added.')
@@ -206,15 +208,17 @@ def edit_role(role_id):
     validate_input('role_id', role_id, int)
 
     _role = Role.query.get_or_404(role_id)
-    _form = EditRoleForm(_role.role_name)
+    _form = EditRoleForm(_role.role_name, _role.role_privilege)
 
     if _form.validate_on_submit():
         _role.role_name = _form.role_name.data
+        _role.role_privilege = _form.role_privilege.data
         db.session.commit()
         flash('Role updated.')
         return redirect(url_for(ROLES_PAGE))
     elif request.method == 'GET':
         _form.role_name.data = _role.role_name
+        _form.role_privilege.data = _role.role_privilege
         return render_template('admin/edit_role.html', title='Edit Role',
                                form=_form)
     else:
@@ -250,8 +254,10 @@ def delete_role(role_id):
         return redirect(url_for(ROLES_PAGE))
     elif request.method == 'GET':
         _role_name = _role.role_name
+        _role_privilege = _role.role_privilege
         return render_template('admin/delete_role.html', title='Delete Role',
-                               role_name=_role_name, form=_form)
+                               role_name=_role_name,
+                               role_privilege=_role_privilege, form=_form)
     else:
         abort(500)
 
