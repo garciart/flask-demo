@@ -38,8 +38,12 @@
       <td>{{ course.course_desc }}</td>
       {% if current_user.is_admin %}
       <td class="text-nowrap">
-        <a class="btn btn-primary" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}" title="Edit">Edit</a>
-        <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}" title="Delete">Delete</a>
+        <a class="btn btn-primary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
+          title="Assign">Assign</a>
+        <a class="btn btn-warning" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}"
+          title="Edit">Edit</a>
+        <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}"
+          title="Delete">Delete</a>
       </td>
       {% endif %}
     </tr>

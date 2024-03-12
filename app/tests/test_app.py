@@ -1,4 +1,4 @@
-"""Unit tests for app.py
+"""Unit tests for app.py.
 
 Run from the project root directory (e.g., ../flask-template)
 

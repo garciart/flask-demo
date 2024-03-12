@@ -1,4 +1,4 @@
-"""Make this directory a package to allow you to import its files elsewhere
+"""Make this directory a package to allow you to import its files as modules.
 """
 import logging
 import os
@@ -33,7 +33,7 @@ def create_app(alt_config=None):
     # Create and configure the app
     app = Flask(__name__)
 
-    # Import app modules after init app to prevent circular import problems
+    # Import app modules after init to avoid known circular import problems
     from app.app_utils import validate_input  # noqa: E501 E402 pylint:disable=import-outside-toplevel
     from app.config import Config  # noqa: E501 E402 pylint:disable=import-outside-toplevel
 
@@ -71,7 +71,7 @@ def create_app(alt_config=None):
         return 'Hello, World!'
 
     # Start routing
-    # Import app modules after init app to prevent circular import problems
+    # Import app modules after init to avoid known circular import problems
     from app.main import main_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
     from app.auth import auth_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
     from app.admin import admin_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel

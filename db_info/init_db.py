@@ -5,7 +5,7 @@ IMPORTANT - Ensure you have performed an initial migration of models.py first
 Usage: python3 -m db_info.init_db
 """
 import app
-from app.models import User, Course, Role, Association
+from app.models import (User, Course, Role, Association)
 
 # Disable line length errors
 # Flake8: noqa: E501
@@ -62,7 +62,7 @@ def main():
                     course_desc='A practical introduction to the methodology, practices, and requirements of data science to ensure that data is relevant and properly manipulated to solve problems and address a variety of real-world projects and business scenarios.')
         c14 = Course(course_name='Cybersecurity for Leaders and Managers',
                     course_code='CSIA 300', course_group='CSIA',
-                    course_desc='A foundational study of cybersecurity principles, practices, and strategies in the establishment, management, and governance of an enterprise¿s cybersecurity program.')
+                    course_desc="A foundational study of cybersecurity principles, practices, and strategies in the establishment, management, and governance of an enterprise's cybersecurity program.")
         c15 = Course(course_name='Cybersecurity Processes and Technologies',
                     course_code='CSIA 310', course_group='CSIA',
                     course_desc='A study of the processes and technologies used to implement and manage enterprise IT security operations.')

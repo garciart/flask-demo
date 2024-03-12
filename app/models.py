@@ -1,12 +1,12 @@
 """Database models
 """
-from typing import Optional, List
-from sqlalchemy import String, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from werkzeug.security import generate_password_hash, check_password_hash
+from typing import (Optional, List)
+from sqlalchemy import (String, ForeignKey)
+from sqlalchemy.orm import (Mapped, mapped_column, relationship)
+from werkzeug.security import (generate_password_hash, check_password_hash)
 from flask_login import UserMixin
 from app.app_utils import validate_input
-from app import db, login
+from app import (db, login)
 
 # - 'flask db init' to   migration repository
 # - 'flask db migrate -m "<message>"' to generate a migration script

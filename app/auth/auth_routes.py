@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 from flask import (Response,  # noqa: F401
                    flash, redirect, render_template,
                    request, url_for)
-from flask_login import current_user, login_user, logout_user
+from flask_login import (current_user, login_user, logout_user)
 from sqlalchemy import select
 from app.auth import auth_bp
 from app.auth.auth_forms import LoginForm
@@ -19,6 +19,7 @@ from app.models import User
 
 
 INDEX_PAGE = 'main.index'
+LOGIN_PAGE = 'auth.login'
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -44,7 +45,7 @@ def login():
 
         if _user is None or not _user.check_password(_form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for(LOGIN_PAGE))
 
         login_user(_user, remember=_form.remember_me.data)
 

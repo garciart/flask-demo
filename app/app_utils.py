@@ -2,7 +2,7 @@
 """
 import inspect
 from types import FrameType
-from flask import abort, current_app
+from flask import (abort, current_app)
 
 
 def validate_input(obj_name, obj_to_check, expected_type):

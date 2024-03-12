@@ -41,7 +41,9 @@
             <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('main.index') }}" title="Home">Home</a>
             </li>
-            <li><hr></li>
+            <li>
+              <hr>
+            </li>
             <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('admin.add_course') }}" title="Add Course">Add Course</a>
             </li>
@@ -52,7 +54,9 @@
             <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('admin.add_user') }}" title="Add User">Add User</a>
             </li>
-            <li><hr></li>
+            <li>
+              <hr>
+            </li>
             <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('main.courses') }}" title="View Courses">View Courses</a>
             </li>
@@ -63,12 +67,19 @@
               <a class="nav-link" href="{{ url_for('main.users') }}" title="View Users">View Users</a>
             </li>
             {% endif %}
-            <li><hr></li>
+            <li>
+              <hr>
+            </li>
+            <li class="dropdown-item">
+              <a class="nav-link" href="{{ url_for('admin.update_profile', user_id=current_user.get_id()) }}" title="Update Profile">Update Profile</a>
+            </li>
             <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('auth.logout') }}" title="Log Out">Log Out</a>
             </li>
             {% endif %}
-            <li><hr></li>
+            <li>
+              <hr>
+            </li>
             <li class="dropdown-item">
               <a class="nav-link" href="{{ url_for('main.about') }}" title="About">About</a>
             </li>

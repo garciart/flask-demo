@@ -1,4 +1,4 @@
-"""Administration forms manager.
+"""Administration forms manager
 """
 from flask_wtf import FlaskForm
 from wtforms import (BooleanField, StringField, PasswordField, SubmitField,
@@ -9,6 +9,12 @@ from wtforms.validators import (ValidationError, DataRequired, Email, EqualTo,
 from sqlalchemy import select
 from app import db
 from app.models import (User, Role, Course)
+
+
+class SimpleForm(FlaskForm):
+    """Basic form to capture data on submit.
+    """
+    submit = SubmitField()
 
 
 class AddCourseForm(FlaskForm):
@@ -264,3 +270,39 @@ class DeleteUserForm(FlaskForm):
     :param FlaskForm FlaskForm: Base class for creating WTForms
     """
     submit = SubmitField('Delete User')
+
+
+class UpdateProfileForm(FlaskForm):
+    """Parameters for the Update Profile form template.
+
+    :param FlaskForm FlaskForm: Base class for creating WTForms
+    """
+    user_email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password')
+    password2 = PasswordField(
+        'Repeat Password', validators=[EqualTo('password')])
+    submit = SubmitField('Update User')
+
+    def __init__(self, original_user_email, *args, **kwargs):
+        # type: (str, any, any) -> None
+        """Get the email of the user being edited.
+
+        :params str original_user_email: The edited user's email
+        :return: None
+        """
+        super().__init__(*args, **kwargs)
+        self.original_user_email = original_user_email
+
+    def validate_user_email(self, user_email):
+        # type: (StringField) -> None
+        """Check if a user's email already exists in the database.
+
+        :param StringField user_email: The user's email to check
+        :return: None
+        :raises ValidationError: If the submitted user's email already exists
+        """
+        if user_email.data != self.original_user_email:
+            _user = db.session.scalar(select(User).where(
+                User.user_email == self.user_email.data))
+            if _user is not None:
+                raise ValidationError('User email already exists.')
