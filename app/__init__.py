@@ -24,7 +24,7 @@ def create_app(alt_config=None):
     # type: (str) -> Flask
     """Application Factory.
 
-    :params str alt_config: An alternate configuration file path for
+    :param str alt_config: An alternate configuration file path for
     testing, etc. Use app/config.py if None
 
     :return: An application instance

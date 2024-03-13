@@ -14,11 +14,11 @@
 <p>You should log in.</p>
 {% else %}
 <h1>Assign Course to User</h1>
+<hr>
 <h2>{{ course_name }}</h2>
 
 <form action="" method="post">
   <table id="data-table" class="table table-striped display caption-top">
-    <caption class="text-center">Access to Course List</caption>
     <thead>
       <tr>
         <th scope="col">User Name</th>
@@ -50,6 +50,7 @@
       {% endfor %}
     </tbody>
   </table>
+  <hr>
   <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
       onclick="history.back()"></p>
 </form>

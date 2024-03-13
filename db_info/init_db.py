@@ -23,7 +23,7 @@ def main():
 
         c1 = Course(course_name='Introductory Programming',
                     course_code='CMSC 115', course_group='CMSC',
-                    course_desc='A study of structured and object-oriented programming using the Java language. ')
+                    course_desc='A study of structured and object-oriented programming using the Java language.')
         c2 = Course(course_name='Intermediate Programming',
                     course_code='CMSC 215', course_group='CMSC',
                     course_desc='Further study of the Java programming language.')

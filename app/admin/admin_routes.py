@@ -130,16 +130,17 @@ def delete_course(course_id):
 
     _course = Course.query.get_or_404(course_id)
 
+    _user_id = int(current_user.get_id())
+
     _assoc = Association.query.filter(
-        Association.course_id == _course.course_id).all()
+        Association.course_id == _course.course_id,
+        Association.user_id == _user_id,
+        Association.role_id == '1').all()
 
     # Only administrators and chairs can delete courses
-    if not current_user.is_admin:
-        _user_id = int(current_user.get_id())
-        for _a in _assoc:
-            if _a.user_id != _user_id and _a.role_id != 1:
-                flash(NOT_AUTH_MSG2)
-                return redirect(url_for(INDEX_PAGE))
+    if not current_user.is_admin and len(_assoc) == 0:
+        flash(NOT_AUTH_MSG2)
+        return redirect(url_for(INDEX_PAGE))
 
     _form = DeleteCourseForm()
 
@@ -312,7 +313,7 @@ def edit_user(user_id):
     validate_input('user_id', user_id, int)
 
     _user = User.query.get_or_404(user_id)
-    _form = EditUserForm(_user.username)
+    _form = EditUserForm(_user.username, _user.user_email)
 
     if _form.validate_on_submit():
         _user.username = _form.username.data
@@ -556,11 +557,9 @@ def update_profile(user_id):
         db.session.commit()
         flash('Profile updated.')
         return redirect(url_for(INDEX_PAGE))
-    elif request.method == 'GET':
-        _username = _user.username
-        _form.user_email.data = _user.user_email
-        return render_template('admin/update_profile.html',
-                               title='Update Profile', form=_form,
-                               username=_username)
-    else:
-        abort(500)
+
+    _username = _user.username
+    _form.user_email.data = _user.user_email
+    return render_template('admin/update_profile.html',
+                            title='Update Profile', form=_form,
+                            username=_username)

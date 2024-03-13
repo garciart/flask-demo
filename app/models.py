@@ -8,11 +8,11 @@ from flask_login import UserMixin
 from app.app_utils import validate_input
 from app import (db, login)
 
-# - 'flask db init' to   migration repository
-# - 'flask db migrate -m "<message>"' to generate a migration script
+# - 'python3 -m flask db init' to create the migration repository
+# - 'python3 -m flask db migrate -m "<message>"' to generate a migration script
 #       after making changes to the schema
-# - 'flask db upgrade' to apply changes
-# - 'flask db downgrade' to undo migration
+# - 'python3 -m flask db upgrade' to apply changes
+# - 'python3 -m flask db downgrade' to undo migration
 
 
 class Course(db.Model):
@@ -97,7 +97,6 @@ class User(UserMixin, db.Model):
         """Hashes a password using scrypt
 
         :param str password: A password in plain text
-
         :returns: None
         """
         # Validate inputs
@@ -110,7 +109,6 @@ class User(UserMixin, db.Model):
         """Converts input to a hash and compares it against an existing hash
 
         :param str password: A password in plain text
-
         :returns: True if the password hashes match
         :rtype: bool
         """
@@ -147,10 +145,9 @@ class Association(db.Model):
 @login.user_loader
 def load_user(user_id):
     # type: (int) -> User
-    """_summary_
+    """Get user information from the database.
 
     :param int user_id: The user ID to search for
-
     :returns: A user object
     :rtype: app.models.User
     """

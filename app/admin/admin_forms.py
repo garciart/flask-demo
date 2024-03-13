@@ -57,7 +57,7 @@ class EditCourseForm(FlaskForm):
         # type: (str, any, any) -> None
         """Get the name of the course being edited.
 
-        :params str original_course_name: The edited course's name
+        :param str original_course_name: The edited course's name
         :return: None
         """
         super().__init__(*args, **kwargs)
@@ -141,8 +141,8 @@ class EditRoleForm(FlaskForm):
         # type: (str, int, any, any) -> None
         """Get the name and privilege of the role being edited.
 
-        :params str original_role_name: The edited role's name
-        :params int original_role_privilege: The edited role's privilege level
+        :param str original_role_name: The edited role's name
+        :param int original_role_privilege: The edited role's privilege level
         :return: None
         """
         super().__init__(*args, **kwargs)
@@ -239,15 +239,18 @@ class EditUserForm(FlaskForm):
     is_admin = BooleanField('This user an administrator')
     submit = SubmitField('Update User')
 
-    def __init__(self, original_username, *args, **kwargs):
-        # type: (str, any, any) -> None
-        """Get the username of the user being edited.
+    def __init__(self, original_username, original_user_email,
+                 *args, **kwargs):
+        # type: (str, str, any, any) -> None
+        """Get the username and email of the user being edited.
 
-        :params str original_username: The edited user's username
+        :param str original_username: The edited user's username
+        :param str original_user_email: The edited user's email
         :return: None
         """
         super().__init__(*args, **kwargs)
         self.original_username = original_username
+        self.original_user_email = original_user_email
 
     def validate_username(self, username):
         # type: (StringField) -> None
@@ -263,6 +266,19 @@ class EditUserForm(FlaskForm):
             if _user is not None:
                 raise ValidationError('Username already exists.')
 
+    def validate_user_email(self, user_email):
+        # type: (StringField) -> None
+        """Check if a user's email already exists in the database.
+
+        :param StringField user_email: The user's email to check
+        :return: None
+        :raises ValidationError: If the submitted user's email already exists
+        """
+        if user_email.data != self.original_user_email:
+            _user = db.session.scalar(select(User).where(
+                User.user_email == self.user_email.data))
+            if _user is not None:
+                raise ValidationError('User email already exists.')
 
 class DeleteUserForm(FlaskForm):
     """Parameters for the Delete User form template.
@@ -281,13 +297,13 @@ class UpdateProfileForm(FlaskForm):
     password = PasswordField('Password')
     password2 = PasswordField(
         'Repeat Password', validators=[EqualTo('password')])
-    submit = SubmitField('Update User')
+    submit = SubmitField('Update Profile')
 
     def __init__(self, original_user_email, *args, **kwargs):
         # type: (str, any, any) -> None
         """Get the email of the user being edited.
 
-        :params str original_user_email: The edited user's email
+        :param str original_user_email: The edited user's email
         :return: None
         """
         super().__init__(*args, **kwargs)
