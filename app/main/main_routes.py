@@ -22,9 +22,8 @@ _DUMMY_DATA = [
 ]
 
 INDEX_PAGE = 'main.index'
-NOT_AUTH_MSG1 = 'You must be an administrator to perform that action.'
-NOT_AUTH_MSG2 = (
-    'You must be an administrator or chair to perform that action.')
+NOT_AUTH_MSG1 = 'You do not have permission to perform that action.'
+
 
 
 @bp.route('/')

@@ -23,9 +23,8 @@ INDEX_PAGE = 'main.index'
 USERS_PAGE = 'main.users'
 ROLES_PAGE = 'main.roles'
 COURSES_PAGE = 'main.courses'
-NOT_AUTH_MSG1 = 'You must be an administrator to perform that action.'
-NOT_AUTH_MSG2 = (
-    'You must be an administrator or chair to perform that action.')
+NOT_AUTH_MSG1 = 'You do not have permission to perform that action.'
+
 SUICIDE_MSG = 'You cannot delete yourself!'
 
 
@@ -62,9 +61,11 @@ def add_course():
         db.session.commit()
         flash('Course added.')
         return redirect(url_for(INDEX_PAGE))
-    else:
-        return render_template('admin/add_course.html', title='Add Course',
-                               form=_form)
+    
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    return render_template('admin/add_course.html', title='Add Course',
+                            form=_form)
 
 
 @admin_bp.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
@@ -91,7 +92,7 @@ def edit_course(course_id):
 
     # Only administrators, chairs, and teachers can edit courses
     if not current_user.is_admin and len(_assoc) == 0:
-        flash(NOT_AUTH_MSG2)
+        flash(NOT_AUTH_MSG1)
         return redirect(url_for(INDEX_PAGE))
     
     _form = EditCourseForm(_course.course_name)
@@ -103,16 +104,16 @@ def edit_course(course_id):
         _course.course_desc = _form.course_desc.data
         db.session.commit()
         flash('Course updated.')
-        return redirect(url_for(COURSES_PAGE))
-    elif request.method == 'GET':
-        _form.course_name.data = _course.course_name
-        _form.course_code.data = _course.course_code
-        _form.course_group.data = _course.course_group
-        _form.course_desc.data = _course.course_desc
-        return render_template('admin/edit_course.html', title='Edit Course',
-                            form=_form)
-    else:
-        abort(500)
+        return redirect(url_for(INDEX_PAGE))
+
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    _form.course_name.data = _course.course_name
+    _form.course_code.data = _course.course_code
+    _form.course_group.data = _course.course_group
+    _form.course_desc.data = _course.course_desc
+    return render_template('admin/edit_course.html', title='Edit Course',
+                        form=_form)
 
 
 @admin_bp.route('/delete_course/<int:course_id>', methods=['GET', 'POST'])
@@ -139,7 +140,7 @@ def delete_course(course_id):
 
     # Only administrators and chairs can delete courses
     if not current_user.is_admin and len(_assoc) == 0:
-        flash(NOT_AUTH_MSG2)
+        flash(NOT_AUTH_MSG1)
         return redirect(url_for(INDEX_PAGE))
 
     _form = DeleteCourseForm()
@@ -151,14 +152,14 @@ def delete_course(course_id):
             db.session.delete(_course)
             db.session.commit()
             flash('Course deleted.')
-        return redirect(url_for(COURSES_PAGE))
-    elif request.method == 'GET':
-        _course_name = _course.course_name
-        return render_template('admin/delete_course.html',
-                               title='Delete Course', course_name=_course_name,
-                               form=_form)
-    else:
-        abort(500)
+        return redirect(url_for(INDEX_PAGE))
+
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    _course_name = _course.course_name
+    return render_template('admin/delete_course.html',
+                            title='Delete Course', course_name=_course_name,
+                            form=_form)
 
 
 @admin_bp.route('/add_role', methods=['GET', 'POST'])
@@ -185,9 +186,11 @@ def add_role():
         db.session.commit()
         flash('Role added.')
         return redirect(url_for(ROLES_PAGE))
-    else:
-        return render_template('admin/add_role.html', title='Add Role',
-                               form=_form)
+
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    return render_template('admin/add_role.html', title='Add Role',
+                            form=_form)
 
 
 @admin_bp.route('/edit_role/<int:role_id>', methods=['GET', 'POST'])
@@ -217,13 +220,13 @@ def edit_role(role_id):
         db.session.commit()
         flash('Role updated.')
         return redirect(url_for(ROLES_PAGE))
-    elif request.method == 'GET':
-        _form.role_name.data = _role.role_name
-        _form.role_privilege.data = _role.role_privilege
-        return render_template('admin/edit_role.html', title='Edit Role',
-                               form=_form)
-    else:
-        abort(500)
+
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    _form.role_name.data = _role.role_name
+    _form.role_privilege.data = _role.role_privilege
+    return render_template('admin/edit_role.html', title='Edit Role',
+                            form=_form)
 
 
 @admin_bp.route('/delete_role/<int:role_id>', methods=['GET', 'POST'])
@@ -253,15 +256,15 @@ def delete_role(role_id):
             db.session.commit()
             flash('Role deleted.')
         return redirect(url_for(ROLES_PAGE))
-    elif request.method == 'GET':
-        _role_name = _role.role_name
-        _role_privilege = _role.role_privilege
-        return render_template('admin/delete_role.html', title='Delete Role',
-                               role_name=_role_name,
-                               role_privilege=_role_privilege, form=_form)
-    else:
-        abort(500)
 
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    _role_name = _role.role_name
+    _role_privilege = _role.role_privilege
+    return render_template('admin/delete_role.html', title='Delete Role',
+                            role_name=_role_name,
+                            role_privilege=_role_privilege, form=_form)
+    
 
 @admin_bp.route('/add_user', methods=['GET', 'POST'])
 @login_required
@@ -289,9 +292,11 @@ def add_user():
         db.session.commit()
         flash('User added.')
         return redirect(url_for(USERS_PAGE))
-    else:
-        return render_template('admin/add_user.html', title='Add User',
-                               form=_form)
+
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    return render_template('admin/add_user.html', title='Add User',
+                            form=_form)
 
 
 @admin_bp.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
@@ -324,26 +329,14 @@ def edit_user(user_id):
         db.session.commit()
         flash('User updated.')
         return redirect(url_for(USERS_PAGE))
-    elif request.method == 'GET':
-        _form.username.data = _user.username
-        _form.user_email.data = _user.user_email
-        _form.is_admin.data = _user.is_admin
-        return render_template('admin/edit_user.html', title='Edit User',
-                               form=_form)
-    else:
-        abort(500)
 
-
-@admin_bp.route('/edit_profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    # type: () -> str | Response
-    """Allow users to change their emails and passwords.
-
-    :return: The HTML code to display with {{ placeholders }} populated
-    :rtype: str/Response
-    """
-    pass
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    _form.username.data = _user.username
+    _form.user_email.data = _user.user_email
+    _form.is_admin.data = _user.is_admin
+    return render_template('admin/edit_user.html', title='Edit User',
+                            form=_form)
 
 
 @admin_bp.route('/delete_user/<int:user_id>', methods=['GET', 'POST'])
@@ -383,12 +376,12 @@ def delete_user(user_id):
             db.session.commit()
             flash('User deleted.')
         return redirect(url_for(USERS_PAGE))
-    elif request.method == 'GET':
-        _username = _user.username
-        return render_template('admin/delete_user.html', title='Delete User',
-                               username=_username, form=_form)
-    else:
-        abort(500)
+    
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    _username = _user.username
+    return render_template('admin/delete_user.html', title='Delete User',
+                            username=_username, form=_form)
 
 
 @admin_bp.route('/assign_course/<int:course_id>', methods=['GET', 'POST'])
@@ -414,7 +407,7 @@ def assign_course(course_id):
 
     # Only administrators, chairs, and teachers can edit courses
     if not current_user.is_admin and len(_assoc) == 0:
-        flash(NOT_AUTH_MSG2)
+        flash(NOT_AUTH_MSG1)
         return redirect(url_for(INDEX_PAGE))
 
     # Instantiate the form
@@ -480,15 +473,7 @@ def assign_course(course_id):
         # Add the user with the 'role_id' column to the list
         _users_list.append(_user_dict)
 
-    if request.method == 'GET':
-        return render_template(
-            'admin/assign_course.html',
-            title='Assign Users to Course',
-            course_name=_course.course_name,
-            form=_form,
-            roles=_roles_list,
-            users_list=_users_list)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         # Iterate through each user and check if their assignment has changed
         for _u in _users_list:
             _user_id = str(_u['user_id'])
@@ -525,9 +510,16 @@ def assign_course(course_id):
         db.session.commit()                
 
         return redirect(url_for(INDEX_PAGE))
-    else:
-        abort(500)
 
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
+    return render_template(
+        'admin/assign_course.html',
+        title='Assign Users to Course',
+        course_name=_course.course_name,
+        form=_form,
+        roles=_roles_list,
+        users_list=_users_list)
 
 @admin_bp.route('/update_profile/<int:user_id>', methods=['GET', 'POST'])
 @login_required
@@ -558,6 +550,8 @@ def update_profile(user_id):
         flash('Profile updated.')
         return redirect(url_for(INDEX_PAGE))
 
+    # Default behavior if not sending data to the server (POST, etc.)
+    # Also re-displays page with flash messages (e.g., errors, etc.)
     _username = _user.username
     _form.user_email.data = _user.user_email
     return render_template('admin/update_profile.html',

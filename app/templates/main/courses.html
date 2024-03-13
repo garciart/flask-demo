@@ -63,12 +63,17 @@
 {% if current_user.is_admin %}
 <script type="text/javascript">
   let table = new DataTable('#data-table', {
-    columnDefs: [{ orderable: false, targets: 5 }]
+    columnDefs: [{ orderable: false, targets: 5 }],
+    scrollX: true,
+    autoWidth: false
   });
 </script>
 {% else %}
 <script type="text/javascript">
-  let table = new DataTable('#data-table');
+  let table = new DataTable('#data-table', {
+    scrollX: true,
+    autoWidth: false
+  });
 </script>
 {% endif %}
 {% endblock %}

@@ -101,7 +101,7 @@ def _setup_logging(app):
 
     :return: None
     """
-    # Do not log if using flask --debug run
+    # Do not log if using 'python3 flask --debug run'
     if not app.debug:
         # Attempt to read LOGGING_LEVEL environment variable
         # Leave at logging.DEBUG (10) if variable does not exist

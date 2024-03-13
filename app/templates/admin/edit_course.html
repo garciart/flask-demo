@@ -2,36 +2,38 @@
 
 {% block content %}
 <h1>Edit Course</h1>
+<hr>
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
-        {{ form.course_name.label }}<br>
+        <p><b>{{ form.course_name.label }}</b></p>
         {{ form.course_name(size=64) }}<br>
         {% for error in form.course_name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.course_code.label }}<br>
+        <p><b>{{ form.course_code.label }}</b></p>
         {{ form.course_code(size=64) }}<br>
         {% for error in form.course_code.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.course_group.label }}<br>
+        <p><b>{{ form.course_group.label }}</b></p>
         {{ form.course_group(size=64) }}<br>
         {% for error in form.course_group.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.course_desc.label }}<br>
+        <p><b>{{ form.course_desc.label }}</b></p>
         {{ form.course_desc(size=256, cols="64") }}<br>
         {% for error in form.course_desc.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
+    <hr>
     <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
             onclick="history.back()"></p>
 </form>
