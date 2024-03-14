@@ -8,19 +8,19 @@ This demo allows you to administer course access for students.
 
 ## Roles
 
-- Chair: Owns the course
-- Teacher: Can administer a course
-- Student: Can view a course
+- ***Chair:*** Owns the course
+- ***Teacher:*** Can administer a course
+- ***Student:*** Can view a course
 
 ## Administration
 
 Course Administration:
 
-- *Add a Course:* Anyone; the creator becomes the Chair of the Course
-- *View Courses:* Chairs, Teachers, and Students who are assigned to the Courses
-- *View a Course:* Chairs, Teachers, and Students who are assigned to the Course
-- *Edit a Course:* Chairs and Teachers who are assigned to the Course
-- *Delete a Course:* Chairs who are assigned to the Course
+- ***Add a Course:*** Anyone; the creator becomes the Chair of the Course
+- ***View Courses:*** Chairs, Teachers, and Students who are assigned to the Courses
+- ***View a Course:*** Chairs, Teachers, and Students who are assigned to the Course
+- ***Edit a Course:*** Chairs and Teachers who are assigned to the Course
+- ***Delete a Course:*** Chairs who are assigned to the Course
 
 Role and User Administration: Administrators only.
 
