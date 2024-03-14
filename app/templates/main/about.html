@@ -1,12 +1,23 @@
 {% extends "base.html" %}
-{% block title %}{{ page_title }}{% endblock %}
-{% block head%}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+{% block head %}
 {{ super() }}
 {% endblock %}
 {% block content %}
-<h1>About Flask Demo</h1>
+<h1>About Flask Template</h1>
 <p>This demo allows you to administer course access for students.</p>
-<p>Course Administration:</p>
+<hr>
+<h2>Roles</h2>
+<ul>
+    <li><b><i>Chair:</b></i> Owns the course</li>
+    <li><b><i>Teacher:</b></i> Can administer a course</li>
+    <li><b><i>Student:</b></i> Can view a course</li>
+</ul>
+<hr>
+<h2>Administration</h2>
+<p><b>Course Administration:</b></p>
 <ul>
     <li><b><i>Add a Course:</b></i> Anyone; the creator becomes the Chair of the Course</li>
     <li><b><i>View Courses:</b></i> Chairs, Teachers, and Students who are assigned to the Courses</li>
@@ -14,7 +25,7 @@
     <li><b><i>Edit a Course:</b></i> Chairs and Teachers who are assigned to the Course</li>
     <li><b><i>Delete a Course:</b></i> Chairs who are assigned to the Course</li>
 </ul>
-<p>Role and User Administration: Administrators only.</p>
+<p><b>Role and User Administration:</b> Administrators only.</h3>
 <hr>
 <h2>Setup the Test Database</h2>
 <pre>

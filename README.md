@@ -1,10 +1,18 @@
-# Flask Demo
+# Flask Template
 
 This demo allows you to administer course access for students.
 
-Chair: Owns the course
-Teacher: Can administer a course
-Student: Can view a course
+![Assign Users to Course Screenshot](app/static/img/assign-users-screenshot.png)
+
+-----
+
+## Roles
+
+- Chair: Owns the course
+- Teacher: Can administer a course
+- Student: Can view a course
+
+## Administration
 
 Course Administration:
 

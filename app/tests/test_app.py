@@ -46,7 +46,7 @@ class TestApp(unittest.TestCase):
     def test_index_content(self):
         """Check landing page contents"""
         response = self.client.get('/', follow_redirects=True)
-        self.assertIn(b'Flask Demo', response.data)
+        self.assertIn(b'Flask Template', response.data)
 
 
 if __name__ == '__main__':

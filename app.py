@@ -1,4 +1,4 @@
-"""Flask demo.
+"""Flask Template.
 
 Usage:
 - python3 -m flask run
@@ -9,6 +9,6 @@ Usage:
 import argparse
 
 parser = argparse.ArgumentParser(
-    description='Flask Demo',
+    description='Flask Template',
     epilog='To run: python3 -m flask run')
 args, _ = parser.parse_known_args()

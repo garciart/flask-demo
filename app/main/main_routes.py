@@ -36,7 +36,7 @@ def index():
     :return: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
-    _page_title = 'Flask Demo'
+    _page_title = 'Flask Template'
 
     if current_user.is_admin:
         _courses = Course.query.all()
@@ -161,7 +161,7 @@ def test():
     :return: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
-    _page_title = 'Flask Demo'
+    _page_title = 'Flask Template'
 
     _courses = _DUMMY_DATA
 

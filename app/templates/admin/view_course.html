@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Edit Course</h1>
+<hr>
+<table class="table">
+    <tr>
+        <td><b>Course Name:</b></td>
+        <td><i>{{ course_name }}</i></td>
+    </tr>
+    <tr>
+        <td><b>Course Code:</b></td>
+        <td><i>{{ course_code }}</i></td>
+    </tr>
+    <tr>
+        <td><b>Course Group:</b></td>
+        <td><i>{{ course_group }}</i></td>
+    </tr>
+    <tr>
+        <td><b>Course Description:</b></td>
+        <td><i>{{ course_desc }}</i></td>
+    </tr>
+</table>
+<hr>
+    <p><input type="button" class="btn btn-secondary" value="Cancel"
+            onclick="history.back()"></p>
+{% endblock %}

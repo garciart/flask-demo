@@ -1,5 +1,10 @@
 {% extends "base.html" %}
-
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
 {% block content %}
 <h1>Sign In</h1>
 <form action="" method="POST" novalidate>

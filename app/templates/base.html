@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>
-    {% block title %}{% endblock %}
+    {% block page_title %}{% endblock %}
   </title>
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
@@ -26,7 +26,7 @@
         <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">
           <img src="{{ url_for('static', filename='img/logo.png') }}" alt="RGC" class="nav-logo" />
         </a>
-        <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">Flask Demo</a>
+        <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">Flask Template</a>
         <div class="dropdown ms-auto">
           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -107,7 +107,7 @@
   <footer class="footer">
     <div class="text-center">
       &copy; <span id="currentYear"></span> -
-      <a href="{{ url_for('main.index') }}" title="Home">Flask Demo</a>
+      <a href="{{ url_for('main.index') }}" title="Home">Flask Template</a>
     </div>
     {% block footer %}
     {% endblock %}

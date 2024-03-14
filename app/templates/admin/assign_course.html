@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}
-{{ title }}
+{% block page_title %}
+{{ page_title }}
 {% endblock %}
 {% block head %}
 {{ super() }}
@@ -13,7 +13,7 @@
 <h1>Welcome!</h1>
 <p>You should log in.</p>
 {% else %}
-<h1>Assign Course to User</h1>
+<h1>Assign Users to Course</h1>
 <hr>
 <h2>{{ course_name }}</h2>
 

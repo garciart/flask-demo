@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}
+{% block page_title %}
 {{ page_title }}
 {% endblock %}
 {% block head %}
@@ -35,9 +35,11 @@
       <td class="text-nowrap">{{ course.course_group }}</td>
       <td>{{ course.course_desc }}</td>
       <td class="text-nowrap">{{ course.role_name }}</td>
-      {% if current_user.is_admin or (course.role_id | default(4)) in [1, 2] %}
       <td class="no-sort text-nowrap">
-        <a class="btn btn-primary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
+        <a class="btn btn-primary" href="{{ url_for('admin.view_course', course_id=course.course_id) }}"
+          title="View">View</a>
+        {% if current_user.is_admin or (course.role_id | default(4)) in [1, 2] %}
+        <a class="btn btn-secondary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
           title="Assign">Assign</a>
         <a class="btn btn-warning" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}"
           title="Edit">Edit</a>

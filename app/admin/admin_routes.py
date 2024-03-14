@@ -64,8 +64,41 @@ def add_course():
     
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
-    return render_template('admin/add_course.html', title='Add Course',
+    return render_template('admin/add_course.html', page_title='Add Course',
                             form=_form)
+
+
+@admin_bp.route('/view_course/<int:course_id>')
+@login_required
+def view_course(course_id):
+    # type: (int) -> str
+    """Display course details.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    # Validate inputs
+    validate_input('course_id', course_id, int)
+
+    _course = Course.query.get_or_404(course_id)
+
+    _user_id = int(current_user.get_id())
+
+    _assoc = Association.query.filter(
+        Association.course_id == _course.course_id,
+        Association.user_id == _user_id,
+        ((Association.role_id in ['1', '2', '3']))).all()
+
+    # Only assigned users can view courses
+    if not current_user.is_admin and len(_assoc) == 0:
+        flash(NOT_AUTH_MSG1)
+        return redirect(url_for(INDEX_PAGE))
+
+    return render_template('admin/view_course.html', page_title='View Course',
+                           course_name = _course.course_name,
+                           course_code = _course.course_code,
+                           course_group = _course.course_group,
+                           course_desc = _course.course_desc)
 
 
 @admin_bp.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
@@ -112,7 +145,7 @@ def edit_course(course_id):
     _form.course_code.data = _course.course_code
     _form.course_group.data = _course.course_group
     _form.course_desc.data = _course.course_desc
-    return render_template('admin/edit_course.html', title='Edit Course',
+    return render_template('admin/edit_course.html', page_title='Edit Course',
                         form=_form)
 
 
@@ -158,7 +191,7 @@ def delete_course(course_id):
     # Also re-displays page with flash messages (e.g., errors, etc.)
     _course_name = _course.course_name
     return render_template('admin/delete_course.html',
-                            title='Delete Course', course_name=_course_name,
+                            page_title='Delete Course', course_name=_course_name,
                             form=_form)
 
 
@@ -189,7 +222,7 @@ def add_role():
 
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
-    return render_template('admin/add_role.html', title='Add Role',
+    return render_template('admin/add_role.html', page_title='Add Role',
                             form=_form)
 
 
@@ -225,7 +258,7 @@ def edit_role(role_id):
     # Also re-displays page with flash messages (e.g., errors, etc.)
     _form.role_name.data = _role.role_name
     _form.role_privilege.data = _role.role_privilege
-    return render_template('admin/edit_role.html', title='Edit Role',
+    return render_template('admin/edit_role.html', page_title='Edit Role',
                             form=_form)
 
 
@@ -261,7 +294,7 @@ def delete_role(role_id):
     # Also re-displays page with flash messages (e.g., errors, etc.)
     _role_name = _role.role_name
     _role_privilege = _role.role_privilege
-    return render_template('admin/delete_role.html', title='Delete Role',
+    return render_template('admin/delete_role.html', page_title='Delete Role',
                             role_name=_role_name,
                             role_privilege=_role_privilege, form=_form)
     
@@ -295,7 +328,7 @@ def add_user():
 
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
-    return render_template('admin/add_user.html', title='Add User',
+    return render_template('admin/add_user.html', page_title='Add User',
                             form=_form)
 
 
@@ -335,7 +368,7 @@ def edit_user(user_id):
     _form.username.data = _user.username
     _form.user_email.data = _user.user_email
     _form.is_admin.data = _user.is_admin
-    return render_template('admin/edit_user.html', title='Edit User',
+    return render_template('admin/edit_user.html', page_title='Edit User',
                             form=_form)
 
 
@@ -380,7 +413,7 @@ def delete_user(user_id):
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
     _username = _user.username
-    return render_template('admin/delete_user.html', title='Delete User',
+    return render_template('admin/delete_user.html', page_title='Delete User',
                             username=_username, form=_form)
 
 
@@ -515,7 +548,7 @@ def assign_course(course_id):
     # Also re-displays page with flash messages (e.g., errors, etc.)
     return render_template(
         'admin/assign_course.html',
-        title='Assign Users to Course',
+        page_title='Assign Users to Course',
         course_name=_course.course_name,
         form=_form,
         roles=_roles_list,
@@ -555,5 +588,5 @@ def update_profile(user_id):
     _username = _user.username
     _form.user_email.data = _user.user_email
     return render_template('admin/update_profile.html',
-                            title='Update Profile', form=_form,
+                            page_title='Update Profile', form=_form,
                             username=_username)
