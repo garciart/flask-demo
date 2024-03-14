@@ -22,7 +22,8 @@
       <th scope="col">Code</th>
       <th scope="col">Group</th>
       <th scope="col">Description</th>
-      <th scope="col">Role/Actions</th>
+      <th scope="col">Role</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody class="table-group-divider">
@@ -33,6 +34,7 @@
       <td class="text-nowrap">{{ course.course_code }}</td>
       <td class="text-nowrap">{{ course.course_group }}</td>
       <td>{{ course.course_desc }}</td>
+      <td class="text-nowrap">{{ course.role_name }}</td>
       {% if current_user.is_admin or (course.role_id | default(4)) in [1, 2] %}
       <td class="no-sort text-nowrap">
         <a class="btn btn-primary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
@@ -43,10 +45,10 @@
         <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}"
           title="Delete">Delete</a>
         {% endif %}
-      </td>
       {% else %}
-      <td>{{ course.role_name }}</td>
+      <td class="text-nowrap">Enrolled</td>
       {% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
@@ -64,7 +66,7 @@
 <script type="text/javascript">
   let table = new DataTable('#data-table', {
     order: [[0, 'asc']],
-    columnDefs: [{ orderable: false, targets: 5 }],
+    columnDefs: [{ orderable: false, targets: 6 }],
     scrollX: true,
     autoWidth: false
   });

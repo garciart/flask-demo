@@ -31,7 +31,7 @@ class Course(db.Model):
         String(256))
 
     associations: Mapped[List['Association']] = relationship(
-        back_populates='course')
+        back_populates='course', cascade="all, delete-orphan")
 
     def __repr__(self):
         return (f'{{"course_id": "{self.course_id}",'
@@ -51,7 +51,7 @@ class Role(db.Model):
     role_privilege: Mapped[int] = mapped_column(unique=True)
 
     associations: Mapped[List['Association']] = relationship(
-        back_populates='role')
+        back_populates='role', cascade="all, delete-orphan")
 
     def __repr__(self):
         return (f'{{"role_id": "{self.role_id}",'
@@ -74,7 +74,7 @@ class User(UserMixin, db.Model):
         String(256))
 
     associations: Mapped[List['Association']] = relationship(
-        back_populates='user')
+        back_populates='user', cascade="all, delete-orphan")
 
     def __repr__(self):
         return (f'{{"user_id": "{self.user_id}",'

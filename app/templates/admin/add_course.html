@@ -28,7 +28,7 @@
     </p>
     <p>
         <p><b>{{ form.course_desc.label }}</b></p>
-        {{ form.course_desc(size=256, cols="64") }}<br>
+        {{ form.course_desc(rows="4", cols="64") }}<br>
         {% for error in form.course_desc.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
