@@ -1,0 +1,16 @@
+{% extends "demo_base.html" %}
+{% block page_title %}Hello{% endblock %}
+{% block page_description %}Landing page{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body_header %}
+<h1>Hello, World!</h1>
+{% endblock %}
+
+{% block main_content %}
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<p>Welcome to my demo page.</p>
+{% endblock %}
