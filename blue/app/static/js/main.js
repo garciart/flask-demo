@@ -1,3 +1,4 @@
+// code: language=javascript
 // Set copyright ending year to current year
 let date = new Date();
 let fullYear = date.getFullYear();

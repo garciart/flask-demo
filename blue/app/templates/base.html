@@ -9,13 +9,14 @@
     <meta name="description" content={% block page_description %}{% endblock %} />
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/demo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     {% endblock %}
 </head>
 
 <body>
     <header>
         {% block body_header %}{% endblock %}
+        <hr>
     </header>
     <main>
         {% block main_content %}{% endblock %}
@@ -29,7 +30,7 @@
         {% endblock %}
     </footer>
     {% block scripts %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/demo.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% endblock %}
 </body>
 

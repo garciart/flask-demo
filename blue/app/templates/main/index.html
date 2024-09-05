@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block page_title %}Hello{% endblock %}
+{% block page_description %}Landing page{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body_header %}
+<h1>Hello, World!</h1>
+{% endblock %}
+
+{% block main_content %}
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<h2>I am Blue.</h2>
+<p>From <code>__init__.py</code>: You are using Python {{ _python_version }}.</p>
+<p>From <code>config.py</code>: Your logging level is {{ _logging_level }}.</p>
+<p>Check <code>log/blue.log</code> for log entries.</p>
+{% endblock %}
