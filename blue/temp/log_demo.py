@@ -1,12 +1,22 @@
+"""Demonstrate how to create separate log files for each instance of a class.
+"""
 import logging
 import os
 import time
 
-class my_class():
-    def start_log(self, logging_level: int = logging.INFO):
-        """Allow each instances of this class to have a separate log file.
 
-        :param int logging_level: The minimum logging level to log. The default is INFO (20)
+class my_class():
+    """Class to demonstrate separate log files for each instance.
+    """
+
+    def __init__(self):
+        self.logger = None
+
+    def start_log(self, logging_level: int = logging.INFO):
+        """Allow each instance of this class to have a separate log file.
+
+        :param int logging_level: The minimum logging level to log. \
+            The default is INFO (20)
 
         :return: None
         """
