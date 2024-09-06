@@ -5,7 +5,7 @@ import os
 import time
 
 
-class my_class():
+class MyClass():
     """Class to demonstrate separate log files for each instance.
     """
 
@@ -39,7 +39,7 @@ class my_class():
 if __name__ == '__main__':
     print('Starting instance logging test...')
 
-    foo_class = my_class()
+    foo_class = MyClass()
     foo_class.start_log(logging.DEBUG)
     foo_class.logger.info('This is a test of foo.')
 
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # to prevent logs from having the same name.
     time.sleep(0.1)
 
-    bar_class = my_class()
+    bar_class = MyClass()
     bar_class.start_log(logging.INFO)
     bar_class.logger.info('This is a test of bar.')
 
