@@ -6,9 +6,10 @@ Usage: python -B -m flask --app "v01" run
 """
 
 import sys
+
 import flask
 
-__author__ = "Rob Garcia"
+__author__ = 'Rob Garcia'
 
 
 def create_app() -> flask.Flask:
@@ -27,15 +28,18 @@ def create_app() -> flask.Flask:
     # Create and configure the app
     app = flask.Flask(__name__)
 
-    @app.route("/")
-    @app.route("/index")
+    @app.route('/')
+    @app.route('/index')
     def index():
         """Render the default landing page.
 
         :return: The HTML code for the page
         :rtype: str
         """
-        return "<h1>Hello, World!</h1><p>I am Version 1.</p>"
+        return """<!DOCTYPE html>
+            <h1>Hello, World!</h1>
+            <p>I am Version 1.</p>
+            """
 
     return app
 

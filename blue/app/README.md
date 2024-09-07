@@ -1,5 +1,5 @@
-# Blue v02
+# Blue
 
-This is an example of a Flask application that incorporates templates.
+This the default Blue Flask application.
 
-Usage: `python -B -m flask --app "v04" run`
+Usage: `python -B -m flask --app "app" run`

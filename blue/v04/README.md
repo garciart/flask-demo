@@ -1,4 +1,4 @@
-# Blue v02
+# Blue v04
 
 This is an example of a Flask application that incorporates templates.
 

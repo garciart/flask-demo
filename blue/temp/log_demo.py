@@ -9,14 +9,14 @@ class MyClass():
     """Class to demonstrate separate log files for each instance.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.logger = None
 
-    def start_log(self, logging_level: int = logging.INFO):
+    def start_log(self, logging_level: int = logging.INFO) -> None:
         """Allow each instance of this class to have a separate log file.
 
-        :param int logging_level: The minimum logging level to log. \
-            The default is INFO (20)
+        :param int logging_level: The level of messages to log. The default is to log INFO \
+        messages (level 20) or greater
 
         :return: None
         """
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     foo_class.logger.info('This is a test of foo.')
 
     # IMPORTANT! The name of the log file is the name of the class,
-    # plus the time the class was instantiated (my_class_1725644384.38276.log).
+    # plus the time the class was instantiated (MyClass_1725644384.38276.log).
     # Pause for a tenth of a second before creating a new log file
     # to prevent logs from having the same name.
     time.sleep(0.1)

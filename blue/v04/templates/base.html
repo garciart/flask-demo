@@ -3,10 +3,10 @@
 
 <head>
     {% block head %}
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>{% block page_title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="description" content={% block page_description %}{% endblock %} />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content={% block page_description %}{% endblock %}/>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
@@ -14,24 +14,24 @@
 </head>
 
 <body>
-    <header>
-        {% block body_header %}{% endblock %}
-        <hr>
-    </header>
-    <main>
-        {% block main_content %}{% endblock %}
-    </main>
-    <footer>
-        <hr>
-        {% block footer %}
-        <small>
-            &copy; <span id="currentYear"></span> - Blue. All Rights Reserved.
-        </small>
-        {% endblock %}
-    </footer>
-    {% block scripts %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+<header>
+    {% block body_header %}{% endblock %}
+    <hr>
+</header>
+<main>
+    {% block main_content %}{% endblock %}
+</main>
+<footer>
+    <hr>
+    {% block footer %}
+    <small>
+        &copy; <span id="currentYear"></span> - Blue. All Rights Reserved.
+    </small>
     {% endblock %}
+</footer>
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
 </body>
 
 </html>

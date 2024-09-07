@@ -9,10 +9,11 @@ Usage:
 
 import os
 import sys
-import flask
-from v02.config import Config, DevConfig, TestConfig
 
-__author__ = "Rob Garcia"
+import flask
+from v02.config import Config
+
+__author__ = 'Rob Garcia'
 
 
 def create_app(config_class: object | str = Config) -> flask.Flask:
@@ -28,29 +29,30 @@ def create_app(config_class: object | str = Config) -> flask.Flask:
     _python_version = _get_python_version()
     print(f"Your Python version is {_python_version}.")
     if _python_version < 3.08:
-        print("Flask 3 requires Python 3.8 or above. Exiting now...")
+        print('Flask 3 requires Python 3.8 or above. Exiting now...')
         sys.exit(0)
 
     # Create and configure the app
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
 
-    @app.route("/")
-    @app.route("/index")
+    @app.route('/')
+    @app.route('/index')
     def index():
         """Render the default landing page.
 
         :return: The HTML code for the page
         :rtype: str
         """
-        greeting = f"""<h1>Hello, World!</h1>
-        <h2>I am Version 2.</h2>
-        <p>From <code>__init__.py</code>: You are using Python {_python_version}.</p>
-        <p>From <code>config.py</code>: Your logging level is {app.config['LOGGING_LEVEL']}.</p>
-        <p>From <code>.flaskenv</code>: Your port number is {os.environ.get('FLASK_RUN_PORT')}.</p>
-        <p>From <code>.env</code>: <samp>EXAMPLE_ENV_VARIABLE</samp>: "{os.environ.get('EXAMPLE_ENV_VARIABLE')}"</p>
-        <p><code>UNDEFINED_KEY</code>: {app.config['UNDEFINED_KEY']}</p>
-        """
+        greeting = f"""<!DOCTYPE html>
+            <h1>Hello, World!</h1>
+            <h2>I am Version 2.</h2>
+            <p>From <code>__init__.py</code>: You are using Python {_python_version}.</p>
+            <p>From <code>config.py</code>: Your logging level is {app.config['LOGGING_LEVEL']}.</p>
+            <p>From <code>.flaskenv</code>: Your port number is {os.environ.get('FLASK_RUN_PORT')}.</p>
+            <p>From <code>.env</code>: <samp>EXAMPLE_ENV_VARIABLE</samp>: "{os.environ.get('EXAMPLE_ENV_VARIABLE')}"</p>
+            <p><code>UNDEFINED_KEY</code>: {app.config['UNDEFINED_KEY']}</p>
+            """
         return greeting
 
     return app

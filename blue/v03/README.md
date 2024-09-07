@@ -1,9 +1,9 @@
-# Blue v02
+# Blue v03
 
 This is an example of a Flask application that incorporates logging.
 
 Usage:
 
 - `python -B -m flask --app "v03" run`
-- `python -B -m flask --app "v03:create_app(config_class='v02.config.DevConfig')" run`
-- `python -B -m flask --app "v03:create_app(config_class='v02.config.TestConfig')" run`
+- `python -B -m flask --app "v03:create_app(config_class='v03.config.DevConfig')" run`
+- `python -B -m flask --app "v03:create_app(config_class='v03.config.TestConfig')" run`
