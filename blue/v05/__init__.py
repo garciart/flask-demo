@@ -3,8 +3,8 @@ and it tells Python that the current directory should be treated as a package.
 You can then import its files as modules (e.g., `from app.foo import bar`).
 
 Usage:
-- python -B -m flask --app "v03" run
-- python -B -m flask --app "v03:create_app(config_class='v03.config.DevConfig')" run
+- python -B -m flask --app "v05" run
+- python -B -m flask --app "v05:create_app(config_class='v05.config.DevConfig')" run
 """
 
 import logging
@@ -15,7 +15,7 @@ import time
 from logging.handlers import RotatingFileHandler
 
 import flask
-from v03.config import (Config, DevConfig, TestConfig)
+from v05.config import (Config, DevConfig, TestConfig)
 
 __author__ = 'Rob Garcia'
 
@@ -71,24 +71,11 @@ def create_app(config_class: object | str = DevConfig) -> flask.Flask:
         app.logger.info("Python version: %s", _python_version)
         app.logger.info("Flask version: %s", flask.__version__)
 
-    @app.route('/')
-    @app.route('/index')
-    def index() -> str:
-        """Render the default landing page.
+    # Start routing using blueprints
+    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
+    from v05.blueprints.main import main_routes
 
-        :return: The HTML code for the page
-        :rtype: str
-        """
-        _log_request(app, flask.request)
-
-        greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
-            <h2>I am Version 3.</h2>
-            <p>From <code>__init__.py</code>: You are using Python {_python_version}.</p>
-            <p>From <code>config.py</code>: Your logging level is {app.config['LOGGING_LEVEL']}.</p>
-            <p>Check the <code>/blue_logs</code> directory for log entries.</p>
-            """
-        return greeting
+    app.register_blueprint(main_routes.bp)
 
     return app
 
@@ -192,7 +179,7 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
         sys.exit(2)
 
 
-def _log_request(app: flask.Flask, request: flask.Request) -> None:
+def log_request(app: flask.Flask, request: flask.Request) -> None:
     """Log information about the client when a page is requested.
 
     :param flask.Flask app: The application instance

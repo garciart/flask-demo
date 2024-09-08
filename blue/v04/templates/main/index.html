@@ -13,7 +13,7 @@
 {% block main_content %}
 <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}"/>
 <h2>I am Version 4.</h2>
-<p>From <code>__init__.py</code>: You are using Python {{ _python_version }}.</p>
-<p>From <code>config.py</code>: Your logging level is {{ _logging_level }}.</p>
-<p>Check <code>log/blue.log</code> for log entries.</p>
+<p>You are using Python {{ _python_version }}.</p>
+<p>Your logging level is {{ _logging_level }}.</p>
+<p>Check the <code>/blue_logs</code> directory for log entries.</p>
 {% endblock %}

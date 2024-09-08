@@ -9,12 +9,10 @@
 {% endblock %}
 
 {% block body_header %}
-<h1>Hello, World!</h1>
+<h1>Welcome to the About Page!</h1>
 {% endblock %}
 
 {% block main_content %}
 <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}"/>
-<p>You are using Python {{ _python_version }}.</p>
-<p>Your logging level is {{ _logging_level }}.</p>
-<p>Check the <code>/blue_logs</code> directory for log entries.</p>
+<h2>We are all about the page!</h2>
 {% endblock %}

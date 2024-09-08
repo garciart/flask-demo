@@ -1,6 +1,6 @@
 # Blue v03
 
-This is an example of a Flask application that incorporates logging.
+This is an example of a Flask application that incorporates logging and input validation.
 
 Usage:
 

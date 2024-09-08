@@ -23,14 +23,14 @@ def create_app() -> flask.Flask:
     print(f"Your Python version is {_python_version}.")
     if _python_version < 3.08:
         print('Flask 3 requires Python 3.8 or above. Exiting now...')
-        sys.exit(0)
+        sys.exit(1)
 
     # Create and configure the app
     app = flask.Flask(__name__)
 
     @app.route('/')
     @app.route('/index')
-    def index():
+    def index() -> str:
         """Render the default landing page.
 
         :return: The HTML code for the page

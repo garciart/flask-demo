@@ -11,7 +11,7 @@ import os
 import sys
 
 import flask
-from v02.config import Config
+from v02.config import (Config, DevConfig, TestConfig)
 
 __author__ = 'Rob Garcia'
 
@@ -34,11 +34,17 @@ def create_app(config_class: object | str = Config) -> flask.Flask:
 
     # Create and configure the app
     app = flask.Flask(__name__, instance_relative_config=True)
-    app.config.from_object(config_class)
+
+    # Load the configuration class from config.py
+    try:
+        app.config.from_object(config_class)
+    except ImportError:
+        print(f'{config_class} is not a valid configuration class. Exiting now...')
+        sys.exit(1)
 
     @app.route('/')
     @app.route('/index')
-    def index():
+    def index() -> str:
         """Render the default landing page.
 
         :return: The HTML code for the page
