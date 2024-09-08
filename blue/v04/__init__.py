@@ -15,12 +15,12 @@ import time
 from logging.handlers import RotatingFileHandler
 
 import flask
-from v04.config import (Config, DevConfig, TestConfig)
+from v04.config import *
 
 __author__ = 'Rob Garcia'
 
 
-def create_app(config_class: object | str = DevConfig) -> flask.Flask:
+def create_app(config_class: object = DevConfig) -> flask.Flask:
     """Application Factory.
 
     :param str config_class: An alternate configuration from `config.py` for \
@@ -29,47 +29,55 @@ def create_app(config_class: object | str = DevConfig) -> flask.Flask:
     :return: An application instance
     :rtype: flask.Flask
     """
+    _flask_version = flask.__version__
+    # Get the Python version and convert it to float (e.g., 3.9 -> 3.09)
+    _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
+    # Set logging to DEBUG (10) just in case the LOGGING_LEVEL environment variable is not set
+    _logging_level = logging.DEBUG
+
     # Ensure the Python version supports Flask 3
-    _python_version = _get_python_version()
     print(f"Your Python version is {_python_version}.")
     if _python_version < 3.08:
         print('Flask 3 requires Python 3.8 or above. Exiting now...')
         sys.exit(1)
 
-    # Create and configure the app
+    # Ensure you are using Flask 3
+    print(f"Your Flask version is {_flask_version}.")
+    if int(_flask_version.split('.')[0]) < 3:
+        print('This application requires Flask 3 or above. Exiting now...')
+        sys.exit(1)
+
+    # Create the Flask application instance
     app = flask.Flask(__name__, instance_relative_config=True)
 
-    # Load the configuration class from config.py
+    # Load the selected configuration class from config.py
     try:
         app.config.from_object(config_class)
     except ImportError:
         print(f'{config_class} is not a valid configuration class. Exiting now...')
         sys.exit(1)
 
-    # Set logging to DEBUG (10) just in case the LOGGING_LEVEL variable is not set
-    _logging_level = logging.DEBUG
+    # Attempt to read LOGGING_LEVEL environment variable
+    # Use the default value if environment value does not exist
+    try:
+        _logging_level = app.config['LOGGING_LEVEL']
+    except (AttributeError, KeyError):
+        app.config['LOGGING_LEVEL'] = _logging_level
 
-    # This may sound counter-intuitive, but I recommend you do not log events when in debug mode,
-    # like if you run `python -m flask --app "app" --debug run`
+    # Start to log events
+    # This may sound counter-intuitive, but I recommend you do not save log events
+    # to a file when running the application in debug mode,
+    # like if you run `python -m flask --app "app" run --debug`
     # If you run the app in debug mode so you can make hot fixes,
     # you may end up with a huge log file.
     if not app.debug:
-        # Attempt to read LOGGING_LEVEL environment variable
-        try:
-            _logging_level = app.config['LOGGING_LEVEL']
-        except (AttributeError, KeyError):
-            pass
+        _start_log_file(app, log_dir='blue_logs', logging_level=app.config['LOGGING_LEVEL'])
 
-        # Start to log events
-        _start_log(app, log_dir='blue_logs', logging_level=_logging_level)
-
+    # Log events will still appear in the console
     app.logger.info('Starting Flask application.')
-
-    # Display version info if debugging
-    if _logging_level == logging.DEBUG:
-        # Use lazy % formatting in logging functions
-        app.logger.info("Python version: %s", _python_version)
-        app.logger.info("Flask version: %s", flask.__version__)
+    # Use lazy % formatting in logging functions
+    app.logger.info("Python version: %s", _python_version)
+    app.logger.info("Flask version: %s", _logging_level)
 
     @app.route('/')
     @app.route('/index')
@@ -79,7 +87,7 @@ def create_app(config_class: object | str = DevConfig) -> flask.Flask:
         :return: The HTML code for the page
         :rtype: str
         """
-        _log_request(app, flask.request)
+        log_page_request(app, flask.request)
 
         return flask.render_template(
             'main/index.html',
@@ -90,19 +98,7 @@ def create_app(config_class: object | str = DevConfig) -> flask.Flask:
     return app
 
 
-def _get_python_version() -> float:
-    """Get the Python version used by the server.
-
-    :return: The Python version used by the server
-    :rtype: float
-    """
-    # Get Python version and convert to float (e.g., 3.9 -> 3.09)
-    _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
-
-    return _python_version
-
-
-def _start_log(app: flask.Flask, log_dir: str = 'blue_logs', logging_level: int = logging.DEBUG) -> None:
+def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level: int = logging.DEBUG) -> None:
     """Setup and start logging.
 
     Each instance of this class to have a separate log file in the 'logs' directory.
@@ -168,28 +164,28 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
     """
     # Validate inputs for this function
     if not isinstance(obj_name, str):
-        print('obj_name must be type <str>.')
+        print('obj_name must be type <str>. Exiting now...')
         sys.exit(2)
 
     if not isinstance(expected_type, type | tuple):
-        print('expected_type must be type <type> or a tuple of types.')
+        print('expected_type must be type <type> or a tuple of types. Exiting now...')
         sys.exit(2)
 
     # Validate inputs for the calling function
     if not isinstance(obj_to_check, expected_type):
-        print(f"'{obj_name}' is not type {expected_type}.")
+        print(f"'{obj_name}' is not type {expected_type}. Exiting now...")
         sys.exit(2)
 
     if isinstance(obj_to_check, str) and obj_to_check == '':
-        print(f"'{obj_name}' is empty.")
+        print(f"'{obj_name}' is empty. Exiting now...")
         sys.exit(2)
 
     if isinstance(obj_to_check, (str, list, dict)) and len(obj_to_check) == 0:
-        print(f"'{obj_name}' is empty.")
+        print(f"'{obj_name}' is empty. Exiting now...")
         sys.exit(2)
 
 
-def _log_request(app: flask.Flask, request: flask.Request) -> None:
+def log_page_request(app: flask.Flask, request: flask.Request) -> None:
     """Log information about the client when a page is requested.
 
     :param flask.Flask app: The application instance

@@ -18,16 +18,26 @@ def create_app() -> flask.Flask:
     :return: An application instance
     :rtype: flask.Flask
     """
+    _flask_version = flask.__version__
+    # Get the Python version and convert it to float (e.g., 3.9 -> 3.09)
+    _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
+
     # Ensure the Python version supports Flask 3
-    _python_version = _get_python_version()
     print(f"Your Python version is {_python_version}.")
     if _python_version < 3.08:
         print('Flask 3 requires Python 3.8 or above. Exiting now...')
         sys.exit(1)
 
-    # Create and configure the app
+    # Ensure you are using Flask 3
+    print(f"Your Flask version is {_flask_version}.")
+    if int(_flask_version.split('.')[0]) < 3:
+        print('This application requires Flask 3 or above. Exiting now...')
+        sys.exit(1)
+
+    # Create the Flask application instance
     app = flask.Flask(__name__)
 
+    # Create a route and page
     @app.route('/')
     @app.route('/index')
     def index() -> str:
@@ -36,21 +46,10 @@ def create_app() -> flask.Flask:
         :return: The HTML code for the page
         :rtype: str
         """
+        # DOCTYPE prevents Quirks mode
         return """<!DOCTYPE html>
             <h1>Hello, World!</h1>
             <p>I am Version 1.</p>
             """
 
     return app
-
-
-def _get_python_version() -> float:
-    """Get the Python version used by the server.
-
-    :return: The Python version used by the server
-    :rtype: float
-    """
-    # Get Python version and convert to float (e.g., 3.9 -> 3.09)
-    _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
-
-    return _python_version

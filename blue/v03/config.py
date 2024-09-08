@@ -1,4 +1,7 @@
-"""Python class to store configuration variables.
+"""Runtime configuration variables for Flask.
+
+NOTE - Set configuration variables that need to in place before Flask starts,
+like FLASK_RUN_PORT, in .flaskenv or .env.
 
 Usage:
 - app.config.from_object(Config)
@@ -10,8 +13,11 @@ import os
 
 from dotenv import load_dotenv
 
+# Load system environment variables
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
+
+__all__ = ['Config', 'DevConfig', 'TestConfig']
 
 
 class Config:
@@ -23,7 +29,9 @@ class Config:
     )
     UNDEFINED_KEY = (
             os.environ.get("EXTRA_KEY")
-            or 'This is an example of a config.py variable Flask will use if a variable by the same name is not set in the OS environment, .env, or .flaskenv.'
+            or 'This is an example of a <code>config.py</code> variable Flask will use \
+                if a variable by the same name is not set in the OS environment, \
+                <code>.env</code>, or <code>.flaskenv</code>.'
     )
     # WARNING is the default logging level
     LOGGING_LEVEL = logging.WARNING

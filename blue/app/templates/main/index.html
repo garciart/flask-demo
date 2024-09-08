@@ -14,7 +14,5 @@
 
 {% block main_content %}
 <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}"/>
-<p>You are using Python {{ _python_version }}.</p>
-<p>Your logging level is {{ _logging_level }}.</p>
-<p>Check the <code>/blue_logs</code> directory for log entries.</p>
+<h2>Welcome to Blue!</h2>
 {% endblock %}
