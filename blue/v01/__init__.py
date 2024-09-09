@@ -52,4 +52,5 @@ def create_app() -> flask.Flask:
             <p>I am Version 1.</p>
             """
 
+    # Return the application instance to the code that invoked 'create_app()'
     return app

@@ -18,8 +18,6 @@ def index() -> str:
 
     log_page_request(app=flask.current_app, request=flask.request)
 
-    print(flask.current_app.config['PYTHON_VERSION'])
-
     _html = flask.render_template('main/index.html',
                                   page_title=_page_title,
                                   page_description=_page_description)

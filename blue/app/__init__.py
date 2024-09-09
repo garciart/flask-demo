@@ -90,6 +90,7 @@ def create_app(config_class: object = DevConfig) -> flask.Flask: # type: ignore
     from app.blueprints.main import main_routes
     app.register_blueprint(main_routes.bp)
 
+    # Return the application instance to the code that invoked 'create_app()'
     return app
 
 

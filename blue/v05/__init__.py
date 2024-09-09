@@ -88,6 +88,7 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
     from v05.blueprints.main import main_routes
     app.register_blueprint(main_routes.bp)
 
+    # Return the application instance to the code that invoked 'create_app()'
     return app
 
 def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level: int = logging.DEBUG) -> None:

@@ -3,8 +3,8 @@ and it tells Python that the current directory should be treated as a package.
 You can then import its files as modules (e.g., `from app.foo import bar`).
 
 Usage:
-- python -B -m flask --app "v03" run
-- python -B -m flask --app "v03:create_app(config_class='v03.config.DevConfig')" run
+- python -B -m flask --app "v06" run
+- python -B -m flask --app "v06:create_app(config_class='v06.config.DevConfig')" run
 """
 
 import logging
@@ -15,10 +15,15 @@ import time
 from logging.handlers import RotatingFileHandler
 
 import flask
-from v03.config import *
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+from v06.config import *
 
 __author__ = 'Rob Garcia'
 
+# These variables are accessible to other modules using current_app,
+# and they are initialized in create_app()
+db = SQLAlchemy()
 
 def create_app(config_class: object = DevConfig) -> flask.Flask:
     """Application Factory.
@@ -79,29 +84,29 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
     app.logger.info("Python version: %s", _python_version)
     app.logger.info("Flask version: %s", _logging_level)
 
-    @app.route('/')
-    @app.route('/index')
-    def index() -> str:
-        """Render the default landing page.
+    # Set other environment variables that are not defined in config.py
+    # That will allow you to share them throughout the app using App Context and 'current_app'
+    app.config['FLASK_VERSION'] = _flask_version
+    app.config['PYTHON_VERSION'] = _python_version
 
-        :return: The HTML code for the page
-        :rtype: str
-        """
-        log_page_request(app, flask.request)
+    # Connect to the database
+    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
+    from v06 import models
 
-        # DOCTYPE prevents Quirks mode
-        greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
-            <h2>I am Version 3.</h2>
-            <p>From <code>__init__.py</code>: You are using Python {_python_version}.</p>
-            <p>From <code>config.py</code>: Your logging level is {app.config['LOGGING_LEVEL']}.</p>
-            <p>Check the <code>/blue_logs</code> directory for log entries.</p>
-            """
-        return greeting
+    # Register the current Flask app with the SQLAlchemy 'db' instance
+    db.init_app(app)
+
+    # Create the database if it does not exist
+    with app.app_context():
+        _create_db()
+
+    # Start routing using blueprints
+    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
+    from v06.blueprints.main import main_routes
+    app.register_blueprint(main_routes.bp)
 
     # Return the application instance to the code that invoked 'create_app()'
     return app
-
 
 def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level: int = logging.DEBUG) -> None:
     """Setup and start logging.
@@ -210,3 +215,28 @@ def log_page_request(app: flask.Flask, request: flask.Request) -> None:
 
     # Log the requested page and client address
     app.logger.info(f"{request.endpoint} requested by {client_address}.")
+
+def _create_db() -> None:
+    """Create and populate the database if it does not exist.
+    """
+    # Extract database file path from the URI
+    uri = db.engine.url
+    db_path = uri.database if uri.database else uri.host
+
+    if not os.path.exists(db_path):
+        # Create the database and tables
+        db.create_all()
+
+        # Import modules after instantiating 'app' to avoid known circular import problems with Flask
+        from v06.models import Course
+
+        # Add initial data
+        _course = [Course(course_name='Python I', course_code='CS100', course_group='SDEV',
+                         course_desc='Introduction to Python.'),
+                   Course(course_name='Flask I', course_code='CS101', course_group='SDEV',
+                         course_desc='Introduction to Flask.')]
+        db.session.add_all(_course)
+        db.session.commit()
+        print("Database initialized and populated with initial data.")
+    else:
+        print("Database already exists.")

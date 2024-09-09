@@ -75,4 +75,5 @@ def create_app(config_class: object = Config) -> flask.Flask:
             """
         return greeting
 
+    # Return the application instance to the code that invoked 'create_app()'
     return app

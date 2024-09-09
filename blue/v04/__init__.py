@@ -95,6 +95,7 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
             _logging_level=_logging_level,
         )
 
+    # Return the application instance to the code that invoked 'create_app()'
     return app
 
 
