@@ -3,6 +3,7 @@
 import flask
 from app import log_page_request
 from app.blueprints.main import bp
+from app.models import (Course)
 
 
 @bp.route('/')
@@ -41,4 +42,29 @@ def about() -> str:
                                   page_description=_page_description,
                                   python_version=flask.current_app.config['PYTHON_VERSION'],
                                   logging_level=flask.current_app.config['LOGGING_LEVEL'])
+    return _html
+
+
+@bp.route('/courses')
+def courses() -> str:
+    """The courses page.
+
+    :return: The HTML code to display with {{ placeholders }} populated
+    :rtype: str
+    """
+    _page_title = 'List of Courses'
+    _page_description = 'Courses Page'
+
+    log_page_request(app=flask.current_app, request=flask.request)
+
+    # Get a list of courses from the database
+    _courses = Course.query.all()
+
+    # Convert to list if there is only one result
+    _courses = [_courses] if not isinstance(_courses, list) else _courses
+
+    _html = flask.render_template('main/courses.html',
+                                  page_title=_page_title,
+                                  page_description=_page_description,
+                                  courses=_courses)
     return _html

@@ -15,13 +15,17 @@ import time
 from logging.handlers import RotatingFileHandler
 
 import flask
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 from app.config import *
 
 __author__ = 'Rob Garcia'
 
-# PyLance may say "DevConfig" or "TestConfig" is not defined [reportUndefinedVariable]
-# Ignore the warning, since it is defined in app.config
-def create_app(config_class: object = DevConfig) -> flask.Flask: # type: ignore
+# These variables are accessible to other modules using current_app,
+# and they are initialized in create_app()
+db = SQLAlchemy()
+
+def create_app(config_class: object = DevConfig) -> flask.Flask:
     """Application Factory.
 
     :param str config_class: An alternate configuration from `config.py` for \
@@ -85,6 +89,17 @@ def create_app(config_class: object = DevConfig) -> flask.Flask: # type: ignore
     app.config['FLASK_VERSION'] = _flask_version
     app.config['PYTHON_VERSION'] = _python_version
 
+    # Connect to the database
+    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
+    from app import models
+
+    # Register the current Flask app with the SQLAlchemy 'db' instance
+    db.init_app(app)
+
+    # Create the database if it does not exist
+    with app.app_context():
+        _create_db()
+
     # Start routing using blueprints
     # Import modules after instantiating 'app' to avoid known circular import problems with Flask
     from app.blueprints.main import main_routes
@@ -92,7 +107,6 @@ def create_app(config_class: object = DevConfig) -> flask.Flask: # type: ignore
 
     # Return the application instance to the code that invoked 'create_app()'
     return app
-
 
 def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level: int = logging.DEBUG) -> None:
     """Setup and start logging.
@@ -201,3 +215,28 @@ def log_page_request(app: flask.Flask, request: flask.Request) -> None:
 
     # Log the requested page and client address
     app.logger.info(f"{request.endpoint} requested by {client_address}.")
+
+def _create_db() -> None:
+    """Create and populate the database if it does not exist.
+    """
+    # Extract database file path from the URI
+    uri = db.engine.url
+    db_path = uri.database if uri.database else uri.host
+
+    if not os.path.exists(db_path):
+        # Create the database and tables
+        db.create_all()
+
+        # Import modules after instantiating 'app' to avoid known circular import problems with Flask
+        from app.models import Course
+
+        # Add initial data
+        _course = [Course(course_name='Python I', course_code='CS100', course_group='SDEV',
+                         course_desc='Introduction to Python.'),
+                   Course(course_name='Flask I', course_code='CS101', course_group='SDEV',
+                         course_desc='Introduction to Flask.')]
+        db.session.add_all(_course)
+        db.session.commit()
+        print("Database initialized and populated with initial data.")
+    else:
+        print("Database already exists.")
