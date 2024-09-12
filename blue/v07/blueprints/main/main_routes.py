@@ -2,9 +2,9 @@
 """
 
 import flask
-from app import db, log_page_request
-from app.blueprints.main import bp
-from app.models import Course, CourseGroup
+from v07 import db, log_page_request
+from v07.blueprints.main import bp
+from v07.models import Course, CourseGroup
 
 
 @bp.route('/')
@@ -18,7 +18,7 @@ def index() -> str:
     _page_title = 'Welcome to Blue!'
     _page_description = 'Landing Page'
 
-    log_page_request(app_instance=flask.current_app, request=flask.request)
+    log_page_request(_app=flask.current_app, request=flask.request)
 
     _html = flask.render_template(
         'main/index.html', page_title=_page_title, page_description=_page_description
@@ -36,7 +36,7 @@ def about() -> str:
     _page_title = 'About'
     _page_description = 'About Page'
 
-    log_page_request(app_instance=flask.current_app, request=flask.request)
+    log_page_request(_app=flask.current_app, request=flask.request)
 
     _html = flask.render_template(
         'main/about.html',
@@ -58,7 +58,7 @@ def courses() -> str:
     _page_title = 'List of Courses'
     _page_description = 'Courses Page'
 
-    log_page_request(app_instance=flask.current_app, request=flask.request)
+    log_page_request(_app=flask.current_app, request=flask.request)
 
     # Get a list of courses from the database
     # _courses = Course.query.all()
@@ -70,7 +70,7 @@ def courses() -> str:
             Course.course_name,
             Course.course_code,
             Course.course_desc,
-            CourseGroup.course_group_code.label('course_group_code'),  # Renaming for clarity
+            CourseGroup.course_group_code.label('course_group_code')  # Renaming for clarity
         )
         .join(CourseGroup, Course.course_group_id == CourseGroup.course_group_id)
         .all()
@@ -95,7 +95,7 @@ def test() -> str:
     _page_title = 'Test Page'
     _page_description = 'Test Page'
 
-    log_page_request(app_instance=flask.current_app, request=flask.request)
+    log_page_request(_app=flask.current_app, request=flask.request)
 
     _environments = {
         'sandbox': {

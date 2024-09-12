@@ -3,8 +3,8 @@ and it tells Python that the current directory should be treated as a package.
 You can then import its files as modules (e.g., `from app.foo import bar`).
 
 Usage:
-- python -B -m flask --app "v06" run
-- python -B -m flask --app "v06:create_app(config_class='v06.config.DevConfig')" run
+- python -B -m flask --app "v07" run
+- python -B -m flask --app "v07:create_app(config_class='v07.config.DevConfig')" run
 """
 
 import logging
@@ -18,7 +18,7 @@ import flask
 from flask_sqlalchemy import SQLAlchemy
 
 # Ignore 'imported but unused' messages
-from v06.config import Config, DevConfig, TestConfig  # noqa
+from v07.config import Config, DevConfig, TestConfig  # noqa
 
 __author__ = 'Rob Garcia'
 
@@ -100,7 +100,7 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
 
     # Start routing using blueprints
     # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from v06.blueprints.main import main_routes
+    from v07.blueprints.main import main_routes
 
     app.register_blueprint(main_routes.bp)
 
@@ -201,7 +201,7 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
 def log_page_request(app_instance: flask.Flask, request: flask.Request) -> None:
     """Log information about the client when a page is requested.
 
-    :param flask.Flask app: The application instance
+    :param flask.Flask app_instance: The application instance
     :param flask.Request request: The client's request object
 
     :return: None
@@ -231,28 +231,47 @@ def _create_db() -> None:
 
     if not os.path.exists(db_path):
         # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-        from v06.models import Course
+        from v07.models import Course, CourseGroup
 
         # Create the database and tables
         db.create_all()
 
         # Add initial data
-        _course = [
-            Course(
-                course_name='Python I',
-                course_code='CS100',
-                course_group='SDEV',
-                course_desc='Introduction to Python.',
-            ),
-            Course(
-                course_name='Flask I',
-                course_code='CS101',
-                course_group='SDEV',
-                course_desc='Introduction to Flask.',
+        _course_groups = [
+            CourseGroup(
+                course_group_code='CSCI',
+                course_group_name='Computer Science',
+                course_group_desc='These courses focus on computation, information processing, and automation.',
             ),
         ]
-        db.session.add_all(_course)
+        db.session.add_all(_course_groups)
         db.session.commit()
-        print("Database initialized and populated with initial data.")
+
+        # Fetch the created course group
+        course_group = CourseGroup.query.filter_by(course_group_code='CSCI').first()
+
+        if course_group:
+            # Get the course group ID
+            course_group_id = course_group.course_group_id
+
+            _courses = [
+                Course(
+                    course_name='Python I',
+                    course_code='CSCI100',
+                    course_group_id=course_group_id,  # Use the ID here
+                    course_desc='Introduction to Python.',
+                ),
+                Course(
+                    course_name='Flask I',
+                    course_code='CSCI101',
+                    course_group_id=course_group_id,  # Use the ID here
+                    course_desc='Introduction to Flask.',
+                ),
+            ]
+            db.session.add_all(_courses)
+            db.session.commit()
+            print("Database initialized and populated with initial data.")
+        else:
+            print("Failed to fetch the course group.")
     else:
         print("Database already exists.")

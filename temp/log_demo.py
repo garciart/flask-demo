@@ -1,13 +1,13 @@
 """Demonstrate how to create separate log files for each instance of a class.
 """
+
 import logging
 import os
 import time
 
 
-class MyClass():
-    """Class to demonstrate separate log files for each instance.
-    """
+class MyClass:
+    """Class to demonstrate separate log files for each instance."""
 
     def __init__(self) -> None:
         self.logger = None
@@ -28,7 +28,8 @@ class MyClass():
         _log_path = f"{_log_dir}/{_log_name}.log"
         _file_handler = logging.FileHandler(_log_path, mode='a', encoding='utf-8')
         _formatter = logging.Formatter(
-            '\"%(asctime)s\", \"%(name)s\", \"%(levelname)s\", \"%(message)s\"')
+            '\"%(asctime)s\", \"%(name)s\", \"%(levelname)s\", \"%(message)s\"'
+        )
         _file_handler.setFormatter(_formatter)
 
         self.logger = logging.getLogger(_log_name)
@@ -54,7 +55,8 @@ if __name__ == '__main__':
     bar_class.logger.info('This is a test of bar.')
 
     bar_class.logger.debug(
-        'I WILL NOT appear in bar, since it does not accept logging.DEBUG messages.')
+        'I WILL NOT appear in bar, since it does not accept logging.DEBUG messages.'
+    )
     foo_class.logger.debug('I appear in foo, since it accepts logging.DEBUG messages.')
 
     bar_class.logger.warning('This is the end of bar.')

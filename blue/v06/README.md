@@ -2,11 +2,10 @@
 
 This is an example of a Flask application that uses a database.
 
-Notes: Remeber to run:
+Notes: Remember to run:
 
 ```bash
 python -m pip install flask-sqlalchemy
-python -m pip install flask-migrate
 python -m pip freeze > requirements.txt
 ```
 

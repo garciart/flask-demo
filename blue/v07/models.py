@@ -1,7 +1,7 @@
 """Classes for the Blue database models.
 """
 
-from app import db
+from v07 import db
 
 __all__ = ['Course', 'CourseGroup']
 

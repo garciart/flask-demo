@@ -15,9 +15,12 @@ import time
 from logging.handlers import RotatingFileHandler
 
 import flask
-from v05.config import *
+
+# Ignore 'imported but unused' messages
+from v07.config import Config, DevConfig, TestConfig  # noqa
 
 __author__ = 'Rob Garcia'
+
 
 def create_app(config_class: object = DevConfig) -> flask.Flask:
     """Application Factory.
@@ -46,7 +49,7 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
         print('This application requires Flask 3 or above. Exiting now...')
         sys.exit(1)
 
-    # Create the Flask application instance
+    # Create the Flask application instance and use the project's .flaskenv and .env
     app = flask.Flask(__name__, instance_relative_config=True)
 
     # Load the selected configuration class from config.py
@@ -86,12 +89,16 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
     # Start routing using blueprints
     # Import modules after instantiating 'app' to avoid known circular import problems with Flask
     from v05.blueprints.main import main_routes
+
     app.register_blueprint(main_routes.bp)
 
     # Return the application instance to the code that invoked 'create_app()'
     return app
 
-def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level: int = logging.DEBUG) -> None:
+
+def _start_log_file(
+    app_instance: flask.Flask, log_dir: str = 'blue_logs', logging_level: int = logging.DEBUG
+) -> None:
     """Setup and start logging.
 
     Each instance of this class to have a separate log file in the 'logs' directory.
@@ -100,7 +107,7 @@ def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level:
     hot fixes, you may end up with a huge log file. Therefore, I recommend you do not log events \
     when in debug mode (`python3 flask --debug run`)
 
-    :param flask.Flask app: The application instance
+    :param flask.Flask app_instance: The application instance
     :param str log_dir: The directory that will hold the log files
     :param int logging_level: The level of messages to log. The default is to log DEBUG \
         messages (level 10) or greater
@@ -108,7 +115,7 @@ def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level:
     :return: None
     """
     # Validate inputs
-    validate_input('app', app, flask.Flask)
+    validate_input('app_instance', app_instance, flask.Flask)
     validate_input('log_dir', log_dir, str)
     validate_input('logging_level', logging_level, int)
 
@@ -118,12 +125,13 @@ def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level:
 
     # The name of the log file is the name of the class,
     # plus the time the class was instantiated (MyClass_1725644384.38276.log).
-    _log_name = f"{app.name}_{time.time()}"
+    _log_name = f"{app_instance.name}_{time.time()}"
     _log_path = f"{log_dir}/{_log_name}.log"
 
     # Use multiple small logs for easy reading
     _file_handler = RotatingFileHandler(
-        _log_path, mode='a', maxBytes=10240, backupCount=10, encoding='utf-8')
+        _log_path, mode='a', maxBytes=10240, backupCount=10, encoding='utf-8'
+    )
 
     # Use CSV format for log entries, with columns for Time, Server IP, Process ID, Message Level, and Message
     _file_handler.stream.write('"date_time", "server_ip", "process_id", "msg_level", "message"\n')
@@ -136,8 +144,8 @@ def _start_log_file(app: flask.Flask, log_dir: str = 'blue_logs', logging_level:
     _formatter = logging.Formatter(_msg_format)
     _file_handler.setFormatter(_formatter)
 
-    app.logger.addHandler(_file_handler)
-    app.logger.setLevel(logging_level)
+    app_instance.logger.addHandler(_file_handler)
+    app_instance.logger.setLevel(logging_level)
 
     # IMPORTANT! Since the timestamp is part of the log file name,
     # pause for a tenth of a second before leaving to prevent logs from having the same name.
@@ -178,7 +186,7 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
         sys.exit(2)
 
 
-def log_page_request(app: flask.Flask, request: flask.Request) -> None:
+def log_page_request(app_instance: flask.Flask, request: flask.Request) -> None:
     """Log information about the client when a page is requested.
 
     :param flask.Flask app: The application instance
@@ -187,7 +195,7 @@ def log_page_request(app: flask.Flask, request: flask.Request) -> None:
     :return: None
     """
     # Validate inputs
-    validate_input('app', app, flask.Flask)
+    validate_input('app_instance', app_instance, flask.Flask)
     validate_input('request', request, flask.Request)
 
     client_address = None
@@ -197,4 +205,4 @@ def log_page_request(app: flask.Flask, request: flask.Request) -> None:
         client_address = request.environ['HTTP_X_FORWARDED_FOR']
 
     # Log the requested page and client address
-    app.logger.info(f"{request.endpoint} requested by {client_address}.")
+    app_instance.logger.info(f"{request.endpoint} requested by {client_address}.")

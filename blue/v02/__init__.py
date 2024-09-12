@@ -7,12 +7,13 @@ Usage:
 - python -B -m flask --app "v02:create_app(config_class='v02.config.DevConfig')" run
 """
 
-import logging
 import os
 import sys
 
 import flask
-from v02.config import *
+
+# Ignore 'imported but unused' messages
+from v07.config import Config, DevConfig, TestConfig  # noqa
 
 __author__ = 'Rob Garcia'
 
@@ -29,8 +30,6 @@ def create_app(config_class: object = Config) -> flask.Flask:
     _flask_version = flask.__version__
     # Get the Python version and convert it to float (e.g., 3.9 -> 3.09)
     _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
-    # Set logging to DEBUG (10) just in case the LOGGING_LEVEL environment variable is not set
-    _logging_level = logging.DEBUG
 
     # Ensure the Python version supports Flask 3
     print(f"Your Python version is {_python_version}.")
@@ -44,7 +43,7 @@ def create_app(config_class: object = Config) -> flask.Flask:
         print('This application requires Flask 3 or above. Exiting now...')
         sys.exit(1)
 
-    # Create the Flask application instance
+    # Create the Flask application instance and use the project's .flaskenv and .env
     app = flask.Flask(__name__, instance_relative_config=True)
 
     # Load the selected configuration class from config.py
