@@ -240,14 +240,14 @@ def _create_db() -> None:
         _course = [
             Course(
                 course_name='Python I',
-                course_code='CS100',
-                course_group='SDEV',
+                course_code='CSCI100',
+                course_group='CSCI',
                 course_desc='Introduction to Python.',
             ),
             Course(
                 course_name='Flask I',
-                course_code='CS101',
-                course_group='SDEV',
+                course_code='CSCI101',
+                course_group='CSCI',
                 course_desc='Introduction to Flask.',
             ),
         ]
