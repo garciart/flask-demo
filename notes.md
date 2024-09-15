@@ -1,5 +1,7 @@
 # Notes
 
+Use flake8 and Black
+
 Create the development environment:
 
 ```bash

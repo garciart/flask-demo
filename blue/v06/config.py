@@ -36,9 +36,6 @@ class Config:
     # WARNING is the default logging level
     LOGGING_LEVEL = logging.WARNING
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or (
-        'sqlite:///' + os.path.join(basedir, 'blue.db'))
-
 
 class DevConfig(Config):
     """Development configuration variables and settings."""

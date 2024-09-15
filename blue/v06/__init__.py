@@ -15,16 +15,11 @@ import time
 from logging.handlers import RotatingFileHandler
 
 import flask
-from flask_sqlalchemy import SQLAlchemy
 
 # Ignore 'imported but unused' messages
 from v06.config import Config, DevConfig, TestConfig  # noqa
 
 __author__ = 'Rob Garcia'
-
-# These variables are accessible to other modules using current_app,
-# and they are initialized in create_app()
-db = SQLAlchemy()
 
 
 def create_app(config_class: object = DevConfig) -> flask.Flask:
@@ -90,13 +85,6 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
     # That will allow you to share them throughout the app using App Context and 'current_app'
     app.config['FLASK_VERSION'] = _flask_version
     app.config['PYTHON_VERSION'] = _python_version
-
-    # Register the current Flask app with the SQLAlchemy 'db' instance
-    db.init_app(app)
-
-    # Create the database if it does not exist
-    with app.app_context():
-        _create_db()
 
     # Start routing using blueprints
     # Import modules after instantiating 'app' to avoid known circular import problems with Flask
@@ -218,41 +206,3 @@ def log_page_request(app_instance: flask.Flask, request: flask.Request) -> None:
 
     # Log the requested page and client address
     app_instance.logger.info(f"{request.endpoint} requested by {client_address}.")
-
-
-def _create_db() -> None:
-    """Create and populate the database if it does not exist.
-
-    NOTE - Creating the database does not require instantiating the application.
-    """
-    # Extract database file path from the URI
-    uri = db.engine.url
-    db_path = uri.database if uri.database else uri.host
-
-    if not os.path.exists(db_path):
-        # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-        from v06.models import Course
-
-        # Create the database and tables
-        db.create_all()
-
-        # Add initial data
-        _course = [
-            Course(
-                course_name='Python I',
-                course_code='CSCI100',
-                course_group='CSCI',
-                course_desc='Introduction to Python.',
-            ),
-            Course(
-                course_name='Flask I',
-                course_code='CSCI101',
-                course_group='CSCI',
-                course_desc='Introduction to Flask.',
-            ),
-        ]
-        db.session.add_all(_course)
-        db.session.commit()
-        print("Database initialized and populated with initial data.")
-    else:
-        print("Database already exists.")

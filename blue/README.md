@@ -29,14 +29,14 @@ Role and User Administration: Administrators only.
 ## Stages
 
 1. `app` - Default application with all functionality.
-2. `v01` - An example of a basic Flask application that uses a package and application factory.
-3. `v01a` - An example of unit testing a Flask application.
-4. `v02` - An example of passing and using different configuration options with a Flask application.
-5. `v03` - An example of a Flask application that incorporates logging and input validation.
-6. `v04` - An example of a Flask application that incorporates templates.
-7. `v05` - An example of a Flask application that incorporates blueprints.
-8. `v06` - An example of a Flask application that incorporates a database.
-9. `v07` - An example of a Flask application that incorporates a one-to-many database table relationship.
+2. `v01` - A basic Flask application that uses a package and application factory.
+3. `v02` - Unit test a Flask application.
+4. `v03` - Use different environment, Flask, and application configuration options.
+5. `v04` - Add logging and input validation.
+6. `v05` - Use templates.
+7. `v06` - Use blueprints.
+8. `v07` - Add a database.
+9. `v08` - Use a one-to-many database table relationship.
 
 -----
 
@@ -69,14 +69,18 @@ To run the default application:
 > - `run`: Run a development server. To allow external access to the server (i.e., not `localhost` or `127.0.0.1`), append `--host=0.0.0.0` to the `run` command.
 > - `--debug / --no-debug`:  Set debug mode.
 
-To run a specific stage of Blue, use a command like:
+To run a specific stage, use a command like:
 
 `python -B -m flask --app "v01" run`
+
+To unit test a specific stage:
+
+`python -B -m unittest --verbose --buffer v02/tests/test_app.py`
 
 To run Blue using a specific runtime configuration, ensure the class exists in `config.py`, like `TestConfig(Config)`, and include it in the command:
 
 - `python -B -m flask --app "app:create_app(config_class='TestConfig')" run`
-- `python -B -m flask --app "v01:create_app(config_class='v01.config.TestConfig')" run`
+- `python -B -m flask --app "v03:create_app(config_class='v03.config.TestConfig')" run`
 
 To run an instance using a specific environment configuration, ensure that:
 

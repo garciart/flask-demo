@@ -4,10 +4,10 @@ Run from the project directory (e.g., ../flask-demo)
 
 Ensure you have an empty __init__.py in the 'tests' directory
 
-Usage: python -B -m unittest --verbose --buffer v01a/tests/test_app.py
+Usage: python -B -m unittest --verbose --buffer v02/tests/test_app.py
 """
 import unittest
-from v01a import create_app
+from v02 import create_app
 
 __author__ = 'Rob Garcia'
 

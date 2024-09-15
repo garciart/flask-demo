@@ -17,7 +17,7 @@ from logging.handlers import RotatingFileHandler
 import flask
 
 # Ignore 'imported but unused' messages
-from v07.config import Config, DevConfig, TestConfig  # noqa
+from v05.config import Config, DevConfig, TestConfig  # noqa
 
 __author__ = 'Rob Garcia'
 
@@ -81,16 +81,21 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
     app.logger.info("Python version: %s", _python_version)
     app.logger.info("Flask version: %s", _logging_level)
 
-    # Set other environment variables that are not defined in config.py
-    # That will allow you to share them throughout the app using App Context and 'current_app'
-    app.config['FLASK_VERSION'] = _flask_version
-    app.config['PYTHON_VERSION'] = _python_version
+    @app.route('/')
+    @app.route('/index')
+    def index() -> str:
+        """Render the default landing page.
 
-    # Start routing using blueprints
-    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from v05.blueprints.main import main_routes
+        :return: The HTML code for the page
+        :rtype: str
+        """
+        log_page_request(app, flask.request)
 
-    app.register_blueprint(main_routes.bp)
+        return flask.render_template(
+            'main/index.html',
+            _python_version=_python_version,
+            _logging_level=_logging_level,
+        )
 
     # Return the application instance to the code that invoked 'create_app()'
     return app
@@ -189,7 +194,7 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
 def log_page_request(app_instance: flask.Flask, request: flask.Request) -> None:
     """Log information about the client when a page is requested.
 
-    :param flask.Flask app: The application instance
+    :param flask.Flask app_instance: The application instance
     :param flask.Request request: The client's request object
 
     :return: None

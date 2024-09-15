@@ -2,9 +2,9 @@
 """
 
 import flask
-from app import db, log_page_request
-from app.blueprints.main import bp
-from app.models import Course, CourseGroup
+from v08 import db, log_page_request
+from v08.blueprints.main import bp
+from v08.models import Course, CourseGroup
 
 
 @bp.route('/')
@@ -59,6 +59,10 @@ def courses() -> str:
     _page_description = 'Courses Page'
 
     log_page_request(app_instance=flask.current_app, request=flask.request)
+
+
+    # Get a list of courses from the database
+    # _courses = Course.query.all()
 
     # Query to get all courses along with the course_group_code
     _courses_with_group_code = (

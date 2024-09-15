@@ -6,7 +6,7 @@
     <meta charset="UTF-8"/>
     <title>{% block page_title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="description" content={% block page_description %}{% endblock %}/>
+    <meta name="description" content="{% block page_description %}{{ page_description }}{% endblock %}"/>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
@@ -21,6 +21,13 @@
 <main>
     {% block main_content %}{% endblock %}
 </main>
+<nav>
+    <div class="container">
+        <p><a class="nav-link" href="{{ url_for('main.index') }}" title="Home">To the Home Page!</a></p>
+        <p><a class="nav-link" href="{{ url_for('main.about') }}" title="About">To the About Page!</a></p>
+        <p><a class="nav-link" href="{{ url_for('main.courses') }}" title="Courses">To the Courses Page!</a></p>
+    </div>
+</nav>
 <footer>
     <hr>
     {% block footer %}

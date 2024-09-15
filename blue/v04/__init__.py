@@ -17,7 +17,7 @@ from logging.handlers import RotatingFileHandler
 import flask
 
 # Ignore 'imported but unused' messages
-from v07.config import Config, DevConfig, TestConfig  # noqa
+from v04.config import Config, DevConfig, TestConfig  # noqa
 
 __author__ = 'Rob Garcia'
 
@@ -91,11 +91,15 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
         """
         log_page_request(app, flask.request)
 
-        return flask.render_template(
-            'main/index.html',
-            _python_version=_python_version,
-            _logging_level=_logging_level,
-        )
+        # DOCTYPE prevents Quirks mode
+        greeting = f"""<!DOCTYPE html>
+            <h1>Hello, World!</h1>
+            <h2>I am Version 4.</h2>
+            <p>From <code>__init__.py</code>: You are using Python {_python_version}.</p>
+            <p>From <code>config.py</code>: Your logging level is {app.config['LOGGING_LEVEL']}.</p>
+            <p>Check the <code>/blue_logs</code> directory for log entries.</p>
+            """
+        return greeting
 
     # Return the application instance to the code that invoked 'create_app()'
     return app

@@ -2,27 +2,18 @@
 and it tells Python that the current directory should be treated as a package.
 You can then import its files as modules (e.g., `from app.foo import bar`).
 
-Usage:
-- python -B -m flask --app "v02" run
-- python -B -m flask --app "v02:create_app(config_class='v02.config.DevConfig')" run
+Usage: python -B -m flask --app "v02" run
 """
 
-import os
 import sys
 
 import flask
 
-# Ignore 'imported but unused' messages
-from v07.config import Config, DevConfig, TestConfig  # noqa
-
 __author__ = 'Rob Garcia'
 
 
-def create_app(config_class: object = Config) -> flask.Flask:
+def create_app() -> flask.Flask:
     """Application Factory.
-
-    :param str config_class: An alternate configuration from `config.py` for \
-    development, testing, etc. Uses the base `Config` class by default if None
 
     :return: An application instance
     :rtype: flask.Flask
@@ -43,15 +34,8 @@ def create_app(config_class: object = Config) -> flask.Flask:
         print('This application requires Flask 3 or above. Exiting now...')
         sys.exit(1)
 
-    # Create the Flask application instance and use the project's .flaskenv and .env
-    app = flask.Flask(__name__, instance_relative_config=True)
-
-    # Load the selected configuration class from config.py
-    try:
-        app.config.from_object(config_class)
-    except ImportError:
-        print(f'{config_class} is not a valid configuration class. Exiting now...')
-        sys.exit(1)
+    # Create the Flask application instance
+    app = flask.Flask(__name__)
 
     # Create a route and page
     @app.route('/')
@@ -63,16 +47,10 @@ def create_app(config_class: object = Config) -> flask.Flask:
         :rtype: str
         """
         # DOCTYPE prevents Quirks mode
-        greeting = f"""<!DOCTYPE html>
+        return """<!DOCTYPE html>
             <h1>Hello, World!</h1>
-            <h2>I am Version 2.</h2>
-            <p>From <code>__init__.py</code>: You are using Python {_python_version}.</p>
-            <p>From <code>config.py</code>: Your logging level is {app.config['LOGGING_LEVEL']}.</p>
-            <p>From <code>.flaskenv</code>: Your port number is {os.environ.get('FLASK_RUN_PORT')}.</p>
-            <p>From <code>.env</code>: <samp>EXAMPLE_ENV_VARIABLE</samp>: {os.environ.get('EXAMPLE_ENV_VARIABLE')}</p>
-            <p>From <code>config.py</code>: <code>UNDEFINED_KEY</code>: {app.config['UNDEFINED_KEY']}</p>
+            <p>I am Version 2.</p>
             """
-        return greeting
 
     # Return the application instance to the code that invoked 'create_app()'
     return app
