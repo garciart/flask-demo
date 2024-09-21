@@ -1,6 +1,6 @@
 # Blue v03
 
-This is an example of passing and using different configuration options with a Flask application.
+Use different environment, Flask, and application configuration options.
 
 Usage:
 

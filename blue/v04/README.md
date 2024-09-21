@@ -1,6 +1,6 @@
 # Blue v04
 
-This is an example of a Flask application that incorporates logging and input validation.
+Add logging and input validation.
 
 Usage:
 

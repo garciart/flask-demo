@@ -33,10 +33,10 @@ Role and User Administration: Administrators only.
 3. `v02` - Unit test a Flask application.
 4. `v03` - Use different environment, Flask, and application configuration options.
 5. `v04` - Add logging and input validation.
-6. `v05` - Use templates.
-7. `v06` - Use blueprints.
-8. `v07` - Add a database.
-9. `v08` - Use a one-to-many database table relationship.
+6. `v05` - Use Flask templates.
+7. `v06` - Use Flask blueprints.
+8. `v07` - Use a SQLite database.
+9. `v08` - Use a one-to-many relationship in a database.
 
 -----
 

@@ -1,6 +1,6 @@
 # Blue v07
 
-This is an example of a Flask application that uses a database.
+Use a SQLite database.
 
 Notes: Remember to run:
 
