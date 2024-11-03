@@ -5,7 +5,8 @@
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-Usage: python -B -m flask --app hello run
+Usage:
+python -B -m flask --app hello run
 """
 
 import flask

@@ -1,15 +1,16 @@
-"""A basic Flask application that uses a package pattern.
+"""A basic Flask application that uses environment variables.
 
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-Usage: python -B -m flask --app tracker_01 run
+Usage: python -B -m flask --app tracker_02 run
 """
 
 import sys
 import flask
+import os
 
 __author__ = 'Rob Garcia'
 
@@ -42,8 +43,22 @@ def index() -> str:
     :return: The HTML code for the page
     :rtype: str
     """
+    # This system environment variable is common to Linux and Windows systems
+    default_encoding = os.environ.get('LANG')
+
+    # This system environment variable is defined in the .env file
+    env_user_defined_var = os.environ.get('ENV_USER_DEFINED_VAR')
+
+    # This Flask environment variable is defined in the .flaskenv file
+    flaskenv_user_defined_var = os.environ.get('FLASKENV_USER_DEFINED_VAR')
+
     # DOCTYPE prevents Quirks mode
-    return """<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
         <h1>Hello, World!</h1>
-        <p>This is a demo of a basic Flask application that uses a package pattern.</p>
+        <p>This is a demo of a basic Flask application that uses environment variables.</p>
+        <p>Your encoding is {default_encoding}.</p>
+        <p>This is <code>ENV_USER_DEFINED_VAR</code>, a user-defined variable from the
+        <code>.env</code> file: <code>{env_user_defined_var}</code></p>
+        <p>This is <code>ENV_USER_DEFINED_VAR</code>, a user-defined variable from the
+        <code>.flaskenv</code> file: <code>{flaskenv_user_defined_var}</code></p>
         """
