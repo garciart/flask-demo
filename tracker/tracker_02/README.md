@@ -1,6 +1,6 @@
 # Tracker v02
 
-This is a demo of a basic Flask application that uses environment files.
+This is a demo of a Flask application that uses environment files.
 
 -----
 
@@ -73,8 +73,10 @@ tracker
 └── requirements.txt
 ```
 
-Once you are finished, run your application. Do not forget to activate your Python virtual environment first!
+Once you are finished reviewing the code, run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
 python -B -m flask --app tracker_02 --env-file .env run
 ```
+
+When you are finished testing the application, move on to the next version.

@@ -59,8 +59,10 @@ tracker
 └── requirements.txt
 ```
 
-Once you are finished, run your application. Do not forget to activate your Python virtual environment first!
+Once you are finished reviewing the code, run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
 python -B -m flask --app tracker_01 run
 ```
+
+When you are finished testing the application, move on to the next version.
