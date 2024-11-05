@@ -9,7 +9,7 @@ main_bp = flask.Blueprint('main_bp', __name__, template_folder='templates')
 
 # Import the other modules in the package after instantiating
 # the Blueprint to avoid known circular import problems with Flask
-from . import main  # noqa: E402 F401
+from . import main_routes  # noqa: E402 F401
 
 
 def get_app_vars(

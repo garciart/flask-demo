@@ -90,7 +90,7 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
             'The minimum Python and Flask version numbers must be type float. Exiting now...')
 
     if min_python_version <= 0.0 or min_flask_version <= 0.0:
-        raise TypeError(
+        raise ValueError(
             'The minimum Python and Flask version numbers must be greater than 0. Exiting now...')
 
     # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
@@ -102,14 +102,13 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
         raise ValueError(
             f"Flask 3 requires Python {min_python_version:.2f} or above. Exiting now...")
 
-    # Get the Flask major and minor version numbers and convert them to float (e.g., 3.0.3 -> 3.00)
+    # Get the Flask major and minor version numbers and convert them to a float
     _raw_flask_version = importlib.metadata.version("flask")
-    _flask_version_major = int(_raw_flask_version.split('.')[0])
-    _flask_version_minor = int(_raw_flask_version.split('.')[1])
+    _flask_version_major, _flask_version_minor = map(int, _raw_flask_version.split('.')[:2])
     _flask_version = float(f"{_flask_version_major}.{_flask_version_minor:02d}")
 
     # Ensure you are using the correct version of Flask
     print(f"Your Flask version is {_raw_flask_version}.")
-    if int(_flask_version) < min_flask_version:
+    if _flask_version < min_flask_version:
         raise ValueError(
             f"This application requires Flask {min_flask_version:.2f} or above. Exiting now...")

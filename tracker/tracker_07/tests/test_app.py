@@ -12,8 +12,10 @@ Usage: python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
 > for example, "Ensure you created the application instance ... ok"
 """
 
+import importlib
+import sys
 import unittest
-from .. import create_app
+from .. import create_app, _check_system
 
 __author__ = 'Rob Garcia'
 
@@ -23,6 +25,14 @@ class TestApp(unittest.TestCase):
 
     :param class unittest.TestCase: Class to test single test cases
     """
+
+    # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
+    sys_python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
+
+    # Get the Flask major and minor version numbers and convert them to a float
+    raw_flask_version = importlib.metadata.version("flask")
+    flask_version_major, flask_version_minor = map(int, raw_flask_version.split('.')[:2])
+    sys_flask_version = float(f"{flask_version_major}.{flask_version_minor:02d}")
 
     def setUp(self):
         """Create the application instance"""
@@ -51,6 +61,54 @@ class TestApp(unittest.TestCase):
         self.app = None
         self.app_context = None
         self.client = None
+
+    def test_check_system_pass_meets_req(self):
+        """Test that _check_system() passes when requirements met"""
+        try:
+            _check_system(min_python_version=self.sys_python_version,
+                          min_flask_version=self.sys_flask_version)
+        except (TypeError, ValueError):
+            self.fail('Method raised an exception unexpectedly.')
+
+    def test_check_system_pass_exceeds_req(self):
+        """Test that _check_system() passes when requirements exceeded"""
+        try:
+            _check_system(min_python_version=self.sys_python_version - 0.1,
+                          min_flask_version=self.sys_flask_version - 0.1)
+        except (TypeError, ValueError):
+            self.fail('Method raised an exception unexpectedly.')
+
+    def test_check_system_fail_arg1_wrong_type(self):
+        """Test that _check_system() fails because min_python_version is not type float"""
+        with self.assertRaises(TypeError):
+            _check_system(min_python_version='foo', min_flask_version=self.sys_flask_version)
+
+    def test_check_system_fail_arg2_wrong_type(self):
+        """Test that _check_system() fails because min_flask_version is not type float"""
+        with self.assertRaises(TypeError):
+            _check_system(min_python_version=self.sys_python_version, min_flask_version='foo')
+
+    def test_check_system_fail_arg1_zero_or_below(self):
+        """Test that _check_system() fails because min_python_version is zero or below"""
+        with self.assertRaises(ValueError):
+            _check_system(min_python_version=-0.1, min_flask_version=self.sys_flask_version)
+
+    def test_check_system_fail_arg2_zero_or_below(self):
+        """Test that _check_system() fails because min_flask_version is zero or below"""
+        with self.assertRaises(ValueError):
+            _check_system(min_python_version=self.sys_python_version, min_flask_version=-0.1)
+
+    def test_check_system_fail_python_version_below_req(self):
+        """Test that _check_system() fails because the installed Python version is too old"""
+        with self.assertRaises(ValueError):
+            _check_system(min_python_version=self.sys_python_version + 0.1,
+                          min_flask_version=self.sys_flask_version)
+
+    def test_check_system_fail_flask_version_below_req(self):
+        """Test that _check_system() fails because the installed Flask version is too old"""
+        with self.assertRaises(ValueError):
+            _check_system(min_python_version=self.sys_python_version,
+                          min_flask_version=self.sys_flask_version + 0.1)
 
 
 if __name__ == '__main__':

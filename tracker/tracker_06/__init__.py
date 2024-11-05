@@ -114,8 +114,8 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         _error_msg = """<!DOCTYPE html>
             <h1>What a piece of junk!</h1>
             <p>Looks like those special modifications I made aren't working.</p>
-            <p>But we're a little rushed, so if you'll just click
-            <a href='/index' rel='nofollow' target='_self' title='Home'>here</a>, we'll
+            <p>But we're a little rushed, so if you'll just
+            <a href='/index' rel='nofollow' target='_self' title='Home'>click this link</a>, we'll
             get outta here.</p>
             """
         return _error_msg, 500
@@ -144,7 +144,7 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
     validate_input('min_flask_version', min_python_version, float)
 
     if min_python_version <= 0.0 or min_flask_version <= 0.0:
-        raise TypeError(
+        raise ValueError(
             'The minimum Python and Flask version numbers must be greater than 0. Exiting now...'
         )
 
@@ -158,10 +158,9 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
             f"Flask 3 requires Python {min_python_version:.2f} or above. Exiting now..."
         )
 
-    # Get the Flask major and minor version numbers and convert them to float (e.g., 3.0.3 -> 3.00)
+    # Get the Flask major and minor version numbers and convert them to a float
     _raw_flask_version = importlib.metadata.version("flask")
-    _flask_version_major = int(_raw_flask_version.split('.')[0])
-    _flask_version_minor = int(_raw_flask_version.split('.')[1])
+    _flask_version_major, _flask_version_minor = map(int, _raw_flask_version.split('.')[:2])
     _flask_version = float(f"{_flask_version_major}.{_flask_version_minor:02d}")
 
     # Ensure you are using the correct version of Flask
@@ -211,7 +210,7 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
         raise TypeError(f"'{obj_name}' is not type {expected_type}. Exiting now...")
 
     if isinstance(obj_to_check, (str, list, dict)) and len(obj_to_check) == 0:
-        raise TypeError(f"'{obj_name}' is empty. Exiting now...")
+        raise ValueError(f"'{obj_name}' is empty. Exiting now...")
 
 
 def _start_log_file(
