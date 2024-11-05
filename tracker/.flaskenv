@@ -26,7 +26,7 @@
 # FLASK_RUN_PORT=5000
 
 # Flask will use this key to protect your app from Cross-site request forgery (CRSF) attacks
-# SECRET_KEY='abcdef01234567899876543210fedcbaabcdef01234567899876543210fedcba'
+SECRET_KEY='abcdef01234567899876543210fedcbaabcdef01234567899876543210fedcba'
 
 # User-defined Flask environment variable
-FLASKENV_USER_DEFINED_VAR="fedcba9876543210"
+FLASKENV_USER_DEFINED_VAR="abcdef0123456789"

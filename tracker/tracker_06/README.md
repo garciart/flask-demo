@@ -1,6 +1,6 @@
 # Tracker v06
 
-This is a demo of a Flask application that incorporates templates.
+This is a demo of a Flask application that incorporates error handling.
 
 -----
 
@@ -11,18 +11,21 @@ This is a demo of a Flask application that incorporates templates.
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-Runs the Flask application using the configuration file found in `tracker/tracker_06/config.py`:
+Redirects the user to a custom error page and logs the error:
 
-- `python -B -m flask --app tracker_06 run`
-- `python -B -m flask --app "tracker_06:create_app(config_name='testing')" run`
+- `python -B -m flask --app "tracker_06:create_app(config_name='development', log_events=True)" run`
+- `python -B -m flask --app "tracker_06:create_app('development', True)" run`
 
-> **NOTE** - Enclose options in quotation marks when using special characters.
+> **NOTE**
+>
+> - Enclose options in quotation marks when using special characters.
+> - Use the `development` configurations or the application will not log `logging.INFO`-level messages.
 
 -----
 
 ## Notes
 
-Keeping your website's code in `__init__.py` is impractical, especially if you have dozens of pages with extensive Hypertext Markup Language (HTML) code. Flask ***Templates*** allow you to organize your code in a sensible manner. They are easier to maintain and reusable. Templates also allow you to incorporate Cascading Style Sheets (CSS), images, and JavaScript code to enhance the experience of your users when they visit your website.
+Incorporating error handling in your application not only provides feedback to the user, but captures information you can use to debug and improve your site.
 
 Your application structure should be like the following:
 
@@ -31,23 +34,11 @@ tracker
 ├── tracker_01
 ├── ...
 ├── tracker_06
-│   ├── static
-│   │   ├── css
-│   │   │   └── main.css
-│   │   ├── img
-│   │   │   ├── favicon.ico
-│   │   │   └── logo.png
-│   │   └── js
-│   │       └── main.js
-│   ├── templates
-│   │   ├── error
-│   │   │   ├── 404.html
-│   │   │   └── 500.html
-│   │   ├── main
-│   │   │   └── index.html
-│   │   └── base.html
-│   ├── config.py
-│   └── __init__.py
+|   ├── tests
+|   |   ├── __init__.py
+|   |   └── test_app.py
+|   ├── __init__.py
+|   └── config.py
 ├── tracker_logs
 |   └── tracker_06_1234567890.1234567.log
 ├── venv
@@ -59,31 +50,40 @@ tracker
 └── requirements.txt
 ```
 
-Once you are finished reviewing the code, run your application using different configurations. Do not forget to activate your Python virtual environment first!
+Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
-```shell
-python -B -m flask --app tracker_06 run
-python -B -m flask --app "tracker_06:create_app('testing')" run
-```
+- `python -B -m flask --app "tracker_06:create_app(config_name='development', log_events=True)" run`
+- `python -B -m flask --app "tracker_06:create_app('development', True)" run`
 
-Run your application using the `testing` configuration, refresh the page, and terminate the application using <kbd>Ctrl</kbd> <kbd>c</kbd>. Take a look at the log file in `tracker_logs`. You should see something like the following:
+Once you have started the server:
 
-```text
-"date_time", "server_ip", "process_id", "msg_level", "message"
-"2024-11-03 18:38:21,123", "192.168.56.1", "17384", "INFO", "Starting tracker_06 application."
-"2024-11-03 18:38:23,836", "192.168.56.1", "17384", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:24,436", "192.168.56.1", "17384", "INFO", "/static/img/logo.png requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:24,440", "192.168.56.1", "17384", "INFO", "/static/css/main.css requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:24,440", "192.168.56.1", "17384", "INFO", "/static/js/main.js requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:35,856", "192.168.56.1", "17384", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:35,868", "192.168.56.1", "17384", "INFO", "/static/css/main.css requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-"2024-11-03 18:38:35,870", "192.168.56.1", "17384", "INFO", "/static/img/logo.png requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-"2024-11-03 18:38:35,871", "192.168.56.1", "17384", "INFO", "/static/js/main.js requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-"2024-11-03 18:38:35,881", "192.168.56.1", "17384", "INFO", "/static/img/logo.png requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-```
+- Navigate to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
+- Navigate to <http://127.0.0.1:5000/oops>; you should see your custom `Not Found` page.
+- Click on the **home page** hyperlink to navigate back to your home page and then click on refresh a few times.
+- Navigate to <http://127.0.0.1:5000/doh>; you should see your custom `Internal Server Error` page.
+- Click on the **here** hyperlink to navigate back to your home page and then click on refresh a few times.
+- Terminate the application using <kbd>Ctrl</kbd> <kbd>c</kbd>.
+- Take a look at the log file in `tracker_logs`. You should see something like the following:
 
-The HTTP response code `304 NOT MODIFIED` means that the server found a cached copy of the resource, like a favicon, so it did not request a new version from the server. This speeds up rendering the page. On most browsers, if you want the application to re-request the resource, press <kbd>Shift</kbd> <kbd>F5</kbd>; that forces the application to ignore the cache and retrieve a fresh version of the web page.
+    ```text
+    "date_time", "server_ip", "process_id", "msg_level", "message"
+    "2024-11-03 16:59:18,639", "192.168.56.1", "15452", "INFO", "Starting tracker_06 application."
+    "2024-11-03 16:59:21,163", "192.168.56.1", "15452", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 16:59:22,016", "192.168.56.1", "15452", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 16:59:29,792", "192.168.56.1", "15452", "INFO", "/oops requested by 127.0.0.1 using GET; 404 NOT FOUND."
+    "2024-11-03 16:59:33,491", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 17:00:26,387", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 17:00:32,031", "192.168.56.1", "15452", "ERROR", "Exception on /doh [GET]"
+    Traceback (most recent call last):
+    ...
+    Exception: This is an intentional 500 error.
+    "2024-11-03 17:00:32,033", "192.168.56.1", "15452", "INFO", "/doh requested by 127.0.0.1 using GET; 500 INTERNAL SERVER ERROR."
+    "2024-11-03 17:01:30,883", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 17:01:33,417", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
+    ```
 
-When you are finished testing the application, move on to the next version.
+By the way, if you simply ran `python -B -m flask --app tracker_06 run` and navigated to <http://127.0.0.1:5000/doh>, Flask would log the error, since it is a `logging.ERROR`-level message. However, Flask would not log any `logging.INFO`-level messages.
+
+When you are finished, move on to the next version.

@@ -1,11 +1,17 @@
 """Unit tests for the Flask demo.
 
-Run from the project directory (e.g., ../flask-demo)
+Run from the project directory (e.g., tracker, not tracker_XX)
 
 Ensure you have an empty __init__.py in the 'tests' directory
 
-Usage: python -B -m unittest --verbose --buffer v02/tests/test_app.py
+Usage: python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+
+> **NOTE** - Using --buffer and --verbose together provides a good balance of output,
+> since --buffer hides console output from the application
+> and --verbose displays the test's docstring;
+> for example, "Ensure you created the application instance ... ok"
 """
+
 import unittest
 from .. import create_app
 
@@ -27,7 +33,7 @@ class TestApp(unittest.TestCase):
 
     def test_app(self):
         """Ensure you created the application instance"""
-        assert self.app is not None
+        self.assertIsNotNone(self.app)
 
     def test_index_response_code(self):
         """Test that the index page was created by looking at the response code"""

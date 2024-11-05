@@ -1,4 +1,4 @@
-"""A Flask application that incorporates logging.
+"""A Flask application that incorporates templates.
 
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
@@ -6,16 +6,14 @@
 > - `venv/Scripts/activate` (Windows)
 
 Usage:
-- python -B -m flask --app "tracker_05:create_app(config_name='development', log_events=True)" run
-- python -B -m flask --app "tracker_05:create_app('development', True)" run
+- python -B -m flask --app tracker_08 run
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
 Changes:
-- Replaced `import config`. Importing occurs on demand in the `_configure_app` method
-- Replaced configuration if-elif-else with mapping for readability and maintainability
-- Consolidated input validation in the `validate_input` method
-- Added logging
+- Moved pages into templates
+- Added a "master" layout page
+- Added static Cascading Style Sheets (CSS) and JavaScript files
 """
 
 import importlib
@@ -73,22 +71,21 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
             # Do not forget to return the response to the client, or the app will crash
             return response
 
-    # Create a route and page
-    @_app.route('/')
-    @_app.route('/index')
-    def index() -> str:
-        """Render the default landing page.
+    # Start routing using blueprints
+    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
+    from .blueprints import main
+    from .blueprints import error
 
-        :returns: The HTML code for the page
-        :rtype: str
-        """
-        # DOCTYPE prevents Quirks mode
-        _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
-            <p>Your are using the <b>{config_name}</b> configuration and your logging level is
-            <b>{_logging_level_name} ({_logging_level})</b>.</p>
-            """
-        return _greeting
+    main.get_app_vars(config_name, _logging_level, _logging_level_name)
+
+    _app.register_blueprint(main.main_bp)
+    _app.register_blueprint(error.error_bp)
+
+    # Remove after testing
+    @_app.route('/doh')
+    def doh():
+        # Raise an exception to trigger a 500 error
+        raise Exception("This is an intentional 500 error.")
 
     # Return the application instance to the code that invoked 'create_app()'
     return _app
@@ -152,7 +149,7 @@ def _configure_app(config_name: str = 'default') -> flask.Flask:
     # NOTE - Switched from if-elif-else to mapping for readability and maintainability
     config_mapping = {
         'development': f'{__package__}.config.DevConfig',
-        'default': f'{__package__}.config.Config'
+        'default': f'{__package__}.config.Config',
     }
 
     _app.config.from_object(config_mapping.get(config_name, config_mapping['default']))
@@ -206,7 +203,7 @@ def _start_log_file(
         os.mkdir(log_dir)
 
     # The name of the log file is the name of the instance,
-    # plus the time the instance was instantiated (tracker_05_1234567890.1234567.log).
+    # plus the time the instance was instantiated (tracker_08_1234567890.1234567.log).
     _log_name = f"{app.name}_{time.time()}"
     _log_path = f"{log_dir}/{_log_name}.log"
 

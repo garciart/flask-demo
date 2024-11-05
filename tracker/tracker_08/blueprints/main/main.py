@@ -2,8 +2,7 @@
 """
 
 import flask
-
-main_bp = flask.Blueprint('main_bp', __name__, template_folder='templates')
+from . import main_bp
 
 
 @main_bp.route('/')
@@ -21,9 +20,9 @@ def index() -> str:
         'index.html',
         page_title_text=_page_title,
         page_description_text=_page_description,
-        _config_name_text=flask.current_app.config['CONFIG_NAME'],
-        _logging_level_text=flask.current_app.config['LOGGING_LEVEL'],
-        _logging_level_name_text=flask.current_app.config['LOGGING_LEVEL_NAME'],
+        _config_name_text=main_bp.config_name,
+        _logging_level_text=main_bp.logging_level,
+        _logging_level_name_text=main_bp.logging_level_name,
     )
 
 

@@ -6,9 +6,10 @@
 > - `venv/Scripts/activate` (Windows)
 
 Usage:
-- python -B -m flask --app "tracker_04:create_app(config_name='development')" run
-- python -B -m flask --app "tracker_04:create_app('testing')" run
-- python -B -m flask --app tracker_04 run
+- python -B -m flask --app "tracker_03:create_app(config_name='development')" run
+- python -B -m flask --app "tracker_03:create_app('development')" run
+- python -B -m flask --app tracker_03 run
+- python -B -m flask --app "tracker_03:create_app(foo='42')" run
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
@@ -17,6 +18,7 @@ Changes:
 - Protected variables within methods by adding an underscore to their names
 """
 
+import importlib
 import logging
 import sys
 
@@ -24,12 +26,12 @@ import flask
 
 # Import the runtime configuration classes
 # The leading dot tells Python that this is a relative import from within the package
-from .config import Config, DevConfig, TestConfig
+from .config import Config, DevConfig
 
 __author__ = 'Rob Garcia'
 
 
-def create_app(config_name: str = 'default') -> flask.Flask:
+def create_app(config_name: str = 'default', foo: str = 'bar') -> flask.Flask:
     """Application Factory.
 
     :param str config_name: An alternate configuration from `config.py` for \
@@ -47,8 +49,6 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     # NOTE - Will replace if-elif-else with mapping for readability and maintainability
     if config_name == 'development':
         _app.config.from_object(DevConfig())
-    elif config_name == 'testing':
-        _app.config.from_object(TestConfig())
     else:
         _app.config.from_object(Config())
 
@@ -73,6 +73,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
             <h1>Hello, World!</h1>
             <p>Your are using the <b>{config_name}</b> configuration and your logging level is
             <b>{_logging_level_name} ({_logging_level})</b>.</p>
+            <p>The value of <code>foo</code> is "{foo}".</p>
             """
         return _greeting
 
@@ -92,11 +93,13 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
     # Validate inputs
     if not isinstance(min_python_version, float) or not isinstance(min_flask_version, float):
         raise TypeError(
-            'The minimum Python and Flask version numbers must be type float. Exiting now...')
+            'The minimum Python and Flask version numbers must be type float. Exiting now...'
+        )
 
     if min_python_version <= 0.0 or min_flask_version <= 0.0:
         raise TypeError(
-            'The minimum Python and Flask version numbers must be greater than 0. Exiting now...')
+            'The minimum Python and Flask version numbers must be greater than 0. Exiting now...'
+        )
 
     # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
     _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
@@ -105,16 +108,18 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
     print(f"Your Python version is {_python_version}.")
     if _python_version < min_python_version:
         raise ValueError(
-            f"Flask 3 requires Python {min_python_version:.2f} or above. Exiting now...")
+            f"Flask 3 requires Python {min_python_version:.2f} or above. Exiting now..."
+        )
 
     # Get the Flask major and minor version numbers and convert them to float (e.g., 3.0.3 -> 3.00)
-    _raw_flask_version = (flask.__version__).split('.')
-    _flask_version_major = int(_raw_flask_version[0])
-    _flask_version_minor = int(_raw_flask_version[1])
+    _raw_flask_version = importlib.metadata.version("flask")
+    _flask_version_major = int(_raw_flask_version.split('.')[0])
+    _flask_version_minor = int(_raw_flask_version.split('.')[1])
     _flask_version = float(f"{_flask_version_major}.{_flask_version_minor:02d}")
 
     # Ensure you are using the correct version of Flask
-    print(f"Your Flask version is {flask.__version__}.")
+    print(f"Your Flask version is {_raw_flask_version}.")
     if int(_flask_version) < min_flask_version:
         raise ValueError(
-            f"This application requires Flask {min_flask_version:.2f} or above. Exiting now...")
+            f"This application requires Flask {min_flask_version:.2f} or above. Exiting now..."
+        )

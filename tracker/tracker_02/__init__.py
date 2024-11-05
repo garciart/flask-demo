@@ -11,6 +11,7 @@ Changes:
 - Added ability to read environment variables
 """
 
+import importlib
 import sys
 import flask
 import os
@@ -26,7 +27,7 @@ if python_version < 3.08:
     raise ValueError('Flask 3 requires Python 3.8 or above. Exiting now...')
 
 # Ensure you are using the correct version of Flask
-flask_version = flask.__version__
+flask_version = importlib.metadata.version("flask")
 print(f"Your Flask version is {flask_version}.")
 if int(flask_version.split('.')[0]) < 3:
     raise ValueError('This application requires Flask 3 or above. Exiting now...')
@@ -54,7 +55,7 @@ def index() -> str:
     flaskenv_user_defined_var = os.environ.get('FLASKENV_USER_DEFINED_VAR')
 
     # This Flask environment variable is not defined anywhere but has a default value
-    foo = os.environ.get('FOO', 'FOO is not defined anywhere, yo!')
+    foo = os.environ.get('FOO', 'bar')
 
     # DOCTYPE prevents Quirks mode
     return f"""<!DOCTYPE html>
@@ -65,5 +66,5 @@ def index() -> str:
         <code>.env</code> file: <code>{env_user_defined_var}</code></p>
         <p>This is <code>FLASKENV_USER_DEFINED_VAR</code>, a user-defined variable from the
         <code>.flaskenv</code> file: <code>{flaskenv_user_defined_var}</code></p>
-        <p><code>{foo}</code></p>
+        <p>The value of <code>foo</code> is "{foo}".</p>
         """

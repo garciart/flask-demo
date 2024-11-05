@@ -1,4 +1,4 @@
-"""A Flask application that incorporates templates.
+"""A Flask application that incorporates error handling.
 
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
@@ -11,11 +11,10 @@ Usage:
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
 Changes:
-- Moved pages into templates
-- Added a "master" layout page
-- Added Cascading Style Sheets (CSS), images, and JavaScript files
+- Added custom 404 and 500 error pages
 """
 
+import importlib
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -28,7 +27,7 @@ import flask
 __author__ = 'Rob Garcia'
 
 
-def create_app(config_name: str = 'default') -> flask.Flask:
+def create_app(config_name: str = 'default', log_events: bool = False) -> flask.Flask:
     """Application Factory.
 
     :param str config_name: An alternate configuration from `config.py` for \
@@ -55,19 +54,20 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     # like if you run `python -m flask --app "app" run --debug`
     # If you run the app in debug mode so you can make hot fixes,
     # you may end up with a huge log file.
-    _start_log_file(_app, log_dir='tracker_logs', logging_level=_logging_level)
+    if log_events:
+        _start_log_file(_app, log_dir='tracker_logs', logging_level=_logging_level)
 
-    # Log events will still appear in the console
-    # Use lazy % formatting in logging functions
-    _app.logger.info('Starting %s application.', __package__)
+        # Log events will still appear in the console
+        # Use lazy % formatting in logging functions
+        _app.logger.info('Starting %s application.', __package__)
 
-    @_app.after_request
-    def log_response_code(response):
-        # Capture the request and the response
-        log_page_request(_app, flask.request, response)
+        @_app.after_request
+        def log_response_code(response):
+            # Capture the request and the response
+            log_page_request(_app, flask.request, response)
 
-        # Do not forget to return the response to the client, or the app will crash
-        return response
+            # Do not forget to return the response to the client, or the app will crash
+            return response
 
     # Create a route and page
     @_app.route('/')
@@ -75,15 +75,16 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     def index() -> str:
         """Render the default landing page.
 
-        :returns: The HTML code to display with {{ placeholders }} populated
+        :returns: The HTML code for the page
         :rtype: str
         """
-        return flask.render_template(
-            'main/index.html',
-            _config_name_text=config_name,
-            _logging_level_text=_logging_level,
-            _logging_level_name_text=_logging_level_name,
-        )
+        # DOCTYPE prevents Quirks mode
+        _greeting = f"""<!DOCTYPE html>
+            <h1>Hello, World!</h1>
+            <p>Your are using the <b>{config_name}</b> configuration and your logging level is
+            <b>{_logging_level_name} ({_logging_level})</b>.</p>
+            """
+        return _greeting
 
     @_app.errorhandler(404)
     def page_not_found(e) -> tuple:
@@ -92,7 +93,15 @@ def create_app(config_name: str = 'default') -> flask.Flask:
         :returns: The HTML code to render and the response code
         :rtype: tuple
         """
-        return flask.render_template('error/404.html'), 404
+        # DOCTYPE prevents Quirks mode
+        _error_msg = """<!DOCTYPE html>
+            <h1>Going somewhere, Solo?</h1>
+            <p>These aren't the pages you're looking for.</p>
+            <p>You can go about your business.</p>
+            <p>Move along to the <a href='/index' rel='nofollow' target='_self'
+            title='Home'>home page</a>.</p>
+            """
+        return _error_msg, 404
 
     @_app.errorhandler(500)
     def server_error(e) -> tuple:
@@ -101,7 +110,15 @@ def create_app(config_name: str = 'default') -> flask.Flask:
         :returns: The HTML code to render and the response code
         :rtype: tuple
         """
-        return flask.render_template('error/500.html'), 500
+        # DOCTYPE prevents Quirks mode
+        _error_msg = """<!DOCTYPE html>
+            <h1>What a piece of junk!</h1>
+            <p>Looks like those special modifications I made aren't working.</p>
+            <p>But we're a little rushed, so if you'll just click
+            <a href='/index' rel='nofollow' target='_self' title='Home'>here</a>, we'll
+            get outta here.</p>
+            """
+        return _error_msg, 500
 
     # Remove after testing
     @_app.route('/doh')
@@ -142,13 +159,13 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
         )
 
     # Get the Flask major and minor version numbers and convert them to float (e.g., 3.0.3 -> 3.00)
-    _raw_flask_version = (flask.__version__).split('.')
-    _flask_version_major = int(_raw_flask_version[0])
-    _flask_version_minor = int(_raw_flask_version[1])
+    _raw_flask_version = importlib.metadata.version("flask")
+    _flask_version_major = int(_raw_flask_version.split('.')[0])
+    _flask_version_minor = int(_raw_flask_version.split('.')[1])
     _flask_version = float(f"{_flask_version_major}.{_flask_version_minor:02d}")
 
     # Ensure you are using the correct version of Flask
-    print(f"Your Flask version is {flask.__version__}.")
+    print(f"Your Flask version is {_raw_flask_version}.")
     if int(_flask_version) < min_flask_version:
         raise ValueError(
             f"This application requires Flask {min_flask_version:.2f} or above. Exiting now..."
@@ -171,8 +188,7 @@ def _configure_app(config_name: str = 'default') -> flask.Flask:
     # NOTE - Switched from if-elif-else to mapping for readability and maintainability
     config_mapping = {
         'development': f'{__package__}.config.DevConfig',
-        'testing': f'{__package__}.config.TestConfig',
-        'default': f'{__package__}.config.Config',
+        'default': f'{__package__}.config.Config'
     }
 
     _app.config.from_object(config_mapping.get(config_name, config_mapping['default']))
@@ -220,10 +236,6 @@ def _start_log_file(
     validate_input('app', app, flask.Flask)
     validate_input('log_dir', log_dir, str)
     validate_input('logging_level', logging_level, int)
-
-    # Do not log events in debug mode
-    if app.debug:
-        return
 
     # Create the log directory if it does not exist
     if not os.path.exists(log_dir):
@@ -277,14 +289,8 @@ def log_page_request(app: flask.Flask, request: flask.Request, response: flask.R
     validate_input('request', request, flask.Request)
     validate_input('response', response, flask.Response)
 
-    # Do not log events in debug mode
-    if app.debug:
-        return
-
     _client_address = request.environ.get('HTTP_X_FORWARDED_FOR') or request.environ['REMOTE_ADDR']
 
     # Log the requested page and client address
-    app.logger.info(
-        f"{request.path} requested by {_client_address} using {request.method}; "
-        f"{response.status}."
-    )
+    app.logger.info(f"{request.path} requested by {_client_address} using {request.method}; "
+                    f"{response.status}.")

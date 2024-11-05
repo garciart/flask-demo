@@ -11,11 +11,13 @@ This is a demo of a basic Flask application that uses a package pattern.
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-- `flask --app tracker_01 run`: Standard command to run a Flask application, accessible via localhost on the default port (`127.0.0.1:5000`).
-- `python3 -B -m flask --app tracker_01 run`: Performs the same action as the standard command, but it uses the `-B` option to prevent writing intermediate bytecode to a `__pycache__` folder.
-- `python3 -B -m flask --app tracker_01 run --debug`: Runs the Flask application in debug mode using the built-in Werkzeug development server. This enables verbose error information and allows "hot reloading," so you don't need to restart the server after every code change.
-- `python3 -B -m flask --app tracker_01 run --host=0.0.0.0`: Allows external access to the Flask application via the host's IP address on port `5000`, such as `192.168.0.1:5000`.
-- `python3 -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001`: Allows external access to the Flask application on port `5001`.
+| Command                                                              | Explanation               |
+|----------------------------------------------------------------------|---------------------------|
+| `flask --app tracker_01 run`                                         | Standard command to run a Flask application, accessible via localhost on the default port (`127.0.0.1:5000`). |
+| `python -B -m flask --app tracker_01 run`                            | (*Preferred*) Performs the same action as the standard command, but it uses the `-B` option to prevent writing intermediate bytecode to a `__pycache__` folder. |
+| `python -B -m flask --app tracker_01 run --debug`                    | Runs the Flask application in debug mode using the built-in Werkzeug development server. This enables verbose error information and allows "hot reloading," so you don't need to restart the server after every code change. |
+| `python -B -m flask --app tracker_01 run --host=0.0.0.0`             | Allows external access to the Flask application via the host's IP address on port `5000`, such as `192.168.0.1:5000`. |
+| `python -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001` | Allows external access to the Flask application on port `5001`. |
 
 -----
 
@@ -53,16 +55,15 @@ tracker
 |   └── config.py
 ├── venv
 |   └── ...
-├── .flaskenv
-├── .gitignore
 ├── hello.py
 └── requirements.txt
 ```
 
-Once you are finished reviewing the code, run your application. Do not forget to activate your Python virtual environment first!
+Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
-```shell
-python -B -m flask --app tracker_01 run
-```
+- `python3 -B -m flask --app tracker_01 run`
+- `python3 -B -m flask --app tracker_01 run --debug`
+- `python3 -B -m flask --app tracker_01 run --host=0.0.0.0`
+- `python3 -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001`
 
-When you are finished testing the application, move on to the next version.
+When you are finished, move on to the next version.

@@ -2,8 +2,7 @@
 """
 
 import flask
-
-error_bp = flask.Blueprint('error_bp', __name__, template_folder='templates')
+from . import error_bp
 
 
 # Blueprint's equivalent of Flask errorhandler is app_errorhandler

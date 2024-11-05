@@ -8,6 +8,7 @@
 Usage: python -B -m flask --app tracker_01 run
 """
 
+import importlib
 import sys
 import flask
 
@@ -22,7 +23,7 @@ if python_version < 3.08:
     raise ValueError('Flask 3 requires Python 3.8 or above. Exiting now...')
 
 # Ensure you are using the correct version of Flask
-flask_version = flask.__version__
+flask_version = importlib.metadata.version("flask")
 print(f"Your Flask version is {flask_version}.")
 if int(flask_version.split('.')[0]) < 3:
     raise ValueError('This application requires Flask 3 or above. Exiting now...')
