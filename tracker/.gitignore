@@ -27,3 +27,6 @@ logs
 
 # Do not add migrations
 migrations*
+
+# Do not add coverage executable
+.coverage

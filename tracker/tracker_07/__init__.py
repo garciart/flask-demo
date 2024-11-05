@@ -38,6 +38,14 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
 
     :returns flask.Flask: The Flask application instance
     """
+    # Validate inputs
+    validate_input('config_name', config_name, str)
+    validate_input('config_name', log_events, bool)
+
+    if config_name not in ['default', 'development']:
+        raise ValueError(
+            'Invalid configuration name. Exiting now...')
+
     # Ensure the system meets the prerequisites for the application
     _check_system()
 

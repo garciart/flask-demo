@@ -62,6 +62,30 @@ class TestApp(unittest.TestCase):
         self.app_context = None
         self.client = None
 
+    def test_config_name_is_string(self):
+        """Test that create_app() passes when config_name is a string."""
+        try:
+            create_app('default')
+        except (TypeError, ValueError):
+            self.fail('Method raised an exception unexpectedly.')
+
+    def test_config_name_is_not_string(self):
+        """Test that create_app() fails when config_name is not a string."""
+        with self.assertRaises(TypeError):
+            create_app(1)
+
+    def test_config_name_is_valid(self):
+        """Test that create_app() passes when config_name is a valid selection."""
+        try:
+            create_app('development')
+        except (TypeError, ValueError):
+            self.fail('Method raised an exception unexpectedly.')
+
+    def test_config_name_is_not_valid(self):
+        """Test that create_app() fails when config_name is not a valid selection."""
+        with self.assertRaises(ValueError):
+            create_app('foo')
+
     def test_check_system_pass_meets_req(self):
         """Test that _check_system() passes when requirements met"""
         try:

@@ -1,4 +1,5 @@
-"""A Flask application that incorporates unit testing.
+"""A Flask application that incorporates incorporates Coverage,
+a tool for measuring code coverage of Python programs.
 
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
@@ -6,11 +7,11 @@
 > - `venv/Scripts/activate` (Windows)
 
 Usage:
-- python -B -m flask --app tracker_04 run
-- python -B -m unittest --verbose --buffer tracker_04/tests/test_app.py
+- coverage -m unittest --verbose --buffer tracker_04a/tests/test_app.py
+- coverage report -m
 
 Changes:
-- Added unit tests.
+- Coverage.py does not require code changes.
 """
 
 import importlib
