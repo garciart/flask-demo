@@ -11,10 +11,10 @@ This is a demo of a Flask application that incorporates unit testing.
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-Runs the Flask application or unit tests found in `tests/test_app.py`:
+Runs the unit tests found in `tests/test_app.py`:
 
-- `python -B -m flask --app tracker_04 run`
-- `python -B -m unittest --verbose --buffer tracker_04/tests/test_app.py`
+- Interactive: `python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
+- Auto: `echo 'default' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
 
 -----
 
@@ -51,9 +51,16 @@ tracker
 
 Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
-> **NOTE** - Enclose options in quotation marks when using special characters.
-
 - `python -B -m flask --app tracker_04 run`
-- `python -B -m unittest --verbose --buffer tracker_04/tests/test_app.py`
+
+Now, run the unit tests in interactive mode. When prompted, enter "development" or press <kbd>Enter</kbd> to accept the **default** configuration:
+
+> **NOTE** - The reason I added user interaction to `test_app.py` is because you cannot pass arguments, like `--config development`, to `test_app.py` using `sys.argv` or the `argparse` module; the `unittest` module will read them instead.
+
+`python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
+
+To run the unit tests without user interaction, pipe the desired configuration into the command as input:
+
+- `(Auto) echo 'default' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
 
 When you are finished, move on to the next version.

@@ -61,9 +61,9 @@ tracker
 
 Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
-- `python3 -B -m flask --app tracker_01 run`
-- `python3 -B -m flask --app tracker_01 run --debug`
-- `python3 -B -m flask --app tracker_01 run --host=0.0.0.0`
-- `python3 -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001`
+- `python -B -m flask --app tracker_01 run`
+- `python -B -m flask --app tracker_01 run --debug`
+- `python -B -m flask --app tracker_01 run --host=0.0.0.0`
+- `python -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001`
 
 When you are finished, move on to the next version.

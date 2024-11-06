@@ -59,10 +59,31 @@ tracker
 
 Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
+- `python -B -m flask --app tracker_04a run`
+
+Now, run Coverage in interactive mode. When prompted, enter "development" or press <kbd>Enter</kbd> to accept the **default** configuration:
+
+> **NOTE** - The reason I added user interaction to `test_app.py` is because you cannot pass arguments, like `--config development`, to `test_app.py` using `sys.argv` or the `argparse` module; the `unittest` module will read them instead.
+
+```shell
+coverage run -m unittest --buffer --verbose tracker_04a/tests/test_app.py
+```
+
+To run Coverage without user interaction, pipe the desired configuration into the command as input:
+
+```shell
+echo 'default' | coverage run -m unittest --buffer --verbose tracker_04a/tests/test_app.py
+```
+
 > **NOTE** - Coverage will create a `__pycache__` folder. You may delete this folder when you are done.
 
-- `coverage run -m unittest --verbose --buffer tracker_04a/tests/test_app.py`
-- `coverage report -m`
+Once the tests are complete, look at the results:
+
+```shell
+coverage report -m
+```
+
+**Output:**
 
 ```text
 Name                            Stmts   Miss  Cover   Missing

@@ -6,12 +6,16 @@ Ensure you have an empty __init__.py in the 'tests' directory
 
 Usage:
 - (Interactive) python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
-- (Automatic) echo 'default' | python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+- (Auto) echo 'default' | python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+
+> **NOTE** - The reason I added user interaction to `test_app.py` is because you cannot pass
+> arguments, like `--config development`, to `test_app.py` using `sys.argv` or the
+>`argparse` module; the `unittest` module will read them instead.
 
 > **NOTE** - Using --buffer and --verbose together provides a good balance of output,
 > since --buffer hides console output from the application
-> and --verbose displays the test's docstring;
-> for example, "Ensure you created the application instance ... ok"
+> and --verbose displays the test's docstring
+> (ex., "Ensure you created the application instance ... ok")
 """
 
 import importlib

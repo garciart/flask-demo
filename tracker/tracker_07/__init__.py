@@ -216,7 +216,7 @@ def _start_log_file(
 
     **NOTE** - This may sound counter-intuitive, but if you run the app in debug mode so you can \
     make hot fixes, you may end up with a huge log file. Therefore, I recommend you do not log \
-    events when in debug mode (`python3 flask --debug run`)
+    events when in debug mode (`python flask --debug run`)
 
     :param flask.Flask app: The application instance
     :param str log_dir: The directory that will hold the log files

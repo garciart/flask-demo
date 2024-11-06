@@ -15,7 +15,6 @@ This Flask application will allow you to administer courses and course access us
        cd tracker
        python -m venv $PWD/venv
        venv/Scripts/activate
-       Set-Alias -Name python3 -Value python
        ```
 
    - Linux
@@ -23,24 +22,24 @@ This Flask application will allow you to administer courses and course access us
        ```bash
        mkdir -p tracker
        cd tracker
-       python3 -m venv $PWD/venv
+       python -m venv $PWD/venv
        source venv/bin/activate
        ```
 
 2. Install packages:
 
     ```sh
-    python3 -m pip install --upgrade pip
-    python3 -m pip install flask
-    python3 -m pip install python-dotenv
+    python -m pip install --upgrade pip
+    python -m pip install flask
+    python -m pip install python-dotenv
     ```
 
 3. Save requirements:
 
     ```sh
-    python3 -m pip freeze > requirements.txt
+    python -m pip freeze > requirements.txt
     # Test: You should get a 'Requirement already satisfied' message
-    python3 -m pip install -r requirements.txt
+    python -m pip install -r requirements.txt
     ```
 
 -----
