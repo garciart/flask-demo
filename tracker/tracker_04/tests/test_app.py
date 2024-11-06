@@ -4,7 +4,9 @@ Run from the project directory (e.g., tracker, not tracker_XX)
 
 Ensure you have an empty __init__.py in the 'tests' directory
 
-Usage: python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+Usage:
+- (Interactive) python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+- (Automatic) echo 'default' | python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
 
 > **NOTE** - Using --buffer and --verbose together provides a good balance of output,
 > since --buffer hides console output from the application
@@ -25,18 +27,24 @@ class TestApp(unittest.TestCase):
 
     :param class unittest.TestCase: Class to test single test cases
     """
-
-    # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
-    sys_python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
-
-    # Get the Flask major and minor version numbers and convert them to a float
-    raw_flask_version = importlib.metadata.version("flask")
-    flask_version_major, flask_version_minor = map(int, raw_flask_version.split('.')[:2])
-    sys_flask_version = float(f"{flask_version_major}.{flask_version_minor:02d}")
+    config_name = (
+        input('Enter a configuration to use (press [Enter] to use \'default\'): ') or 'default'
+    )
+    if config_name not in ['default', 'development']:
+        config_name = 'default'
+    print(f'\nUsing the {config_name} configuration...')
 
     def setUp(self):
         """Create the application instance"""
-        self.app = create_app()
+        # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
+        self.sys_python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
+
+        # Get the Flask major and minor version numbers and convert them to a float
+        raw_flask_version = importlib.metadata.version("flask")
+        flask_version_major, flask_version_minor = map(int, raw_flask_version.split('.')[:2])
+        self.sys_flask_version = float(f"{flask_version_major}.{flask_version_minor:02d}")
+
+        self.app = create_app(self.config_name)
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
@@ -74,14 +82,14 @@ class TestApp(unittest.TestCase):
         with self.assertRaises(TypeError):
             create_app(1)
 
-    def test_config_name_is_valid(self):
+    def test_config_name_accepts_valid_value(self):
         """Test that create_app() passes when config_name is a valid selection."""
         try:
             create_app('development')
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
-    def test_config_name_is_not_valid(self):
+    def test_config_name_rejects_invalid_value(self):
         """Test that create_app() fails when config_name is not a valid selection."""
         with self.assertRaises(ValueError):
             create_app('foo')
@@ -89,16 +97,19 @@ class TestApp(unittest.TestCase):
     def test_check_system_pass_meets_req(self):
         """Test that _check_system() passes when requirements met"""
         try:
-            _check_system(min_python_version=self.sys_python_version,
-                          min_flask_version=self.sys_flask_version)
+            _check_system(
+                min_python_version=self.sys_python_version, min_flask_version=self.sys_flask_version
+            )
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
     def test_check_system_pass_exceeds_req(self):
         """Test that _check_system() passes when requirements exceeded"""
         try:
-            _check_system(min_python_version=self.sys_python_version - 0.1,
-                          min_flask_version=self.sys_flask_version - 0.1)
+            _check_system(
+                min_python_version=self.sys_python_version - 0.1,
+                min_flask_version=self.sys_flask_version - 0.1,
+            )
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
@@ -125,14 +136,18 @@ class TestApp(unittest.TestCase):
     def test_check_system_fail_python_version_below_req(self):
         """Test that _check_system() fails because the installed Python version is too old"""
         with self.assertRaises(ValueError):
-            _check_system(min_python_version=self.sys_python_version + 0.1,
-                          min_flask_version=self.sys_flask_version)
+            _check_system(
+                min_python_version=self.sys_python_version + 0.1,
+                min_flask_version=self.sys_flask_version,
+            )
 
     def test_check_system_fail_flask_version_below_req(self):
         """Test that _check_system() fails because the installed Flask version is too old"""
         with self.assertRaises(ValueError):
-            _check_system(min_python_version=self.sys_python_version,
-                          min_flask_version=self.sys_flask_version + 0.1)
+            _check_system(
+                min_python_version=self.sys_python_version,
+                min_flask_version=self.sys_flask_version + 0.1,
+            )
 
 
 if __name__ == '__main__':
