@@ -15,7 +15,7 @@ __author__ = 'Rob Garcia'
 def create_app() -> flask.Flask:
     """Application Factory.
 
-    :return: An application instance
+    :returns: An application instance
     :rtype: flask.Flask
     """
     _flask_version = flask.__version__
@@ -43,7 +43,7 @@ def create_app() -> flask.Flask:
     def index() -> str:
         """Render the default landing page.
 
-        :return: The HTML code for the page
+        :returns: The HTML code for the page
         :rtype: str
         """
         # DOCTYPE prevents Quirks mode

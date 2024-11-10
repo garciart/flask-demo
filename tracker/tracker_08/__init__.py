@@ -33,9 +33,10 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     """Application Factory.
 
     :param str config_name: An alternate configuration from `config.py` for \
-    development, testing, etc. Uses the base `Config` class if None or 'default'
+        development, testing, etc. Uses the base `Config` class if None or 'default'
 
-    :returns flask.Flask: The Flask application instance
+    :returns: The Flask application instance
+    :rtype: flask.Flask
     """
     # Validate inputs
     validate_input('config_name', config_name, str)
@@ -106,7 +107,9 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
 
     :param float min_python_version: The minimum Python version in float format, defaults to 3.08
     :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
-    :returns None: None
+
+    :returns: None
+    :rtype: None
     """
     # Validate inputs
     validate_input('min_python_version', min_python_version, float)
@@ -144,7 +147,9 @@ def _configure_app(config_name: str = 'default') -> flask.Flask:
     """Create the Flask application instance with the selected configuration
 
     :param str config_name: The name of the configuration to use, defaults to 'default'
-    :returns flask.Flask: The configured Flask application instance
+
+    :returns: The Flask application instance
+    :rtype: flask.Flask
     """
     # Validate inputs
     validate_input('config_name', config_name, str)
@@ -173,7 +178,8 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
     :param object obj_to_check: The input to validate
     :param type expected_type: The expected type for the input
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
     if not isinstance(obj_to_check, expected_type):
         raise TypeError(f"'{obj_name}' is not type {expected_type}. Exiting now...")
@@ -198,7 +204,8 @@ def _start_log_file(
     :param int logging_level: The level of messages to log. The default is to log DEBUG \
         messages (level 10) or greater
 
-    :return None: None
+    :returns: None
+    :rtype: None
     """
     # Validate inputs
     validate_input('app', app, flask.Flask)
@@ -250,7 +257,8 @@ def log_page_request(app: flask.Flask, request: flask.Request, response: flask.R
     :param flask.Request request: The client's request object
     :param flask.Request request: The server's response object
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
     # Validate inputs
     validate_input('app', app, flask.Flask)

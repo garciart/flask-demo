@@ -33,7 +33,7 @@ def index():
     # type: () -> str
     """The landing page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'Flask Template'
@@ -66,7 +66,7 @@ def about():
     # type: () -> str
     """The about page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'About'
@@ -115,7 +115,7 @@ def roles():
         return redirect(url_for(INDEX_PAGE))
 
     _page_title = 'List of Roles'
-    
+
     _roles = Role.query.all()
 
     # Convert to list if there is only one result
@@ -158,7 +158,7 @@ def test():
     # type: () -> str
     """Test page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'Flask Template'

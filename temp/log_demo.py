@@ -16,9 +16,10 @@ class MyClass:
         """Allow each instance of this class to have a separate log file.
 
         :param int logging_level: The level of messages to log. The default is to log INFO \
-        messages (level 20) or greater
+            messages (level 20) or greater
 
-        :return: None
+        :returns: None
+        :rtype: None
         """
         _log_dir = 'my_logs'
         if not os.path.exists(_log_dir):

@@ -26,9 +26,9 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
     """Application Factory.
 
     :param str config_class: An alternate configuration from `config.py` for \
-    development, testing, etc. Uses the base `Config` class by default if None
+        development, testing, etc. Uses the base `Config` class by default if None
 
-    :return: An application instance
+    :returns: An application instance
     :rtype: flask.Flask
     """
     _flask_version = flask.__version__
@@ -112,7 +112,8 @@ def _start_log_file(
     :param int logging_level: The level of messages to log. The default is to log DEBUG \
         messages (level 10) or greater
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
     # Validate inputs
     validate_input('app_instance', app_instance, flask.Flask)
@@ -161,7 +162,8 @@ def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> 
     :param object obj_to_check: The input to validate
     :param type expected_type: The expected type for the input
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
     # Validate inputs for this function
     if not isinstance(obj_name, str):
@@ -192,7 +194,8 @@ def log_page_request(app_instance: flask.Flask, request: flask.Request) -> None:
     :param flask.Flask app: The application instance
     :param flask.Request request: The client's request object
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
     # Validate inputs
     validate_input('app_instance', app_instance, flask.Flask)

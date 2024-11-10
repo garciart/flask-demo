@@ -17,7 +17,8 @@ class TestApp(unittest.TestCase):
 
     :param class unittest.TestCase: Class to test single test cases
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
 
     def setUp(self):

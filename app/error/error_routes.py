@@ -16,10 +16,10 @@ def bad_request(e):
     # type: (exceptions.BadRequest) -> tuple[str, int]
     """Display the error page if the server cannot process a request.
 
-    :param exceptions.BadRequest e: An instance of the
-    werkzeug.exceptions.BadRequest class
+    :param exceptions.BadRequest e: An instance of the \
+        werkzeug.exceptions.BadRequest class
 
-    :return: A string of HTML code with the response code
+    :returns: A string of HTML code with the response code
     :rtype: tuple
     """
     # Validate inputs
@@ -40,10 +40,10 @@ def page_not_found(e):
     # type: (exceptions.NotFound) -> tuple[str, int]
     """Display the error page if page not found.
 
-    :param exceptions.NotFound e: An instance of the
-    werkzeug.exceptions.NotFound class
+    :param exceptions.NotFound e: An instance of the \
+        werkzeug.exceptions.NotFound class
 
-    :return: A string of HTML code with the response code
+    :returns: A string of HTML code with the response code
     :rtype: tuple
     """
     # Validate inputs
@@ -63,10 +63,10 @@ def internal_server_error(e):
     # type: (exceptions.InternalServerError) -> tuple[str, int]
     """Display the error page if there is an internal server error.
 
-    :param exceptions.InternalServerError e: An instance of the
-    werkzeug.exceptions.InternalServerError class
+    :param exceptions.InternalServerError e: An instance of the \
+        werkzeug.exceptions.InternalServerError class
 
-    :return: A string of HTML code with the response code
+    :returns: A string of HTML code with the response code
     :rtype: tuple
     """
     # Validate inputs

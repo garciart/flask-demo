@@ -21,7 +21,7 @@ app = flask.Flask(__name__)
 def index() -> str:
     """Render the default landing page.
 
-    :return: The HTML code for the page
+    :returns: The HTML code for the page
     :rtype: str
     """
     # DOCTYPE prevents Quirks mode

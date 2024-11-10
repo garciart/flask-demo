@@ -21,10 +21,10 @@ __author__ = 'Rob Garcia'
 def create_app(config_class: object = Config) -> flask.Flask:
     """Application Factory.
 
-    :param str config_class: An alternate configuration from `config.py` for \
-    development, testing, etc. Uses the base `Config` class by default if None
+    :param str config_name: An alternate configuration from `config.py` for \
+        development, testing, etc. Uses the base `Config` class if None or 'default'
 
-    :return: An application instance
+    :returns: An application instance
     :rtype: flask.Flask
     """
     _flask_version = flask.__version__
@@ -59,7 +59,7 @@ def create_app(config_class: object = Config) -> flask.Flask:
     def index() -> str:
         """Render the default landing page.
 
-        :return: The HTML code for the page
+        :returns: The HTML code for the page
         :rtype: str
         """
         # DOCTYPE prevents Quirks mode

@@ -33,8 +33,11 @@ class AddCourseForm(FlaskForm):
         """Check if a course already exists in the database.
 
         :param StringField course_name: The course to check
-        :return: None
+
         :raises ValidationError: If the submitted course already exists
+
+        :returns: None
+        :rtype: None
         """
         _course = db.session.scalar(select(Course).where(
             Course.course_name == course_name.data))
@@ -58,7 +61,9 @@ class EditCourseForm(FlaskForm):
         """Get the name of the course being edited.
 
         :param str original_course_name: The edited course's name
-        :return: None
+
+        :returns: None
+        :rtype: None
         """
         super().__init__(*args, **kwargs)
         self.original_course_name = original_course_name
@@ -68,8 +73,11 @@ class EditCourseForm(FlaskForm):
         """Check if a course already exists in the database.
 
         :param StringField course_name: The course to check
-        :return: None
+
         :raises ValidationError: If the submitted course already exists
+
+        :returns: None
+        :rtype: None
         """
         if course_name.data != self.original_course_name:
             _course = db.session.scalar(select(Course).where(
@@ -102,8 +110,11 @@ class AddRoleForm(FlaskForm):
         """Check if a role name already exists in the database.
 
         :param StringField role_name: The role name to check
-        :return: None
+
         :raises ValidationError: If the submitted role name already exists
+
+        :returns: None
+        :rtype: None
         """
         _role = db.session.scalar(select(Role).where(
             Role.role_name == role_name.data))
@@ -115,8 +126,11 @@ class AddRoleForm(FlaskForm):
         """Check if a privilege level already exists in the database.
 
         :param IntegerField role_privilege: The privilege level to check
-        :return: None
+
         :raises ValidationError: If the submitted privilege level already exists
+
+        :returns: None
+        :rtype: None
         """
         _role = db.session.scalar(select(Role).where(
             Role.role_privilege == role_privilege.data))
@@ -143,7 +157,9 @@ class EditRoleForm(FlaskForm):
 
         :param str original_role_name: The edited role's name
         :param int original_role_privilege: The edited role's privilege level
-        :return: None
+
+        :returns: None
+        :rtype: None
         """
         super().__init__(*args, **kwargs)
         self.original_role_name = original_role_name
@@ -154,8 +170,11 @@ class EditRoleForm(FlaskForm):
         """Check if a role name or already exists in the database.
 
         :param StringField role_name: The role name to check
-        :return: None
+
         :raises ValidationError: If the submitted role name already exists
+
+        :returns: None
+        :rtype: None
         """
         if role_name.data != self.original_role_name:
             _role = db.session.scalar(select(Role).where(
@@ -168,8 +187,11 @@ class EditRoleForm(FlaskForm):
         """Check if a privilege level already exists in the database.
 
         :param IntegerField role_privilege: The privilege level to check
-        :return: None
+
         :raises ValidationError: If the submitted privilege level already exists
+
+        :returns: None
+        :rtype: None
         """
         if role_privilege.data != self.original_role_privilege:
             _role = db.session.scalar(select(Role).where(
@@ -204,8 +226,11 @@ class AddUserForm(FlaskForm):
         """Check if a username already exists in the database.
 
         :param StringField username: The username to check
-        :return: None
+
         :raises ValidationError: If the submitted username already exists
+
+        :returns: None
+        :rtype: None
         """
         _user = db.session.scalar(select(User).where(
             User.username == username.data))
@@ -217,8 +242,11 @@ class AddUserForm(FlaskForm):
         """Check if an email address already exists in the database.
 
         :param StringField user_email: The email address to check
-        :return: None
+
         :raises ValidationError: If the submitted email address already exists
+
+        :returns: None
+        :rtype: None
         """
         _user = db.session.scalar(select(User).where(
             User.user_email == user_email.data))
@@ -246,7 +274,9 @@ class EditUserForm(FlaskForm):
 
         :param str original_username: The edited user's username
         :param str original_user_email: The edited user's email
-        :return: None
+
+        :returns: None
+        :rtype: None
         """
         super().__init__(*args, **kwargs)
         self.original_username = original_username
@@ -257,8 +287,11 @@ class EditUserForm(FlaskForm):
         """Check if a username already exists in the database.
 
         :param StringField username: The username to check
-        :return: None
+
         :raises ValidationError: If the submitted username already exists
+
+        :returns: None
+        :rtype: None
         """
         if username.data != self.original_username:
             _user = db.session.scalar(select(User).where(
@@ -271,8 +304,11 @@ class EditUserForm(FlaskForm):
         """Check if a user's email already exists in the database.
 
         :param StringField user_email: The user's email to check
-        :return: None
+        
         :raises ValidationError: If the submitted user's email already exists
+
+        :returns: None
+        :rtype: None
         """
         if user_email.data != self.original_user_email:
             _user = db.session.scalar(select(User).where(
@@ -304,7 +340,9 @@ class UpdateProfileForm(FlaskForm):
         """Get the email of the user being edited.
 
         :param str original_user_email: The edited user's email
-        :return: None
+
+        :returns: None
+        :rtype: None
         """
         super().__init__(*args, **kwargs)
         self.original_user_email = original_user_email
@@ -314,8 +352,11 @@ class UpdateProfileForm(FlaskForm):
         """Check if a user's email already exists in the database.
 
         :param StringField user_email: The user's email to check
-        :return: None
+
         :raises ValidationError: If the submitted user's email already exists
+
+        :returns: None
+        :rtype: None
         """
         if user_email.data != self.original_user_email:
             _user = db.session.scalar(select(User).where(

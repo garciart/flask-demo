@@ -66,7 +66,7 @@ def __serialize_query_result(query_result, exclude=None):
     :param list query_result: The SQLAlchemy query result
     :param str/list exclude: Key(s)/Column(s) to remove from results
 
-    :return: The serialized result
+    :returns: The serialized result
     :rtype: list
     """
     # Validate inputs

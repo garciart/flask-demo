@@ -27,7 +27,7 @@ def create_app(alt_config=None):
     :param str alt_config: An alternate configuration file path for
     testing, etc. Use app/config.py if None
 
-    :return: An application instance
+    :returns: An application instance
     :rtype: Flask
     """
     # Create and configure the app
@@ -99,7 +99,8 @@ def _setup_logging(app):
 
     :param Flask app: The application instance
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
     # Do not log if using 'python3 flask --debug run'
     if not app.debug:
@@ -132,7 +133,7 @@ def _get_python_version():
     # type: () -> float
     """Get the Python version used by the server.
 
-    :return: The Python version used by the server
+    :returns: The Python version used by the server
     :rtype: float
     """
     # Get Python version and convert to float (e.g., 3.9 -> 3.09)

@@ -14,7 +14,8 @@ def validate_input(obj_name, obj_to_check, expected_type):
     :param object obj_to_check: The input to validate
     :param type expected_type: The expected type for the input
 
-    :return: None
+    :returns: None
+    :rtype: None
     """
     # Validate inputs for this function
     _current_function = inspect.currentframe()
@@ -51,7 +52,9 @@ def _log_error_and_exit(error_msg, calling_function=None):
     :param types.FrameType calling_function: An object containing stack
         information (e.g., where the error occurred), defaults to None. If not
         provided, this function will use the stack of the previous function
-    :return: None
+
+    :returns: None
+    :rtype: None
     """
     # Validate inputs
     if not isinstance(error_msg, str):

@@ -31,9 +31,10 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     """Application Factory.
 
     :param str config_name: An alternate configuration from `config.py` for \
-    development, testing, etc. Uses the base `Config` class if None or 'default'
+        development, testing, etc. Uses the base `Config` class if None or 'default'
 
-    :returns flask.Flask: The Flask application instance
+    :returns: The Flask application instance
+    :rtype: flask.Flask
     """
     # Validate inputs
     if not isinstance(config_name, str):
@@ -92,7 +93,9 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
 
     :param float min_python_version: The minimum Python version in float format, defaults to 3.08
     :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
-    :returns None: None
+
+    :returns: None
+    :rtype: None
     """
     # Validate inputs
     if not isinstance(min_python_version, float) or not isinstance(min_flask_version, float):

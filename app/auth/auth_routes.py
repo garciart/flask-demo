@@ -27,9 +27,9 @@ def login():
     # type: () -> str
     """The login page.
 
-    :returns: The HTML code to display with {{ placeholders }} populated,
-    or a redirection if the user is logged in,
-    or a redirection if the user came from another site
+    :returns: The HTML code to display with {{ placeholders }} populated, \
+        or a redirection if the user is logged in, \
+        or a redirection if the user came from another site
     :rtype: str
     """
     if current_user.is_authenticated:

@@ -12,7 +12,7 @@ from v08.models import Course, CourseGroup
 def index() -> str:
     """The landing page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'Welcome to Tracker!'
@@ -30,7 +30,7 @@ def index() -> str:
 def about() -> str:
     """The about page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'About'
@@ -52,7 +52,7 @@ def about() -> str:
 def courses() -> str:
     """The courses page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'List of Courses'
@@ -93,7 +93,7 @@ def courses() -> str:
 def test() -> str:
     """Test page.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     _page_title = 'Test Page'

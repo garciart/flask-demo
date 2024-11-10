@@ -36,8 +36,8 @@ def add_course():
 
     NOTE - Anyone may add a course
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     _form = AddCourseForm()
@@ -61,7 +61,7 @@ def add_course():
         db.session.commit()
         flash('Course added.')
         return redirect(url_for(INDEX_PAGE))
-    
+
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
     return render_template('admin/add_course.html', page_title='Add Course',
@@ -74,7 +74,7 @@ def view_course(course_id):
     # type: (int) -> str
     """Display course details.
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     # Validate inputs
@@ -107,8 +107,8 @@ def edit_course(course_id):
     # type: (int) -> str | Response
     """Use form input to update a course in the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Validate inputs
@@ -127,7 +127,7 @@ def edit_course(course_id):
     if not current_user.is_admin and len(_assoc) == 0:
         flash(NOT_AUTH_MSG1)
         return redirect(url_for(INDEX_PAGE))
-    
+
     _form = EditCourseForm(_course.course_name)
 
     if _form.validate_on_submit():
@@ -155,8 +155,8 @@ def delete_course(course_id):
     # type: (int) -> str | Response
     """Use form input to delete a course from the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Validate inputs
@@ -201,8 +201,8 @@ def add_role():
     # type: () -> str | Response
     """Use form input to add a role to the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Only administrators can add roles
@@ -232,8 +232,8 @@ def edit_role(role_id):
     # type: (int) -> str | Response
     """Use form input to update a role in the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Only administrators can update roles
@@ -268,8 +268,8 @@ def delete_role(role_id):
     # type: (int) -> str | Response
     """Use form input to delete a role from the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Only administrators can delete roles
@@ -297,7 +297,7 @@ def delete_role(role_id):
     return render_template('admin/delete_role.html', page_title='Delete Role',
                             role_name=_role_name,
                             role_privilege=_role_privilege, form=_form)
-    
+
 
 @admin_bp.route('/add_user', methods=['GET', 'POST'])
 @login_required
@@ -305,8 +305,8 @@ def add_user():
     # type: () -> str | Response
     """Use form input to add a user to the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Only administrators can add users
@@ -338,8 +338,8 @@ def edit_user(user_id):
     # type: (int) -> str | Response
     """Use form input to update a user in the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Only administrators can update users
@@ -378,8 +378,8 @@ def delete_user(user_id):
     # type: (int) -> str | Response
     """Use form input to delete a user from the database.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Only administrators can delete users
@@ -409,7 +409,7 @@ def delete_user(user_id):
             db.session.commit()
             flash('User deleted.')
         return redirect(url_for(USERS_PAGE))
-    
+
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
     _username = _user.username
@@ -425,12 +425,12 @@ def assign_course(course_id):
 
     :param int course_id: The ID of the course to modify access
 
-    :return: The HTML code to display with {{ placeholders }} populated
+    :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str
     """
     # Validate inputs
     validate_input('course_id', course_id, int)
-    
+
     _user_id = int(current_user.get_id())
 
     _assoc = Association.query.filter(
@@ -451,7 +451,7 @@ def assign_course(course_id):
 
     # Get a list of roles from the database
     _roles = Role.query.all()
-    
+
     # Ensure the result is a list so you can iterate over it
     # even if it only contains one Role object
     _roles = [_roles] if not isinstance(_roles, list) else _roles
@@ -465,21 +465,21 @@ def assign_course(course_id):
     for _r in _roles:
         _role_dict = _r.__dict__
         _roles_list.append(_role_dict)
-    
+
     # Temporarily add a 'Not Assigned' role
     # Users in this role will be deleted from the Association table
     # or skipped if they are not in the table
     # You will not store 'Not Assigned' users, since that will increase
     # the size of the Association table and slow down queries
     _roles_list.append({"role_id": 4, "role_name": "Not Assigned"})
-    
+
     # Get a list of users by name from the database
     _users = User.query.order_by(User.username).all()
-    
+
     # Ensure the result is a list so you can iterate over it
     # even if it only contains one User object
     _users = [_users] if not isinstance(_users, list) else _users
-    
+
     # Create a list to hold user information
     # You will iterate through this list of dictionaries,
     # instead of a list of User objects, when you render the webpage,
@@ -488,13 +488,13 @@ def assign_course(course_id):
 
     for _u in _users:
         _user_dict = _u.__dict__
-        
+
         # Temporarily add a 'role_id' column
         # and set the default value to 4 ('Not Assigned')
         # That will ensure at least one radio button is checked
-        # when you render the webpage 
+        # when you render the webpage
         _user_dict['role_id'] = 4
-        
+
         # Update the role_id if a value exists in the Association Table
         _a = Association.query.filter(
             Association.course_id == _course.course_id,
@@ -510,13 +510,13 @@ def assign_course(course_id):
         # Iterate through each user and check if their assignment has changed
         for _u in _users_list:
             _user_id = str(_u['user_id'])
-            
+
             _a = Association.query.filter(
                 Association.course_id == _course.course_id,
                 Association.user_id == _user_id).first()
 
             _role_id = int(request.form.get(_user_id))
-            
+
             # If the assignment does not exist in the Association table
             # but the course is now assigned
             if _a is None and _role_id < 4:
@@ -536,11 +536,11 @@ def assign_course(course_id):
             elif _a is not None and _a.role_id != _role_id:
                 print('Updating...')
                 _a.role_id = _role_id
-            
+
             else:
                 print('Skipping...')
 
-        db.session.commit()                
+        db.session.commit()
 
         return redirect(url_for(INDEX_PAGE))
 
@@ -560,8 +560,8 @@ def update_profile(user_id):
     # type: (int) -> str | Response
     """Use form input to update your profile.
 
-    :return: The HTML code to display with {{ placeholders }} populated
-    or redirect if the user is not an administrator or access another profile
+    :returns: The HTML code to display with {{ placeholders }} populated \
+        or redirect if the user is not an administrator
     :rtype: str/Response
     """
     # Only you and administrators can update your profile

@@ -97,7 +97,9 @@ class User(UserMixin, db.Model):
         """Hashes a password using scrypt
 
         :param str password: A password in plain text
+
         :returns: None
+        :rtype: None
         """
         # Validate inputs
         validate_input('password', password, str)
@@ -109,6 +111,7 @@ class User(UserMixin, db.Model):
         """Converts input to a hash and compares it against an existing hash
 
         :param str password: A password in plain text
+
         :returns: True if the password hashes match
         :rtype: bool
         """
@@ -148,6 +151,7 @@ def load_user(user_id):
     """Get user information from the database.
 
     :param int user_id: The user ID to search for
+    
     :returns: A user object
     :rtype: app.models.User
     """
