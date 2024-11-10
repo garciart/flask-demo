@@ -30,10 +30,10 @@ Role and User Administration: Administrators only.
 
 ```bash
 # From the project root directory (e.g., ../flask-template)
-python3 -m flask db init
-python3 -m flask db migrate -m "Initial migration"
-python3 -m flask db upgrade
-python3 -m db_info.init_db
+python -m flask db init
+python -m flask db migrate -m "Initial migration"
+python -m flask db upgrade
+python -m db_info.init_db
 ```
 
 -----
@@ -42,9 +42,9 @@ python3 -m db_info.init_db
 
 ```bash
 # From the project root directory (e.g., ../flask-template)
-python3 -m flask run
-python3 -m flask --app app run
-python3 -m flask --app app --debug run  # Allow hot reloads
+python -m flask run
+python -m flask --app app run
+python -m flask --app app --debug run  # Allow hot reloads
 ```
 
 -----
@@ -53,5 +53,5 @@ python3 -m flask --app app --debug run  # Allow hot reloads
 
 ```bash
 # From the project root directory (e.g., ../flask-template)
-python3 -m unittest --verbose --buffer app.tests.test_app
+python -m unittest --verbose --buffer app.tests.test_app
 ```

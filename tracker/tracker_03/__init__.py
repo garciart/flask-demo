@@ -36,6 +36,7 @@ def create_app(config_name: str = 'default', foo: str = 'bar') -> flask.Flask:
 
     :param str config_name: An alternate configuration from `config.py` for \
     development, testing, etc. Uses the base `Config` class if None or 'default'
+    :param str foo: Demonstrates using command-line inputs. Remove after testing.
 
     :returns flask.Flask: The Flask application instance
     """
