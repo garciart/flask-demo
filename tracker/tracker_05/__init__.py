@@ -61,18 +61,23 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
 
     _logging_level_name = logging.getLevelName(_logging_level)
 
-    # Start to log events
+
     # This may sound counter-intuitive, but I recommend you do not save log events
     # to a file when running the application in debug mode,
     # like if you run `python -m flask --app "app" run --debug`
     # If you run the app in debug mode so you can make hot fixes,
     # you may end up with a huge log file.
+    if _app.debug:
+        log_events = False
+
+    # Start to log events
     if log_events:
         _start_log_file(_app, log_dir='tracker_logs', logging_level=_logging_level)
 
         # Log events will still appear in the console
         # Use lazy % formatting in logging functions
-        _app.logger.info('Starting %s application.', __package__)
+        _app.logger.info('Starting %s application at logging level %s.',
+                         __package__, _logging_level_name)
 
         @_app.after_request
         def log_response_code(response):

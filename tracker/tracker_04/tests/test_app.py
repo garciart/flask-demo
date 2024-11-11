@@ -4,6 +4,8 @@ Run from the project directory (e.g., tracker, not tracker_XX)
 
 Ensure you have an empty __init__.py in the 'tests' directory
 
+> **NOTE** - Do not log events when unit testing or each test will create a log file.
+
 Usage:
 - (Interactive) python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
 - (Auto) echo 'default' | python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py

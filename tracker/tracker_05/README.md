@@ -13,6 +13,8 @@ This is a demo of a Flask application that incorporates logging.
 
 Creates a log when running the Flask application:
 
+> **NOTE** - Do not log events when unit testing or each test will create a log file.
+
 - `python -B -m flask --app "tracker_05:create_app(config_name='development', log_events=True)" run`
 - `python -B -m flask --app "tracker_05:create_app('development', True)" run`
 

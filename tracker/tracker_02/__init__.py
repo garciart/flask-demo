@@ -12,9 +12,9 @@ Changes:
 """
 
 import importlib
+import os
 import sys
 import flask
-import os
 
 __author__ = 'Rob Garcia'
 

@@ -90,7 +90,7 @@ def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3
 
     :param float min_python_version: The minimum Python version in float format, defaults to 3.08
     :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
-    
+
     :returns: None
     :rtype: None
     """
