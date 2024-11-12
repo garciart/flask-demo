@@ -1,6 +1,6 @@
 # Tracker v05
 
-This is a demo of a Flask application that incorporates logging.
+This is a sub-demo of a Flask application that incorporates performance profiling.
 
 -----
 
@@ -11,29 +11,17 @@ This is a demo of a Flask application that incorporates logging.
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-Creates a log when running the Flask application:
+Unit tests the Flask application using coverage and the unit tests found in `tests/test_app.py`:
 
-> **NOTE** - Do not log events when unit testing or each test will create a log file.
-
-- `python -B -m flask --app "tracker_05:create_app(config_name='development', log_events=True)" run`
-- `python -B -m flask --app "tracker_05:create_app('development', True)" run`
-
-> **NOTE**
->
-> - Enclose options in quotation marks when using special characters.
-> - Use the `development` configurations or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
+- `coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py`
+- `coverage report -m`
+- `coverage html --directory tracker_05/tests/htmlcov`
 
 -----
 
 ## Notes
 
-Logging allows you to:
-
-- Capture errors and bugs in your application
-- Track how users interact with your application
-- Monitor your application's performance
-
-With this information, you can protect, fix, and optimize your web application. The Python Standard Library contains a `logging` module that makes it easy to integrate logging into your application.
+Your website should run very fast using Flask's built-in Werkzeug; so fast that you may not notice bottlenecks, like large image loading, until you deploy your application on a production server. However, there are several ways to identify slow-loading component, like using the developer tools found in most browsers. Another way is to use the built-in Werkzeug profiler.
 
 Your application structure should be like the following:
 
@@ -46,11 +34,11 @@ tracker
 |   |   ├── __init__.py
 |   |   └── test_app.py
 |   ├── __init__.py
-|   └── config.py
-├── tracker_logs
-|   └── tracker_05_1234567890.1234567.log
+|   ├── config.py
+|   └── profiler.py
 ├── venv
 |   └── ...
+├── .coverage
 ├── .env
 ├── .flaskenv
 ├── .gitignore
@@ -58,29 +46,66 @@ tracker
 └── requirements.txt
 ```
 
-Once you are finished reviewing the code, start your application. Do not forget to activate your Python virtual environment first!
+Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
-> **NOTE** - Enclose options in quotation marks when using special characters.
+- `python -B -m flask --app "tracker_05:create_app('development')" run`
 
-- `python -B -m flask --app "tracker_05:create_app(config_name='development', log_events=True)" run`
-- `python -B -m flask --app "tracker_05:create_app('development', True)" run`
+```text
+--------------------------------------------------------------------------------
+PATH: '/'
+381 function calls (371 primitive calls) in 0.001 seconds
 
-Once you have started the server:
+Ordered by: internal time, call count
+List reduced from 154 to 30 due to restriction <30>
 
-- Navigate to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
-- Navigate to <http://127.0.0.1:5000/oops>; you should get a `Not Found` error.
-- Navigate back to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
-- Terminate the application using <kbd>Ctrl</kbd> <kbd>c</kbd>.
-- Take a look at the log file in `tracker_logs`. You should see something like the following:
+ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\routing\matcher.py:69(match)
+    1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+  4/1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\routing\matcher.py:79(_match)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\flask\ctx.py:396(pop)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\routing\map.py:252(bind_to_environ)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\flask\app.py:1233(preprocess_request)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\routing\map.py:492(match)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\sansio\response.py:111(__init__)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\wrappers\request.py:110(__init__)
+    1    0.000    0.000    0.001    0.001 tracker\venv\Lib\site-packages\flask\app.py:1441(wsgi_app)
+    6    0.000    0.000    0.000    0.000 C:\Python312\Lib\typing.py:1215(__setattr__)
+    1    0.000    0.000    0.001    0.001 tracker\venv\Lib\site-packages\werkzeug\middleware\profiler.py:114(runapp)
+  7/1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\routing\matcher.py:60(_update_state)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\wsgi.py:233(__init__)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\flask\app.py:1092(make_response)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\flask\app.py:867(full_dispatch_request)
+    2    0.000    0.000    0.000    0.000 {method 'reset' of '_contextvars.ContextVar' objects}
+    6    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\blinker\base.py:234(send)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\flask\ctx.py:367(push)
+    1    0.000    0.000    0.000    0.000 C:\Python312\Lib\typing.py:1269(__init__)
+   37    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\wrappers\response.py:547(get_wsgi_response)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\flask\app.py:1260(process_response)
+    1    0.000    0.000    0.000    0.000 C:\Python312\Lib\typing.py:1560(__getitem_inner__)
+    2    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\datastructures\headers.py:288(set)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\flask\app.py:885(finalize_request)
+    4    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\local.py:310(__get__)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\wrappers\response.py:438(get_wsgi_headers)
+    1    0.000    0.000    0.000    0.000 tracker\venv\Lib\site-packages\werkzeug\wrappers\response.py:144(__init__)
+  9/8    0.000    0.000    0.000    0.000 {method 'encode' of 'str' objects}
 
-    ```text
-    "date_time", "server_ip", "process_id", "msg_level", "message"
-    "2024-11-03 16:50:50,764", "192.168.56.1", "15628", "INFO", "Starting tracker_05 application."
-    "2024-11-03 16:51:05,512", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:51:06,122", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:51:12,914", "192.168.56.1", "15628", "INFO", "/oops requested by 127.0.0.1 using GET; 404 NOT FOUND."
-    "2024-11-03 16:51:18,238", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:51:20,199", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    ```
+--------------------------------------------------------------------------------
 
-When you are finished, move on to the next version.
+127.0.0.1 - - [05/Nov/2024 20:59:52] "GET / HTTP/1.1" 200 -
+```
+
+The columns in this report are:
+
+| Column                    | Description                                                             |
+| ------------------------- | ------------------------------------------------------------------------|
+| ncalls                    | The number of times the function was called. Two numbers mean the function recursed; the first is the total number of calls and the second is the number of primitive (non-recursive) calls.   |
+| tottime                   | The total time spent in the given function (and excluding time made in calls to sub-functions) |
+| percall                   | The quotient of tottime divided by ncalls                               |
+| cumtime                   | The cumulative time spent in this and all subfunctions (from invocation till exit). This figure is accurate even for recursive functions. |
+| percall                   | The quotient of cumtime divided by primitive calls                      |
+| filename:lineno(function) | Provides the respective data of each function                           |
+
+Like I said, right now your website runs very fast using Flask's built-in Werkzeug server.
+
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

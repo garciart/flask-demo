@@ -11,6 +11,10 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     {% endblock %}
+    <script>
+        /* to prevent Firefox FOUC, this must be here */
+        let FF_FOUC_FIX;
+    </script>
 </head>
 
 <body>

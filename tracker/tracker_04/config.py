@@ -21,6 +21,6 @@ class Config:
 
 
 class DevConfig(Config):
-    """Development configuration variables and settings."""
+    """Configuration variables and settings for development."""
 
     LOGGING_LEVEL = logging.DEBUG

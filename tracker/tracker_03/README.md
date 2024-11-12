@@ -15,8 +15,8 @@ Runs the Flask application using the configuration variables found in `config.py
 
 - `python -B -m flask --app "tracker_03:create_app(config_name='development')" run`
 - `python -B -m flask --app "tracker_03:create_app('development')" run`
-- `python -B -m flask --app tracker_03 run`
-- `python -B -m flask --app "tracker_03:create_app(foo='42')" run`
+- `python -B -m flask --app tracker_03 run  # Uses the 'default' configuration`
+- `python -B -m flask --app "tracker_03:create_app(foo='42')" run  # Uses the 'foo' command-line argument`
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
@@ -64,4 +64,4 @@ Review the code and run your application. Do not forget to activate your Python 
 - `python -B -m flask --app tracker_03 run`
 - `python -B -m flask --app "tracker_03:create_app(foo='42')" run`
 
-When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

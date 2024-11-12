@@ -20,8 +20,7 @@ python_version = float(f'{sys.version_info.major}.{sys.version_info.minor:02d}')
 # Ensure you are using the correct version of Python
 print(f"Your Python version is {python_version}.")
 if python_version < 3.08:
-    raise ValueError(
-        'Flask 3 requires Python 3.8 or above. Exiting now... If you have not disabled these errors, and encounter a line too long warning, under "Problems" in VSCode')
+    raise ValueError('Flask 3 requires Python 3.8 or above. Exiting now...')
 
 # Ensure you are using the correct version of Flask
 flask_version = importlib.metadata.version("flask")

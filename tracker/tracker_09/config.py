@@ -10,7 +10,7 @@ Usage:
 
 import logging
 
-__all__ = ['Config', 'DevConfig']
+__all__ = ['Config', 'DevConfig', 'ProfilerConfig']
 
 
 class Config:
@@ -21,7 +21,13 @@ class Config:
 
 
 class DevConfig(Config):
-    """Development configuration variables and settings."""
+    """Configuration variables and settings for development."""
+
+    LOGGING_LEVEL = logging.DEBUG
+
+
+class ProfilerConfig(Config):
+    """Configuration variables and settings for profiling."""
 
     LOGGING_LEVEL = logging.DEBUG
 

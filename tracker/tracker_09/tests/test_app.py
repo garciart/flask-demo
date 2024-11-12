@@ -4,18 +4,12 @@ Run from the project directory (e.g., tracker, not tracker_XX)
 
 Ensure you have an empty __init__.py in the 'tests' directory
 
-Usage:
-- (Interactive) python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
-- (Auto) echo 'default' | python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
-
-> **NOTE** - The reason I added user interaction to `test_app.py` is because you cannot pass
-> arguments, like `--config development`, to `test_app.py` using `sys.argv` or the
->`argparse` module; the `unittest` module will read them instead.
+Usage: python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
 
 > **NOTE** - Using --buffer and --verbose together provides a good balance of output,
 > since --buffer hides console output from the application
-> and --verbose displays the test's docstring
-> (ex., "Ensure you created the application instance ... ok")
+> and --verbose displays the test's docstring;
+> for example, "Ensure you created the application instance ... ok"
 """
 
 import importlib
@@ -31,24 +25,18 @@ class TestApp(unittest.TestCase):
 
     :param class unittest.TestCase: Class to test single test cases
     """
-    config_name = (
-        input('Enter a configuration to use (press [Enter] to use \'default\'): ') or 'default'
-    )
-    if config_name not in ['default', 'development']:
-        config_name = 'default'
-    print(f'\nUsing the {config_name} configuration...')
+
+    # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
+    sys_python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
+
+    # Get the Flask major and minor version numbers and convert them to a float
+    raw_flask_version = importlib.metadata.version("flask")
+    flask_version_major, flask_version_minor = map(int, raw_flask_version.split('.')[:2])
+    sys_flask_version = float(f"{flask_version_major}.{flask_version_minor:02d}")
 
     def setUp(self):
         """Create the application instance"""
-        # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
-        self.sys_python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
-
-        # Get the Flask major and minor version numbers and convert them to a float
-        raw_flask_version = importlib.metadata.version("flask")
-        flask_version_major, flask_version_minor = map(int, raw_flask_version.split('.')[:2])
-        self.sys_flask_version = float(f"{flask_version_major}.{flask_version_minor:02d}")
-
-        self.app = create_app(self.config_name)
+        self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
@@ -86,14 +74,14 @@ class TestApp(unittest.TestCase):
         with self.assertRaises(TypeError):
             create_app(1)
 
-    def test_config_name_accepts_valid_value(self):
+    def test_config_name_is_valid(self):
         """Test that create_app() passes when config_name is a valid selection."""
         try:
             create_app('development')
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
-    def test_config_name_rejects_invalid_value(self):
+    def test_config_name_is_not_valid(self):
         """Test that create_app() fails when config_name is not a valid selection."""
         with self.assertRaises(ValueError):
             create_app('foo')

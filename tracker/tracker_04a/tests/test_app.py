@@ -36,7 +36,7 @@ class TestApp(unittest.TestCase):
     config_name = (
         input('Enter a configuration to use (press [Enter] to use \'default\'): ') or 'default'
     )
-    if config_name not in ['default', 'development']:
+    if config_name not in ['default', 'development', 'profiler']:
         config_name = 'default'
     print(f'\nUsing the {config_name} configuration...')
 

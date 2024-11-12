@@ -40,7 +40,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
         raise TypeError(
             'The configuration name must be type str. Exiting now...')
 
-    if config_name not in ['default', 'development']:
+    if config_name not in ['default', 'development', 'profiler']:
         raise ValueError(
             'Invalid configuration name. Exiting now...')
 

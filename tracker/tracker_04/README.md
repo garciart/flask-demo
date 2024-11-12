@@ -53,14 +53,16 @@ Review the code and run your application. Do not forget to activate your Python 
 
 - `python -B -m flask --app tracker_04 run`
 
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>.
+
 Now, run the unit tests in interactive mode. When prompted, enter "development" or press <kbd>Enter</kbd> to accept the **default** configuration:
 
 > **NOTE** - The reason I added user interaction to `test_app.py` is because you cannot pass arguments, like `--config development`, to `test_app.py` using `sys.argv` or the `argparse` module; the `unittest` module will read them instead.
 
-`python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
+- `python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
 
 To run the unit tests without user interaction, pipe the desired configuration into the command as input:
 
-- `(Auto) echo 'default' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
+- `echo 'default' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
 
 When you are finished, move on to the next version.

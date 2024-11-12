@@ -1,4 +1,4 @@
-"""A Flask application that incorporates templates.
+"""A Flask application that incorporates error handling.
 
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
@@ -6,15 +6,14 @@
 > - `venv/Scripts/activate` (Windows)
 
 Usage:
-- python -B -m flask --app "tracker_07:create_app(config_name='development', log_events=True)" run
-- python -B -m flask --app "tracker_07:create_app('development', True)" run
+- python -B -m flask --app "tracker_07:create_app(config_name='development')" run
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
+> **NOTE** - Do not log events when unit testing or each test will create a log file.
+
 Changes:
-- Moved pages into templates
-- Added a "master" layout page
-- Added Cascading Style Sheets (CSS), images, and JavaScript files
+- Added custom 404 and 500 error pages
 """
 
 import importlib
@@ -26,6 +25,12 @@ import sys
 import time
 
 import flask
+
+# Import the runtime configuration classes
+# The leading dot tells Python that this is a relative import from within the package
+from .config import Config, DevConfig, ProfilerConfig
+
+from .profiler import add_profiler_middleware
 
 __author__ = 'Rob Garcia'
 
@@ -43,7 +48,7 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     validate_input('config_name', config_name, str)
     validate_input('config_name', log_events, bool)
 
-    if config_name not in ['default', 'development']:
+    if config_name not in ['default', 'development', 'profiler']:
         raise ValueError(
             'Invalid configuration name. Exiting now...')
 
@@ -53,25 +58,24 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     # Create the Flask application instance with the selected configuration
     _app = _configure_app(config_name)
 
+    # Ensure a logging level is set
     try:
         _logging_level = int(_app.config.get('LOGGING_LEVEL', logging.WARNING))
     except ValueError:
         _logging_level = logging.WARNING
 
-    _logging_level_name = logging.getLevelName(_logging_level)
-
-    # Start to log events
     # This may sound counter-intuitive, but I recommend you do not save log events
     # to a file when running the application in debug mode,
     # like if you run `python -m flask --app "app" run --debug`
     # If you run the app in debug mode so you can make hot fixes,
     # you may end up with a huge log file.
-    if log_events:
-        _start_log_file(_app, log_dir='tracker_logs', logging_level=_logging_level)
+    if _app.debug:
+        log_events = False
 
-        # Log events will still appear in the console
-        # Use lazy % formatting in logging functions
-        _app.logger.info('Starting %s application.', __package__)
+    # Start to log events
+    if log_events:
+        # Start the log at logging.INFO to enter application starting messages
+        _start_log_file(_app, log_dir='tracker_logs', logging_level=_logging_level)
 
         @_app.after_request
         def log_response_code(response):
@@ -81,21 +85,29 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
             # Do not forget to return the response to the client, or the app will crash
             return response
 
+    # Get the name of the logging level from config.py
+    _logging_level_name = logging.getLevelName(_logging_level)
+
+    # Optionally add the profiler middleware based on configuration
+    if _app.config.get("PROFILING_ENABLED", False):
+        _app = add_profiler_middleware(_app)
+
     # Create a route and page
     @_app.route('/')
     @_app.route('/index')
     def index() -> str:
         """Render the default landing page.
 
-        :returns: The HTML code to display with {{ placeholders }} populated
+        :returns: The HTML code for the page
         :rtype: str
         """
-        return flask.render_template(
-            'main/index.html',
-            _config_name_text=config_name,
-            _logging_level_text=_logging_level,
-            _logging_level_name_text=_logging_level_name,
-        )
+        # DOCTYPE prevents Quirks mode
+        _greeting = f"""<!DOCTYPE html>
+            <h1>Hello, World!</h1>
+            <p>Your are using the <b>{config_name}</b> configuration and your logging level is
+            <b>{_logging_level_name} ({_logging_level})</b>.</p>
+            """
+        return _greeting
 
     @_app.errorhandler(404)
     def page_not_found(e) -> tuple:
@@ -104,7 +116,15 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         :returns: The HTML code to render and the response code
         :rtype: tuple
         """
-        return flask.render_template('error/404.html'), 404
+        # DOCTYPE prevents Quirks mode
+        _error_msg = """<!DOCTYPE html>
+            <h1>Going somewhere, Solo?</h1>
+            <p>These aren't the pages you're looking for.</p>
+            <p>You can go about your business.</p>
+            <p>Move along to the <a href='/index' rel='nofollow' target='_self'
+            title='Home'>home page</a>.</p>
+            """
+        return _error_msg, 404
 
     @_app.errorhandler(500)
     def server_error(e) -> tuple:
@@ -113,13 +133,21 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         :returns: The HTML code to render and the response code
         :rtype: tuple
         """
-        return flask.render_template('error/500.html'), 500
+        # DOCTYPE prevents Quirks mode
+        _error_msg = """<!DOCTYPE html>
+            <h1>What a piece of junk!</h1>
+            <p>Looks like those special modifications I made aren't working.</p>
+            <p>But we're a little rushed, so if you'll just
+            <a href='/index' rel='nofollow' target='_self' title='Home'>click this link</a>, we'll
+            get outta here.</p>
+            """
+        return _error_msg, 500
 
     # Remove after testing
     @_app.route('/doh')
     def doh():
         # Raise an exception to trigger a 500 error
-        raise Exception("This is an intentional 500 error.")
+        raise RuntimeError("This is an intentional 500 error.")
 
     # Return the application instance to the code that invoked 'create_app()'
     return _app
@@ -186,7 +214,8 @@ def _configure_app(config_name: str = 'default') -> flask.Flask:
     # NOTE - Switched from if-elif-else to mapping for readability and maintainability
     config_mapping = {
         'development': f'{__package__}.config.DevConfig',
-        'default': f'{__package__}.config.Config'
+        'profiler': f'{__package__}.config.ProfilerConfig',
+        'default': f'{__package__}.config.Config',
     }
 
     _app.config.from_object(config_mapping.get(config_name, config_mapping['default']))
@@ -242,7 +271,7 @@ def _start_log_file(
         os.mkdir(log_dir)
 
     # The name of the log file is the name of the instance,
-    # plus the time the instance was instantiated (tracker_07_1234567890.1234567.log).
+    # plus the time the instance was instantiated (tracker_05_1234567890.1234567.log).
     _log_name = f"{app.name}_{time.time()}"
     _log_path = f"{log_dir}/{_log_name}.log"
 
@@ -251,13 +280,11 @@ def _start_log_file(
         _log_path, mode='a', maxBytes=10240, backupCount=10, encoding='utf-8'
     )
 
-    # Use CSV format for log entries, with columns for Time, Server IP, Process ID, Message Level,
-    # and Message
-    _file_handler.stream.write('"date_time", "server_ip", "process_id", "msg_level", "message"\n')
-
     _server_hostname = socket.gethostname()
     _server_ip_address = socket.gethostbyname(_server_hostname)
 
+    # Use CSV format for log entries, with columns for Time, Server IP, Process ID, Message Level,
+    # and Message
     # Example entry: "2024-07-09 22:08:25,132", "192.168.56.1", "9132", "INFO",
     # "Starting Flask application."
     _msg_format = (
@@ -266,12 +293,27 @@ def _start_log_file(
     )
     _formatter = logging.Formatter(_msg_format)
     _file_handler.setFormatter(_formatter)
-
     app.logger.addHandler(_file_handler)
+
+    # Write CSV column names to the start of the log
+    _file_handler.stream.write('"date_time", "server_ip", "process_id", "msg_level", "message"\n')
+
+    # Get the name of the logging level from config.py
+    _logging_level_name = logging.getLevelName(logging_level)
+
+    # Record an INFO level message before using the logging level from config.py
+    app.logger.setLevel(logging.INFO)
+
+    # Use lazy % formatting in logging functions
+    # NOTE - Log events will still appear in the console
+    app.logger.info('Starting %s application; setting logging level to %s.',
+                    __package__, _logging_level_name)
+
+    # Set logging to the logging level from config.py
     app.logger.setLevel(logging_level)
 
     # IMPORTANT! Since the timestamp is part of the log file name,
-    # pause for a tenth of a second before leaving to prevent logs from having the same name.
+    # pause for a tenth of a second before leaving to prevent logs from having the same name
     time.sleep(0.1)
 
 
@@ -293,7 +335,5 @@ def log_page_request(app: flask.Flask, request: flask.Request, response: flask.R
     _client_address = request.environ.get('HTTP_X_FORWARDED_FOR') or request.environ['REMOTE_ADDR']
 
     # Log the requested page and client address
-    app.logger.info(
-        f"{request.path} requested by {_client_address} using {request.method}; "
-        f"{response.status}."
-    )
+    app.logger.info(f"{request.path} requested by {_client_address} using {request.method}; "
+                    f"{response.status}.")

@@ -11,7 +11,7 @@ This is a demo of a Flask application that uses environment files.
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-Runs the Flask application using environment variables found in `tracker/.flaskenv` and `tracker/.env`:
+Runs the Flask application using environment variables found in `tracker/.env` and `tracker/.flaskenv`:
 
 - `python -B -m flask --app tracker_02 run`
 
@@ -19,11 +19,11 @@ Runs the Flask application using environment variables found in `tracker/.flaske
 
 ## Notes
 
-If your Flask application depends on environment variables in production, it is important to identify them and to use them during development and testing.
+If your Flask application depends on environment variables in production, it is important to identify them and to use them during development.
 
 However, instead of resetting your operating system's environment variables each time you run your application (and possibly affecting other projects), you can use the `python-dotenv` module. This module reads environment variables from a `.env` and `.flaskenv` file in your application's directory so Flask can pass them to the application, simulating the desired environment.
 
-> **NOTE** - Using `export` is not recommended because exported variables only persist while the shell is open and they will affect other projects that use the same setting with different values.
+> **NOTE** - Using `export` is not recommended because exported variables only persist while the shell is open, and they will affect other projects that use the same settings with different values.
 
 To use the module, install `python-dotenv` in your Python virtual environment and update your `requirements.txt` file:
 
@@ -42,7 +42,7 @@ touch .flaskenv
 Add any OS-specific environment settings your application uses, like `API_KEY=ABC123`, in the `.env` file.
 Add any Flask-specific environment settings your application uses, like `FLASK_RUN_PORT=5000` in the `.flaskenv` file.
 
-When you run your application, Flask search for those files and use their variables instead of your operating system's actual environment variables.
+When you run your application, Flask will search for those files and use their variables instead of your operating system's actual environment variables.
 
 While you can place the `.flaskenv` file in the package's directory (`tracker/tracker_02/.flaskenv`), the `.env` must be in the application's root directory (`tracker/.env`).
 
@@ -56,7 +56,7 @@ While you can place the `.flaskenv` file in the package's directory (`tracker/tr
 
 Here are some guidelines to using environment variable files with Flask:
 
-- Environment variable files store settings that must be set before Flask even starts. We will cover configuration files that store runtime variables like `LOGGING_LEVEL` shortly.
+- Environment variable files store settings that must be set before Flask even starts. We will cover runtime variables and configuration files shortly.
 - Do not share the information in environment variable files, like `SECRET_KEY`, on public repositories.
 
 Your application structure should be like the following:
@@ -79,4 +79,4 @@ Review the code and run your application. Do not forget to activate your Python 
 
 - `python -B -m flask --app tracker_02 run`
 
-When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

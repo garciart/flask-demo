@@ -61,6 +61,8 @@ Review the code and run your application. Do not forget to activate your Python 
 
 - `python -B -m flask --app tracker_04a run`
 
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>.
+
 Now, run Coverage in interactive mode. When prompted, enter "development" or press <kbd>Enter</kbd> to accept the **default** configuration:
 
 > **NOTE** - The reason I added user interaction to `test_app.py` is because you cannot pass arguments, like `--config development`, to `test_app.py` using `sys.argv` or the `argparse` module; the `unittest` module will read them instead.

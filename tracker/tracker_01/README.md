@@ -11,7 +11,7 @@ This is a demo of a basic Flask application that uses a package pattern.
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
 
-| Command                                                              | Explanation               |
+| Run Commands                                                              | Explanation               |
 |----------------------------------------------------------------------|---------------------------|
 | `flask --app tracker_01 run`                                         | Standard command to run a Flask application, accessible via localhost on the default port (`127.0.0.1:5000`). |
 | `python -B -m flask --app tracker_01 run`                            | (*Preferred*) Performs the same action as the standard command, but it uses the `-B` option to prevent writing intermediate bytecode to a `__pycache__` folder. |
@@ -62,8 +62,5 @@ tracker
 Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
 - `python -B -m flask --app tracker_01 run`
-- `python -B -m flask --app tracker_01 run --debug`
-- `python -B -m flask --app tracker_01 run --host=0.0.0.0`
-- `python -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001`
 
-When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
