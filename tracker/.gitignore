@@ -30,3 +30,4 @@ migrations*
 
 # Do not add coverage executable
 .coverage
+htmlcov/

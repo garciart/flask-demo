@@ -15,4 +15,21 @@
 <p>You are using the <b>{{ config_name_text }}</b> configuration and your logging level is
     <b>{{ logging_level_name_text }} ({{ logging_level_text }})</b>.
 </p>
+<br>
+<table>
+    <caption>Users</caption>
+    <thead>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+    </thead>
+    {% for u in users_data %}
+    <tbody>
+        <td>{{u.user_id}}</td>
+        <td>{{u.user_name}}</td>
+        <td>{{u.user_email}}</td>
+
+    </tbody>
+    {% endfor%}
+</table>
 {% endblock %}

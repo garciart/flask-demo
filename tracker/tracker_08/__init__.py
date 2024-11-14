@@ -29,8 +29,8 @@ import time
 
 import flask
 
-# Import the runtime configuration classes
 # The leading dot tells Python that this is a relative import from within the package
+# Import the runtime configuration classes
 from .config import Config, DevConfig, ProfilerConfig
 
 from .profiler import add_profiler_middleware
@@ -43,6 +43,7 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
 
     :param str config_name: An alternate configuration from `config.py` for \
         development, testing, etc. Uses the base `Config` class if None or 'default'
+    :param bool log_events: Flag to start the logger, defaults to False
 
     :returns: The Flask application instance
     :rtype: flask.Flask
@@ -106,9 +107,9 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         """
         return flask.render_template(
             'main/index.html',
-            _config_name_text=config_name,
-            _logging_level_text=_logging_level,
-            _logging_level_name_text=_logging_level_name,
+            config_name_text=config_name,
+            logging_level_text=_logging_level,
+            logging_level_name_text=_logging_level_name,
         )
 
     @_app.errorhandler(404)
@@ -199,12 +200,12 @@ def _configure_app(config_name: str = 'default') -> flask.Flask:
     # Load the configuration class from config.py based on the environment
     # NOTE - Switched from if-elif-else to mapping for readability and maintainability
     config_mapping = {
-        'development': f'{__package__}.config.DevConfig',
-        'profiler': f'{__package__}.config.ProfilerConfig',
-        'default': f'{__package__}.config.Config',
+        'development': DevConfig,
+        'profiler': ProfilerConfig,
+        'default': Config,
     }
 
-    _app.config.from_object(config_mapping.get(config_name, config_mapping['default']))
+    _app.config.from_object(config_mapping.get(config_name, Config))
 
     return _app
 

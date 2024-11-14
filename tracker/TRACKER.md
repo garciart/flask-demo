@@ -225,3 +225,7 @@ Course Administration:
 - ***Delete a Course:*** Chairs who are assigned to the Course
 
 Role and User Administration: Administrators only.
+
+Create a User database and view users
+Add, view, edit, and delete a User
+

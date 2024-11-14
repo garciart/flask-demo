@@ -23,6 +23,7 @@ def create_app(config_class: object = Config) -> flask.Flask:
 
     :param str config_name: An alternate configuration from `config.py` for \
         development, testing, etc. Uses the base `Config` class if None or 'default'
+    :param bool log_events: Flag to start the logger, defaults to False
 
     :returns: An application instance
     :rtype: flask.Flask

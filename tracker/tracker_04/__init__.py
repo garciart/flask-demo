@@ -19,8 +19,8 @@ import sys
 
 import flask
 
-# Import the runtime configuration classes
 # The leading dot tells Python that this is a relative import from within the package
+# Import the runtime configuration classes
 from .config import Config, DevConfig
 
 __author__ = 'Rob Garcia'
@@ -31,6 +31,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
 
     :param str config_name: An alternate configuration from `config.py` for \
         development, testing, etc. Uses the base `Config` class if None or 'default'
+    :param bool log_events: Flag to start the logger, defaults to False
 
     :returns: The Flask application instance
     :rtype: flask.Flask

@@ -24,8 +24,8 @@ import sys
 
 import flask
 
-# Import the runtime configuration classes
 # The leading dot tells Python that this is a relative import from within the package
+# Import the runtime configuration classes
 from .config import Config, DevConfig
 
 __author__ = 'Rob Garcia'

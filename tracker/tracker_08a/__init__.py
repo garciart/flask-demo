@@ -1,4 +1,4 @@
-"""A Flask application that incorporates templates.
+"""A Flask application that incorporates a database.
 
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
@@ -6,16 +6,15 @@
 > - `venv/Scripts/activate` (Windows)
 
 Usage:
-- python -B -m flask --app tracker_09 run
+- python -B -m flask --app tracker_08a run
+- python -B -m flask --app "tracker_08a:create_app('development', True)" run
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
 > **NOTE** - Do not log events when unit testing or each test will create a log file.
 
 Changes:
-- Moved pages into templates
-- Added a "master" layout page
-- Added static Cascading Style Sheets (CSS) and JavaScript files
+- Added a database
 """
 
 import importlib
@@ -27,11 +26,16 @@ import sys
 import time
 
 import flask
+from flask_sqlalchemy import SQLAlchemy
 
 # The leading dot tells Python that this is a relative import from within the package
 # Import the runtime configuration classes
 from .config import Config, DevConfig, ProfilerConfig
 
+# Import the database instance
+from .models import db
+
+# Import the profiling middleware
 from .profiler import add_profiler_middleware
 
 __author__ = 'Rob Garcia'
@@ -95,15 +99,57 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     if _app.config.get("PROFILING_ENABLED", False):
         _app = add_profiler_middleware(_app)
 
-    # Start routing using blueprints
-    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from .blueprints import main
-    from .blueprints import error
+    # Initialize the database with the app
+    db.init_app(_app)
 
-    main.get_app_vars(config_name, _logging_level, _logging_level_name)
+    # Create the database if it does not exist
+    with _app.app_context():
+        from .models.create_db import create_db
+        # Lazy import to avoid circular imports
+        from .models.user import User
 
-    _app.register_blueprint(main.main_bp)
-    _app.register_blueprint(error.error_bp)
+        # Extract database file path from the URI
+        uri = db.engine.url
+        db_path = uri.database if uri.database else uri.host
+
+        if not os.path.exists(db_path):
+            create_db()
+
+    # Create a route and page
+    @_app.route('/')
+    @_app.route('/index')
+    def index() -> str:
+        """Render the default landing page.
+
+        :returns: The HTML code to display with {{ placeholders }} populated
+        :rtype: str
+        """
+        users = User.query.all()
+        return flask.render_template(
+            'main/index.html',
+            config_name_text=config_name,
+            logging_level_text=_logging_level,
+            logging_level_name_text=_logging_level_name,
+            users_data=users
+        )
+
+    @_app.errorhandler(404)
+    def page_not_found(e) -> tuple:
+        """Render an error page if the requested page or resource was not found on the server.
+
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/404.html'), 404
+
+    @_app.errorhandler(500)
+    def server_error(e) -> tuple:
+        """Render an error page if there is a server error.
+
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/500.html'), 500
 
     # Remove after testing
     @_app.route('/doh')
@@ -163,7 +209,7 @@ def _configure_app(config_name: str = 'default') -> flask.Flask:
 
     :param str config_name: The name of the configuration to use, defaults to 'default'
 
-    :returns: The Flask application instance
+    :returns: The configured Flask application instance
     :rtype: flask.Flask
     """
     # Validate inputs

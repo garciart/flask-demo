@@ -20,9 +20,9 @@ def index() -> str:
         'index.html',
         page_title_text=_page_title,
         page_description_text=_page_description,
-        _config_name_text=main_bp.config_name,
-        _logging_level_text=main_bp.logging_level,
-        _logging_level_name_text=main_bp.logging_level_name,
+        config_name_text=main_bp.config_name,
+        logging_level_text=main_bp.logging_level,
+        logging_level_name_text=main_bp.logging_level_name,
     )
 
 
