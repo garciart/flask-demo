@@ -1,3 +1,6 @@
+"""Add profiling support to the Flask application using Werkzeug's ProfilerMiddleware.
+"""
+
 import flask
 
 from werkzeug.middleware.profiler import ProfilerMiddleware

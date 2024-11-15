@@ -53,7 +53,7 @@ Review the code and run your application. Do not forget to activate your Python 
 
 - `python -B -m flask --app tracker_04 run`
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>.
 
 Now, run the unit tests in interactive mode. When prompted, enter "development" or press <kbd>Enter</kbd> to accept the **default** configuration:
 

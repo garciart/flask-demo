@@ -50,6 +50,7 @@ tracker
 |   |   |   └── index.html
 |   |   └── base.html
 |   ├── __init__.py
+|   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
 ├── tracker_logs
@@ -88,4 +89,4 @@ Run your application using the `development` configuration, refresh the page, an
 
 The HTTP response code `304 NOT MODIFIED` means that the server found a cached copy of the resource, like a favicon, so it did not request a new version from the server. This speeds up rendering the page. On most browsers, if you want the application to re-request the resource, press <kbd>Shift</kbd> <kbd>F5</kbd>; that forces the application to ignore the cache and retrieve a fresh version of the web page.
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

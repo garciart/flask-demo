@@ -13,7 +13,7 @@ from . import main_routes  # noqa: E402 F401
 
 
 def get_app_vars(
-    config_name: str = 'default', logging_level: int = 30, logging_level_name: str = 'WARNING'
+        config_name: str = 'default', logging_level: int = 30, logging_level_name: str = 'WARNING'
 ):
     """Get application variables from create_app().
 

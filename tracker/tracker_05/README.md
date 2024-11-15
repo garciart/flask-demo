@@ -97,15 +97,15 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 
 The columns in this report are:
 
-| Column                    | Description                                                             |
-| ------------------------- | ------------------------------------------------------------------------|
-| ncalls                    | The number of times the function was called. Two numbers mean the function recursed; the first is the total number of calls and the second is the number of primitive (non-recursive) calls.   |
-| tottime                   | The total time spent in the given function (and excluding time made in calls to sub-functions) |
-| percall                   | The quotient of tottime divided by ncalls                               |
-| cumtime                   | The cumulative time spent in this and all subfunctions (from invocation till exit). This figure is accurate even for recursive functions. |
-| percall                   | The quotient of cumtime divided by primitive calls                      |
-| filename:lineno(function) | Provides the respective data of each function                           |
+| Column                    | Description                                                                                                                                                                                  |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ncalls                    | The number of times the function was called. Two numbers mean the function recursed; the first is the total number of calls and the second is the number of primitive (non-recursive) calls. |
+| tottime                   | The total time spent in the given function (and excluding time made in calls to sub-functions)                                                                                               |
+| percall                   | The quotient of tottime divided by ncalls                                                                                                                                                    |
+| cumtime                   | The cumulative time spent in this and all subfunctions (from invocation till exit). This figure is accurate even for recursive functions.                                                    |
+| percall                   | The quotient of cumtime divided by primitive calls                                                                                                                                           |
+| filename:lineno(function) | Provides the respective data of each function                                                                                                                                                |
 
 Like I said, right now your website runs very fast using Flask's built-in Werkzeug server.
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

@@ -75,7 +75,7 @@ def create_app(config_class: object = DevConfig) -> flask.Flask:
     # This may sound counter-intuitive, but I recommend you do not save log events
     # to a file when running the application in debug mode,
     # like if you run `python -m flask --app "app" run --debug`
-    # If you run the app in debug mode so you can make hot fixes,
+    # If you run the app in debug mode, so you can make hot fixes,
     # you may end up with a huge log file.
     if not app.debug:
         _start_log_file(app, log_dir='blue_logs', logging_level=app.config['LOGGING_LEVEL'])

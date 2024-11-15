@@ -1,8 +1,11 @@
+"""Add profiling support to the Flask application using Werkzeug's ProfilerMiddleware.
+"""
+
 import flask
 
 from werkzeug.middleware.profiler import ProfilerMiddleware
 
-# __all__ = ['add_profiler_middleware']
+__all__ = ['add_profiler_middleware']
 
 
 def add_profiler_middleware(app: flask.Flask) -> flask.Flask:

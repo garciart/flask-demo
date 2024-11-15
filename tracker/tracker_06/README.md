@@ -35,6 +35,8 @@ Logging allows you to:
 
 With this information, you can protect, fix, and optimize your web application. The Python Standard Library contains a `logging` module that makes it easy to integrate logging into your application.
 
+We added logging support in `app_utils.py`. We also moved utility functions into this file, like `check_system()` and `validate_input()`, so they are accessible by other files.
+
 Your application structure should be like the following:
 
 ```text
@@ -46,6 +48,7 @@ tracker
 |   |   ├── __init__.py
 |   |   └── test_app.py
 |   ├── __init__.py
+|   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
 ├── tracker_logs
@@ -84,4 +87,4 @@ Once you have started the server:
     "2024-11-03 16:51:20,199", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
     ```
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

@@ -23,7 +23,7 @@ class Config:
     LOGGING_LEVEL = logging.WARNING
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or (
-        'sqlite:///' + os.path.join(basedir, 'tracker.db')
+            'sqlite:///' + os.path.join(basedir, 'tracker.db')
     )
 
 

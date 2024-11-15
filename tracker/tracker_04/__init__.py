@@ -19,9 +19,8 @@ import sys
 
 import flask
 
-# The leading dot tells Python that this is a relative import from within the package
 # Import the runtime configuration classes
-from .config import Config, DevConfig
+from tracker.tracker_04.config import Config, DevConfig
 
 __author__ = 'Rob Garcia'
 
@@ -31,7 +30,6 @@ def create_app(config_name: str = 'default') -> flask.Flask:
 
     :param str config_name: An alternate configuration from `config.py` for \
         development, testing, etc. Uses the base `Config` class if None or 'default'
-    :param bool log_events: Flag to start the logger, defaults to False
 
     :returns: The Flask application instance
     :rtype: flask.Flask
@@ -46,7 +44,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
             'Invalid configuration name. Exiting now...')
 
     # Ensure the system meets the prerequisites for the application
-    _check_system(min_python_version=3.08, min_flask_version=3.0)
+    check_system(min_python_version=3.08, min_flask_version=3.0)
 
     # Create the Flask application instance
     _app = flask.Flask(__name__)
@@ -86,7 +84,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     return _app
 
 
-def _check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
+def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
     """Check if the installed Python and Flask versions can run the application.
 
     **NOTE** - Use `3.01` for version `3.1` and `3.10` for version `3.10`.

@@ -38,6 +38,7 @@ tracker
 |   |   ├── __init__.py
 |   |   └── test_app.py
 |   ├── __init__.py
+|   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
 ├── tracker_logs
@@ -87,4 +88,4 @@ Once you have started the server:
 
 By the way, if you simply ran `python -B -m flask --app tracker_07 run` and navigated to <http://127.0.0.1:5000/doh>, Flask would log the error, since it is a `logging.ERROR`-level message. However, Flask would not log any `logging.INFO`-level messages.
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

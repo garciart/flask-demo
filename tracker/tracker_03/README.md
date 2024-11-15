@@ -64,4 +64,4 @@ Review the code and run your application. Do not forget to activate your Python 
 - `python -B -m flask --app tracker_03 run`
 - `python -B -m flask --app "tracker_03:create_app(foo='42')" run`
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

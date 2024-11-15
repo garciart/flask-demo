@@ -61,7 +61,7 @@ Review the code and run your application. Do not forget to activate your Python 
 
 - `python -B -m flask --app tracker_04a run`
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by presssing <kbd>CTRL</kbd> +  <kbd>C</kbd>.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>.
 
 Now, run Coverage in interactive mode. When prompted, enter "development" or press <kbd>Enter</kbd> to accept the **default** configuration:
 
@@ -106,6 +106,6 @@ To see the results in a browser, run the following command:
 coverage html --directory tracker_04a/tests/htmlcov
 ```
 
-Coverage will create and populate the `tracker_04a/tests/htmlcov` directory with a web page. Open a browswer and navigate to <tracker/tracker_04a/tests/htmlcov/index.html> to see the web page.
+Coverage will create and populate the `tracker_04a/tests/htmlcov` directory with a web page. Open a browser and navigate to <tracker/tracker_04a/tests/htmlcov/index.html> to see the web page.
 
 When you are finished, move on to the next version.
