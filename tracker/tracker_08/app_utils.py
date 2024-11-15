@@ -83,7 +83,7 @@ def start_log_file(
 
     Each instance of this class to have a separate log file in the 'logs' directory.
 
-    **NOTE** - This may sound counter-intuitive, but if you run the app in debug mode so you can \
+    **NOTE** - This may sound counter-intuitive, but if you run the app in debug mode, so you can \
     make hot fixes, you may end up with a huge log file. Therefore, I recommend you do not log \
     events when in debug mode (`python flask --debug run`)
 

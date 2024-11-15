@@ -15,7 +15,8 @@ Usage: python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
 import importlib
 import sys
 import unittest
-from .. import create_app, check_system
+
+from tracker.tracker_09 import create_app, check_system
 
 __author__ = 'Rob Garcia'
 

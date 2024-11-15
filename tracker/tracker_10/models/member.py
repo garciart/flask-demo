@@ -6,8 +6,8 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from werkzeug.security import (generate_password_hash, check_password_hash)
 
-from tracker.tracker_08a import db
-from tracker.tracker_08a.app_utils import validate_input
+from tracker.tracker_10 import db
+from tracker.tracker_10.app_utils import validate_input
 
 
 class Member(db.Model):

@@ -2,7 +2,9 @@
 """
 
 import flask
-from . import main_bp
+
+from tracker.tracker_10.blueprints.main import main_bp
+from tracker.tracker_10.models.member import Member
 
 
 @main_bp.route('/')
@@ -16,6 +18,8 @@ def index() -> str:
     _page_title = 'Welcome to Tracker!'
     _page_description = 'Landing Page'
 
+    members = Member.query.all()
+
     return flask.render_template(
         'index.html',
         page_title_text=_page_title,
@@ -23,6 +27,7 @@ def index() -> str:
         config_name_text=main_bp.config_name,
         logging_level_text=main_bp.logging_level,
         logging_level_name_text=main_bp.logging_level_name,
+        members_data=members,
     )
 
 

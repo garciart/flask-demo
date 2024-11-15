@@ -1,4 +1,4 @@
-"""A Flask application that incorporates templates.
+"""A Flask application that incorporates a database.
 
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
@@ -8,39 +8,32 @@
 Usage:
 - python -B -m flask --app tracker_09 run
 - python -B -m flask --app "tracker_09:create_app('development', True)" run
+
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
 > **NOTE** - Do not log events when unit testing or each test will create a log file.
 
 Changes:
-- Moved pages into templates
-- Added a "master" layout page
-- Added static Cascading Style Sheets (CSS) and JavaScript files
+- Added a database
 """
 
-import importlib
 import logging
-from logging.handlers import RotatingFileHandler
 import os
-import socket
-import sys
-import time
 
 import flask
 from flask_sqlalchemy import SQLAlchemy
 
-
-from .app_utils import validate_input, check_system, start_log_file, log_page_request
+from tracker.tracker_09.app_utils import validate_input, check_system, start_log_file, log_page_request
 # Import the runtime configuration classes
-from .config import Config, DevConfig, ProfilerConfig
-
+from tracker.tracker_09.config import Config, DevConfig, ProfilerConfig
 # Import the profiling middleware
-from .profiler import add_profiler_middleware
+from tracker.tracker_09.profiler import add_profiler_middleware
 
 __author__ = 'Rob Garcia'
 
 # Create an instance of the SQLAlchemy class
 db = SQLAlchemy()
+
 
 def create_app(config_name: str = 'default', log_events: bool = False) -> flask.Flask:
     """Application Factory.
@@ -106,8 +99,8 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     # Create the database if it does not exist
     with _app.app_context():
         # Lazy import to avoid circular imports
-        from .models.create_db import create_db
-        from .models.member import Member
+        from tracker.tracker_09.models.create_db import create_db
+        from tracker.tracker_09.models.member import Member
 
         # Extract database file path from the URI
         uri = db.engine.url
@@ -116,15 +109,41 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         if not os.path.exists(db_path):
             create_db()
 
-    # Start routing using blueprints
-    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from .blueprints import main
-    from .blueprints import error
+    # Create a route and page
+    @_app.route('/')
+    @_app.route('/index')
+    def index() -> str:
+        """Render the default landing page.
 
-    main.get_app_vars(config_name, _logging_level, _logging_level_name)
+        :returns: The HTML code to display with {{ placeholders }} populated
+        :rtype: str
+        """
+        members = Member.query.all()
+        return flask.render_template(
+            'main/index.html',
+            config_name_text=config_name,
+            logging_level_text=_logging_level,
+            logging_level_name_text=_logging_level_name,
+            members_data=members,
+        )
 
-    _app.register_blueprint(main.main_bp)
-    _app.register_blueprint(error.error_bp)
+    @_app.errorhandler(404)
+    def page_not_found(e) -> tuple:
+        """Render an error page if the requested page or resource was not found on the server.
+
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/404.html', e=e), 404
+
+    @_app.errorhandler(500)
+    def server_error(e) -> tuple:
+        """Render an error page if there is a server error.
+
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/500.html', e=e), 500
 
     # Remove after testing
     @_app.route('/doh')

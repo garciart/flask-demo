@@ -1,7 +1,7 @@
 """Creates the Tracker database.
 """
-from tracker.tracker_08a import db
-from tracker.tracker_08a.models.member import Member
+from tracker.tracker_10 import db
+from tracker.tracker_10.models.member import Member
 
 
 def create_db():

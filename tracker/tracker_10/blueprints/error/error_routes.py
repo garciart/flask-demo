@@ -2,7 +2,8 @@
 """
 
 import flask
-from . import error_bp
+
+from tracker.tracker_10.blueprints.error import error_bp
 
 
 # Blueprint's equivalent of Flask errorhandler is app_errorhandler
@@ -21,6 +22,7 @@ def page_not_found(e) -> tuple:
             '404.html',
             page_title_text=_page_title,
             page_description_text=_page_description,
+            e=e,
         ),
         404,
     )
@@ -42,6 +44,7 @@ def server_error(e) -> tuple:
             '500.html',
             page_title_text=_page_title,
             page_description_text=_page_description,
+            e=e,
         ),
         500,
     )
