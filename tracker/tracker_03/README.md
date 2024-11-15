@@ -1,4 +1,4 @@
-# Tracker v03
+# Tracker_03
 
 This is a demo of a Flask application that uses an application factory and a configuration file.
 
@@ -51,6 +51,7 @@ tracker
 ├── .env
 ├── .flaskenv
 ├── .gitignore
+├── __init__.py
 ├── hello.py
 └── requirements.txt
 ```

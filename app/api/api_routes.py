@@ -3,7 +3,7 @@
 Test: http://127.0.0.1:5000/api/test
 """
 # Flake8 F401: imports are used for type hints
-from flask import (jsonify, Response)  # noqa: F401
+from flask import (jsonify, Response)
 from app.api import api_bp
 from app.app_utils import validate_input
 from app.models import Course
@@ -49,21 +49,23 @@ def api_courses():
     return _json_result
 
 
-def __serialize_query_result(query_result, exclude=None):
-    # type: (object, None | str | list) -> list
+def __serialize_query_result(query_result: list, exclude: None | str | list = None) -> list:
     """Serialize SQLAlchemy query result into a JSON string.
 
     NOTE - Do not tinker! This works and you wasted three hours on this
 
     NOTE - defer, load_only, etc., do not work
 
-    <model class>.query.all() returns a list of class objects,
-    formatted using the __repr__ method of the class.
+    <model class>.query.one() returns a single model object,
+    formatted using the __repr__ method of the model.
 
-    You need to convert those class objects to dict objects
-    before displaying as json.
+    <model class>.query.all() returns a list of model objects,
+    formatted using the __repr__ method of the model.
 
-    :param list query_result: The SQLAlchemy query result
+    You need to convert those model objects to dict objects before displaying as json.
+
+    :param list query_result: The SQLAlchemy query result as a list of model objects, like [Member],
+        or none
     :param str/list exclude: Key(s)/Column(s) to remove from results
 
     :returns: The serialized result
@@ -71,6 +73,7 @@ def __serialize_query_result(query_result, exclude=None):
     """
     # Validate inputs
     validate_input('query_result', query_result, list)
+    validate_input('exclude', exclude, (None | str | list))
 
     # Holds the converted objects
     _converted_list = []

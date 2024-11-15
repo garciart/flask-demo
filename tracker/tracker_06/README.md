@@ -1,4 +1,4 @@
-# Tracker v06
+# Tracker_06
 
 This is a demo of a Flask application that incorporates logging.
 
@@ -58,6 +58,7 @@ tracker
 ├── .env
 ├── .flaskenv
 ├── .gitignore
+├── __init__.py
 ├── hello.py
 └── requirements.txt
 ```

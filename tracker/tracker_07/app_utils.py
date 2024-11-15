@@ -8,20 +8,22 @@ import socket
 import sys
 import time
 from logging.handlers import RotatingFileHandler
+from types import UnionType
 
 import flask
 
 __all__ = ['validate_input', 'check_system', 'start_log_file', 'log_page_request']
 
 
-def validate_input(obj_name: str, obj_to_check: object, expected_type: type) -> None:
+def validate_input(obj_name: str, obj_to_check: object,
+                   expected_type: type | tuple | UnionType) -> None:
     """Validate an input's type and ensure it is not empty.
 
     Use this function to reduce code complexity in calling functions and methods.
 
     :param str obj_name: The name of the input to validate
     :param object obj_to_check: The input to validate
-    :param type expected_type: The expected type for the input
+    :param type/tuple/UnionType expected_type: The expected type or list of types for the input
 
     :returns: None
     :rtype: None

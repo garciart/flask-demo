@@ -34,8 +34,8 @@ def create_app(alt_config=None):
     app = Flask(__name__)
 
     # Import app modules after init to avoid known circular import problems
-    from app.app_utils import validate_input  # noqa: E501 E402 pylint:disable=import-outside-toplevel
-    from app.config import Config  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+    from app.app_utils import validate_input
+    from app.config import Config
 
     # Validate inputs
     if alt_config is not None:
@@ -72,11 +72,11 @@ def create_app(alt_config=None):
 
     # Start routing
     # Import app modules after init to avoid known circular import problems
-    from app.main import main_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
-    from app.auth import auth_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
-    from app.admin import admin_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
-    from app.error import error_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
-    from app.api import api_routes  # noqa: E501 E402 pylint:disable=import-outside-toplevel
+    from app.main import main_routes
+    from app.auth import auth_routes
+    from app.admin import admin_routes
+    from app.error import error_routes
+    from app.api import api_routes
 
     app.register_blueprint(main_routes.bp)
     app.register_blueprint(auth_routes.auth_bp)
@@ -145,4 +145,4 @@ def _get_python_version():
 
 # IMPORTANT - This must be last to prevent circular import problems!
 # Flake8 F401: Using model when running flask db init, migrate, and upgrade
-from app import models  # noqa: F401 E402 pylint:disable=wrong-import-position
+from app import models

@@ -1,4 +1,4 @@
-# Tracker v10
+# Tracker_10
 
 This is a demo of a Flask application that incorporates blueprints.
 
@@ -34,13 +34,17 @@ tracker
 |   |   |   |   ├── 404.html
 |   |   |   |   └── 500.html
 |   |   |   ├── __init__.py
-|   |   |   └── error.py
+|   |   |   └── error_routes.py
 |   |   └── main
 |   |       ├── templates
-|   |       |   ├── index.html
-|   |       |   └── about.html
+|   |       |   ├── about.html
+|   |       |   └── index.html
 |   |       ├── __init__.py
-|   |       └── main.py
+|   |       └── main_routes.py
+|   ├── models
+|   |   ├── __init__.py
+|   |   ├── create_db.py
+|   |   └── member.py
 |   ├── static
 |   |   ├── css
 |   |   |   └── main.css
@@ -49,14 +53,16 @@ tracker
 |   |   |   └── logo.png
 |   |   └── js
 |   |       └── main.js
+|   ├── templates
+|   |   └── base.html
 |   ├── tests
 |   |   ├── __init__.py
 |   |   └── test_app.py
-|   ├── templates
-|   |   └── base.html
 |   ├── __init__.py
+|   ├── app_utils.py
 |   ├── config.py
-|   └── profiler.py
+|   ├── profiler.py
+|   └── tracker.db
 ├── tracker_logs
 |   └── tracker_10_1234567890.1234567.log
 ├── venv
@@ -64,6 +70,7 @@ tracker
 ├── .env
 ├── .flaskenv
 ├── .gitignore
+├── __init__.py
 ├── hello.py
 └── requirements.txt
 ```

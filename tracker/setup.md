@@ -67,6 +67,7 @@ This Flask application will allow you to administer courses and course access us
     |   └── ...
     ├── .flaskenv
     ├── .gitignore
+├── __init__.py
     ├── app.py
     └── requirements.txt
     ```
@@ -124,6 +125,7 @@ This Flask application will allow you to administer courses and course access us
     |   └── ...
     ├── .flaskenv
     ├── .gitignore
+├── __init__.py
     ├── app.py
     └── requirements.txt
     ```

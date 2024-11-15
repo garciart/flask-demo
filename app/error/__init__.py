@@ -6,4 +6,4 @@ error_bp = Blueprint('error', __name__)
 
 # Import app modules after init to avoid known circular import problems
 # Flake8 F401: imports are used for type hints
-from app.error import error_routes  # noqa: E402 E501 F401 pylint:disable=wrong-import-position
+from app.error import error_routes

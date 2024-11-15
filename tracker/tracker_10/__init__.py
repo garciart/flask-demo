@@ -114,7 +114,7 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     from tracker.tracker_10.blueprints import main
     from tracker.tracker_10.blueprints import error
 
-    main.get_app_vars(config_name, _logging_level, _logging_level_name)
+    main.get_vars_from_create_app(config_name, _logging_level, _logging_level_name)
 
     _app.register_blueprint(main.main_bp)
     _app.register_blueprint(error.error_bp)

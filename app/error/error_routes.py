@@ -3,7 +3,7 @@
 Test 404: http://127.0.0.1:5000/bad/bad_route
 """
 # Flake8 F401: imports are used for type hints
-from flask import (render_template, request, current_app)  # noqa: F401
+from flask import (render_template, request, current_app)
 from werkzeug import exceptions
 from app.app_utils import validate_input
 from app.error import error_bp

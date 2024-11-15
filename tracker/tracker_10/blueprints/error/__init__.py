@@ -9,4 +9,4 @@ error_bp = flask.Blueprint('error_bp', __name__, template_folder='templates')
 
 # Import the other modules in the package after instantiating
 # the Blueprint to avoid known circular import problems with Flask
-from tracker.tracker_10.blueprints.error import error_routes  # noqa: E402 F401
+from tracker.tracker_10.blueprints.error import error_routes

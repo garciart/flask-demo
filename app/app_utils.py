@@ -1,18 +1,19 @@
 """Helper functions
 """
 import inspect
-from types import FrameType
+from types import FrameType, UnionType
 from flask import (abort, current_app)
 
 
 def validate_input(obj_name, obj_to_check, expected_type):
-    # type: (str, object, type) -> None
-    """Validate an input's type and ensure it is not empty. Use this
-    function to reduce code complexity in calling functions and methods.
+    # type: (str, object, type | tuple | UnionType) -> None
+    """Validate an input's type and ensure it is not empty.
+
+    Use this function to reduce code complexity in calling functions and methods.
 
     :param str obj_name: The name of the input to validate
     :param object obj_to_check: The input to validate
-    :param type expected_type: The expected type for the input
+    :param type/tuple/UnionType expected_type: The expected type or list of types for the input
 
     :returns: None
     :rtype: None

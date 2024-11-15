@@ -6,7 +6,7 @@ in Flask.
 Test: http://127.0.0.1:5000/add_user
 """
 # Flake8 F401: imports are used for type hints
-from flask import (Response,  # noqa: F401 pylint:disable=unused-import
+from flask import (Response,
                    abort, flash, redirect, render_template, request, url_for)
 from flask_login import (current_user, login_required)
 from app import db

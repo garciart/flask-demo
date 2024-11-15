@@ -7,7 +7,7 @@ Test: http://127.0.0.1:5000/login
 """
 from urllib.parse import urlsplit
 # Flake8 F401: imports are used for type hints
-from flask import (Response,  # noqa: F401
+from flask import (Response,
                    flash, redirect, render_template,
                    request, url_for)
 from flask_login import (current_user, login_user, logout_user)

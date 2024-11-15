@@ -1,4 +1,4 @@
-# Tracker v08
+# Tracker_08
 
 This is a demo of a Flask application that incorporates templates.
 
@@ -60,6 +60,7 @@ tracker
 ├── .env
 ├── .flaskenv
 ├── .gitignore
+├── __init__.py
 ├── hello.py
 └── requirements.txt
 ```
