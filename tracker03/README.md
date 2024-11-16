@@ -1,4 +1,4 @@
-# Tracker_03
+# Tracker03
 
 This is a demo of a Flask application that uses an application factory and a configuration file.
 
@@ -13,14 +13,14 @@ This is a demo of a Flask application that uses an application factory and a con
 
 ```shell
 # Check the application for errors
-python -B -m pylint tracker_03
+python -B -m pylint tracker03
 # Run the Flask application using the configuration variables found in `config.py`
-python -B -m flask --app "tracker_03:create_app(config_name='development')" run
-python -B -m flask --app "tracker_03:create_app('development')" run
+python -B -m flask --app "tracker03:create_app(config_name='development')" run
+python -B -m flask --app "tracker03:create_app('development')" run
 # Use the 'default' configuration
-python -B -m flask --app tracker_03 run
+python -B -m flask --app tracker03 run
 # Use the 'foo_var' command-line argument
-python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
+python -B -m flask --app "tracker03:create_app(foo_var='42')" run
 ```
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
@@ -39,8 +39,8 @@ Another advantage of using an application factory is that you can add additional
 def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flask:
 ```
 
-- If you run `python -B -m flask --app tracker_03 run`, `foo_var` will equal `bar`.
-- If you run `python -B -m flask --app "tracker_03:create_app(foo_var='42')" run`, `foo_var` will equal `42`.
+- If you run `python -B -m flask --app tracker03 run`, `foo_var` will equal `bar`.
+- If you run `python -B -m flask --app "tracker03:create_app(foo_var='42')" run`, `foo_var` will equal `42`.
 
 Your application structure should be like the following:
 
@@ -50,7 +50,7 @@ tracker
 |   └── ...
 ├── tracker_01
 ├── ...
-├── tracker_03
+├── tracker03
 |   ├── __init__.py
 |   └── config.py
 ├── .env
@@ -62,38 +62,20 @@ tracker
 └── requirements.txt
 ```
 
-> **NOTE** - If you run `python -m pylint tracker_03`, Pylint will return `tracker_03/__init__.py:30:0: E0401: Unable to import 'tracker_03.config' (import-error)`. This occurs because the project directory is not in `PYTHONPATH`. Unfortunately, setting `PYTHONPATH` in your `.env` does not work, and running `export PYTHONPATH=$(pwd)` may break other applications. The solution is to create a `.pylintrc` file with the following code:
-> 
-> ```ini
-> # code: language=ini
-> # Settings for Pylint
-> [MAIN]
-> init-hook='import sys; sys.path.append('.')'
-> ```
-> 
-> Using `.` will tell Pylint to use the PWD (your project directory) for `PYTHONPATH` and allow Pylint to look for imports correctly.
->
-> You may also want to disable the `too-few-public-methods` message in `.pylintrc`, since the configuration classes in `config.py` will not need public methods:
-> 
-> ```ini
-> [MESSAGES CONTROL]
-> disable=too-few-public-methods
-> ```
-
 Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
 ```shell
 # Check the application for errors
-python -B -m pylint tracker_03
+python -B -m pylint tracker03
 # Run the Flask application using the configuration variables found in `config.py`
-python -B -m flask --app "tracker_03:create_app(config_name='development')" run
-python -B -m flask --app "tracker_03:create_app('development')" run
+python -B -m flask --app "tracker03:create_app(config_name='development')" run
+python -B -m flask --app "tracker03:create_app('development')" run
 # Use the 'default' configuration
-python -B -m flask --app tracker_03 run
+python -B -m flask --app tracker03 run
 # Use the 'foo_var' command-line argument
-python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
+python -B -m flask --app "tracker03:create_app(foo_var='42')" run
 ```
 
 Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

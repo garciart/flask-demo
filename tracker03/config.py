@@ -1,6 +1,6 @@
 """Runtime configuration variables for Flask.
 
-**WARNING** - This file is not for configuration variables that need to in
+> **WARNING** - This file is not for configuration variables that need to in
 place before Flask starts, like FLASK_RUN_PORT. Place those variables in .flaskenv or .env.
 
 Usage:

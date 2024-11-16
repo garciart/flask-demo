@@ -9,12 +9,12 @@
 
 ```
 # Run the Flask application using the configuration variables found in `config.py`
-python -B -m flask --app "tracker_03:create_app(config_name='development')" run
-python -B -m flask --app "tracker_03:create_app('development')" run
+python -B -m flask --app "tracker03:create_app(config_name='development')" run
+python -B -m flask --app "tracker03:create_app('development')" run
 # Use the 'default' configuration
-python -B -m flask --app tracker_03 run
+python -B -m flask --app tracker03 run
 # Use the 'foo' command-line argument
-python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
+python -B -m flask --app "tracker03:create_app(foo_var='42')" run
 ```
 
 **NOTE** - Enclose options in quotation marks when using special characters.
@@ -27,7 +27,7 @@ import sys
 import flask
 
 # Import the runtime configuration classes
-from tracker_03.config import Config, DevConfig
+from tracker03.config import Config, DevConfig
 
 __author__ = 'Rob Garcia'
 

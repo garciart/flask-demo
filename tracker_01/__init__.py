@@ -1,15 +1,23 @@
 """A basic Flask application that uses a package pattern.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
->
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+**NOTE**: Remember to activate your Python virtual environment before running:
 
-Usage:
+- `source venv/bin/activate` (Linux)
+- `venv/Scripts/activate` (Windows)
+
+**Usage**:
+
+```
+# Run the application without saving bytecode
 python -B -m flask --app tracker_01 run
+# Run the application in 'hotfix' mode
 python -B -m flask --app tracker_01 run --debug
+# Run the application on the host IP address (like 192.x.x.x)
+# instead of the default address (127.0.0.1)
 python -B -m flask --app tracker_01 run --host=0.0.0.0
+# Run the application on port 5001 instead of the default port (5000)
 python -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001
+```
 """
 
 import importlib

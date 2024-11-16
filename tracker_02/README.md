@@ -14,9 +14,9 @@ This is a demo of a Flask application that uses environment files.
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_02
-# Run the Flask application using environment variables found in `.env` and `.flaskenv`
+# Run the application using environment variables found in `.env` and `.flaskenv`
 python -B -m flask --app tracker_02 run
-# Run the Flask application using an alternate environment file
+# Run the application using an alternate environment file
 python -B -m flask --env-file .env_alt --app tracker_02 run
 ```
 
@@ -84,9 +84,9 @@ Review the code and run your application. Do not forget to activate your Python 
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_02
-# Run the Flask application using environment variables found in `.env` and `.flaskenv`
+# Run the application using environment variables found in `.env` and `.flaskenv`
 python -B -m flask --app tracker_02 run
-# Run the Flask application using an alternate environment file
+# Run the application using an alternate environment file
 python -B -m flask --env-file .env_alt --app tracker_02 run
 ```
 

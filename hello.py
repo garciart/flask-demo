@@ -1,12 +1,13 @@
 """A basic Flask application that uses a single-file module pattern.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
->
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+**NOTE**: Remember to activate your Python virtual environment before running:
 
-Usage:
-python -B -m flask --app hello run
+- `source venv/bin/activate` (Linux)
+- `venv/Scripts/activate` (Windows)
+
+**Usage**:
+
+- `python -B -m flask --app hello run`
 """
 
 import flask

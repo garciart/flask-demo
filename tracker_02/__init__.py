@@ -1,18 +1,18 @@
 """A Flask application that uses environment variables.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
->
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+**NOTE**: Remember to activate your Python virtual environment before running:
 
-Usage:
-# Run the Flask application using environment variables found in `.env` and `.flaskenv`
+- `source venv/bin/activate` (Linux)
+- `venv/Scripts/activate` (Windows)
+
+**Usage**:
+
+```
+# Run the application using environment variables found in `.env` and `.flaskenv`
 python -B -m flask --app tracker_02 run
-# Run the Flask application using an alternate environment file
+# Run the application using an alternate environment file
 python -B -m flask --env-file .env_alt --app tracker_02 run
-
-Changes:
-- Added ability to read environment variables
+```
 """
 
 import importlib
@@ -51,25 +51,25 @@ def index() -> str:
     :rtype: str
     """
     # This system environment variable is common to Linux and Windows systems
-    default_encoding = os.environ.get('LANG')
+    _default_encoding = os.environ.get('LANG')
 
     # This system environment variable is defined in the .env file
-    env_user_defined_var = os.environ.get('ENV_USER_DEFINED_VAR')
+    _env_user_defined_var = os.environ.get('ENV_USER_DEFINED_VAR')
 
     # This Flask environment variable is defined in the .flaskenv file
-    flaskenv_user_defined_var = os.environ.get('FLASKENV_USER_DEFINED_VAR')
+    _flaskenv_user_defined_var = os.environ.get('FLASKENV_USER_DEFINED_VAR')
 
     # This Flask environment variable is not defined anywhere but has a default value
-    foo = os.environ.get('FOO', 'bar')
+    _undefined_var = os.environ.get('FOO', 'bar')
 
     # DOCTYPE prevents Quirks mode
     return f"""<!DOCTYPE html>
         <h1>Hello, World!</h1>
         <p>This is a demo of A Flask application that uses environment variables.</p>
-        <p>Your encoding is <code>{default_encoding}</code>.</p>
+        <p>Your encoding is <code>{_default_encoding}</code>.</p>
         <p>This is <code>ENV_USER_DEFINED_VAR</code>, a user-defined variable from the
-        <code>.env</code> file: <code>{env_user_defined_var}</code></p>
+        <code>.env</code> file: <code>{_env_user_defined_var}</code></p>
         <p>This is <code>FLASKENV_USER_DEFINED_VAR</code>, a user-defined variable from the
-        <code>.flaskenv</code> file: <code>{flaskenv_user_defined_var}</code></p>
-        <p>The value of <code>foo</code> is "{foo}".</p>
+        <code>.flaskenv</code> file: <code>{_flaskenv_user_defined_var}</code></p>
+        <p>The value of <code>FOO</code> is "{_undefined_var}".</p>
         """

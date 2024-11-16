@@ -19,20 +19,18 @@ import logging
 import os
 
 import flask
-from flask_migrate import Migrate
 
+# Import helper functions
 from tracker_09.app_utils import (validate_input, check_system, start_log_file,
                                   log_page_request)
 # Import the runtime configuration classes
 from tracker_09.config import Config, DevConfig, ProfilerConfig
 # Import a SQLAlchemy object
-from tracker_09.models import db
+from tracker_09.models import db, migrate
 # Import the profiling middleware
 from tracker_09.profiler import add_profiler_middleware
 
 __author__ = 'Rob Garcia'
-
-migrate = Migrate()
 
 
 def create_app(config_name: str = 'default', log_events: bool = False) -> flask.Flask:
