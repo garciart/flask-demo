@@ -3,9 +3,10 @@
 [Ii]nclude
 [Ll]ib
 [Ll]ib64
-pyvenv.cfg
 [Ss]cripts
-venv
+pyvenv.cfg
+venv/
+instance/
 
 # Do not add scratch files and directories
 .scratch*
@@ -26,3 +27,13 @@ logs
 
 # Do not add migrations
 migrations*
+
+# Do not add coverage executable
+.coverage*
+htmlcov/
+
+# Do not add distribution and packaging files
+*.egg-info/
+dist/
+build/
+*.egg

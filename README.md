@@ -1,57 +1,23 @@
-# Flask Template
+# Tracker
 
-This demo allows you to administer course access for students.
+This demo is a feature-by-feature walkthrough of how to create and deploy a Flask application that allows you to control course assignments using role-based access control (RBAC).
 
-![Assign Users to Course Screenshot](app/static/img/assign-users-screenshot.png)
-
------
-
-## Roles
-
-- ***Chair:*** Owns the course
-- ***Teacher:*** Can administer a course
-- ***Student:*** Can view a course
-
-## Administration
-
-Course Administration:
-
-- ***Add a Course:*** Anyone; the creator becomes the Chair of the Course
-- ***View Courses:*** Chairs, Teachers, and Students who are assigned to the Courses
-- ***View a Course:*** Chairs, Teachers, and Students who are assigned to the Course
-- ***Edit a Course:*** Chairs and Teachers who are assigned to the Course
-- ***Delete a Course:*** Chairs who are assigned to the Course
-
-Role and User Administration: Administrators only.
+![Assign Users to Course Screenshot](img/assign-users-screenshot.png)
 
 -----
 
-## Setup the Test Database
+## Quick Start
 
-```bash
-# From the project root directory (e.g., ../flask-template)
-python -m flask db init
-python -m flask db migrate -m "Initial migration"
-python -m flask db upgrade
-python -m db_info.init_db
-```
+To start:
 
------
-
-## How to Run
-
-```bash
-# From the project root directory (e.g., ../flask-template)
-python -m flask run
-python -m flask --app app run
-python -m flask --app app --debug run  # Allow hot reloads
-```
-
------
-
-## How to Test
-
-```bash
-# From the project root directory (e.g., ../flask-template)
-python -m unittest --verbose --buffer app.tests.test_app
-```
+1. Ensure you are using Python 3.8 or later: `python --version` or `python3 -V`. If not, install the latest version of Python available for your operating system.
+2. Clone this repository: `git clone https://github.com/garciart/flask-demo`
+3. Access the local repository: `cd flask-demo`
+4. Create a Python virtual environment in the directory: `python -m venv $PWD/.venv`
+5. Activate the Python virtual environment: `source .venv/bin/activate` (Linux) or `.venv/Scripts/activate` (Windows)
+6. Install pip: `python -m pip install --upgrade pip`
+8. Install required packages: `python -m pip install -r requirements.txt`
+9. Each version of the **Tracker** application has its own package directory:
+   - Review the `README.md` file in the first version directory using an editor of your choice: `tracker_01/README.md`
+   - Run the application from the project directory using the directions in the `README.md` file: `python -B -m flask --app tracker_01 run`
+   - Continue the next version.
