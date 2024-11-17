@@ -29,7 +29,7 @@ logs
 migrations*
 
 # Do not add coverage executable
-.coverage*
+.coverage
 htmlcov/
 
 # Do not add distribution and packaging files

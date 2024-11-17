@@ -16,8 +16,8 @@ To start:
 4. Create a Python virtual environment in the directory: `python -m venv $PWD/.venv`
 5. Activate the Python virtual environment: `source .venv/bin/activate` (Linux) or `.venv/Scripts/activate` (Windows)
 6. Install pip: `python -m pip install --upgrade pip`
-8. Install required packages: `python -m pip install -r requirements.txt`
-9. Each version of the **Tracker** application has its own package directory:
+7. Install required packages: `python -m pip install -r requirements.txt`
+8. Each version of the **Tracker** application has its own package directory:
    - Review the `README.md` file in the first version directory using an editor of your choice: `tracker_01/README.md`
    - Run the application from the project directory using the directions in the `README.md` file: `python -B -m flask --app tracker_01 run`
    - Continue the next version.
