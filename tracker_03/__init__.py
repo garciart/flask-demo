@@ -1,6 +1,6 @@
 """A Flask application that uses an application factory and a configuration file.
 
-**NOTE**: Remember to activate your Python virtual environment before running:
+**NOTE** - Remember to activate your Python virtual environment before running:
 
 - `source venv/bin/activate` (Linux)
 - `venv/Scripts/activate` (Windows)
@@ -11,7 +11,7 @@
 # Run the Flask application using the configuration variables found in `config.py`
 python -B -m flask --app "tracker_03:create_app(config_name='development')" run
 python -B -m flask --app "tracker_03:create_app('development')" run
-# Use the 'default' configuration
+# Run the application using the 'default' configuration
 python -B -m flask --app tracker_03 run
 # Use the 'foo' command-line argument
 python -B -m flask --app "tracker_03:create_app(foo_var='42')" run

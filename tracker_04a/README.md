@@ -1,6 +1,8 @@
 # Tracker_04a
 
-This is a sub-demo of a Flask application that incorporates Coverage, a tool for measuring code coverage of Python programs.
+This is a demo of a Flask application that incorporates Coverage, a tool for measuring code coverage of Python programs.
+
+BROKE UP UNIT TESTS! COMMAND TO RUN IS `coverage run -m unittest --verbose --buffer tracker_04a/tests/test_*.py`
 
 -----
 
@@ -68,7 +70,6 @@ tracker
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── .gitignore
 ├── __init__.py
 ├── hello.py
 └── requirements.txt
@@ -110,15 +111,13 @@ coverage report -m
 ```text
 Name                            Stmts   Miss  Cover   Missing
 -------------------------------------------------------------
-tracker_04a\__init__.py            42      2    95%   62-63
+tracker_04a\__init__.py            42      2    95%   67-68
 tracker_04a\config.py               6      0   100%
-tracker_04a\tests\__init__.py       0      0   100%
-tracker_04a\tests\test_app.py      74      9    88%   69-70, 81-82, 94-95, 102-103, 139
 -------------------------------------------------------------
-TOTAL                             122     11    91%
+TOTAL                              48      2    96%
 ```
 
-If you look at the lines that Coverage says are not covered, they are the `except` part of a `try-except` block. Coverage does not measure code coverage for exceptions unless they are actually raised during test execution. Since you cannot raise those exceptions without adding bad code to your application, accept and explain the lack of coverage in any code quality report you must maintain or submit.
+If you look at the lines that Coverage says are not covered, they are the `except` part of a `try-except` block. Coverage does not measure code coverage for exceptions unless they are actually raised during test execution. Since you cannot raise those exceptions without adding bad code to your application, use the `# pragma: no cover` comment to skip checking the line of code.
 
 To see the results in a browser, run the following command:
 

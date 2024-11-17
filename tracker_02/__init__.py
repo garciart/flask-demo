@@ -1,6 +1,6 @@
 """A Flask application that uses environment variables.
 
-**NOTE**: Remember to activate your Python virtual environment before running:
+**NOTE** - Remember to activate your Python virtual environment before running:
 
 - `source venv/bin/activate` (Linux)
 - `venv/Scripts/activate` (Windows)

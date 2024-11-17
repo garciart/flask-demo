@@ -2,14 +2,16 @@
 """
 
 import flask
-
 from werkzeug.middleware.profiler import ProfilerMiddleware
+
+from tracker_05.app_utils import (validate_input)
 
 __all__ = ['add_profiler_middleware']
 
 
 def add_profiler_middleware(app: flask.Flask) -> flask.Flask:
-    """Wraps the application instance in middleware that profiles each request using the cProfile module.
+    """Wraps the application instance in middleware that profiles each request
+    using the cProfile module.
 
     :param flask.Flask app: The application instance
 
@@ -17,8 +19,7 @@ def add_profiler_middleware(app: flask.Flask) -> flask.Flask:
     :rtype: flask.Flask
     """
     # Validate inputs
-    if not isinstance(app, flask.Flask):
-        raise TypeError('app is not type flask.Flask. Exiting now...')
+    validate_input('app', app, flask.Flask)
 
     # Add ProfilerMiddleware to your Flask app.
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])

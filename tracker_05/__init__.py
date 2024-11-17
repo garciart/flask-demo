@@ -13,14 +13,15 @@ Changes:
 - Added performance profiling.
 """
 
-import importlib
 import logging
-import sys
 
 import flask
 
+# Import the helper functions
+from tracker_05.app_utils import (check_system, validate_input)
 # Import the runtime configuration classes
 from tracker_05.config import Config, DevConfig, ProfilerConfig
+# Import profiler middleware
 from tracker_05.profiler import add_profiler_middleware
 
 __author__ = 'Rob Garcia'
@@ -50,14 +51,8 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     # Create the Flask application instance
     _app = flask.Flask(__name__)
 
-    # Load the configuration class from config.py based on the environment
-    # NOTE - Will replace if-elif-else with mapping for readability and maintainability
-    if config_name == 'development':
-        _app.config.from_object(DevConfig())
-    elif config_name == 'profiler':
-        _app.config.from_object(ProfilerConfig())
-    else:
-        _app.config.from_object(Config())
+    # Create the Flask application instance with the selected configuration
+    _app = _configure_app(config_name)
 
     # Exempt from coverage because the exception cannot be unit tested easily
     try:
@@ -70,7 +65,6 @@ def create_app(config_name: str = 'default') -> flask.Flask:
 
     # Optionally add the profiler middleware based on configuration
     if _app.config.get('PROFILING_ENABLED', False):
-        print('Here!')
         _app = add_profiler_middleware(_app)
 
     # Create a route and page
@@ -94,42 +88,28 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     return _app
 
 
-def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
-    """Check if the installed Python and Flask versions can run the application.
+def _configure_app(config_name: str = 'default') -> flask.Flask:
+    """Create the Flask application instance with the selected configuration
 
-    **NOTE** - Use `3.01` for version `3.1` and `3.10` for version `3.10`.
+    :param str config_name: The name of the configuration to use, defaults to 'default'
 
-    :param float min_python_version: The minimum Python version in float format, defaults to 3.08
-    :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
-
-    :returns: None
-    :rtype: None
+    :returns: The configured Flask application instance
+    :rtype: flask.Flask
     """
     # Validate inputs
-    if not isinstance(min_python_version, float) or not isinstance(min_flask_version, float):
-        raise TypeError(
-            'The minimum Python and Flask version numbers must be type float. Exiting now...')
+    validate_input('config_name', config_name, str)
 
-    if min_python_version <= 0.0 or min_flask_version <= 0.0:
-        raise ValueError(
-            'The minimum Python and Flask version numbers must be greater than 0. Exiting now...')
+    # Create the Flask application instance
+    _app = flask.Flask(__name__)
 
-    # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
-    _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
+    # Load the configuration class from config.py based on the environment
+    # NOTE - Switched from if-elif-else to mapping for readability and maintainability
+    config_mapping = {
+        'development': DevConfig,
+        'profiler': ProfilerConfig,
+        'default': Config,
+    }
 
-    # Ensure you are using the correct version of Python
-    print(f"Your Python version is {_python_version}.")
-    if _python_version < min_python_version:
-        raise ValueError(
-            f"Flask 3 requires Python {min_python_version:.2f} or above. Exiting now...")
+    _app.config.from_object(config_mapping.get(config_name, Config))
 
-    # Get the Flask major and minor version numbers and convert them to a float
-    _raw_flask_version = importlib.metadata.version("flask")
-    _flask_version_major, _flask_version_minor = map(int, _raw_flask_version.split('.')[:2])
-    _flask_version = float(f"{_flask_version_major}.{_flask_version_minor:02d}")
-
-    # Ensure you are using the correct version of Flask
-    print(f"Your Flask version is {_raw_flask_version}.")
-    if _flask_version < min_flask_version:
-        raise ValueError(
-            f"This application requires Flask {min_flask_version:.2f} or above. Exiting now...")
+    return _app

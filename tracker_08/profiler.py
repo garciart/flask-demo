@@ -10,7 +10,8 @@ __all__ = ['add_profiler_middleware']
 
 
 def add_profiler_middleware(app: flask.Flask) -> flask.Flask:
-    """Wraps the application instance in middleware that profiles each request using the cProfile module.
+    """Wraps the application instance in middleware that profiles each request
+    using the cProfile module.
 
     :param flask.Flask app: The application instance
 

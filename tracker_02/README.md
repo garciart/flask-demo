@@ -2,27 +2,10 @@
 
 This is a demo of a Flask application that uses environment files.
 
------
-
-## Usage
-
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
-
-```shell
-# Check the application for errors
-python -B -m pylint tracker_02
-# Run the application using environment variables found in `.env` and `.flaskenv`
-python -B -m flask --app tracker_02 run
-# Run the application using an alternate environment file
-python -B -m flask --env-file .env_alt --app tracker_02 run
-```
-
------
-
-## Notes
 
 If your Flask application depends on environment variables in production, it is important to identify them and to use them during development.
 

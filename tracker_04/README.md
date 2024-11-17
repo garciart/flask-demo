@@ -52,7 +52,6 @@ tracker
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── .gitignore
 ├── __init__.py
 ├── hello.py
 └── requirements.txt
@@ -76,10 +75,7 @@ To run the unit tests without user interaction, pipe the desired configuration i
 # Check the application for errors
 python -B -m pylint tracker_04
 # Run the unit tests found in `tests/test_app.py`
-# Use Interactive mode
 python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
-# Use Automatic mode
-echo 'default' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
 # Run the application
 python -B -m flask --app tracker_04 run
 ```

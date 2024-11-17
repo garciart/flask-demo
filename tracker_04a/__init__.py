@@ -18,12 +18,12 @@ Changes:
 - Coverage.py does not require code changes.
 """
 
-import importlib
 import logging
-import sys
 
 import flask
 
+# Import the helper functions
+from tracker_04a.app_utils import (check_system)
 # Import the runtime configuration classes
 from tracker_04a.config import Config, DevConfig
 
@@ -88,44 +88,3 @@ def create_app(config_name: str = 'default') -> flask.Flask:
 
     # Return the application instance to the code that invoked 'create_app()'
     return _app
-
-
-def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
-    """Check if the installed Python and Flask versions can run the application.
-
-    **NOTE** - Use `3.01` for version `3.1` and `3.10` for version `3.10`.
-
-    :param float min_python_version: The minimum Python version in float format, defaults to 3.08
-    :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
-
-    :returns: None
-    :rtype: None
-    """
-    # Validate inputs
-    if not isinstance(min_python_version, float) or not isinstance(min_flask_version, float):
-        raise TypeError(
-            'The minimum Python and Flask version numbers must be type float. Exiting now...')
-
-    if min_python_version <= 0.0 or min_flask_version <= 0.0:
-        raise ValueError(
-            'The minimum Python and Flask version numbers must be greater than 0. Exiting now...')
-
-    # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
-    _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
-
-    # Ensure you are using the correct version of Python
-    print(f"Your Python version is {_python_version}.")
-    if _python_version < min_python_version:
-        raise ValueError(
-            f"Flask 3 requires Python {min_python_version:.2f} or above. Exiting now...")
-
-    # Get the Flask major and minor version numbers and convert them to a float
-    _raw_flask_version = importlib.metadata.version("flask")
-    _flask_version_major, _flask_version_minor = map(int, _raw_flask_version.split('.')[:2])
-    _flask_version = float(f"{_flask_version_major}.{_flask_version_minor:02d}")
-
-    # Ensure you are using the correct version of Flask
-    print(f"Your Flask version is {_raw_flask_version}.")
-    if _flask_version < min_flask_version:
-        raise ValueError(
-            f"This application requires Flask {min_flask_version:.2f} or above. Exiting now...")

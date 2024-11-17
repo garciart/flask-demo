@@ -118,7 +118,6 @@ tracker
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── .gitignore
 ├── __init__.py
 ├── hello.py
 └── requirements.txt

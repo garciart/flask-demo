@@ -1,6 +1,6 @@
 """A basic Flask application that uses a single-file module pattern.
 
-**NOTE**: Remember to activate your Python virtual environment before running:
+**NOTE** - Remember to activate your Python virtual environment before running:
 
 - `source venv/bin/activate` (Linux)
 - `venv/Scripts/activate` (Windows)

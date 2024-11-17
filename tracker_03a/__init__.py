@@ -1,19 +1,23 @@
-"""A Flask application that incorporates unit testing.
+"""A Flask application that uses a utility file.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
->
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+**NOTE** - Remember to activate your Python virtual environment before running:
 
-Usage:
-# Run the unit tests found in `tests/test_app.py`
-# Use Interactive mode
-python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
-# Use Automatic mode
-echo 'default' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
+- `source venv/bin/activate` (Linux)
+- `venv/Scripts/activate` (Windows)
 
-Changes:
-- Added unit tests.
+**Usage**:
+
+```
+# Run the Flask application using the configuration variables found in `config.py`
+python -B -m flask --app "tracker_03a:create_app(config_name='development')" run
+python -B -m flask --app "tracker_03a:create_app('development')" run
+# Run the application using the 'default' configuration
+python -B -m flask --app tracker_03a run
+# Use the 'foo' command-line argument
+python -B -m flask --app "tracker_03a:create_app(foo_var='42')" run
+```
+
+**NOTE** - Enclose options in quotation marks when using special characters.
 """
 
 import logging
@@ -21,31 +25,23 @@ import logging
 import flask
 
 # Import the helper functions
-from tracker_04.app_utils import (check_system, validate_input)
+from tracker_03a.app_utils import (check_system, validate_input)
 # Import the runtime configuration classes
-from tracker_04.config import Config, DevConfig
+from tracker_03a.config import Config, DevConfig
 
 __author__ = 'Rob Garcia'
 
 
-def create_app(config_name: str = 'default') -> flask.Flask:
+def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flask:
     """Application Factory.
 
     :param str config_name: An alternate configuration from `config.py` for \
-        development, testing, etc. Uses the base `Config` class if None or 'default'
+    development, testing, etc. Uses the base `Config` class if None or 'default'
+    :param str foo_var: Demonstrates using command-line inputs. Remove after testing.
 
     :returns: The Flask application instance
     :rtype: flask.Flask
     """
-    # Validate inputs
-    if not isinstance(config_name, str):
-        raise TypeError(
-            'The configuration name must be type str. Exiting now...')
-
-    if config_name not in ['default', 'development', 'profiler']:
-        raise ValueError(
-            'Invalid configuration name. Exiting now...')
-
     # Ensure the system meets the prerequisites for the application
     check_system(min_python_version=3.08, min_flask_version=3.0)
 
@@ -76,6 +72,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
             <h1>Hello, World!</h1>
             <p>Your are using the <b>{config_name}</b> configuration and your logging level is
             <b>{_logging_level_name} ({_logging_level})</b>.</p>
+            <p>The value of <code>foo</code> is "{foo_var}".</p>
             """
         return _greeting
 

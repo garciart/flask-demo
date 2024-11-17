@@ -14,7 +14,8 @@ python -B -m flask --app "tracker_06:create_app('development', True)" run
 >
 > - Enclose options in quotation marks when using special characters.
 > - Do not log events when unit testing or each test will create a log file.
-> - Use the `development` configuration during development or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
+> - Use the `development` configuration during development or the application will \
+    create an empty log file, since the application only logs `logging.INFO`-level messages or less.
 
 Changes:
 - Replaced `import config`. Importing occurs on demand in the `_configure_app` method

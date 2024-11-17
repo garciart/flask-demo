@@ -2,32 +2,10 @@
 
 This is a demo of a Flask application that uses an application factory and a configuration file.
 
------
-
-## Usage
-
 > **NOTE** - Remember to activate your Python virtual environment before running:
 >
 > - `source venv/bin/activate` (Linux)
 > - `venv/Scripts/activate` (Windows)
-
-```shell
-# Check the application for errors
-python -B -m pylint tracker_03
-# Run the Flask application using the configuration variables found in `config.py`
-python -B -m flask --app "tracker_03:create_app(config_name='development')" run
-python -B -m flask --app "tracker_03:create_app('development')" run
-# Use the 'default' configuration
-python -B -m flask --app tracker_03 run
-# Use the 'foo_var' command-line argument
-python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
-```
-
-> **NOTE** - Enclose options in quotation marks when using special characters.
-
------
-
-## Notes
 
 The Application Factory pattern allows you to use different runtime configurations without having to modify the application's code. For example, instead of creating separate versions of the application for debugging, testing, and production (which increasing maintenance), you can modify the `create_app` method to accept configuration settings, like `logging_level`. You can then pass the settings to the application at runtime, like `create_app(logging_level=logging.DEBUG)` when debugging.
 
@@ -41,6 +19,24 @@ def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flas
 
 - If you run `python -B -m flask --app tracker_03 run`, `foo_var` will equal `bar`.
 - If you run `python -B -m flask --app "tracker_03:create_app(foo_var='42')" run`, `foo_var` will equal `42`.
+
+One more thing: When you check your package for errors, Pylint may return `tracker_03/__init__.py:30:0: E0401: Unable to import 'tracker_03.config' (import-error)`. This occurs because, when Pylint looks at `PYTHONPATH`, it cannot find your project directory and, therefore, cannot import modules from it. Unfortunately, the best option, setting `PYTHONPATH` in your `.env`, does not work, and running `export PYTHONPATH=$(pwd)` may break other applications. The solution is to create a `.pylintrc` file with the following code:
+
+```ini
+# code: language=ini
+# Settings for Pylint
+[MAIN]
+init-hook='import sys; sys.path.append('.')'
+```
+ 
+Using `init-hook` and `.` will tell Pylint to look in the current directory, which should be your project directory, for modules to import.
+
+You may also want to disable the `too-few-public-methods` message in `.pylintrc`, since the configuration classes in `config.py` will not need public methods:
+
+```ini
+[MESSAGES CONTROL]
+disable=too-few-public-methods
+```
 
 Your application structure should be like the following:
 
@@ -56,29 +52,11 @@ tracker
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── .gitignore
+├── .pylintrc
 ├── __init__.py
 ├── hello.py
 └── requirements.txt
 ```
-
-> **NOTE** - If you run `python -m pylint tracker_03`, Pylint will return `tracker_03/__init__.py:30:0: E0401: Unable to import 'tracker_03.config' (import-error)`. This occurs because the project directory is not in `PYTHONPATH`. Unfortunately, setting `PYTHONPATH` in your `.env` does not work, and running `export PYTHONPATH=$(pwd)` may break other applications. The solution is to create a `.pylintrc` file with the following code:
-> 
-> ```ini
-> # code: language=ini
-> # Settings for Pylint
-> [MAIN]
-> init-hook='import sys; sys.path.append('.')'
-> ```
-> 
-> Using `.` will tell Pylint to use the PWD (your project directory) for `PYTHONPATH` and allow Pylint to look for imports correctly.
->
-> You may also want to disable the `too-few-public-methods` message in `.pylintrc`, since the configuration classes in `config.py` will not need public methods:
-> 
-> ```ini
-> [MESSAGES CONTROL]
-> disable=too-few-public-methods
-> ```
 
 Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
@@ -87,12 +65,12 @@ Review the code and run your application. Do not forget to activate your Python 
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_03
-# Run the Flask application using the configuration variables found in `config.py`
+# Run the application using the configuration variables found in `config.py`
 python -B -m flask --app "tracker_03:create_app(config_name='development')" run
 python -B -m flask --app "tracker_03:create_app('development')" run
-# Use the 'default' configuration
+# Run the application using the 'default' configuration
 python -B -m flask --app tracker_03 run
-# Use the 'foo_var' command-line argument
+# Run the application with a value for the 'foo_var' argument
 python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
 ```
 

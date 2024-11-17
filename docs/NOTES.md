@@ -54,6 +54,7 @@ python -B -m flask --env-file .env_alt --app tracker_02 run
 
 - Applied the Flask Application Factory pattern
 - Incorporated runtime variables found in `config.py`
+- Incorporated input validation
 - Added `.pylintrc` file to allow Pylint to import package modules and ignore false positives
 - Incorporated command line arguments
 - Replaced procedural code with functional pattern
@@ -61,7 +62,7 @@ python -B -m flask --env-file .env_alt --app tracker_02 run
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_03
-# Use the 'default' configuration
+# Run the application using the 'default' configuration
 python -B -m flask --app tracker_03 run
 # Use the 'development' configuration
 python -B -m flask --app "tracker_03:create_app(config_name='development')" run
@@ -74,24 +75,55 @@ python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
 
 ## tracker_04
 
-- Added unit testing
-- 
+- Added unit testing 
 
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_04
 # Run the unit tests found in `tests/test_app.py`
-# Use Interactive mode
 python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
-# Use Automatic mode
-echo 'development' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
 # Run the application
 python -B -m flask --app tracker_04 run
 ```
 
 -----
 
-tracker_05
+## tracker_04a
+
+- Added unit testing using Coverage.
+
+```shell
+# Check the application for errors
+python -B -m pylint tracker_04a
+# Run the unit tests found in `tests/test_app.py` using Coverage
+coverage run -m unittest --verbose --buffer tracker_04a/tests/test_app.py
+# See the coverage report in the console
+coverage report -m
+# See the coverage report in a browser
+coverage html --directory tracker_04a/tests/htmlcov
+# Run the application
+python -B -m flask --app tracker_04a run
+```
+
+-----
+
+## tracker_05
+
+- Added profiling
+
+```shell
+# Check the application for errors
+python -B -m pylint tracker_05
+# Run the unit tests found in `tests/test_app.py` using Coverage
+coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
+# See the coverage report in the console
+coverage report -m
+# Profile the application using the built-in Werkzeug profiler:
+python -B -m flask --app "tracker_05:create_app('profiler')" run
+```
+
+-----
+
 tracker_06
 tracker_07
 tracker_08
