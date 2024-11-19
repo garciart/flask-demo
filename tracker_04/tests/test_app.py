@@ -2,10 +2,10 @@
 
 **NOTES:**
 
-- Remember to activate your Python virtual environment before running:
+- Remember to activate your Python virtual environment first:
 
-    - `source venv/bin/activate` (Linux)
-    - `venv/Scripts/activate` (Windows)
+    - `source .venv/bin/activate` (Linux)
+    - `.venv/Scripts/activate` (Windows)
 
 - Run from the project directory (e.g., flask-demo, not tracker_XX)
 - Ensure you have an empty __init__.py in the 'tests' directory

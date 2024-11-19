@@ -2,10 +2,10 @@
 
 This is a demo of a Flask application that uses environment files.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 If your Flask application depends on environment variables in production, it is important to identify them and to use them during development.
 

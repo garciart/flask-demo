@@ -2,10 +2,10 @@
 
 **NOTES:**
 
-- Remember to activate your Python virtual environment before running:
+- Remember to activate your Python virtual environment first:
 
-    - `source venv/bin/activate` (Linux)
-    - `venv/Scripts/activate` (Windows)
+    - `source .venv/bin/activate` (Linux)
+    - `.venv/Scripts/activate` (Windows)
 
 - Run from the project directory (e.g., flask-demo, not tracker_XX)
 - Ensure you have an empty __init__.py in the 'tests' directory
@@ -21,6 +21,7 @@
 python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
 ```
 """
+import logging
 import os
 import shutil
 import unittest
@@ -167,6 +168,7 @@ class TestAppUtils(BaseTestCase):
             start_log_file(app=test_app, log_dir='foo', logging_level=10)
         except OSError:
             self.fail('Method raised an exception unexpectedly.')
+        logging.shutdown()
         shutil.rmtree(f'{cwd}/foo')
 
     def test_log_page_request_pass(self):

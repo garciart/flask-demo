@@ -5,7 +5,7 @@
 [Ll]ib64
 [Ss]cripts
 pyvenv.cfg
-venv/
+.venv/
 instance/
 
 # Do not add scratch files and directories

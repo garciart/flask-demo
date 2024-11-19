@@ -12,13 +12,13 @@ To start:
 
 1. Ensure you are using Python 3.8 or later: `python --version` or `python3 -V`. If not, install the latest version of Python available for your operating system.
 2. Clone this repository: `git clone https://github.com/garciart/flask-demo`
-3. Access the local repository: `cd flask-demo`
-4. Create a Python virtual environment in the directory: `python -m venv $PWD/.venv`
+3. Navigate to your copy of the repository (this will be your project directory): `cd flask-demo`
+4. Create a Python virtual environment in the project directory: `python<version> -m venv $PWD/.venv`
 5. Activate the Python virtual environment: `source .venv/bin/activate` (Linux) or `.venv/Scripts/activate` (Windows)
 6. Install pip: `python -m pip install --upgrade pip`
-8. Install required packages: `python -m pip install -r requirements.txt`
-9. Each version of the **Tracker** application has its own package directory:
-   - Review the `README.md` file in the first version directory using an editor of your choice: `tracker_01/README.md`
+7. Install required packages: `python -m pip install -r requirements.txt`
+8. Each version of the **Tracker** application has its own package within your project directory:
+   - Review the `README.md` file in the `tracker_01` package using an editor of your choice (`tracker_01/README.md`)
    - Run the application from the project directory using the directions in the `README.md` file: `python -B -m flask --app tracker_01 run`
    - Continue the next version.
 
@@ -30,42 +30,50 @@ To start:
 
 ### Business Problem
 
-The Foo Academy is a fictitious learning platform that allows its members to create and share online courses, and it needs a way for members to control access to their courses. The Tracker application on the Academy's website allows content creators and assistants to manage access to their online courses using a role-based access control (RBAC) system as needed.
+The Foo Academy is a fictitious learning platform that allows its members to create and share online courses, and it needs a way for members to control access to their courses. The Tracker application on the Academy's website allows content creators and assistants to manage access to their online courses using a role-based access control (RBAC) system.
 
 -----
 
 ### Desired Outcomes
 
-As a company, I want to mitigate "Sybil Attacks" by preventing anonymous users from creating profiles.
-As a company, I want to mitigate email flooding attacks by requiring anonymous users to use a form with a captcha when requesting membership.
-As a company, I want to limit enrollment in a course to eight members to prevent users from overwhelming my limited information technology (IT) resources.
-As a company, I want to restrict the ability to add members to administrators.
+As the site owner, I want to restrict membership creation to administrators and prevent anonymous users from creating profiles, so I can mitigate Sybil attacks and maintain the integrity of the user base.
+As the site owner, I want anonymous users to complete a CAPTCHA form before requesting membership, so I can prevent email flooding attacks and ensure legitimate requests.
+As the site owner, I want to limit course enrollment to eight members, so I can ensure optimal performance and prevent overwhelming IT resources.
 
-As an administrator, I want to add user profiles to the Tracker application.
-As an administrator, I want to view user profiles on the Tracker application.
-As an administrator, I want to edit user profiles on the Tracker application.
-As an administrator, I want to delete user profiles from the Tracker application.
+As a site administrator, I want to be able to add new members to the Tracker application.
+As a site administrator, I want to be able to view a member profile on the Tracker application.
+As a site administrator, I want to be able to edit a member profile on the Tracker application.
+As a site administrator, I want to be able to delete a member from the Tracker application.
 
-As a member, I want to view my user profile on the Tracker application.
-As a member, I want to edit my user profile on the Tracker application.
+As an Academy member, I want to be able to view my member profile on the Tracker application.
+As an Academy member, I want to be able to edit my member profile on the Tracker application.
+As an Academy member, I want to be able to add a course to the list of courses in the Tracker application.
 
-As a content creator, I want to add my courses to the list of courses in the Tracker application.
-As a content creator, I want to view the details of my courses on the Tracker application.
-As a content creator, I want to assign members to my courses through the Tracker application.
-As a content creator, I want to remove members from my courses through the Tracker application.
-As a content creator, I want to edit the details of my courses on the Tracker application.
-As a content creator, I want to delete my courses from the list of courses in the Tracker application.
+As a content creator, I want to be able to view a list of my courses in the Tracker application.
+As a content creator, I want to be able to view the details of any of my courses on the Tracker application.
+As a content creator, I want to be able to edit the details of any of my courses on the Tracker application.
+As a content creator, I want to be able to assign other members as editors of one or more of my courses through the Tracker application.
+As a content creator, I want to be able to assign other members as teachers of one or more of my courses through the Tracker application.
+As a content creator, I want to be able to assign other members as students of one or more of my courses through the Tracker application.
+As a content creator, I want to be able to reassign editors, teachers, and students to other roles within one of my courses through the Tracker application.
+As a content creator, I want to be able to remove editors, teachers, and students from any of my courses through the Tracker application.
+As a content creator, I want to be able to delete any of my courses from the list of courses in the Tracker application.
 
-As an editor, I want to view the details of the courses assigned to me on the Tracker application.
-As an editor, I want to assign members to the courses assigned to me through the Tracker application.
-As an editor, I want to remove members from the courses assigned to me through the Tracker application.
-As an editor, I want to edit the details of the courses assigned to me on the Tracker application.
+As an editor, I want to be able to view a list of the courses assigned to me on the Tracker application.
+As an editor, I want to be able to view the details of any course assigned to me on the Tracker application.
+As an editor, I want to be able to edit the details of any course assigned to me on the Tracker application.
+As an editor, I want to be able to assign other members as teachers of any course assigned to me through the Tracker application.
+As an editor, I want to be able to assign other members as students of any course assigned to me through the Tracker application.
+As an editor, I want to be able to reassign teachers to students and students to teachers within one of my courses through the Tracker application.
+As an editor, I want to be able to remove teachers and students from any course assigned to me through the Tracker application.
 
-As a teacher, I want to view the details of the courses assigned to me on the Tracker application.
-As a teacher, I want to assign members to the courses assigned to me through the Tracker application.
-As a teacher, I want to remove members from the courses assigned to me through the Tracker application.
+As a teacher, I want to be able to view a list of the courses assigned to me on the Tracker application.
+As a teacher, I want to be able to view the details of any course assigned to me on the Tracker application.
+As a teacher, I want to be able to assign other members as students of any course assigned to me through the Tracker application.
+As a teacher, I want to be able to remove students from any course assigned to me through the Tracker application.
 
-As a student, I want to view the details of the courses assigned to me on the Tracker application.
+As a student, I want to be able to view a list of the courses assigned to me on the Tracker application.
+As a student, I want to be able to view the details of any courses assigned to me on the Tracker application.
 
 -----
 

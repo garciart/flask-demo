@@ -6,10 +6,10 @@ This is a demo of a Flask application that incorporates blueprints.
 
 ## Usage
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 Runs the Flask application using routes and HTML files found in the `blueprints` directory:
 

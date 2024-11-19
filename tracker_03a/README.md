@@ -2,10 +2,10 @@
 
 This is a demo of a Flask application that uses a utility file.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 Keeping all of your code in one file can become difficult to manage and maintain. It can also lead to problems, like accidentally overwriting variables or circular imports. Breaking up your Python code into modules helps you keep your project organized and allows you to reuse code.
 

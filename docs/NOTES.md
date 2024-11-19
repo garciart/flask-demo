@@ -2,6 +2,30 @@
 
 -----
 
+## Environment Setup
+
+1. Create the virtual environment:
+
+   - Windows:
+
+        ```pwsh
+        mkdir -p tracker
+        cd tracker
+        python<version> venv $PWD/.venv
+        .venv/Scripts/activate
+        ```
+
+   - Linux
+
+        ```shell
+        mkdir -p tracker
+        cd tracker
+        python<version> venv $PWD/.venv
+        source .venv/bin/activate
+        ```
+
+-----
+
 ## tracker_01
 
 - Applied the Flask Package pattern
@@ -75,7 +99,7 @@ python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
 
 ## tracker_04
 
-- Added unit testing 
+- Added unit testing
 
 ```shell
 # Check the application for errors
@@ -95,8 +119,8 @@ python -B -m flask --app tracker_04 run
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_04a
-# Run the unit tests found in `tests/test_app.py` using Coverage
-coverage run -m unittest --verbose --buffer tracker_04a/tests/test_app.py
+# Run the unit tests found in the `tests/` directory using Coverage
+coverage run -m unittest discover tracker_04a/tests --verbose --buffer
 # See the coverage report in the console
 coverage report -m
 # See the coverage report in a browser
@@ -114,7 +138,7 @@ python -B -m flask --app tracker_04a run
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_05
-# Run the unit tests found in `tests/test_app.py` using Coverage
+# Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
 # See the coverage report in the console
 coverage report -m
@@ -133,27 +157,7 @@ tracker_11
 
 -----
 
-## Environment Setup
 
-1. Create the virtual environment:
-
-   - Windows:
-
-       ```pwsh
-       mkdir -p tracker
-       cd tracker
-       python<version> -m venv $PWD/.venv
-       .venv/Scripts/activate
-       ```
-
-   - Linux
-
-       ```bash
-       mkdir -p tracker
-       cd tracker
-       python<version> -m venv $PWD/.venv
-       source .venv/bin/activate
-       ```
 
 2. Install packages:
 
@@ -172,7 +176,7 @@ tracker_11
     ```
 
 ```shell
-python3.12 -m venv $PWD/.venv
+python3.12 venv $PWD/.venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install flask

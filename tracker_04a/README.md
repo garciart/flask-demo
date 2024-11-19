@@ -8,15 +8,15 @@ BROKE UP UNIT TESTS! COMMAND TO RUN IS `coverage run -m unittest --verbose --buf
 
 ## Usage
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_04a
-# Run the unit tests found in `tests/test_app.py` using Coverage
+# Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_04a/tests/test_app.py
 # See the coverage report in the console
 coverage report -m

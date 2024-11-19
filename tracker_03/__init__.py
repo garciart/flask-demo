@@ -1,9 +1,9 @@
 """A Flask application that uses an application factory and a configuration file.
 
-**NOTE** - Remember to activate your Python virtual environment before running:
+**NOTE** - Remember to activate your Python virtual environment first:
 
-- `source venv/bin/activate` (Linux)
-- `venv/Scripts/activate` (Windows)
+- `source .venv/bin/activate` (Linux)
+- `.venv/Scripts/activate` (Windows)
 
 **Usage**:
 

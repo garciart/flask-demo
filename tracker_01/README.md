@@ -2,10 +2,10 @@
 
 This is a demo of a basic Flask application that uses a package pattern.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 Most introductory Flask demos use a *module pattern*, with all the code in a single file named `app.py`:
 

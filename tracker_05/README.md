@@ -6,15 +6,15 @@ This is a demo of a Flask application that incorporates performance profiling.
 
 ## Usage
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 ```shell
 # Check the application for errors
 python -B -m pylint tracker_05
-# Run the unit tests found in `tests/test_app.py` using Coverage
+# Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
 # See the coverage report in the console
 coverage report -m
@@ -58,7 +58,7 @@ tracker
 Review the code and run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
-# Run the unit tests found in `tests/test_app.py` using Coverage
+# Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
 # See the coverage report in the console
 coverage report -m

@@ -43,8 +43,8 @@ Role and User Administration: Administrators only.
 ## Installing and Running
 
 1. Clone the repository: `git clone https://github/garciart/flask-template`
-2. Create a Python virtual environment: `python -m venv venv`
-3. Activate the Python virtual environment: `source venv/bin/activate` (Linux) or `venv/Scripts/activate` (Windows)
+2. Create a Python virtual environment: `python -m venv .venv`
+3. Activate the Python virtual environment: `source .venv/bin/activate` (Linux) or `.venv/Scripts/activate` (Windows)
 4. Install pip: `python -m pip install --upgrade pip`
 5. Install required packages: `python -m pip install -r requirements.txt`
 

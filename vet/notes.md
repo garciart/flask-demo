@@ -5,8 +5,8 @@ Create the development environment:
 ```bash
 mkdir -p ~/repos/flask-template
 cd ~/repos/flask-template
-python3 -m venv $PWD
-source bin/activate
+python3 venv $PWD/.venv
+source .venv/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 # Ensure the linters are in your environment

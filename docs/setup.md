@@ -13,8 +13,8 @@ This Flask application will allow you to administer courses and course access us
        ```pwsh
        mkdir -p tracker
        cd tracker
-       python -m venv $PWD/venv
-       venv/Scripts/activate
+       python -m venv $PWD/.venv
+       .venv/Scripts/activate
        ```
 
    - Linux
@@ -22,8 +22,8 @@ This Flask application will allow you to administer courses and course access us
        ```bash
        mkdir -p tracker
        cd tracker
-       python -m venv $PWD/venv
-       source venv/bin/activate
+       python -m venv $PWD/.venv
+       source .venv/bin/activate
        ```
 
 2. Install packages:
@@ -63,7 +63,7 @@ This Flask application will allow you to administer courses and course access us
     ├── blue_app
     |   ├── __init__.py
     |   └── config.py
-    ├── venv
+    ├── .venv
     |   └── ...
     ├── .flaskenv
     ├── __init__.py
@@ -120,7 +120,7 @@ This Flask application will allow you to administer courses and course access us
     |   ├── __init__.py
     |   └── config.py
     ├── logs
-    ├── venv
+    ├── .venv
     |   └── ...
     ├── .flaskenv
     ├── __init__.py

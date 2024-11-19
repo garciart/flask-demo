@@ -1,9 +1,9 @@
 """A Flask application that incorporates performance profiling.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 Usage:
 # Profile the application using the built-in Werkzeug profiler:

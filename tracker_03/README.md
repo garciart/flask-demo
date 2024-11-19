@@ -2,10 +2,10 @@
 
 This is a demo of a Flask application that uses an application factory and a configuration file.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 The Application Factory pattern allows you to use different runtime configurations without having to modify the application's code. For example, instead of creating separate versions of the application for debugging, testing, and production (which increasing maintenance), you can modify the `create_app` method to accept configuration settings, like `logging_level`. You can then pass the settings to the application at runtime, like `create_app(logging_level=logging.DEBUG)` when debugging.
 
@@ -28,7 +28,7 @@ One more thing: When you check your package for errors, Pylint may return `track
 [MAIN]
 init-hook='import sys; sys.path.append('.')'
 ```
- 
+
 Using `init-hook` and `.` will tell Pylint to look in the current directory, which should be your project directory, for modules to import.
 
 You may also want to disable the `too-few-public-methods` message in `.pylintrc`, since the configuration classes in `config.py` will not need public methods:

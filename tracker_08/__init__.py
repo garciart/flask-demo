@@ -1,12 +1,12 @@
 """A Flask application that incorporates templates.
 
-> **NOTE** - Remember to activate your Python virtual environment before running:
+> **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source venv/bin/activate` (Linux)
-> - `venv/Scripts/activate` (Windows)
+> - `source .venv/bin/activate` (Linux)
+> - `.venv/Scripts/activate` (Windows)
 
 Usage:
-# Run the unit tests found in `tests/test_app.py` using Coverage
+# Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_08/tests/test_app.py
 # See the coverage report in the console
 coverage report -m
