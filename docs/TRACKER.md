@@ -30,209 +30,182 @@ To start:
 
 ### Business Problem
 
-The Foo Academy is a fictitious learning platform that allows its members to create and share online courses, and it needs a way for members to control access to their courses. The Tracker application on the Academy's website allows content creators and assistants to manage access to their online courses using a role-based access control (RBAC) system.
+The Foo Academy is a fictitious learning platform that will allow users to upload and share online courses. The Academy would like an application to manage membership and course access.
+
+Tracker is a user and course management system that will allow authenticated and authorized users to manage membership and course access
+through a web-based user interface. It will also provide information to other authenticated and authorized applications in the Foo Academy ecosystem (website, mobile, etc.) through an application programming interface (API) service.
+
+-----
+
+### Requirements
+
+- The application must store member information, including but not limited to username, email address, and password hash.
+- The application must store course information, including but not limited to course number, course owner, and a list of students, teachers, and editors assigned to the course.
+- The application must have an authentication system (e.g., token-based or session-based) that verifies member credentials before granting access to course and member information.
+- The application must have a role-based access control (RBAC) system, with predefined roles (i.e., administrator, owner, editor, teacher, student) that restricts access to course and member information based on privilege level.
+- The application must have a web-based front-end that allows authenticated members to directly add, assign, view, edit, and delete courses and other members based on privilege level.
+- The application must have an application programming interface (API) that allows authenticated and authorized applications (web, mobile, etc.) to interact with the application for tasks like verifying member access, getting a list of courses, etc.
+- The application must be secure and tested and analyzed for bugs, latency, and vulnerabilities (e.g., functional, performance, security, etc.) before deployment.
+- The application must be able to be containerized and ran on-premise or on a cloud platform.
 
 -----
 
 ### Desired Outcomes
 
-As the site owner, I want to restrict membership creation to administrators and prevent anonymous users from creating profiles, so I can mitigate Sybil attacks and maintain the integrity of the user base.
-As the site owner, I want anonymous users to complete a CAPTCHA form before requesting membership, so I can prevent email flooding attacks and ensure legitimate requests.
-As the site owner, I want to limit course enrollment to eight members, so I can ensure optimal performance and prevent overwhelming IT resources.
-
-As a site administrator, I want to be able to add new members to the Tracker application.
-As a site administrator, I want to be able to view a member profile on the Tracker application.
-As a site administrator, I want to be able to edit a member profile on the Tracker application.
-As a site administrator, I want to be able to delete a member from the Tracker application.
-
-As an Academy member, I want to be able to view my member profile on the Tracker application.
-As an Academy member, I want to be able to edit my member profile on the Tracker application.
-As an Academy member, I want to be able to add a course to the list of courses in the Tracker application.
-
-As a content creator, I want to be able to view a list of my courses in the Tracker application.
-As a content creator, I want to be able to view the details of any of my courses on the Tracker application.
-As a content creator, I want to be able to edit the details of any of my courses on the Tracker application.
-As a content creator, I want to be able to assign other members as editors of one or more of my courses through the Tracker application.
-As a content creator, I want to be able to assign other members as teachers of one or more of my courses through the Tracker application.
-As a content creator, I want to be able to assign other members as students of one or more of my courses through the Tracker application.
-As a content creator, I want to be able to reassign editors, teachers, and students to other roles within one of my courses through the Tracker application.
-As a content creator, I want to be able to remove editors, teachers, and students from any of my courses through the Tracker application.
-As a content creator, I want to be able to delete any of my courses from the list of courses in the Tracker application.
-
-As an editor, I want to be able to view a list of the courses assigned to me on the Tracker application.
-As an editor, I want to be able to view the details of any course assigned to me on the Tracker application.
-As an editor, I want to be able to edit the details of any course assigned to me on the Tracker application.
-As an editor, I want to be able to assign other members as teachers of any course assigned to me through the Tracker application.
-As an editor, I want to be able to assign other members as students of any course assigned to me through the Tracker application.
-As an editor, I want to be able to reassign teachers to students and students to teachers within one of my courses through the Tracker application.
-As an editor, I want to be able to remove teachers and students from any course assigned to me through the Tracker application.
-
-As a teacher, I want to be able to view a list of the courses assigned to me on the Tracker application.
-As a teacher, I want to be able to view the details of any course assigned to me on the Tracker application.
-As a teacher, I want to be able to assign other members as students of any course assigned to me through the Tracker application.
-As a teacher, I want to be able to remove students from any course assigned to me through the Tracker application.
-
-As a student, I want to be able to view a list of the courses assigned to me on the Tracker application.
-As a student, I want to be able to view the details of any courses assigned to me on the Tracker application.
+An intuitive, secure, fully-functional, and easily-deployable membership and course access management system.
 
 -----
 
 ### Stakeholders
 
-Interested parties throughout the company will benefit from the Tracker application.
+Interested parties throughout the company who will benefit from the Tracker application:
 
-| Stakeholder    | Value from Application |
-| -------------- | ---------------------- |
-| Members        | Control access to their courses. |
-| Administrators |  |
-| Foo Academy    |  |
+| Stakeholder | Value from Application                                                                                                     |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Foo Academy | Provides a single location to manage membership in real time.                                                              |
+|             | Provides a location that is accessible from different types of devices.                                                    |
+|             | Provides an API endpoint for other applications in the Foo Academy eco-system to access membership and course information. |
+| Members     | Provides a single location to register courses and manage enrollment.                                                      |
 
 -----
 
 ### Personas
 
-| Persona | Value from Application |
-| ----------- | ---------------------- |
-| Creators | |
-| Editors  | |
-| Teacher  | |
-| Students | |
+Roles of the users who will interact with the Tracker application:
+
+| Persona        | Privileges                                                                                            |
+| -------------- | ----------------------------------------------------------------------------------------------------- |
+| Administrator  | Can add, view, edit, and delete members.                                                              |
+| Owner          | Can view, edit, and delete their courses, and assign members to a course up to their privilege level. |
+| Editor         | Can view and edit courses assigned to them, and assign members up to their privilege level.           |
+| Teacher        | Can view courses assigned to them, and assign members up to their privilege level.                    |
+| Student        | Can view courses assigned to them.                                                                    |
+| Member         | Can register courses.                                                                                 |
+| Anonymous User | Can request access to the application.                                                                |
 
 -----
+
+### Inputs
+
+Request Access Form
+Login Form
+Update Profile Form
+Approve User Form
+Add User Form
+Edit User Form
+Delete User Form
+Add Course Form
+Edit Course Form
+Assign Users to Course Form
+Delete Course Form
+
+-----
+
+### Outputs
+
+List of Users (HTML)
+List of Users (JSON/API)
+User Details (HTML)
+User Details (JSON/API)
+List of Courses (HTML)
+List of Courses (JSON/API)
+Course Details (HTML)
+Course Details (JSON/API)
+
+-----
+
+## User Stories
+
+As an anonymous user, I want to be able to submit a request for membership through the Tracker application.
+
+As a site administrator, I want anonymous users to complete a CAPTCHA form when creating a profile to mitigate Sybil attacks.
+As a site administrator, I want to be able to approve membership requests.
+As a site administrator, I want to be able to add new members.
+As a site administrator, I want to be able to view member profiles.
+As a site administrator, I want to be able to edit member profiles.
+As a site administrator, I want to be able to delete members.
+
+As an Academy member, I want to be able to view my member profile.
+As an Academy member, I want to be able to edit my member profile.
+As an Academy member, I want to be able to add a course to the list of available courses.
+As an Academy member, I want to receive a notification if I have been reassigned or dropped from a course.
+
+As a content creator, I want to be able to view a list of my courses.
+As a content creator, I want to be able to view the details of my courses.
+As a content creator, I want to be able to edit the details of my courses.
+As a content creator, I want to be able to assign another member as an editor of one or more of my courses.
+As a content creator, I want to be able to assign another member as a teacher of one or more of my courses.
+As a content creator, I want to be able to assign another member as a student of one or more of my courses.
+As a content creator, I want to be able to reassign an editor, teacher, or student of one or more of my courses to another role within the course.
+As a content creator, I want to be able to remove an editor, teacher, or student from one or more of my courses.
+As a content creator, I want to be able to delete any of my courses from the list of available courses.
+
+As an editor, I want to be able to view a list of the courses assigned to me.
+As an editor, I want to be able to view the details of any course assigned to me.
+As an editor, I want to be able to edit the details of any course assigned to me.
+As an editor, I want to be able to assign another member as a teacher of any course assigned to me.
+As an editor, I want to be able to assign another member as a student of any course assigned to me.
+As an editor, I want to be able to reassign a teacher or student of any course assigned to me to another role within the course.
+As an editor, I want to be able to remove a teacher or student from any course assigned to me.
+
+As a teacher, I want to be able to view a list of the courses assigned to me.
+As a teacher, I want to be able to view the details of any course assigned to me.
+As a teacher, I want to be able to assign another member as a student of any course assigned to me.
+As a teacher, I want to be able to remove a student from any course assigned to me.
+
+As a student, I want to be able to view a list of the courses assigned to me.
+As a student, I want to be able to view the details of any courses assigned to me.
+
+-----
+
+## Database Schema
 
 +-----------------------------------+
 |     course                        |
 +-----------------------------------+
-| PK  course_id       INTEGER NN UQ |<---1:N---|
-+-----------------------------------+          |
-|     course_name     TEXT    NN UQ |          |
-|     course_code     TEXT    NN UQ |          |
-|     course_group    TEXT          |          |
-|     course_desc     TEXT          |          |
-+-----------------------------------+          |
-                                               |
-+-----------------------------------+          |
-|     role                          |          |
-+-----------------------------------+          |
-| PK  role_id         INTEGER NN UQ |<---1:N---|
-+-----------------------------------+          |
-|     role_name       TEXT    NN UQ |          |
-|     role_privilege  INTEGER NN UQ |          |
-+-----------------------------------+          |
-                                               |
-+-----------------------------------+          |
-|     user                          |          |
-+-----------------------------------+          |
-| PK  user_id         INTEGER NN UQ |<---1:N---|
-+-----------------------------------+          |
-|     user_name       TEXT    NN UQ |          |
-|     user_email      TEXT    NN UQ |          |
-|     user_is_flagged INTEGER NN    |          |
-|     user_flagged_by TEXT          |          |
-|     password_hash   TEXT    NN    |          |
-+-----------------------------------+          |
-                                               |
-+-----------------------------------+          |
-|     association                   |          |
-+-----------------------------------+          |
-| PK  course_id       INTEGER NN    | FK -|    |
-| PK  role_id         INTEGER NN    | FK -|<---+ (ON DELETE CASCADE, ON UPDATE CASCADE)
+| PK  course_id       INTEGER NN UQ |<----1:N----|
++-----------------------------------+            |
+|     course_name     TEXT    NN UQ |            |
+|     course_code     TEXT    NN UQ |            |
+|     course_group    TEXT          |            |
+|     course_desc     TEXT          |            |
++-----------------------------------+            |
+                                                 |
++-----------------------------------+            |
+|     role                          |            |
++-----------------------------------+            |
+| PK  role_id         INTEGER NN UQ |<----1:N----|
++-----------------------------------+            |
+|     role_name       TEXT    NN UQ |            |
+|     role_privilege  INTEGER NN UQ |            |
++-----------------------------------+            |
+                                                 |
++-------------------------------------+          |
+|     user                            |          |
++-------------------------------------+          |
+| PK  user_id           INTEGER NN UQ |<---1:N---|
++-------------------------------------+          |
+|     user_name         TEXT    NN UQ |          |
+|     user_email        TEXT    NN UQ |          |
+|     user_is_approved  INTEGER NN    |          |
+|     user_is_admin     INTEGER NN    |          |
+|     user_is_flagged   INTEGER NN    |          |
+|     user_flagged_by   TEXT          |          |
+|     password_hash     TEXT    NN    |          |
++-------------------------------------+          |
+                                                 |
++-----------------------------------+            |
+|     association                   |            |
++-----------------------------------+            |
+| PK  course_id       INTEGER NN    | FK -|      |
+| PK  role_id         INTEGER NN    | FK -|<-----+ (ON DELETE CASCADE, ON UPDATE CASCADE)
 | PK  user_id         INTEGER NN    | FK -|
 +-----------------------------------+
 
 -----
 
-Roles:
-Administrator: Can remove users
-Creator: Delete a course
-Editor: Edit a course
-Teacher: Can view all students and assign them to classes
-Student: View own course
+## Miscellaneous
 
-Only administrators can create an account. You cannot create your own account. You must contact an administrator to create your account.
-
-DAVE (delete, add, view, edit)
-
-User(username='Admin', user_email='admin@example.com', is_admin=True, flagged_for_del=False, flagged_by=null)
-
-To delete an administrator, another administrator must flag the account for deletion first. Once flagged for deletion, another administrator cna delete the account.
-
-Delete any user: Admin
-Delete myself: Self
-Add a user: Admin
-View a list of all users: Admin, Creator, Teacher
-View any user profile: Admin
-View my user profile: Self
-Edit any user profile: Admin
-Edit my user profile: Self
-
-Delete any course: Admin
-Delete my courses: Admin, Creator
-Add a course: Self
-View a list of all courses: Admin
-View the details of any course: Admin
-View a list of my courses: Admin, Creator, Teacher, Student
-View the details of my courses: Admin, Creator, Teacher, Student
-Edit any course: Admin
-Edit my courses: Admin, Creator, Teacher
-
-Assign a student to any course: Admin
-Assign a student to my courses: Admin, Creator, Teacher
-Remove a student from any course: Admin
-Remove a student from my courses: Admin, Creator, Teacher
-Assign a teacher to any course: Admin
-Assign a teacher to my courses: Admin, Creator
-Remove a teacher from any course: Admin
-Remove a teacher from my courses: Admin, Creator, Teacher
-
-Cannot remove myself from one of my course: Creator
-
-The site administrator can delete, add, view, and edit user accounts.
-
-
-
-Anyone with an account can create a course.
-The creator can view, edit, and delete the course.
-The creator can assign teachers and students to the course.
-The creator can unassign teachers and students to the course.
-
-The teachers can view and edit the course.
-The teachers cannot delete the course.
-The teachers can assign students to the course.
-The teachers can unassign students to the course.
-The teachers cannot assign a teacher to the course.
-The teachers cannot unassign a teacher from the course.
-
-
-
-I can create a credential. I can also view, assign, edit, and  delete the credential.
-I can assign editors who can edit the credential, but editors cannot delete it.
-I can assign viewers who can view the credential, but viewers cannot edit or delete it.
-Editors can also assign or unassign viewers.
-
-
-The Tracker application itself allows you to administer course access for students.
-
------
-
-## Roles
-
-- ***Chair:*** Owns the course.
-- ***Teacher:*** Can administer a course.
-- ***Student:*** Can view a course.
-
-## Administration
-
-Course Administration:
-
-- ***Add a Course:*** Anyone; the creator becomes the Chair of the Course
-- ***View Courses:*** Chairs, Teachers, and Students who are assigned to the Courses
-- ***View a Course:*** Chairs, Teachers, and Students who are assigned to the Course
-- ***Edit a Course:*** Chairs and Teachers who are assigned to the Course
-- ***Delete a Course:*** Chairs who are assigned to the Course
-
-Role and User Administration: Administrators only.
-
-Create a User database and view users
-Add, view, edit, and delete a User
-
+- Only administrators can create an account. You cannot create your own account. You must contact an administrator to create your account.
+- To delete an administrator, another administrator must flag the account for deletion first. Once flagged for deletion, another administrator cna delete the account.
+- Owners cannot remove themselves from one of their course.
