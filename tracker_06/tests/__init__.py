@@ -36,7 +36,7 @@ class BaseTestCase(unittest.TestCase):
     CONFIG_NAME = 'default'
 
     def setUp(self):
-        """Create the application instance"""
+        """This method runs before each test"""
         # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
         self.sys_python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
 
@@ -45,14 +45,16 @@ class BaseTestCase(unittest.TestCase):
         flask_version_major, flask_version_minor = map(int, raw_flask_version.split('.')[:2])
         self.sys_flask_version = float(f"{flask_version_major}.{flask_version_minor:02d}")
 
+        # Create the application instance
         self.app = create_app(self.CONFIG_NAME)
         self.app_context = self.app.app_context()
         self.app_context.push()
-
         self.client = self.app.test_client()
 
     def tearDown(self):
-        """Clear out the application instance variables"""
+        """This method runs after each test"""
+
+        # Clear out the application instance variables
         self.app_context.pop()
         self.app = None
         self.app_context = None
@@ -60,5 +62,4 @@ class BaseTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
-    print('Have a nice day!')
+    unittest.main()

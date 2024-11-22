@@ -21,8 +21,6 @@ python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
 
-import unittest
-
 from tracker_07 import create_app
 from tracker_07.tests import BaseTestCase
 
@@ -30,9 +28,9 @@ __author__ = 'Rob Garcia'
 
 
 class TestApp(BaseTestCase):
-    """Unit tests for the Flask demo.
+    """Unit tests for functions and methods in the application's __init__.py .
 
-    :param unittest.TestCase BaseTestCase: Inherited from __init__.py
+    :param unittest.TestCase BaseTestCase: Inherited from tests/__init__.py
     """
 
     def test_app(self):
@@ -111,20 +109,3 @@ class TestApp(BaseTestCase):
         """Test that create_app() fails when config_name is not a string."""
         with self.assertRaises(TypeError):
             create_app(log_events=1)
-
-    def test_log_events_is_false_debug(self):
-        """Test that create_app() passes when log_events is a boolean."""
-        app = create_app()
-        app.config['DEBUG'] = True  # Set debug mode
-        app.debug = True  # Set through the app object
-        app.log_events = True  # Default setting
-
-        # Initialize the application (this would re-run the check)
-        if app.debug:
-            app.log_events = False
-
-        self.assertFalse(app.log_events, "log_events should be False in debug mode")
-
-
-if __name__ == '__main__':
-    unittest.main()

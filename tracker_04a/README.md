@@ -39,7 +39,8 @@ tracker
 ├── tracker_04a
 |   ├── tests
 |   |   ├── __init__.py
-|   |   └── test_app.py
+|   |   ├── test_app.py
+|   |   └── test_app_utils.py
 |   ├── __init__.py
 |   ├── app_utils.py
 |   └── config.py

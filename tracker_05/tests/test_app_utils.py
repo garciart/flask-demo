@@ -30,7 +30,7 @@ __author__ = 'Rob Garcia'
 
 
 class TestAppUtils(BaseTestCase):
-    """"Unit tests for application utilities.
+    """Unit tests for application utilities.
 
     :param unittest.TestCase BaseTestCase: Inherited from __init__.py
     """
@@ -117,7 +117,3 @@ class TestAppUtils(BaseTestCase):
         test_var = ''
         with self.assertRaises(ValueError):
             validate_input(obj_name='test_var', obj_to_check=test_var, expected_type=str)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -50,7 +50,3 @@ class TestProfiler(BaseTestCase):
         test_var = 3.14
         with self.assertRaises(TypeError):
             add_profiler_middleware(app=test_var)
-
-
-if __name__ == '__main__':
-    unittest.main()

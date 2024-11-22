@@ -31,7 +31,7 @@ __author__ = 'Rob Garcia'
 
 
 class TestAppUtils2(BaseTestCase):
-    """"Unit tests for application utilities.
+    """Unit tests for application utilities.
 
     :param unittest.TestCase BaseTestCase: Inherited from __init__.py
     """
@@ -93,7 +93,3 @@ class TestAppUtils2(BaseTestCase):
             test_request = flask.Request(environ)
             with self.assertRaises(TypeError):
                 log_page_request(app=test_app, request=test_request, response=test_response)
-
-
-if __name__ == '__main__':
-    unittest.main()

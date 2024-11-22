@@ -20,7 +20,6 @@
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
-import unittest
 
 from tracker_06 import create_app
 from tracker_06.tests import BaseTestCase
@@ -29,9 +28,9 @@ __author__ = 'Rob Garcia'
 
 
 class TestApp(BaseTestCase):
-    """Unit tests for the Flask demo.
+    """Unit tests for functions and methods in the application's __init__.py .
 
-    :param unittest.TestCase BaseTestCase: Inherited from __init__.py
+    :param unittest.TestCase BaseTestCase: Inherited from tests/__init__.py
     """
 
     def test_app(self):
@@ -90,7 +89,3 @@ class TestApp(BaseTestCase):
         """Test that create_app() fails when config_name is not a string."""
         with self.assertRaises(TypeError):
             create_app(log_events=1)
-
-
-if __name__ == '__main__':
-    unittest.main(exit=False)
