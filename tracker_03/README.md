@@ -49,21 +49,21 @@ tracker
 ├── tracker_03
 |   ├── __init__.py
 |   └── config.py
+├── __init__.py
 ├── .env
 ├── .env_alt
 ├── .flaskenv
 ├── .pylintrc
-├── __init__.py
 ├── hello.py
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_03
 # Run the application using the configuration variables found in `config.py`
 python -B -m flask --app "tracker_03:create_app(config_name='development')" run

@@ -2,30 +2,10 @@
 
 This is a demo of a Flask application that incorporates unit testing.
 
------
-
-## Usage
-
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
-
-```shell
-# Check the application for errors
-python -B -m pylint tracker_04
-# Run the unit tests found in `tests/test_app.py`
-# Use Interactive mode
-python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
-# Use Automatic mode
-echo 'default' | python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
-# Run the application
-python -B -m flask --app tracker_04 run
-```
-
------
-
-## Notes
 
 The application factory pattern allows you to organize your code into functions. Functions and methods allow you to consolidate related code, like system checks, into small, manageable, and reusable blocks. Using functions and methods also reduces code repetition, which reduces complexity and improves maintainability. Additionally, functions and methods can be *unit-tested* effectively.
 
@@ -48,36 +28,41 @@ tracker
 |   |   ├── __init__.py
 |   |   └── test_app.py
 |   ├── __init__.py
+|   ├── app_utils.py
 |   └── config.py
+├── __init__.py
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── __init__.py
+├── .pylintrc
 ├── hello.py
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Run the unit tests to make sure that your changes did not regress the code:
 
-- `python -B -m flask --app tracker_04 run`
-
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>.
-
-Now, run the unit tests in interactive mode. When prompted, enter "development" or press <kbd>Enter</kbd> to accept the **default** configuration:
-
-> **NOTE** - The reason I added user interaction to `test_app.py` is because you cannot pass arguments, like `--config development`, to `test_app.py` using `sys.argv` or the `argparse` module; the `unittest` module will read them instead.
-
-- `python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py`
-
-To run the unit tests without user interaction, pipe the desired configuration into the command as input:
+> **NOTES:**
+>
+> - Test from the project directory (e.g., `flask-demo`, not `tracker_XX`)
+> - Do not log events when unit testing or each test will create a log file.
+> - Using `--buffer` and `--verbose` together provides a good balance of output,
+>   since `--buffer` hides console output from the application
+>   and `--verbose` displays the test's docstring
+>   (ex., `Test that check_system() fails because min_python_version is not type float ... ok`)
 
 ```shell
-# Check the application for errors
+# Run the unit tests found in the `tests` directory
+# python -B -m unittest discover tracker_04/tests --buffer --verbose
+python -B -m unittest discover tracker_04/tests -b -v
+```
+
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
+
+```shell
+# Check the application for issues
 python -B -m pylint tracker_04
-# Run the unit tests found in `tests/test_app.py`
-python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
-# Run the application
+# Run the application using the 'default' configuration
 python -B -m flask --app tracker_04 run
 ```
 
-When you are finished, move on to the next version.
+Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

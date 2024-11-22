@@ -20,83 +20,24 @@
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
-
-import importlib
-import sys
+import logging
+import os
+import shutil
 import unittest
 
-from tracker_04 import create_app
-from tracker_04.app_utils import check_system, validate_input
+import flask
+
+from tracker_06.app_utils import check_system, validate_input, start_log_file
+from tracker_06.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
 
 
-class TestApp(unittest.TestCase):
-    """Unit tests for the Flask demo.
+class TestAppUtils1(BaseTestCase):
+    """"Unit tests for application utilities.
 
-    :param class unittest.TestCase: Class to test single test cases
+    :param unittest.TestCase BaseTestCase: Inherited from __init__.py
     """
-    CONFIG_NAME = 'default'
-
-    def setUp(self):
-        """Create the application instance"""
-        # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
-        self.sys_python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
-
-        # Get the Flask major and minor version numbers and convert them to a float
-        raw_flask_version = importlib.metadata.version("flask")
-        flask_version_major, flask_version_minor = map(int, raw_flask_version.split('.')[:2])
-        self.sys_flask_version = float(f"{flask_version_major}.{flask_version_minor:02d}")
-
-        self.app = create_app(self.CONFIG_NAME)
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        self.client = self.app.test_client()
-
-    def test_app(self):
-        """Ensure you created the application instance"""
-        self.assertIsNotNone(self.app)
-
-    def test_index_response_code(self):
-        """Test that the index page was created by looking at the response code"""
-        response = self.client.get('/', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
-    def test_index_content(self):
-        """Test that the index page contains the correct contents"""
-        response = self.client.get('/', follow_redirects=True)
-        self.assertIn(b'Hello, World!', response.data)
-
-    def tearDown(self):
-        """Clear out the application instance variables"""
-        self.app_context.pop()
-        self.app = None
-        self.app_context = None
-        self.client = None
-
-    def test_config_name_is_string(self):
-        """Test that create_app() passes when config_name is a string."""
-        try:
-            create_app('default')
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
-    def test_config_name_is_not_string(self):
-        """Test that create_app() fails when config_name is not a string."""
-        with self.assertRaises(TypeError):
-            create_app(1)
-
-    def test_config_name_accepts_valid_value(self):
-        """Test that create_app() passes when config_name is a valid selection."""
-        try:
-            create_app('development')
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
-    def test_config_name_rejects_invalid_value(self):
-        """Test that create_app() fails when config_name is not a valid selection."""
-        with self.assertRaises(ValueError):
-            create_app('foo')
 
     def test_check_system_pass_meets_req(self):
         """Test that check_system() passes when requirements met"""
@@ -181,6 +122,61 @@ class TestApp(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_input(obj_name='test_var', obj_to_check=test_var, expected_type=str)
 
+    def test_start_log_file_pass(self):
+        """Test that start_log_file() passes when requirements met"""
+        test_app = flask.Flask(__name__)
+        try:
+            start_log_file(app=test_app, log_dir='tracker_logs/test', logging_level=10)
+        except (TypeError, ValueError):
+            self.fail('Method raised an exception unexpectedly.')
+
+    def test_start_log_file_fail_arg1_type(self):
+        """Test that start_log_file() fails when arg1 is the wrong type"""
+        test_app = 'foo'
+        with self.assertRaises(TypeError):
+            start_log_file(app=test_app, log_dir='tracker_logs/test', logging_level=10)
+
+    def test_start_log_file_fail_arg2_type(self):
+        """Test that start_log_file() fails when arg2 is the wrong type"""
+        test_app = flask.Flask(__name__)
+        with self.assertRaises(TypeError):
+            start_log_file(app=test_app, log_dir=1, logging_level=10)
+
+    def test_start_log_file_fail_arg2_empty(self):
+        """Test that start_log_file() fails when arg2 is empty"""
+        test_app = flask.Flask(__name__)
+        with self.assertRaises(ValueError):
+            start_log_file(app=test_app, log_dir='', logging_level=10)
+
+    def test_start_log_file_fail_arg3_type(self):
+        """Test that start_log_file() fails when arg3 is the wrong type"""
+        test_app = flask.Flask(__name__)
+        with self.assertRaises(TypeError):
+            start_log_file(app=test_app, log_dir='tracker_logs/test', logging_level='foo')
+
+    def test_start_log_file_mkdir_log_dir_pass(self):
+        """Test that start_log_file() can make a log directory"""
+        test_app = flask.Flask(__name__)
+        cwd = os.getcwd()
+        # Delete the directory and its contents if it exists
+        try:
+            shutil.rmtree(f'{cwd}/foo')
+        except FileNotFoundError:
+            pass
+        try:
+            start_log_file(app=test_app, log_dir='foo', logging_level=10)
+        except OSError:
+            self.fail('Method raised an exception unexpectedly.')
+        logging.shutdown()
+        shutil.rmtree(f'{cwd}/foo')
+
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(exit=False)
+    # Delete any log files created by the tests
+    # logging.shutdown()
+    print('Have a nice day!')
+    cwd = os.getcwd()
+    _norm_log_dir = os.path.normpath(f'{cwd}/tracker_logs/test')
+    print(_norm_log_dir)
+    shutil.rmtree(_norm_log_dir)

@@ -13,7 +13,7 @@ python -B -m flask --app "tracker_07:create_app('development', True)" run
 > **NOTE**
 >
 > - Enclose options in quotation marks when using special characters.
-> - Use the `development` configurations or the application will not log `logging.INFO`-level messages.
+> - Use the `development` configuration so the application will log `logging.INFO`-level messages.
 
 Changes:
 - Added custom 404 and 500 error pages

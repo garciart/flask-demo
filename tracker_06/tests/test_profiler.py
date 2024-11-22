@@ -7,18 +7,17 @@
     - `source .venv/bin/activate` (Linux)
     - `.venv/Scripts/activate` (Windows)
 
-- Run from the project directory (e.g., flask-demo, not tracker_XX)
-- Ensure you have an empty __init__.py in the 'tests' directory
+- Test from the project directory (e.g., `flask-demo`, not `tracker_XX`)
 - Do not log events when unit testing or each test will create a log file.
-- Using --buffer and --verbose together provides a good balance of output,
-  since --buffer hides console output from the application
-  and --verbose displays the test's docstring
-  (ex., "Ensure you created the application instance ... ok")
+- Using `--buffer` and `--verbose` together provides a good balance of output,
+  since `--buffer` hides console output from the application
+  and `--verbose` displays the test's docstring
+  (ex., `Test that check_system() fails because min_python_version is not type float ... ok`)
 
 **Usage:**
 
 ```
-python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
 
@@ -54,4 +53,4 @@ class TestProfiler(BaseTestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(exit=False)

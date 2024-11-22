@@ -4,6 +4,7 @@
 import importlib
 import logging
 import os
+import pathlib
 import socket
 import sys
 import time
@@ -80,7 +81,7 @@ def validate_input(obj_name: str, obj_to_check: object,
 
 def start_log_file(
         app: flask.Flask, log_dir: str = 'tracker_logs', logging_level: int = logging.DEBUG
-) -> None:
+) -> str:
     """Setup and start logging.
 
     Each instance of this class to have a separate log file in the 'logs' directory.
@@ -94,8 +95,8 @@ def start_log_file(
     :param int logging_level: The level of messages to log. The default is to log DEBUG \
         messages (level 10) or greater
 
-    :returns: None
-    :rtype: None
+    :returns: The path of the log file
+    :rtype: str
     """
     # Validate inputs
     validate_input('app', app, flask.Flask)
@@ -103,8 +104,8 @@ def start_log_file(
     validate_input('logging_level', logging_level, int)
 
     # Create the log directory if it does not exist
-    if not os.path.exists(log_dir):
-        os.mkdir(log_dir)
+    _norm_log_dir = os.path.normpath(log_dir)
+    pathlib.Path(_norm_log_dir).mkdir(parents=True, exist_ok=True)
 
     # The name of the log file is the name of the instance,
     # plus the time the instance was instantiated (tracker_06_1234567890.1234567.log).
@@ -151,6 +152,8 @@ def start_log_file(
     # IMPORTANT! Since the timestamp is part of the log file name,
     # pause for a tenth of a second before leaving to prevent logs from having the same name
     time.sleep(0.1)
+
+    return _log_path
 
 
 def log_page_request(app: flask.Flask, request: flask.Request, response: flask.Response) -> None:

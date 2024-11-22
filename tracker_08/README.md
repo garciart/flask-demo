@@ -12,7 +12,7 @@ This is a demo of a Flask application that incorporates templates.
 > - `.venv/Scripts/activate` (Windows)
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_08
 # Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_08/tests/test_app.py
@@ -77,10 +77,10 @@ tracker
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_08
 # Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_08/tests/test_app.py

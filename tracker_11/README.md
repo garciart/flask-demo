@@ -123,7 +123,7 @@ tracker
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 - `python -B -m flask --app tracker_11 run`
 

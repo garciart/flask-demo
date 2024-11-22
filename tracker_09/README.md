@@ -12,7 +12,7 @@ This is a demo of a Flask application that incorporates a database.
 > - `.venv/Scripts/activate` (Windows)
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_09
 # Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_09/tests/test_app.py
@@ -51,7 +51,7 @@ python -m pip freeze > requirements.txt
 In addition, you may eventually need to modify your database, like when you need to add columns, etc. To "transfer" your data to your new schema without losing data, you perform a database *migration*. To reduce the chances of issues with future migrations, perform an initial migration before you run the application:
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_09
 # Add Flask database migration package
 python -m pip install Flask-Migrate
@@ -119,7 +119,7 @@ tracker
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
 # Run the unit tests found in the `tests` directory using Coverage

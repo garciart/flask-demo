@@ -11,30 +11,6 @@ This is a demo of a Flask application that incorporates logging.
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-```shell
-# Check the application for errors
-python -B -m pylint tracker_06
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_06/tests/test_app.py
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_06:create_app('profiler')" run
-# Create a log when running the Flask application
-# python -B -m flask --app "tracker_06:create_app(config_name='development', log_events=True)" run
-python -B -m flask --app "tracker_06:create_app('development', True)" run
-```
-
-> **NOTES**
->
-> - Enclose options in quotation marks when using special characters.
-> - Do not log events when unit testing or each test will create a log file.
-> - Use the `development` configuration during development or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
-
------
-
-## Notes
-
 Logging allows you to:
 
 - Capture errors and bugs in your application
@@ -56,32 +32,41 @@ tracker
 ├── tracker_06
 |   ├── tests
 |   |   ├── __init__.py
-|   |   └── test_app.py
+|   |   ├── test_app.py
+|   |   ├── test_app_utils_1.py
+|   |   ├── test_app_utils_2.py
+|   |   └── test_profiler.py
 |   ├── __init__.py
 |   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
 ├── tracker_logs
 |   └── tracker_06_1234567890.1234567.log
+├── __init__.py
 ├── .coverage
 ├── .coveragerc
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── __init__.py
+├── .pylintrc
 ├── hello.py
 └── requirements.txt
 ```
 
 Once you are finished reviewing the code, start your application. Do not forget to activate your Python virtual environment first!
 
-> **NOTE** - Enclose options in quotation marks when using special characters.
+> **NOTES:**
+>
+> - Enclose options in quotation marks when using special characters.
+> - Coverage will create a `__pycache__` folder. Delete it when you are done testing.
+> - Use the `development` configuration for logging or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
+> - Do not log events when unit testing or each test will create a log file.
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_06
 # Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_06/tests/test_app.py
+coverage run -m unittest discover tracker_06/tests -b -v
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:

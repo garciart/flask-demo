@@ -1,34 +1,8 @@
-# Tracker
-
-This demo is a feature-by-feature walkthrough of how to create and deploy a Flask application that allows you to control course assignments using role-based access control (RBAC).
-
-![Assign Users to Course Screenshot](img/assign-users-screenshot.png)
+# Application Design
 
 -----
 
-## Quick Start
-
-To start:
-
-1. Ensure you are using Python 3.8 or later: `python --version` or `python3 -V`. If not, install the latest version of Python available for your operating system.
-2. Clone this repository: `git clone https://github.com/garciart/flask-demo`
-3. Navigate to your copy of the repository (this will be your project directory): `cd flask-demo`
-4. Create a Python virtual environment in the project directory: `python<version> -m venv $PWD/.venv`
-5. Activate the Python virtual environment: `source .venv/bin/activate` (Linux) or `.venv/Scripts/activate` (Windows)
-6. Install pip: `python -m pip install --upgrade pip`
-7. Install required packages: `python -m pip install -r requirements.txt`
-8. Each version of the **Tracker** application has its own package within your project directory:
-   - Review the `README.md` file in the `tracker_01` package using an editor of your choice (`tracker_01/README.md`)
-   - Run the application from the project directory using the directions in the `README.md` file: `python -B -m flask --app tracker_01 run`
-   - Continue the next version.
-
------
-
-## Application Design
-
------
-
-### Business Problem
+## Business Problem
 
 The Foo Academy is a fictitious learning platform that will allow users to upload and share online courses. The Academy would like an application to manage membership and course access.
 
@@ -37,7 +11,7 @@ through a web-based user interface. It will also provide information to other au
 
 -----
 
-### Requirements
+## Requirements
 
 - The application must store member information, including but not limited to username, email address, and password hash.
 - The application must store course information, including but not limited to course number, course owner, and a list of students, teachers, and editors assigned to the course.
@@ -50,26 +24,25 @@ through a web-based user interface. It will also provide information to other au
 
 -----
 
-### Desired Outcomes
+## Desired Outcomes
 
-An intuitive, secure, fully-functional, and easily-deployable membership and course access management system.
+A fully-functional, easy-to-use, secure, and easily-deployable membership and course access management system that is updated in real time and is accessible from different types of devices.
 
 -----
 
-### Stakeholders
+## Stakeholders
 
-Interested parties throughout the company who will benefit from the Tracker application:
+Interested parties who will benefit from the Tracker application:
 
 | Stakeholder | Value from Application                                                                                                     |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Foo Academy | Provides a single location to manage membership in real time.                                                              |
-|             | Provides a location that is accessible from different types of devices.                                                    |
+| Foo Academy | Provides a single location to manage membership in real time from different types of devices.                              |
 |             | Provides an API endpoint for other applications in the Foo Academy eco-system to access membership and course information. |
 | Members     | Provides a single location to register courses and manage enrollment.                                                      |
 
 -----
 
-### Personas
+## Personas
 
 Roles of the users who will interact with the Tracker application:
 
@@ -85,32 +58,39 @@ Roles of the users who will interact with the Tracker application:
 
 -----
 
-### Inputs
+## Inputs
 
-Request Access Form
-Login Form
-Update Profile Form
-Approve User Form
-Add User Form
-Edit User Form
-Delete User Form
-Add Course Form
-Edit Course Form
-Assign Users to Course Form
-Delete Course Form
+| Page | Authentication Required | Description |
+| ----- | ----- | ----- |
+| Login Form | No | Default page for unauthenticated users. Accepts and checks credentials before allowing access to Tracker features and content. |
+| Add Course Form | Yes | Allows members to add a course to the list of available courses. |
+| Assign Users to Course Form | Yes | Allows course owners, editors, and teachers to assign other members to one of their courses. |
+| Edit Course Form | Yes | Allows course owners and editors to edit information about one of their courses. |
+| Delete Course Form | Yes | Allows course owners to remove a course from the list of available courses |
+| Update Profile Form | Yes | Allows members to update their email address and password. |
+| Add User Form | Yes | Allows administrators to directly add members without a request for membership. |
+| Edit User Form | Yes | Allows administrators to edit member profiles. |
+| Delete User Form | Yes | Allows administrators to remove member access to Tracker features and content. |
+| Request Membership Form | No | Accepts requests for membership in the Foo Academy from anonymous users. |
+| Approve User Form | Yes | Allows administrators to approve requests for membership in the Foo Academy from anonymous users. |
 
 -----
 
-### Outputs
+## Outputs
 
-List of Users (HTML)
-List of Users (JSON/API)
-User Details (HTML)
-User Details (JSON/API)
-List of Courses (HTML)
-List of Courses (JSON/API)
-Course Details (HTML)
-Course Details (JSON/API)
+| Page | Authentication Required | Description |
+| ----- | ----- | ----- |
+| List of Current Courses (Web UI) | Yes | Landing page for authenticated members. Displays a sortable and searchable list of courses owned and assigned by a member, with links to add, view, assign, edit, and delete courses. |
+| List of Current Courses (API) | Yes | Displays a list of courses owned and assigned by a member in JSON format. |
+| View Course Details (Web UI) | Yes | Display the details of a course, like course number and description. |
+| View Course Details (API) | Yes | Display the details of a course, like course number and description, in JSON format. |
+| List of Available Courses (Web UI) | Yes | Displays a list of available courses and owner details, like email address. |
+| List of Available Courses (API) | Yes | Displays a list of available courses and owner details, like email address, in JSON format. |
+| List of Users (Web UI) | Yes | Displays a sortable and searchable list of members in the Foo Academy, with links to add, edit, and delete users. |
+| List of Users (API) | Yes | Display a list of users and their details in JSON format. |
+| View User Profile (Web UI) | Yes | Display the details of a user, like username and email. |
+| View User Profile (API) | Yes | Display the details of a user, like username and email, in JSON format. |
+| About Page | No | Provides a description of the Foo Academy and the Tracker application. |
 
 -----
 
@@ -155,6 +135,13 @@ As a teacher, I want to be able to remove a student from any course assigned to 
 
 As a student, I want to be able to view a list of the courses assigned to me.
 As a student, I want to be able to view the details of any courses assigned to me.
+
+> **NOTES:**
+>
+> - Only administrators can create an account. You cannot create your own account. You must contact an administrator to create your account.
+> - To delete an administrator, another administrator must flag the account for deletion first. Once flagged for deletion, another administrator cna delete the account.
+> - Only owners, editors, and teachers can assign members to a course. Members cannot assign themselves to a course and must request access via email.
+> - Owners cannot remove themselves from one of their course.
 
 -----
 
@@ -201,11 +188,3 @@ As a student, I want to be able to view the details of any courses assigned to m
 | PK  role_id         INTEGER NN    | FK -|<-----+ (ON DELETE CASCADE, ON UPDATE CASCADE)
 | PK  user_id         INTEGER NN    | FK -|
 +-----------------------------------+
-
------
-
-## Miscellaneous
-
-- Only administrators can create an account. You cannot create your own account. You must contact an administrator to create your account.
-- To delete an administrator, another administrator must flag the account for deletion first. Once flagged for deletion, another administrator cna delete the account.
-- Owners cannot remove themselves from one of their course.

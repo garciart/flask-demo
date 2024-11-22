@@ -20,15 +20,15 @@ def index() -> str:
     return '<h1>Hello, World!</h1>'
 ```
 
-The single-file module pattern is great for small demos, but it is not practical for larger applications.
+The single-file module pattern is great for small demos, but it is not practical for large applications.
 
 With a *package pattern*, you can split your application into separate files that work together. This allows you to reuse components, helping you to avoid duplicating code. You can also organize the code by purpose, like for views, routing or models, making your application easier to maintain. The package pattern also allows you to create different versions of your application for development, testing, and production environments.
 
 To create a simple package:
 
-- Create a subdirectory in your project, named after either your application (`tracker`), the version number (`tracker_01`), or the purpose of the package (`tracker_test`).
-- Add a file named `__init__.py` to the directory. This file lets Python know that the directory is a package. By the way, any code in the `__init__.py` file is run first when you run the Flask.
-- Place the `app.py` code in the `__init__.py` file.
+- Create a subdirectory in your project named `tracker_01`..
+- Add a file named `__init__.py` to the directory, which also lets Python know that the directory is a package. By the way, you do not have to call `__init__.py`; any code in that file is run first when you start the application.
+- Place the example `app.py` code in the `__init__.py` file.
 
 The different ways to run your application are:
 
@@ -49,14 +49,15 @@ tracker
 ├── tracker_01
 |   ├── __init__.py
 |   └── config.py
+├── __init__.py
 ├── hello.py
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_01
 # Run the application without saving bytecode
 python -B -m flask --app tracker_01 run

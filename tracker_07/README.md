@@ -2,37 +2,10 @@
 
 This is a demo of a Flask application that incorporates error handling.
 
------
-
-## Usage
-
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
-
-```shell
-# Check the application for errors
-python -B -m pylint tracker_07
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_07/tests/test_app.py
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_07:create_app('profiler')" run
-# Redirect the user to a custom error page and logs the error
-# python -B -m flask --app "tracker_07:create_app(config_name='development', log_events=True)" run
-python -B -m flask --app "tracker_07:create_app('development', True)" run
-```
-
-> **NOTE**
->
-> - Enclose options in quotation marks when using special characters.
-> - Use the `development` configurations or the application will not log `logging.INFO`-level messages.
-
------
-
-## Notes
 
 Incorporating error handling in your application not only provides feedback to the user, but captures information you can use to debug and improve your site.
 
@@ -47,35 +20,46 @@ tracker
 ├── tracker_07
 |   ├── tests
 |   |   ├── __init__.py
-|   |   └── test_app.py
+|   |   ├── test_app.py
+|   |   ├── test_app_utils_1.py
+|   |   ├── test_app_utils_2.py
+|   |   └── test_profiler.py
 |   ├── __init__.py
 |   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
 ├── tracker_logs
 |   └── tracker_07_1234567890.1234567.log
+├── __init__.py
 ├── .coverage
 ├── .coveragerc
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── __init__.py
+├── .pylintrc
 ├── hello.py
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Once you are finished reviewing the code, start your application. Do not forget to activate your Python virtual environment first!
+
+> **NOTES:**
+>
+> - Enclose options in quotation marks when using special characters.
+> - Coverage will create a `__pycache__` folder. Delete it when you are done testing.
+> - Use the `development` configuration for logging or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
+> - Do not log events when unit testing or each test will create a log file.
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_07
 # Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_07/tests/test_app.py
+coverage run -m unittest discover tracker_07/tests -b -v
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
 python -B -m flask --app "tracker_07:create_app('profiler')" run
-# Redirect the user to a custom error page and logs the error
+# Create a log when running the Flask application
 # python -B -m flask --app "tracker_07:create_app(config_name='development', log_events=True)" run
 python -B -m flask --app "tracker_07:create_app('development', True)" run
 ```

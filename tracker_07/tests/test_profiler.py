@@ -25,8 +25,8 @@ import unittest
 
 import flask
 
-from tracker_05.profiler import add_profiler_middleware
-from tracker_05.tests import BaseTestCase
+from tracker_07.profiler import add_profiler_middleware
+from tracker_07.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
 

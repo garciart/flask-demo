@@ -7,7 +7,7 @@ This is a demo of a Flask application that uses environment files.
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-If your Flask application depends on environment variables in production, it is important to identify them and to use them during development.
+If your Flask application depends on environment variables in production, it is important to use the same settings during development.
 
 However, instead of resetting your operating system's environment variables each time you run your application (and possibly affecting other projects), you can use the `python-dotenv` module. This module reads environment variables from a `.env` and `.flaskenv` file in your application's directory so Flask can pass them to the application, simulating the desired environment.
 
@@ -55,6 +55,7 @@ tracker
 |   └── ...
 ├── tracker_02
 |   └── __init__.py
+├── __init__.py
 ├── .env
 ├── .env_alt
 ├── .flaskenv
@@ -62,10 +63,10 @@ tracker
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_02
 # Run the application using environment variables found in `.env` and `.flaskenv`
 python -B -m flask --app tracker_02 run

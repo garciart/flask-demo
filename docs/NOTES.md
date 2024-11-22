@@ -39,7 +39,7 @@
 python -m pip install flask
 python -m pip install pylint
 python -m pip freeze > requirements.txt
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_01
 # Run the application without saving bytecode
 python -B -m flask --app tracker_01 run
@@ -64,7 +64,7 @@ python -B -m flask --app tracker_01 run --host=0.0.0.0 --port=5001
 # Install dependencies
 python -m pip install python-dotenv
 python -m pip freeze > requirements.txt
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_02
 # Run the application using environment variables found in `.env` and `.flaskenv`
 python -B -m flask --app tracker_02 run
@@ -84,7 +84,7 @@ python -B -m flask --env-file .env_alt --app tracker_02 run
 - Replaced procedural code with functional pattern
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_03
 # Run the application using the 'default' configuration
 python -B -m flask --app tracker_03 run
@@ -102,7 +102,7 @@ python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
 - Added unit testing
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_04
 # Run the unit tests found in `tests/test_app.py`
 python -B -m unittest --buffer --verbose tracker_04/tests/test_app.py
@@ -117,7 +117,7 @@ python -B -m flask --app tracker_04 run
 - Added unit testing using Coverage.
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_04a
 # Run the unit tests found in the `tests/` directory using Coverage
 coverage run -m unittest discover tracker_04a/tests --verbose --buffer
@@ -133,10 +133,10 @@ python -B -m flask --app tracker_04a run
 
 ## tracker_05
 
-- Added profiling
+- Added profiling.
 
 ```shell
-# Check the application for errors
+# Check the application for issues
 python -B -m pylint tracker_05
 # Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
@@ -148,8 +148,46 @@ python -B -m flask --app "tracker_05:create_app('profiler')" run
 
 -----
 
-tracker_06
-tracker_07
+## tracker_06
+
+- Added logging.
+
+```shell
+# Check the application for issues
+python -B -m pylint tracker_06
+# Run the unit tests found in the `tests` directory using Coverage
+coverage run -m unittest discover tracker_06/tests -b -v
+# See the coverage report in the console
+coverage report -m
+# Profile the application using the built-in Werkzeug profiler:
+python -B -m flask --app "tracker_06:create_app('profiler')" run
+# Create a log when running the Flask application
+# python -B -m flask --app "tracker_06:create_app(config_name='development', log_events=True)" run
+python -B -m flask --app "tracker_06:create_app('development', True)" run
+```
+
+-----
+
+## tracker_07
+
+- Added error handling.
+
+```shell
+# Check the application for issues
+python -B -m pylint tracker_07
+# Run the unit tests found in the `tests` directory using Coverage
+coverage run -m unittest discover tracker_07/tests -b -v
+# See the coverage report in the console
+coverage report -m
+# Profile the application using the built-in Werkzeug profiler:
+python -B -m flask --app "tracker_07:create_app('profiler')" run
+# Create a log when running the Flask application
+# python -B -m flask --app "tracker_07:create_app(config_name='development', log_events=True)" run
+python -B -m flask --app "tracker_07:create_app('development', True)" run
+```
+
+-----
+
 tracker_08
 tracker_09
 tracker_10
@@ -185,5 +223,7 @@ python -m pip install python-dotenv
 python -m pip install coverage
 python -m pip install Flask-SQLAlchemy
 python -m pip install Flask-Migrate
+python -m pip install flask-wtf
+python -m pip install flask-login
 python -m pip freeze > requirements.txt
 ```

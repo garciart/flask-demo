@@ -4,12 +4,12 @@ Run from the project directory (e.g., tracker, not tracker_XX)
 
 Ensure you have an empty __init__.py in the 'tests' directory
 
-Usage: python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+Usage: python -B -m unittest discover tracker_XX/tests -b -v
 
-> **NOTE** - Using --buffer and --verbose together provides a good balance of output,
-> since --buffer hides console output from the application
-> and --verbose displays the test's docstring;
-> for example, "Ensure you created the application instance ... ok"
+> **NOTE** - Using `--buffer` and `--verbose` together provides a good balance of output,
+> since `--buffer` hides console output from the application
+> and `--verbose` displays the test's docstring;
+> for example, `Test that check_system() fails because min_python_version is not type float ... ok`
 """
 
 import importlib

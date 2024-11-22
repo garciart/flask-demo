@@ -7,21 +7,19 @@
     - `source .venv/bin/activate` (Linux)
     - `.venv/Scripts/activate` (Windows)
 
-- Run from the project directory (e.g., flask-demo, not tracker_XX)
-- Ensure you have an empty __init__.py in the 'tests' directory
+- Test from the project directory (e.g., `flask-demo`, not `tracker_XX`)
 - Do not log events when unit testing or each test will create a log file.
-- Using --buffer and --verbose together provides a good balance of output,
-  since --buffer hides console output from the application
-  and --verbose displays the test's docstring
-  (ex., "Ensure you created the application instance ... ok")
+- Using `--buffer` and `--verbose` together provides a good balance of output,
+  since `--buffer` hides console output from the application
+  and `--verbose` displays the test's docstring
+  (ex., `Test that check_system() fails because min_python_version is not type float ... ok`)
 
 **Usage:**
 
 ```
-python -B -m unittest --buffer --verbose tracker_XX/tests/test_app.py
+python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
-
 import unittest
 
 from tracker_06 import create_app
@@ -84,7 +82,7 @@ class TestApp(BaseTestCase):
     def test_log_events_is_bool(self):
         """Test that create_app() passes when log_events is a boolean."""
         try:
-            create_app(log_events=True)
+            create_app(log_events=False)
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
@@ -93,19 +91,6 @@ class TestApp(BaseTestCase):
         with self.assertRaises(TypeError):
             create_app(log_events=1)
 
-    def test_log_events_is_false_debug(self):
-        """Test that create_app() passes when log_events is a boolean."""
-        app = create_app()
-        app.config['DEBUG'] = True  # Set debug mode
-        app.debug = True  # Set through the app object
-        app.log_events = True  # Default setting
-
-        # Initialize the application (this would re-run the check)
-        if app.debug:
-            app.log_events = False
-
-        self.assertFalse(app.log_events, "log_events should be False in debug mode")
-
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(exit=False)

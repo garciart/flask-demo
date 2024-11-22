@@ -2,31 +2,10 @@
 
 This is a demo of a Flask application that incorporates performance profiling.
 
------
-
-## Usage
-
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
-
-```shell
-# Check the application for errors
-python -B -m pylint tracker_05
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_05:create_app('profiler')" run
-```
-
-> **NOTE** - Enclose options in quotation marks when using special characters.
-
------
-
-## Notes
 
 Your website should run very fast using Flask's built-in Werkzeug server; so fast that you may not notice bottlenecks, like large image loading, until you deploy your application on a production server. However, there are several ways to identify slow-loading component, like using the developer tools found in most browsers. Another way is to use the built-in Werkzeug profiler.
 
@@ -41,26 +20,35 @@ tracker
 ├── tracker_05
 |   ├── tests
 |   |   ├── __init__.py
-|   |   └── test_app.py
+|   |   ├── test_app.py
+|   |   ├── test_app_utils.py
+|   |   └── test_profiler.py
 |   ├── __init__.py
+|   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
+├── __init__.py
 ├── .coverage
 ├── .coveragerc
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── __init__.py
+├── .pylintrc
 ├── hello.py
 └── requirements.txt
 ```
 
-Review the code and run your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
+
+> **NOTES:**
+>
+> - Enclose options in quotation marks when using special characters.
+> - Coverage will create a `__pycache__` folder. Delete it when you are done testing.
 
 ```shell
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
-# See the coverage report in the console
+# Check the application for issues
+python -B -m pylint tracker_05
+coverage run -m unittest discover tracker_05/tests -b -v
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
 python -B -m flask --app "tracker_05:create_app('profiler')" run
