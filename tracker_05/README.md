@@ -54,6 +54,12 @@ coverage report -m
 python -B -m flask --app "tracker_05:create_app('profiler')" run --without-threads
 ```
 
+> **NOTE** - There is a [known issue with cProfile and threading](https://github.com/pallets/werkzeug/issues/2909 "ProfilerMiddleware raises ValueError: Another profiling tool is already active") that can interfere with rendering images or running JavaScript files in Flask applications.
+>
+> Profiling tools like cProfile and Werkzeug's ProfilerMiddleware rely on global states, which can conflict with Flask's default multi-threaded server. By disabling threading with the `--without-threads` option, Flask runs in single-threaded mode, ensuring that profiling is not triggered multiple times simultaneously.
+>
+> Flask's built-in server is designed for development purposes, and running it in single-threaded mode should not affect your application's behavior during testing or debugging. However, **do not use** the built-in server or this setting in production, as it limits the server's ability to handle multiple concurrent requests.
+
 ```text
 --------------------------------------------------------------------------------
 PATH: '/index'
