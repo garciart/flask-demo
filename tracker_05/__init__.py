@@ -7,7 +7,7 @@
 
 Usage:
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_05:create_app('profiler')" run
+python -B -m flask --app "tracker_05:create_app('profiler')" run --without-threads
 
 Changes:
 - Added performance profiling.

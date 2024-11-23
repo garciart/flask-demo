@@ -66,7 +66,7 @@ coverage run -m unittest discover tracker_08/tests -b -v
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_08:create_app('profiler')" run
+python -B -m flask --app "tracker_08:create_app('profiler')" run --without-threads
 # Create a log when running the Flask application
 # python -B -m flask --app "tracker_08:create_app(config_name='development', log_events=True)" run
 python -B -m flask --app "tracker_08:create_app('development', True)" run

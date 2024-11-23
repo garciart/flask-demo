@@ -124,14 +124,15 @@ class TestAppUtils1(BaseTestCase):
 
     def test_start_log_file_pass(self):
         """Test that start_log_file() passes when requirements met"""
+        # NOTE - Do not run this all the time, since it will create a log file
+        # that you must manually remove
+
         # test_app = flask.Flask(__name__)  # NOSONAR
         # try:
         #     start_log_file(app=test_app, log_dir='tracker_logs/test', logging_level=10)
         # except (TypeError, ValueError):
         #     self.fail('Method raised an exception unexpectedly.')
-
-        # NOTE - Do not run this all the time, since it will create a log file
-        # that you must manually remove
+        
         pass
 
     def test_start_log_file_fail_arg1_type(self):

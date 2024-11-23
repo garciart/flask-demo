@@ -51,7 +51,7 @@ python -B -m pylint tracker_05
 coverage run -m unittest discover tracker_05/tests -b -v
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_05:create_app('profiler')" run
+python -B -m flask --app "tracker_05:create_app('profiler')" run --without-threads
 ```
 
 ```text

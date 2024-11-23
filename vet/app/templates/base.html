@@ -9,7 +9,7 @@
   <title>
     {% block page_title %}{% endblock %}
   </title>
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
   {% endblock %}
@@ -105,7 +105,7 @@
   </main>
   <footer class="footer">
     <div class="text-center">
-      &copy; <span id="currentYear"></span> -
+      &#169; <span id="currentYear"></span> -
       <a href="{{ url_for('main.index') }}" title="Home">Flask Template</a>
     </div>
     {% block footer %}

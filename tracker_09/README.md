@@ -104,7 +104,7 @@ coverage run -m unittest --verbose --buffer tracker_09/tests/test_app.py
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_09:create_app('profiler')" run
+python -B -m flask --app "tracker_09:create_app('profiler')" run --without-threads
 # Run the Flask application using HTML files found in the `templates` directory
 python -B -m flask --app tracker_09 run
 ```

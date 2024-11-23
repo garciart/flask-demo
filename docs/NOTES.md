@@ -143,7 +143,7 @@ coverage run -m unittest --verbose --buffer tracker_05/tests/test_app.py
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_05:create_app('profiler')" run
+python -B -m flask --app "tracker_05:create_app('profiler')" run --without-threads
 ```
 
 -----
@@ -160,7 +160,7 @@ coverage run -m unittest discover tracker_06/tests -b -v
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_06:create_app('profiler')" run
+python -B -m flask --app "tracker_06:create_app('profiler')" run --without-threads
 # Create a log when running the Flask application
 # python -B -m flask --app "tracker_06:create_app(config_name='development', log_events=True)" run
 python -B -m flask --app "tracker_06:create_app('development', True)" run
@@ -180,7 +180,7 @@ coverage run -m unittest discover tracker_07/tests -b -v
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_07:create_app('profiler')" run
+python -B -m flask --app "tracker_07:create_app('profiler')" run --without-threads
 # Create a log when running the Flask application
 # python -B -m flask --app "tracker_07:create_app(config_name='development', log_events=True)" run
 python -B -m flask --app "tracker_07:create_app('development', True)" run

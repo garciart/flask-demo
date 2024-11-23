@@ -13,15 +13,11 @@ python -B -m flask --app tracker_09 db init -d tracker_09/migrations
 # If using older command syntax, uncomment below:
 # python -B -m flask --app tracker_09 db migrate --message "Initial migration" --directory tracker_09/migrations
 python -B -m flask --app tracker_09 db migrate -m "Initial migration" -d tracker_09/migrations
-# Apply any pending migrations to the database.
-# If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_09 db upgrade --directory tracker_09/migrations
-python -B -m flask --app tracker_09 db upgrade -d tracker_09/migrations
 # For help with any of these commands, use python -B -m flask --app tracker_09 db --help
 
 
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_09:create_app('profiler')" run
+python -B -m flask --app "tracker_09:create_app('profiler')" run --without-threads
 # Create a log when running the Flask application
 # python -B -m flask --app "tracker_09:create_app(config_name='development', log_events=True)" run
 python -B -m flask --app "tracker_09:create_app('development', True)" run
