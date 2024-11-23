@@ -23,7 +23,7 @@ python -B -m unittest discover tracker_XX/tests -b -v
 import logging
 import os
 import shutil
-import unittest
+import unittest  # pylint: disable=unused-import
 
 import flask
 

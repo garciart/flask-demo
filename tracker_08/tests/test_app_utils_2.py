@@ -24,8 +24,8 @@ import unittest  # pylint: disable=unused-import
 
 import flask
 
-from tracker_06.app_utils import log_page_request
-from tracker_06.tests import BaseTestCase
+from tracker_08.app_utils import log_page_request
+from tracker_08.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
 

@@ -2,34 +2,10 @@
 
 This is a demo of a Flask application that incorporates templates.
 
------
-
-## Usage
-
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
-
-```shell
-# Check the application for issues
-python -B -m pylint tracker_08
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_08/tests/test_app.py
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_08:create_app('profiler')" run
-# Run the Flask application using HTML files found in the `templates` directory
-# python -B -m flask --app "tracker_08:create_app(config_name='development', log_events=True)" run
-python -B -m flask --app "tracker_08:create_app('development', True)" run
-```
-
-> **NOTE** - Enclose options in quotation marks when using special characters.
-
------
-
-## Notes
 
 Keeping your website's code in `__init__.py` is impractical, especially if you have dozens of pages with extensive Hypertext Markup Language (HTML) code. Flask ***Templates*** allow you to organize your code in a sensible manner. They are easier to maintain and reusable. Templates also allow you to incorporate Cascading Style Sheets (CSS), images, and JavaScript code to enhance the experience of your users when they visit your website.
 
@@ -50,9 +26,6 @@ tracker
 |   |   |   └── logo.png
 |   |   └── js
 |   |       └── main.js
-|   ├── tests
-|   |   ├── __init__.py
-|   |   └── test_app.py
 |   ├── templates
 |   |   ├── error
 |   |   |   ├── 404.html
@@ -60,19 +33,25 @@ tracker
 |   |   ├── main
 |   |   |   └── index.html
 |   |   └── base.html
+|   ├── tests
+|   |   ├── __init__.py
+|   |   ├── test_app.py
+|   |   ├── test_app_utils_1.py
+|   |   ├── test_app_utils_2.py
+|   |   └── test_profiler.py
 |   ├── __init__.py
 |   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
 ├── tracker_logs
 |   └── tracker_08_1234567890.1234567.log
-
+├── __init__.py
 ├── .coverage
 ├── .coveragerc
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── __init__.py
+├── .pylintrc
 ├── hello.py
 └── requirements.txt
 ```
@@ -83,12 +62,12 @@ Check the code for issues, then run your application. Do not forget to activate 
 # Check the application for issues
 python -B -m pylint tracker_08
 # Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_08/tests/test_app.py
+coverage run -m unittest discover tracker_08/tests -b -v
 # See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
 python -B -m flask --app "tracker_08:create_app('profiler')" run
-# Run the Flask application using HTML files found in the `templates` directory
+# Create a log when running the Flask application
 # python -B -m flask --app "tracker_08:create_app(config_name='development', log_events=True)" run
 python -B -m flask --app "tracker_08:create_app('development', True)" run
 ```

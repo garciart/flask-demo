@@ -20,16 +20,20 @@
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
-
+import logging
+import os
+import shutil
 import unittest  # pylint: disable=unused-import
 
-from tracker_04.app_utils import check_system, validate_input
-from tracker_04.tests import BaseTestCase
+import flask
+
+from tracker_09.app_utils import check_system, validate_input, start_log_file
+from tracker_09.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
 
 
-class TestAppUtils(BaseTestCase):
+class TestAppUtils1(BaseTestCase):
     """Unit tests for application utilities.
 
     :param unittest.TestCase BaseTestCase: Inherited from __init__.py
@@ -117,3 +121,51 @@ class TestAppUtils(BaseTestCase):
         test_var = ''
         with self.assertRaises(ValueError):
             validate_input(obj_name='test_var', obj_to_check=test_var, expected_type=str)
+
+    def test_start_log_file_pass(self):
+        """Test that start_log_file() passes when requirements met"""
+        test_app = flask.Flask(__name__)
+        try:
+            start_log_file(app=test_app, log_dir='tracker_logs', logging_level=30)
+        except (TypeError, ValueError):
+            self.fail('Method raised an exception unexpectedly.')
+
+    def test_start_log_file_fail_arg1_type(self):
+        """Test that start_log_file() fails when arg1 is the wrong type"""
+        test_app = 'foo'
+        with self.assertRaises(TypeError):
+            start_log_file(app=test_app, log_dir='tracker_logs', logging_level=10)
+
+    def test_start_log_file_fail_arg2_type(self):
+        """Test that start_log_file() fails when arg2 is the wrong type"""
+        test_app = flask.Flask(__name__)
+        with self.assertRaises(TypeError):
+            start_log_file(app=test_app, log_dir=1, logging_level=10)
+
+    def test_start_log_file_fail_arg2_empty(self):
+        """Test that start_log_file() fails when arg2 is empty"""
+        test_app = flask.Flask(__name__)
+        with self.assertRaises(ValueError):
+            start_log_file(app=test_app, log_dir='', logging_level=10)
+
+    def test_start_log_file_fail_arg3_type(self):
+        """Test that start_log_file() fails when arg3 is the wrong type"""
+        test_app = flask.Flask(__name__)
+        with self.assertRaises(TypeError):
+            start_log_file(app=test_app, log_dir='tracker_logs', logging_level='foo')
+
+    def test_start_log_file_mkdir_log_dir_pass(self):
+        """Test that start_log_file() can make a log directory"""
+        test_app = flask.Flask(__name__)
+        cwd = os.getcwd()
+        # Delete the directory and its contents if it exists
+        try:
+            shutil.rmtree(f'{cwd}/foo')
+        except FileNotFoundError:
+            pass
+        try:
+            start_log_file(app=test_app, log_dir='foo', logging_level=10)
+        except OSError:
+            self.fail('Method raised an exception unexpectedly.')
+        logging.shutdown()
+        shutil.rmtree(f'{cwd}/foo')

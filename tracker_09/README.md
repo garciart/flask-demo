@@ -2,33 +2,10 @@
 
 This is a demo of a Flask application that incorporates a database.
 
------
-
-## Usage
-
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
-
-```shell
-# Check the application for issues
-python -B -m pylint tracker_09
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_09/tests/test_app.py
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_09:create_app('profiler')" run
-# Run the Flask application using HTML files found in the `templates` directory
-python -B -m flask --app tracker_09 run
-```
-
-> **NOTE** - Enclose options in quotation marks when using special characters.
-
------
-
-## Notes
 
 The purpose of the Tracker application is to track course assignments and, in order to do that, it needs a database.
 

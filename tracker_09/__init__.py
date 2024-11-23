@@ -30,6 +30,10 @@ from tracker_09.models import db, migrate
 # Import the profiling middleware
 from tracker_09.profiler import add_profiler_middleware
 
+# Flask application factories require lazy loading to prevent circular imports,
+# so disable the warning
+# pylint: disable=import-outside-toplevel
+
 __author__ = 'Rob Garcia'
 
 
@@ -99,14 +103,14 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     # Create the database if it does not exist
     with _app.app_context():
         # Lazy import to avoid circular imports
-        from tracker_09.models.create_db import create_db
-        from tracker_09.models.member import Member
+        # from tracker_09.models.member import Member
 
         # Extract database file path from the URI
         uri = db.engine.url
         db_path = uri.database if uri.database else uri.host
 
         if not os.path.exists(db_path):
+            from tracker_09.models.create_db import create_db
             create_db()
 
     # Create a route and page
