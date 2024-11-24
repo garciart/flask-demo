@@ -32,7 +32,7 @@ __author__ = 'Rob Garcia'
 class TestModelsMember(BaseTestCase):
     """Unit tests for Member model.
 
-    :param unittest.TestCase BaseTestCase: Inherited from __init__.py
+    :param unittest.TestCase.BaseTestCase: Inherited from __init__.py
     """
 
     def test_member_instantiated_pass(self):
@@ -85,20 +85,20 @@ class TestModelsMember(BaseTestCase):
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
-    def test_check_password_pass(self):
-        """Test that check_password() passes when the password is correct."""
+    def test_verify_password_pass(self):
+        """Test that verify_password() passes when the password is correct."""
         _member = Member(member_name='John', member_email='john@foo.bar', password='Change.Me.123')
-        self.assertTrue(_member.check_password('Change.Me.123',
+        self.assertTrue(_member.verify_password('Change.Me.123',
                                                _member.password_hash))
 
-    def test_check_password_type_fail(self):
-        """Test that check_password() fails when the password is the wrong type."""
+    def test_verify_password_type_fail(self):
+        """Test that verify_password() fails when the password is the wrong type."""
         with self.assertRaises(TypeError):
             _member = Member(member_name='John', member_email='john@foo.bar',
                              password='Change.Me.123')
             _member.set_password(False)
 
-    def test_check_password_value_fail(self):
-        """Test that check_password() fails when the password is incorrect."""
+    def test_verify_password_value_fail(self):
+        """Test that verify_password() fails when the password is incorrect."""
         _member = Member(member_name='John', member_email='john@foo.bar', password='Change.Me.123')
-        self.assertFalse(_member.check_password('foo', _member.password_hash))
+        self.assertFalse(_member.verify_password('foo', _member.password_hash))

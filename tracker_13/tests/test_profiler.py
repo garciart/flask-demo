@@ -34,7 +34,7 @@ __author__ = 'Rob Garcia'
 class TestProfiler(BaseTestCase):
     """Unit tests for profiler utilities.
 
-    :param unittest.TestCase BaseTestCase: Inherited from __init__.py
+    :param unittest.TestCase.BaseTestCase: Inherited from __init__.py
     """
 
     def test_add_profiler_middleware_pass(self):

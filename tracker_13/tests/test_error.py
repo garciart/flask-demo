@@ -26,34 +26,13 @@ from tracker_13.tests import BaseTestCase
 __author__ = 'Rob Garcia'
 
 
-class TestPages(BaseTestCase):
+class TestError(BaseTestCase):
     """Unit tests for functions and methods in the application's blueprints directory.
 
-    Covers web and error pages (e.g., /index, /about, etc)
+    Covers custom error pages (e.g., 404, 500, etc)
 
-    :param unittest.TestCase BaseTestCase: Inherited from tests/__init__.py
+    :param unittest.TestCase.BaseTestCase: Inherited from tests/__init__.py
     """
-
-    def test_index_response_code(self):
-        """Test that the index page was created by looking at the response code"""
-        response = self.client.get('/', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
-    def test_index_content(self):
-        """Test that the index page contains the correct contents"""
-        response = self.client.get('/', follow_redirects=True)
-        self.assertIn(b'Hello, World!', response.data)
-
-    def test_about_response_code(self):
-        """Test that the about page was created by looking at the response code"""
-        response = self.client.get('/about', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
-    def test_about_content(self):
-        """Test that the about page contains the correct contents"""
-        response = self.client.get('/about', follow_redirects=True)
-        self.assertIn(b'About', response.data)
-
     def test_not_found_response_code(self):
         """Test that the Not Found page was created by looking at the response code"""
         response = self.client.get('/oops', follow_redirects=True)

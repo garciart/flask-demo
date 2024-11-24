@@ -33,7 +33,7 @@ __author__ = 'Rob Garcia'
 class TestAppUtils2(BaseTestCase):
     """Unit tests for application utilities.
 
-    :param unittest.TestCase BaseTestCase: Inherited from __init__.py
+    :param unittest.TestCase.BaseTestCase: Inherited from __init__.py
     """
 
     def test_log_page_request_pass(self):

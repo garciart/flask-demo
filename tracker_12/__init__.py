@@ -117,8 +117,7 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
 
     # Start routing using blueprints
     # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from tracker_12.blueprints import main
-    from tracker_12.blueprints import error
+    from tracker_12.blueprints import main, error
 
     main.get_vars_from_create_app(config_name, _logging_level, _logging_level_name)
 

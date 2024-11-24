@@ -91,9 +91,12 @@ tracker
 |   |   └── base.html
 |   ├── tests
 |   |   ├── __init__.py
+|   |   ├── test_api.py
 |   |   ├── test_app.py
 |   |   ├── test_app_utils_1.py
 |   |   ├── test_app_utils_2.py
+|   |   ├── test_error.py
+|   |   ├── test_main.py
 |   |   ├── test_models_member.py
 |   |   └── test_profiler.py
 |   ├── __init__.py

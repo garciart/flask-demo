@@ -5,22 +5,8 @@ This file also turns the directory into a package whose scripts can be imported 
 
 import flask
 
-api_bp = flask.Blueprint('api_bp', __name__)
+api_bp = flask.Blueprint('api_bp', __name__, template_folder='templates')
 
 # Import the other modules in the package after instantiating
 # the Blueprint to avoid known circular import problems with Flask
 from tracker_13.blueprints.api import api_routes
-
-
-def get_vars_from_create_app(
-        config_name: str = 'default', logging_level: int = 30, logging_level_name: str = 'WARNING'
-):
-    """Get application variables from create_app().
-
-    :param str config_name: The name of the configuration to use, defaults to 'default'
-    :param int logging_level: The level of messages to log, defaults to 30
-    :param str logging_level_name: The name of the logging level, defaults to 'WARNING'
-    """
-    api_bp.config_name = config_name
-    api_bp.logging_level = logging_level
-    api_bp.logging_level_name = logging_level_name

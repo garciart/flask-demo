@@ -2,8 +2,9 @@
 
 Test: http://127.0.0.1:5000/api/test
 """
+import os
 
-from flask import (Response, jsonify, url_for)
+from flask import (Response, jsonify, send_from_directory)
 
 from tracker_13.app_utils import validate_input
 from tracker_13.blueprints.api import api_bp
@@ -16,14 +17,18 @@ _DUMMY_DATA = [
      'course_group': 'SDEV', 'course_desc': 'Introduction to Flask.'}
 ]
 
+
 @api_bp.route('/favicon.ico')
-def favicon() -> Response:
+def get_favicon() -> Response:
     """Loads application icon when making API calls with no HTML.
 
-    :returns: The application icon
+    :returns: The favicon.ico file
     :rtype: Response
     """
-    return url_for('static', filename='image/favicon.ico')
+    favicon_path = os.path.join('static', 'img', 'favicon.ico')
+    return send_from_directory(os.path.dirname(favicon_path), os.path.basename(favicon_path),
+                               mimetype='image/x-icon')
+
 
 @api_bp.route('/api/test', methods=['GET'])
 def get_test_data() -> Response | tuple:

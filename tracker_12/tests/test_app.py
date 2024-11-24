@@ -30,7 +30,7 @@ __author__ = 'Rob Garcia'
 class TestApp(BaseTestCase):
     """Unit tests for functions and methods in the application's __init__.py.
 
-    :param unittest.TestCase BaseTestCase: Inherited from tests/__init__.py
+    :param unittest.TestCase.BaseTestCase: Inherited from tests/__init__.py
     """
 
     def test_app(self):

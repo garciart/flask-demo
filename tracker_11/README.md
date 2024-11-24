@@ -23,7 +23,7 @@ To get started, install the SQLAlchemy library and extensions:
 python -m pip install Flask-SQLAlchemy
 # Install Flask database migration package
 python -m pip install Flask-Migrate
-# Add them to the required packages list
+# Update the required packages list
 python -m pip freeze > requirements.txt
 ```
 

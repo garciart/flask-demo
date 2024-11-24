@@ -2,30 +2,6 @@
 
 -----
 
-## Environment Setup
-
-1. Create the virtual environment:
-
-   - Windows:
-
-        ```pwsh
-        mkdir -p tracker
-        cd tracker
-        python<version> venv $PWD/.venv
-        .venv/Scripts/activate
-        ```
-
-   - Linux
-
-        ```shell
-        mkdir -p tracker
-        cd tracker
-        python<version> venv $PWD/.venv
-        source .venv/bin/activate
-        ```
-
------
-
 ## tracker_01
 
 - Applied the Flask Package pattern
@@ -97,7 +73,7 @@ python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
 
 -----
 
-## tracker_04
+## tracker_05
 
 - Added unit testing
 
@@ -112,7 +88,7 @@ python -B -m flask --app tracker_04 run
 
 -----
 
-## tracker_04a
+## tracker_06
 
 - Added unit testing using Coverage.
 
@@ -131,7 +107,7 @@ python -B -m flask --app tracker_04a run
 
 -----
 
-## tracker_05
+## tracker_07
 
 - Added profiling.
 
@@ -148,7 +124,7 @@ python -B -m flask --app "tracker_05:create_app('profiler')" run --without-threa
 
 -----
 
-## tracker_06
+## tracker_08
 
 - Added logging.
 
@@ -168,7 +144,7 @@ python -B -m flask --app "tracker_06:create_app('development', True)" run
 
 -----
 
-## tracker_07
+## tracker_09
 
 - Added error handling.
 
@@ -188,30 +164,31 @@ python -B -m flask --app "tracker_07:create_app('development', True)" run
 
 -----
 
-tracker_08
-tracker_09
-tracker_10
-tracker_11
+## tracker_10
+
+- Add templates.
 
 -----
 
+## tracker_11
 
+- Added database.
 
-2. Install packages:
+-----
 
-    ```shell
-    python -m pip install --upgrade pip
-    python -m pip install flask
-    python -m pip install python-dotenv
-    ```
+## tracker_12
 
-3. Save requirements:
+- Added blueprints.
 
-    ```shell
-    python -m pip freeze > requirements.txt
-    # Test: You should get a 'Requirement already satisfied' message
-    python -m pip install -r requirements.txt
-    ```
+-----
+
+## tracker_13
+
+- Added API
+
+-----
+
+## List of Commands
 
 ```shell
 python3.12 venv $PWD/.venv

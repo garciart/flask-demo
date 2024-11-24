@@ -31,8 +31,13 @@ class TestAPI(BaseTestCase):
 
     Covers API requests
 
-    :param unittest.TestCase BaseTestCase: Inherited from tests/__init__.py
+    :param unittest.TestCase.BaseTestCase: Inherited from tests/__init__.py
     """
+
+    def test_get_favicon_response_code(self):
+        """Test that an API call can find the favicon to avoid 404 errors"""
+        response = self.client.get('/favicon.ico', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
 
     def test_get_test_data_response_code(self):
         """Test that the API test page was created by looking at the response code"""

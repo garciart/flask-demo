@@ -102,17 +102,18 @@ class Member(db.Model):
         if not re.fullmatch(password_regex, password):
             raise ValueError("Invalid password.")
 
-    def check_password(self, password_to_check: str, password_hash: str) -> bool:
+    @staticmethod
+    def verify_password(password_to_verify: str, password_hash: str) -> bool:
         """Converts input to a hash and compares it against an existing hash
 
-        :param str password_to_check: A provided password in plain text
+        :param str password_to_verify: A provided password in plain text
         :param str password_hash: A hash of the actual password
 
         :returns: True if the password hashes match
         :rtype: bool
         """
         # Validate inputs
-        validate_input('password_to_check', password_to_check, str)
+        validate_input('password_to_verify', password_to_verify, str)
         validate_input('password_hash', password_hash, str)
 
-        return check_password_hash(password_hash, password_to_check)
+        return check_password_hash(password_hash, password_to_verify)
