@@ -9,11 +9,8 @@ Usage:
 """
 
 import logging
-import os
 
 __all__ = ['Config', 'DevConfig', 'ProfilerConfig']
-
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
@@ -21,10 +18,6 @@ class Config:
 
     # WARNING is the default level for the logging module
     LOGGING_LEVEL = logging.WARNING
-
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or (
-            'sqlite:///' + os.path.join(basedir, 'tracker.db')
-    )
 
 
 class DevConfig(Config):

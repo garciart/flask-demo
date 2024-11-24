@@ -1,25 +1,32 @@
 # Tracker_06
 
-This is a demo of a Flask application that incorporates logging.
-
------
-
-## Usage
+This is a demo of a Flask application that incorporates Coverage, a tool for measuring code coverage of Python programs.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-Logging allows you to:
+Instead of using the `unittest` module, we will use Coverage to unit test our code. Not only does Coverage test, but it also locates code that is not covered by a unit test. From the documentation at <https://coverage.readthedocs.io/en/latest/>:
 
-- Capture errors and bugs in your application
-- Track how users interact with your application
-- Monitor your application's performance
+*Coverage.py is a tool for measuring code coverage of Python programs. It monitors your program, noting which parts of the code have been executed, then analyzes the source to identify code that could have been executed but was not.*
 
-With this information, you can protect, fix, and optimize your web application. The Python Standard Library contains a `logging` module that makes it easy to integrate logging into your application.
+*Coverage measurement is typically used to gauge the effectiveness of tests. It can show which parts of your code are being exercised by tests, and which are not.*
 
-We added logging support in `app_utils.py`. We also moved utility functions into this file, like `check_system()` and `validate_input()`, so they are accessible by other files.
+Install Coverage:
+
+```shell
+python -m pip install coverage
+coverage --version
+python -m pip freeze > requirements.txt
+```
+
+Since you will not test the unit tests themselves, tell Coverage to ignore your `tests` directory by adding a `.coveragerc` file with the following code:
+
+```ini
+[run]
+omit = */tests/*
+```
 
 Your application structure should be like the following:
 
@@ -33,15 +40,10 @@ tracker
 |   ├── tests
 |   |   ├── __init__.py
 |   |   ├── test_app.py
-|   |   ├── test_app_utils_1.py
-|   |   ├── test_app_utils_2.py
-|   |   └── test_profiler.py
+|   |   └── test_app_utils.py
 |   ├── __init__.py
 |   ├── app_utils.py
-|   ├── config.py
-|   └── profiler.py
-├── tracker_logs
-|   └── tracker_06_1234567890.1234567.log
+|   └── config.py
 ├── __init__.py
 ├── .coverage
 ├── .coveragerc
@@ -53,45 +55,60 @@ tracker
 └── requirements.txt
 ```
 
-Once you are finished reviewing the code, start your application. Do not forget to activate your Python virtual environment first!
+Run Coverage to make sure that your changes did not regress the code:
 
 > **NOTES:**
 >
-> - Enclose options in quotation marks when using special characters.
-> - Coverage will create a `__pycache__` folder. Delete it when you are done testing.
-> - Use the `development` configuration for logging or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
+> - Test from the project directory (e.g., `flask-demo`, not `tracker_XX`)
 > - Do not log events when unit testing or each test will create a log file.
+> - Using `--buffer` and `--verbose` together provides a good balance of output,
+>   since `--buffer` hides console output from the application
+>   and `--verbose` displays the test's docstring
+>   (ex., `Test that check_system() fails because min_python_version is not type float ... ok`)
+
+```shell
+# Run the unit tests found in the `tests` directory
+# coverage -m unittest discover tracker_06/tests --buffer --verbose
+coverage run -m unittest discover tracker_06/tests -b -v
+```
+
+> **NOTE** - Coverage will create a `__pycache__` folder. Delete it when you are done testing.
+
+Once the tests are complete, look at the results:
+
+```shell
+coverage report -m
+```
+
+**Output:**
+
+```text
+Name                       Stmts   Miss  Cover   Missing
+--------------------------------------------------------
+tracker_06\__init__.py       26      2    92%   67-68
+tracker_06\app_utils.py      24      0   100%
+tracker_06\config.py          6      0   100%
+--------------------------------------------------------
+TOTAL                         56      2    96%
+```
+
+If you look at the lines that Coverage says are not covered, they are the `except` part of a `try-except` block. Coverage does not measure code coverage for exceptions unless they are actually raised during test execution. Since you cannot raise those exceptions without adding bad code to your application, use the `# pragma: no cover` comment to skip checking the line of code.
+
+To see the results in a browser, run the following command:
+
+```shell
+coverage html --directory tracker_06/tests/htmlcov
+```
+
+Coverage will create and populate the `tracker_06/tests/htmlcov` directory with a web page. Open a browser and navigate to <tracker_06/tests/htmlcov/index.html> to see the web page.
+
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
 # Check the application for issues
 python -B -m pylint tracker_06
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest discover tracker_06/tests -b -v
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_06:create_app('profiler')" run --without-threads
-# Create a log when running the Flask application
-# python -B -m flask --app "tracker_06:create_app(config_name='development', log_events=True)" run
-python -B -m flask --app "tracker_06:create_app('development', True)" run
+# Run the application using the 'default' configuration
+python -B -m flask --app tracker_06 run
 ```
-
-Once you have started the server:
-
-- Navigate to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
-- Navigate to <http://127.0.0.1:5000/oops>; you should get a `Not Found` error.
-- Navigate back to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
-- Terminate the application using <kbd>CTRL</kbd> +  <kbd>C</kbd>.
-- Take a look at the log file in `tracker_logs`. You should see something like the following:
-
-    ```text
-    "date_time", "server_ip", "process_id", "msg_level", "message"
-    "2024-11-03 16:50:50,764", "192.168.56.1", "15628", "INFO", "Starting tracker_06 application."
-    "2024-11-03 16:51:05,512", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:51:06,122", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:51:12,914", "192.168.56.1", "15628", "INFO", "/oops requested by 127.0.0.1 using GET; 404 NOT FOUND."
-    "2024-11-03 16:51:18,238", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:51:20,199", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    ```
 
 Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

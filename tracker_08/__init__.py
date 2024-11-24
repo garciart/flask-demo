@@ -1,4 +1,4 @@
-"""A Flask application that incorporates templates.
+"""A Flask application that incorporates logging.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
@@ -6,22 +6,22 @@
 > - `.venv/Scripts/activate` (Windows)
 
 Usage:
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_08/tests/test_app.py
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_08:create_app('profiler')" run --without-threads
-# Runs the Flask application using HTML files found in the `templates` directory
+# Create a log when running the Flask application
 # python -B -m flask --app "tracker_08:create_app(config_name='development', log_events=True)" run
 python -B -m flask --app "tracker_08:create_app('development', True)" run
 
-> **NOTE** - Enclose options in quotation marks when using special characters.
+> **NOTES**
+>
+> - Enclose options in quotation marks when using special characters.
+> - Do not log events when unit testing or each test will create a log file.
+> - Use the `development` configuration during development or the application will \
+    create an empty log file, since the application only logs `logging.INFO`-level messages or less.
 
 Changes:
-- Moved pages into templates
-- Added a "master" layout page
-- Added Cascading Style Sheets (CSS), images, and JavaScript files
+- Replaced `import config`. Importing occurs on demand in the `_configure_app` method
+- Replaced configuration if-elif-else with mapping for readability and maintainability
+- Consolidated input validation in the `validate_input` method
+- Added logging
 """
 
 import logging
@@ -89,9 +89,6 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
             # Do not forget to return the response to the client, or the app will crash
             return response
 
-    # Get the name of the logging level from config.py
-    _logging_level_name = logging.getLevelName(_logging_level)
-
     # Optionally add the profiler middleware based on configuration
     if _app.config.get('PROFILING_ENABLED', False):
         _app = add_profiler_middleware(_app)
@@ -102,39 +99,17 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     def index() -> str:
         """Render the default landing page.
 
-        :returns: The HTML code to display with {{ placeholders }} populated
+        :returns: The HTML code for the page
         :rtype: str
         """
-        return flask.render_template(
-            'main/index.html',
-            config_name_text=config_name,
-            logging_level_text=_logging_level,
-            logging_level_name_text=_logging_level_name,
-        )
 
-    @_app.errorhandler(404)
-    def page_not_found(e) -> tuple:
-        """Render an error page if the requested page or resource was not found on the server.
-
-        :returns: The HTML code to render and the response code
-        :rtype: tuple
-        """
-        return flask.render_template('error/404.html', e=e), 404
-
-    @_app.errorhandler(500)
-    def server_error(e) -> tuple:
-        """Render an error page if there is a server error.
-
-        :returns: The HTML code to render and the response code
-        :rtype: tuple
-        """
-        return flask.render_template('error/500.html', e=e), 500
-
-    # Remove after testing
-    @_app.route('/doh')
-    def doh():
-        # Raise an exception to trigger a 500 error
-        raise RuntimeError('This is an intentional 500 error.')
+        # DOCTYPE prevents Quirks mode
+        _greeting = f"""<!DOCTYPE html>
+            <h1>Hello, World!</h1>
+            <p>Your are using the <b>{config_name}</b> configuration and your logging level is
+            <b>{logging.getLevelName(_logging_level)} ({_logging_level})</b>.</p>
+            """
+        return _greeting
 
     # Return the application instance to the code that invoked 'create_app()'
     return _app

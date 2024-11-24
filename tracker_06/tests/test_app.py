@@ -66,26 +66,7 @@ class TestApp(BaseTestCase):
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
-    def test_config_name_accepts_valid_profiling_value(self):
-        """Test that create_app() passes when config_name is a 'profiler'."""
-        try:
-            create_app('profiler')
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
     def test_config_name_rejects_invalid_value(self):
         """Test that create_app() fails when config_name is not a valid selection."""
         with self.assertRaises(ValueError):
             create_app('foo')
-
-    def test_log_events_is_bool(self):
-        """Test that create_app() passes when log_events is a boolean."""
-        try:
-            create_app(log_events=False)
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
-    def test_log_events_is_not_bool(self):
-        """Test that create_app() fails when config_name is not a string."""
-        with self.assertRaises(TypeError):
-            create_app(log_events=1)

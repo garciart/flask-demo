@@ -1,13 +1,25 @@
 # Tracker_08
 
-This is a demo of a Flask application that incorporates templates.
+This is a demo of a Flask application that incorporates logging.
+
+-----
+
+## Usage
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-Keeping your website's code in `__init__.py` is impractical, especially if you have dozens of pages with extensive Hypertext Markup Language (HTML) code. Flask ***Templates*** allow you to organize your code in a sensible manner. They are easier to maintain and reusable. Templates also allow you to incorporate Cascading Style Sheets (CSS), images, and JavaScript code to enhance the experience of your users when they visit your website.
+Logging allows you to:
+
+- Capture errors and bugs in your application
+- Track how users interact with your application
+- Monitor your application's performance
+
+With this information, you can protect, fix, and optimize your web application. The Python Standard Library contains a `logging` module that makes it easy to integrate logging into your application.
+
+We added logging support in `app_utils.py`. We also moved utility functions into this file, like `check_system()` and `validate_input()`, so they are accessible by other files.
 
 Your application structure should be like the following:
 
@@ -18,21 +30,6 @@ tracker
 ├── tracker_01
 ├── ...
 ├── tracker_08
-|   ├── static
-|   |   ├── css
-|   |   |   └── main.css
-|   |   ├── img
-|   |   |   ├── favicon.ico
-|   |   |   └── logo.png
-|   |   └── js
-|   |       └── main.js
-|   ├── templates
-|   |   ├── error
-|   |   |   ├── 404.html
-|   |   |   └── 500.html
-|   |   ├── main
-|   |   |   └── index.html
-|   |   └── base.html
 |   ├── tests
 |   |   ├── __init__.py
 |   |   ├── test_app.py
@@ -56,7 +53,14 @@ tracker
 └── requirements.txt
 ```
 
-Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
+Once you are finished reviewing the code, start your application. Do not forget to activate your Python virtual environment first!
+
+> **NOTES:**
+>
+> - Enclose options in quotation marks when using special characters.
+> - Coverage will create a `__pycache__` folder. Delete it when you are done testing.
+> - Use the `development` configuration for logging or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
+> - Do not log events when unit testing or each test will create a log file.
 
 ```shell
 # Check the application for issues
@@ -72,22 +76,22 @@ python -B -m flask --app "tracker_08:create_app('profiler')" run --without-threa
 python -B -m flask --app "tracker_08:create_app('development', True)" run
 ```
 
-Run your application using the `development` configuration, refresh the page, and terminate the application using <kbd>CTRL</kbd> +  <kbd>C</kbd>. Take a look at the log file in `tracker_logs`. You should see something like the following:
+Once you have started the server:
 
-```text
-"date_time", "server_ip", "process_id", "msg_level", "message"
-"2024-11-03 18:38:21,123", "192.168.56.1", "17384", "INFO", "Starting tracker_08 application."
-"2024-11-03 18:38:23,836", "192.168.56.1", "17384", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:24,436", "192.168.56.1", "17384", "INFO", "/static/img/logo.png requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:24,440", "192.168.56.1", "17384", "INFO", "/static/css/main.css requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:24,440", "192.168.56.1", "17384", "INFO", "/static/js/main.js requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:35,856", "192.168.56.1", "17384", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
-"2024-11-03 18:38:35,868", "192.168.56.1", "17384", "INFO", "/static/css/main.css requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-"2024-11-03 18:38:35,870", "192.168.56.1", "17384", "INFO", "/static/img/logo.png requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-"2024-11-03 18:38:35,871", "192.168.56.1", "17384", "INFO", "/static/js/main.js requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-"2024-11-03 18:38:35,881", "192.168.56.1", "17384", "INFO", "/static/img/logo.png requested by 127.0.0.1 using GET; 304 NOT MODIFIED."
-```
+- Navigate to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
+- Navigate to <http://127.0.0.1:5000/oops>; you should get a `Not Found` error.
+- Navigate back to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
+- Terminate the application using <kbd>CTRL</kbd> +  <kbd>C</kbd>.
+- Take a look at the log file in `tracker_logs`. You should see something like the following:
 
-The HTTP response code `304 NOT MODIFIED` means that the server found a cached copy of the resource, like a favicon, so it did not request a new version from the server. This speeds up rendering the page. On most browsers, if you want the application to re-request the resource, press <kbd>Shift</kbd> <kbd>F5</kbd>; that forces the application to ignore the cache and retrieve a fresh version of the web page.
+    ```text
+    "date_time", "server_ip", "process_id", "msg_level", "message"
+    "2024-11-03 16:50:50,764", "192.168.56.1", "15628", "INFO", "Starting tracker_08 application."
+    "2024-11-03 16:51:05,512", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 16:51:06,122", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 16:51:12,914", "192.168.56.1", "15628", "INFO", "/oops requested by 127.0.0.1 using GET; 404 NOT FOUND."
+    "2024-11-03 16:51:18,238", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
+    "2024-11-03 16:51:20,199", "192.168.56.1", "15628", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
+    ```
 
 Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

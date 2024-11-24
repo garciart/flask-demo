@@ -20,6 +20,7 @@
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
+
 import logging
 import os
 import shutil
@@ -137,7 +138,7 @@ class TestAppUtils1(BaseTestCase):
         """Test that start_log_file() fails when arg1 is the wrong type"""
         test_app = 'foo'
         with self.assertRaises(TypeError):
-            start_log_file(app=test_app, log_dir='tracker_logs', logging_level=10)
+            start_log_file(app=test_app, log_dir='tracker_logs/test', logging_level=10)
 
     def test_start_log_file_fail_arg2_type(self):
         """Test that start_log_file() fails when arg2 is the wrong type"""
@@ -155,7 +156,7 @@ class TestAppUtils1(BaseTestCase):
         """Test that start_log_file() fails when arg3 is the wrong type"""
         test_app = flask.Flask(__name__)
         with self.assertRaises(TypeError):
-            start_log_file(app=test_app, log_dir='tracker_logs', logging_level='foo')
+            start_log_file(app=test_app, log_dir='tracker_logs/test', logging_level='foo')
 
     def test_start_log_file_mkdir_log_dir_pass(self):
         """Test that start_log_file() can make a log directory"""

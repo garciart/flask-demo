@@ -37,6 +37,36 @@ class TestApp(BaseTestCase):
         """Ensure you created the application instance"""
         self.assertIsNotNone(self.app)
 
+    def test_index_response_code(self):
+        """Test that the index page was created by looking at the response code"""
+        response = self.client.get('/', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_index_content(self):
+        """Test that the index page contains the correct contents"""
+        response = self.client.get('/', follow_redirects=True)
+        self.assertIn(b'Hello, World!', response.data)
+
+    def test_not_found_response_code(self):
+        """Test that the Not Found page was created by looking at the response code"""
+        response = self.client.get('/oops', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_not_found_content(self):
+        """Test that the Not Found page contains the correct contents"""
+        response = self.client.get('/oops', follow_redirects=True)
+        self.assertIn(b'Not Found', response.data)
+
+    def test_error_response_code(self):
+        """Test that the Error page was created by looking at the response code"""
+        response = self.client.get('/doh', follow_redirects=True)
+        self.assertEqual(response.status_code, 500)
+
+    def test_error_content(self):
+        """Test that the Error page contains the correct contents"""
+        response = self.client.get('/doh', follow_redirects=True)
+        self.assertIn(b'Internal Server Error', response.data)
+
     def test_config_name_is_string(self):
         """Test that create_app() passes when config_name is a string."""
         try:

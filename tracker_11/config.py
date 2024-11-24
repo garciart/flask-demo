@@ -26,6 +26,8 @@ class Config:
             'sqlite:///' + os.path.join(basedir, 'tracker.db')
     )
 
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 class DevConfig(Config):
     """Configuration variables and settings for development."""

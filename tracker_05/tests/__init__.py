@@ -32,6 +32,8 @@ class BaseTestCase(unittest.TestCase):
 
     This class sets up the application context and provides methods
     to be shared across different test modules.
+
+    :param class unittest.TestCase: Class to test single test cases
     """
     CONFIG_NAME = 'default'
 

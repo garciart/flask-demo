@@ -147,6 +147,7 @@ As a student, I want to be able to view the details of any courses assigned to m
 
 ## Database Schema
 
+```text
 +-----------------------------------+
 |     course                        |
 +-----------------------------------+
@@ -188,3 +189,4 @@ As a student, I want to be able to view the details of any courses assigned to m
 | PK  role_id         INTEGER NN    | FK -|<-----+ (ON DELETE CASCADE, ON UPDATE CASCADE)
 | PK  user_id         INTEGER NN    | FK -|
 +-----------------------------------+
+```

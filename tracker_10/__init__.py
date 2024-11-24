@@ -6,36 +6,33 @@
 > - `.venv/Scripts/activate` (Windows)
 
 Usage:
-- python -B -m flask --app tracker_10 run
-- python -B -m flask --app "tracker_10:create_app('development', True)" run
-> **NOTE** - Enclose options in quotation marks when using special characters.
+# Run the unit tests found in the `tests` directory using Coverage
+coverage run -m unittest --verbose --buffer tracker_10/tests/test_app.py
+# See the coverage report in the console
+coverage report -m
+# Profile the application using the built-in Werkzeug profiler:
+python -B -m flask --app "tracker_10:create_app('profiler')" run --without-threads
+# Runs the Flask application using HTML files found in the `templates` directory
+# python -B -m flask --app "tracker_10:create_app(config_name='development', log_events=True)" run
+python -B -m flask --app "tracker_10:create_app('development', True)" run
 
-> **NOTE** - Do not log events when unit testing or each test will create a log file.
+> **NOTE** - Enclose options in quotation marks when using special characters.
 
 Changes:
 - Moved pages into templates
 - Added a "master" layout page
-- Added static Cascading Style Sheets (CSS) and JavaScript files
+- Added Cascading Style Sheets (CSS), images, and JavaScript files
 """
 
 import logging
-import os
 
 import flask
 
-# Import helper functions
 from tracker_10.app_utils import (validate_input, check_system, start_log_file,
                                   log_page_request)
 # Import the runtime configuration classes
 from tracker_10.config import Config, DevConfig, ProfilerConfig
-# Import a SQLAlchemy object
-from tracker_10.models import db, migrate
-# Import the profiling middleware
 from tracker_10.profiler import add_profiler_middleware
-
-# Flask application factories require lazy loading to prevent circular imports,
-# so disable the warning
-# pylint: disable=import-outside-toplevel
 
 __author__ = 'Rob Garcia'
 
@@ -99,31 +96,39 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     if _app.config.get('PROFILING_ENABLED', False):
         _app = add_profiler_middleware(_app)
 
-    # Initialize the database with the app
-    db.init_app(_app)
-    migrate.init_app(_app, db)
+    # Create a route and page
+    @_app.route('/')
+    @_app.route('/index')
+    def index() -> str:
+        """Render the default landing page.
 
-    # Create the database if it does not exist
-    with _app.app_context():
-        # Lazy import to avoid circular imports
-        from tracker_10.models.create_db import create_db
+        :returns: The HTML code to display with {{ placeholders }} populated
+        :rtype: str
+        """
+        return flask.render_template(
+            'main/index.html',
+            config_name_text=config_name,
+            logging_level_text=_logging_level,
+            logging_level_name_text=_logging_level_name,
+        )
 
-        # Extract database file path from the URI
-        uri = db.engine.url
-        db_path = uri.database if uri.database else uri.host
+    @_app.errorhandler(404)
+    def page_not_found(e) -> tuple:
+        """Render an error page if the requested page or resource was not found on the server.
 
-        if not os.path.exists(db_path):
-            create_db()
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/404.html', e=e), 404
 
-    # Start routing using blueprints
-    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from tracker_10.blueprints import main
-    from tracker_10.blueprints import error
+    @_app.errorhandler(500)
+    def server_error(e) -> tuple:
+        """Render an error page if there is a server error.
 
-    main.get_vars_from_create_app(config_name, _logging_level, _logging_level_name)
-
-    _app.register_blueprint(main.main_bp)
-    _app.register_blueprint(error.error_bp)
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/500.html', e=e), 500
 
     # Remove after testing
     @_app.route('/doh')

@@ -1,4 +1,4 @@
-"""A Flask application that incorporates performance profiling.
+"""A Flask application that incorporates unit testing.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
@@ -6,11 +6,14 @@
 > - `.venv/Scripts/activate` (Windows)
 
 Usage:
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_05:create_app('profiler')" run --without-threads
+# Run the unit tests found in `tests/test_app.py`
+# Use Interactive mode
+python -B -m unittest --buffer --verbose tracker_05/tests/test_app.py
+# Use Automatic mode
+echo 'default' | python -B -m unittest --buffer --verbose tracker_05/tests/test_app.py
 
 Changes:
-- Added performance profiling.
+- Added unit tests.
 """
 
 import logging
@@ -20,9 +23,7 @@ import flask
 # Import the helper functions
 from tracker_05.app_utils import (check_system, validate_input)
 # Import the runtime configuration classes
-from tracker_05.config import Config, DevConfig, ProfilerConfig
-# Import profiler middleware
-from tracker_05.profiler import add_profiler_middleware
+from tracker_05.config import Config, DevConfig
 
 __author__ = 'Rob Garcia'
 
@@ -54,18 +55,12 @@ def create_app(config_name: str = 'default') -> flask.Flask:
     # Create the Flask application instance with the selected configuration
     _app = _configure_app(config_name)
 
-    # Exempt from coverage because the exception cannot be unit tested easily
     try:
         _logging_level = int(_app.config.get('LOGGING_LEVEL', logging.WARNING))
-    except ValueError:  # pragma: no cover
+    except ValueError:
         _logging_level = logging.WARNING
 
-    # Get the name of the logging level from config.py
     _logging_level_name = logging.getLevelName(_logging_level)
-
-    # Optionally add the profiler middleware based on configuration
-    if _app.config.get('PROFILING_ENABLED', False):
-        _app = add_profiler_middleware(_app)
 
     # Create a route and page
     @_app.route('/')
@@ -106,7 +101,6 @@ def _configure_app(config_name: str = 'default') -> flask.Flask:
     # NOTE - Switched from if-elif-else to mapping for readability and maintainability
     config_mapping = {
         'development': DevConfig,
-        'profiler': ProfilerConfig,
         'default': Config,
     }
 

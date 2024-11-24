@@ -1,4 +1,4 @@
-"""A Flask application that incorporates a database.
+"""A Flask application that incorporates error handling.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
@@ -6,33 +6,28 @@
 > - `.venv/Scripts/activate` (Windows)
 
 Usage:
-# Run the Flask application using HTML files found in the `templates` directory
-python -B -m flask --app tracker_09 run
+# Redirect the user to a custom error page and logs the error
+# python -B -m flask --app "tracker_09:create_app(config_name='development', log_events=True)" run
+python -B -m flask --app "tracker_09:create_app('development', True)" run
 
-> **NOTE** - Enclose options in quotation marks when using special characters.
+> **NOTE**
+>
+> - Enclose options in quotation marks when using special characters.
+> - Use the `development` configuration so the application will log `logging.INFO`-level messages.
 
 Changes:
-- Added a database
+- Added custom 404 and 500 error pages
 """
 
 import logging
-import os
 
 import flask
 
-# Import helper functions
 from tracker_09.app_utils import (validate_input, check_system, start_log_file,
                                   log_page_request)
 # Import the runtime configuration classes
 from tracker_09.config import Config, DevConfig, ProfilerConfig
-# Import a SQLAlchemy object
-from tracker_09.models import db, migrate
-# Import the profiling middleware
 from tracker_09.profiler import add_profiler_middleware
-
-# Flask application factories require lazy loading to prevent circular imports,
-# so disable the warning
-# pylint: disable=import-outside-toplevel
 
 __author__ = 'Rob Garcia'
 
@@ -96,42 +91,22 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     if _app.config.get('PROFILING_ENABLED', False):
         _app = add_profiler_middleware(_app)
 
-    # Initialize the database with the app
-    db.init_app(_app)
-    migrate.init_app(_app, db)
-
-    # Create the database if it does not exist
-    with _app.app_context():
-        # Lazy import to avoid circular imports
-        # from tracker_09.models.member import Member
-
-        # Extract database file path from the URI
-        uri = db.engine.url
-        db_path = uri.database if uri.database else uri.host
-
-        if not os.path.exists(db_path):
-            from tracker_09.models.create_db import create_db
-            create_db()
-
     # Create a route and page
     @_app.route('/')
     @_app.route('/index')
     def index() -> str:
         """Render the default landing page.
 
-        :returns: The HTML code to display with {{ placeholders }} populated
+        :returns: The HTML code for the page
         :rtype: str
         """
-        from tracker_09.models.member import Member
-
-        members = Member.query.all()
-        return flask.render_template(
-            'main/index.html',
-            config_name_text=config_name,
-            logging_level_text=_logging_level,
-            logging_level_name_text=_logging_level_name,
-            members_data=members,
-        )
+        # DOCTYPE prevents Quirks mode
+        _greeting = f"""<!DOCTYPE html>
+            <h1>Hello, World!</h1>
+            <p>Your are using the <b>{config_name}</b> configuration and your logging level is
+            <b>{_logging_level_name} ({_logging_level})</b>.</p>
+            """
+        return _greeting
 
     @_app.errorhandler(404)
     def page_not_found(e) -> tuple:
@@ -140,7 +115,16 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         :returns: The HTML code to render and the response code
         :rtype: tuple
         """
-        return flask.render_template('error/404.html', e=e), 404
+        # DOCTYPE prevents Quirks mode
+        _error_msg = f"""<!DOCTYPE html>
+            <h1>Going somewhere, Solo?</h1>
+            <p><i>({e.code}: {e.name})</i></p>
+            <p>These aren't the pages you're looking for.</p>
+            <p>You can go about your business.</p>
+            <p>Move along to the <a href='/index' rel='nofollow' target='_self'
+            title='Home'>home page</a>.</p>
+            """
+        return _error_msg, 404
 
     @_app.errorhandler(500)
     def server_error(e) -> tuple:
@@ -149,7 +133,16 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         :returns: The HTML code to render and the response code
         :rtype: tuple
         """
-        return flask.render_template('error/500.html', e=e), 500
+        # DOCTYPE prevents Quirks mode
+        _error_msg = f"""<!DOCTYPE html>
+            <h1>What a piece of junk!</h1>
+            <p><i>({e.code}: {e.name})</i></p>
+            <p>Looks like those special modifications I made aren't working.</p>
+            <p>But we're a little rushed, so if you'll just
+            <a href='/index' rel='nofollow' target='_self' title='Home'>click this link</a>, we'll
+            get outta here.</p>
+            """
+        return _error_msg, 500
 
     # Remove after testing
     @_app.route('/doh')

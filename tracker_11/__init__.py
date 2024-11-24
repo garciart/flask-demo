@@ -1,4 +1,4 @@
-"""A Flask application that incorporates templates.
+"""A Flask application that incorporates a database.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
@@ -6,16 +6,13 @@
 > - `.venv/Scripts/activate` (Windows)
 
 Usage:
-- python -B -m flask --app tracker_11 run
-- python -B -m flask --app "tracker_11:create_app('development', True)" run
+# Run the Flask application using HTML files found in the `templates` directory
+python -B -m flask --app tracker_11 run
+
 > **NOTE** - Enclose options in quotation marks when using special characters.
 
-> **NOTE** - Do not log events when unit testing or each test will create a log file.
-
 Changes:
-- Moved pages into templates
-- Added a "master" layout page
-- Added static Cascading Style Sheets (CSS) and JavaScript files
+- Added a database
 """
 
 import logging
@@ -106,25 +103,53 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     # Create the database if it does not exist
     with _app.app_context():
         # Lazy import to avoid circular imports
-        from tracker_11.models.create_db import create_db
+        # from tracker_11.models.member import Member
 
         # Extract database file path from the URI
         uri = db.engine.url
         db_path = uri.database if uri.database else uri.host
 
         if not os.path.exists(db_path):
+            from tracker_11.models.create_db import create_db
             create_db()
 
-    # Start routing using blueprints
-    # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from tracker_11.blueprints import main, api, error
+    # Create a route and page
+    @_app.route('/')
+    @_app.route('/index')
+    def index() -> str:
+        """Render the default landing page.
 
-    main.get_vars_from_create_app(config_name, _logging_level, _logging_level_name)
-    api.get_vars_from_create_app(config_name, _logging_level, _logging_level_name)
+        :returns: The HTML code to display with {{ placeholders }} populated
+        :rtype: str
+        """
+        from tracker_11.models.member import Member
 
-    _app.register_blueprint(main.main_bp)
-    _app.register_blueprint(api.api_bp)
-    _app.register_blueprint(error.error_bp)
+        members = Member.query.all()
+        return flask.render_template(
+            'main/index.html',
+            config_name_text=config_name,
+            logging_level_text=_logging_level,
+            logging_level_name_text=_logging_level_name,
+            members_data=members,
+        )
+
+    @_app.errorhandler(404)
+    def page_not_found(e) -> tuple:
+        """Render an error page if the requested page or resource was not found on the server.
+
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/404.html', e=e), 404
+
+    @_app.errorhandler(500)
+    def server_error(e) -> tuple:
+        """Render an error page if there is a server error.
+
+        :returns: The HTML code to render and the response code
+        :rtype: tuple
+        """
+        return flask.render_template('error/500.html', e=e), 500
 
     # Remove after testing
     @_app.route('/doh')

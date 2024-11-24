@@ -1,13 +1,13 @@
 # Tracker_07
 
-This is a demo of a Flask application that incorporates error handling.
+This is a demo of a Flask application that incorporates performance profiling.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-Incorporating error handling in your application not only provides feedback to the user, but captures information you can use to debug and improve your site.
+Your website should run very fast using Flask's built-in Werkzeug server; so fast that you may not notice bottlenecks, like large image loading, until you deploy your application on a production server. However, there are several ways to identify slow-loading component, like using the developer tools found in most browsers. Another way is to use the built-in Werkzeug profiler.
 
 Your application structure should be like the following:
 
@@ -21,15 +21,12 @@ tracker
 |   ├── tests
 |   |   ├── __init__.py
 |   |   ├── test_app.py
-|   |   ├── test_app_utils_1.py
-|   |   ├── test_app_utils_2.py
+|   |   ├── test_app_utils.py
 |   |   └── test_profiler.py
 |   ├── __init__.py
 |   ├── app_utils.py
 |   ├── config.py
 |   └── profiler.py
-├── tracker_logs
-|   └── tracker_07_1234567890.1234567.log
 ├── __init__.py
 ├── .coverage
 ├── .coveragerc
@@ -41,56 +38,61 @@ tracker
 └── requirements.txt
 ```
 
-Once you are finished reviewing the code, start your application. Do not forget to activate your Python virtual environment first!
+Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 > **NOTES:**
 >
 > - Enclose options in quotation marks when using special characters.
 > - Coverage will create a `__pycache__` folder. Delete it when you are done testing.
-> - Use the `development` configuration for logging or the application will create an empty log file, since the application only logs `logging.INFO`-level messages or less.
-> - Do not log events when unit testing or each test will create a log file.
 
 ```shell
 # Check the application for issues
 python -B -m pylint tracker_07
-# Run the unit tests found in the `tests` directory using Coverage
 coverage run -m unittest discover tracker_07/tests -b -v
-# See the coverage report in the console
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
 python -B -m flask --app "tracker_07:create_app('profiler')" run --without-threads
-# Create a log when running the Flask application
-# python -B -m flask --app "tracker_07:create_app(config_name='development', log_events=True)" run
-python -B -m flask --app "tracker_07:create_app('development', True)" run
 ```
 
-Once you have started the server:
+> **NOTE** - There is a [known issue with cProfile and threading](https://github.com/pallets/werkzeug/issues/2909 "ProfilerMiddleware raises ValueError: Another profiling tool is already active") that can interfere with rendering images or running JavaScript files in Flask applications.
+>
+> Profiling tools like cProfile and Werkzeug's ProfilerMiddleware rely on global states, which can conflict with Flask's default multi-threaded server. By disabling threading with the `--without-threads` option, Flask runs in single-threaded mode, ensuring that profiling is not triggered multiple times simultaneously.
+>
+> Flask's built-in server is designed for development purposes, and running it in single-threaded mode should not affect your application's behavior during testing or debugging. However, **do not use** the built-in server or this setting in production, as it limits the server's ability to handle multiple concurrent requests.
 
-- Navigate to your home page at <http://127.0.0.1:5000> and click on refresh a few times.
-- Navigate to <http://127.0.0.1:5000/oops>; you should see your custom `Not Found` page.
-- Click on the **home page** hyperlink to navigate back to your home page and then click on refresh a few times.
-- Navigate to <http://127.0.0.1:5000/doh>; you should see your custom `Internal Server Error` page.
-- Click on the **here** hyperlink to navigate back to your home page and then click on refresh a few times.
-- Terminate the application using <kbd>CTRL</kbd> +  <kbd>C</kbd>.
-- Take a look at the log file in `tracker_logs`. You should see something like the following:
+```text
+--------------------------------------------------------------------------------
+PATH: '/index'
+         470 function calls (414 primitive calls) in 0.002 seconds
 
-    ```text
-    "date_time", "server_ip", "process_id", "msg_level", "message"
-    "2024-11-03 16:59:18,639", "192.168.56.1", "15452", "INFO", "Starting tracker_07 application."
-    "2024-11-03 16:59:21,163", "192.168.56.1", "15452", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:59:22,016", "192.168.56.1", "15452", "INFO", "/ requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 16:59:29,792", "192.168.56.1", "15452", "INFO", "/oops requested by 127.0.0.1 using GET; 404 NOT FOUND."
-    "2024-11-03 16:59:33,491", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 17:00:26,387", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 17:00:32,031", "192.168.56.1", "15452", "ERROR", "Exception on /doh [GET]"
-    Traceback (most recent call last):
-    ...
-    Exception: This is an intentional 500 error.
-    "2024-11-03 17:00:32,033", "192.168.56.1", "15452", "INFO", "/doh requested by 127.0.0.1 using GET; 500 INTERNAL SERVER ERROR."
-    "2024-11-03 17:01:30,883", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
-    "2024-11-03 17:01:33,417", "192.168.56.1", "15452", "INFO", "/index requested by 127.0.0.1 using GET; 200 OK."
-    ```
+   Ordered by: internal time, call count
+   List reduced from 160 to 30 due to restriction <30>
 
-By the way, if you simply ran `python -B -m flask --app tracker_07 run` and navigated to <http://127.0.0.1:5000/doh>, Flask would log the error, since it is a `logging.ERROR`-level message. However, Flask would not log any `logging.INFO`-level messages.
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     26/3    0.000    0.000    0.000    0.000 {built-in method _abc._abc_subclasscheck}
+     26/3    0.000    0.000    0.000    0.000 <frozen abc>:121(__subclasscheck__)
+       36    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+   ...
+        1    0.000    0.000    0.000    0.000 /usr/lib64/python3.12/typing.py:1269(__init__)
+      4/1    0.000    0.000    0.000    0.000 /tracker/.venv/lib64/python3.12/site-packages/werkzeug/routing/matcher.py:79(_match)
+        1    0.000    0.000    0.000    0.000 /tracker/.venv/lib64/python3.12/site-packages/flask/ctx.py:251(push)
+
+--------------------------------------------------------------------------------
+
+127.0.0.1 - - [15/Nov/2024 22:01:55] "GET /index HTTP/1.1" 200 -
+```
+
+The columns in this report are:
+
+| Column                    | Description                                                                                                                                                                                  |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ncalls                    | The number of times the function was called. Two numbers mean the function recursed; the first is the total number of calls and the second is the number of primitive (non-recursive) calls. |
+| tottime                   | The total time spent in the given function (and excluding time made in calls to sub-functions)                                                                                               |
+| percall                   | The quotient of tottime divided by ncalls                                                                                                                                                    |
+| cumtime                   | The cumulative time spent in this and all subfunctions (from invocation till exit). This figure is accurate even for recursive functions.                                                    |
+| percall                   | The quotient of cumtime divided by primitive calls                                                                                                                                           |
+| filename:lineno(function) | Provides the respective data of each function                                                                                                                                                |
+
+Like I said, right now your website runs very fast using Flask's built-in Werkzeug server.
 
 Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
