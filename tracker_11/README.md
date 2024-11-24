@@ -1,26 +1,11 @@
 # Tracker_11
 
-This is a demo of a Flask application that incorporates a Representational State Transfer (REST) Application Programming Interface (API).
-
------
-
-## Usage
+This is a demo of a Flask application that incorporates a Representational State Transfer (ReST) Application Programming Interface (API).
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
-
-Runs the Flask application to allow access using ReST API calls:
-
-- `python -B -m flask --app tracker_11 run`
-- `python -B -m flask --app "tracker_11:create_app(config_name='development',log_events=True)" run`
-
-> **NOTE** - Enclose options in quotation marks when using special characters.
-
------
-
-## Notes
 
 You can allow other sites to access the data in your database through Representational State Transfer (REST) Application Programming Interface (API) calls. REST is an architectural style that utilizes standard HTTP methods to enable communication between systems.
 
@@ -89,6 +74,7 @@ tracker
 |   |       |   └── index.html
 |   |       ├── __init__.py
 |   |       └── main_routes.py
+|   ├── migrations
 |   ├── models
 |   |   ├── __init__.py
 |   |   ├── create_db.py
@@ -105,26 +91,58 @@ tracker
 |   |   └── base.html
 |   ├── tests
 |   |   ├── __init__.py
-|   |   └── test_app.py
+|   |   ├── test_app.py
+|   |   ├── test_app_utils_1.py
+|   |   ├── test_app_utils_2.py
+|   |   ├── test_models_member.py
+|   |   └── test_profiler.py
 |   ├── __init__.py
 |   ├── app_utils.py
 |   ├── config.py
 |   ├── profiler.py
 |   └── tracker.db
 ├── tracker_logs
-|   └── tracker_10_1234567890.1234567.log
+|   └── tracker_11_1234567890.1234567.log
+├── __init__.py
 ├── .coverage
 ├── .coveragerc
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── __init__.py
+├── .pylintrc
 ├── hello.py
 └── requirements.txt
 ```
 
 Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
-- `python -B -m flask --app tracker_11 run`
+```shell
+# Check the application for issues
+python -B -m pylint tracker_11
+
+# Run the unit tests found in the `tests` directory using Coverage
+coverage run -m unittest discover tracker_11/tests -b -v
+
+# See the coverage report in the console
+coverage report -m
+
+# Running the unit tests will create the database if it does not exist
+# If so, initialize migration support for the application
+# If using older command syntax, uncomment below:
+# python -B -m flask --app tracker_11 db init --directory tracker_11/migrations
+python -B -m flask --app tracker_11 db init -d tracker_11/migrations
+
+# Perform an initial migration to capture the current schema of the database
+# If using older command syntax, uncomment below:
+# python -B -m flask --app tracker_11 db migrate --message "Initial migration" --directory tracker_11/migrations
+python -B -m flask --app tracker_11 db migrate -m "Initial migration" -d tracker_11/migrations
+# For help with any of these commands, use python -B -m flask --app tracker_11 db --help
+
+# Profile the application using the built-in Werkzeug profiler:
+python -B -m flask --app "tracker_11:create_app('profiler')" run --without-threads
+
+# Run the Flask application using HTML files found in the `templates` directory
+python -B -m flask --app tracker_11 run
+```
 
 Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

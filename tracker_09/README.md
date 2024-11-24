@@ -13,41 +13,19 @@ The purpose of the Tracker application is to track course assignments and, in or
 
 Short version:
 
-We are using SQLite, a relational database that is built into the Python Standard Library.
-We are using SQLAlchemy, an open-source Python library that provides an SQL toolkit and an Object Relational Mapper for database interactions.
-There are several ways for Flask to interact with a database: the Raw SQL Method, the SQL with Classes Method, the SQLAlchemy Imperative (Classical) Method, and the SQLAlchemy Declarative Method
-Using the SQLAlchemy Declarative Method results in smaller and cleaner code and easy integration with object-oriented programming.
+For Tracker, we will use SQLite, a relational database that is bundled with the Python Standard Library, and SQLAlchemy, an open-source Python library that provides an SQL toolkit and an Object Relational Mapper (ORM) for database interactions.
+There are several ways to interact with a database: using raw SQL commands; using class methods and SQL commands; using SQLAlchemy's Imperative (Classical) method; and using SQLAlchemy's Declarative method.
+We will use SQLAlchemy's Declarative method, since it results in smaller, cleaner code that is easy to integrate with object-oriented programming.
 
-To get started, install the SQLAlchemy library:
+To get started, install the SQLAlchemy library and extensions:
 
 ```shell
 python -m pip install Flask-SQLAlchemy
+# Install Flask database migration package
+python -m pip install Flask-Migrate
+# Add them to the required packages list
 python -m pip freeze > requirements.txt
 ```
-
-In addition, you may eventually need to modify your database, like when you need to add columns, etc. To "transfer" your data to your new schema without losing data, you perform a database *migration*. To reduce the chances of issues with future migrations, perform an initial migration before you run the application:
-
-```shell
-# Check the application for issues
-python -B -m pylint tracker_09
-# Add Flask database migration package
-python -m pip install Flask-Migrate
-# Initialize migration support for the application
-# If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_09 db init --directory tracker_09/migrations
-python -B -m flask --app tracker_09 db init -d tracker_09/migrations
-# Perform an initial migration to capture the current schema of the database
-# If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_09 db migrate --message "Initial migration" --directory tracker_09/migrations
-python -B -m flask --app tracker_09 db migrate -m "Initial migration" -d tracker_09/migrations
-# Apply any pending migrations to the database.
-# If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_09 db upgrade --directory tracker_09/migrations
-python -B -m flask --app tracker_09 db upgrade -d tracker_09/migrations
-# For help with any of these commands, use python -B -m flask --app tracker_09 db --help
-```
-
-That will create a `migrations` directory in your package (`tracker_09`) directory.
 
 Your application structure should be like the following:
 
@@ -73,7 +51,11 @@ tracker
 |   |       └── main.js
 |   ├── tests
 |   |   ├── __init__.py
-|   |   └── test_app.py
+|   |   ├── test_app.py
+|   |   ├── test_app_utils_1.py
+|   |   ├── test_app_utils_2.py
+|   |   ├── test_models_member.py
+|   |   └── test_profiler.py
 |   ├── templates
 |   |   ├── error
 |   |   |   ├── 404.html
@@ -83,15 +65,17 @@ tracker
 |   |   └── base.html
 |   ├── __init__.py
 |   ├── config.py
-|   └── profiler.py
+|   ├── profiler.py
+|   └── tracker.db
 ├── tracker_logs
 |   └── tracker_09_1234567890.1234567.log
+├── __init__.py
 ├── .coverage
 ├── .coveragerc
 ├── .env
 ├── .env_alt
 ├── .flaskenv
-├── __init__.py
+├── .pylintrc
 ├── hello.py
 └── requirements.txt
 ```
@@ -99,12 +83,30 @@ tracker
 Check the code for issues, then run your application. Do not forget to activate your Python virtual environment first!
 
 ```shell
+# Check the application for issues
+python -B -m pylint tracker_09
+
 # Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_09/tests/test_app.py
+coverage run -m unittest discover tracker_09/tests -b -v
+
 # See the coverage report in the console
 coverage report -m
+
+# Running the unit tests will create the database if it does not exist
+# If so, initialize migration support for the application
+# If using older command syntax, uncomment below:
+# python -B -m flask --app tracker_09 db init --directory tracker_09/migrations
+python -B -m flask --app tracker_09 db init -d tracker_09/migrations
+
+# Perform an initial migration to capture the current schema of the database
+# If using older command syntax, uncomment below:
+# python -B -m flask --app tracker_09 db migrate --message "Initial migration" --directory tracker_09/migrations
+python -B -m flask --app tracker_09 db migrate -m "Initial migration" -d tracker_09/migrations
+# For help with any of these commands, use python -B -m flask --app tracker_09 db --help
+
 # Profile the application using the built-in Werkzeug profiler:
 python -B -m flask --app "tracker_09:create_app('profiler')" run --without-threads
+
 # Run the Flask application using HTML files found in the `templates` directory
 python -B -m flask --app tracker_09 run
 ```

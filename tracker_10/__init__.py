@@ -33,6 +33,10 @@ from tracker_10.models import db, migrate
 # Import the profiling middleware
 from tracker_10.profiler import add_profiler_middleware
 
+# Flask application factories require lazy loading to prevent circular imports,
+# so disable the warning
+# pylint: disable=import-outside-toplevel
+
 __author__ = 'Rob Garcia'
 
 

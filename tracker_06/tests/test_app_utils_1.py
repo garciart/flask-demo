@@ -20,6 +20,7 @@
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
+
 import logging
 import os
 import shutil
@@ -132,8 +133,6 @@ class TestAppUtils1(BaseTestCase):
         #     start_log_file(app=test_app, log_dir='tracker_logs/test', logging_level=10)
         # except (TypeError, ValueError):
         #     self.fail('Method raised an exception unexpectedly.')
-        
-        pass
 
     def test_start_log_file_fail_arg1_type(self):
         """Test that start_log_file() fails when arg1 is the wrong type"""

@@ -3,7 +3,7 @@
 Test: http://127.0.0.1:5000/api/test
 """
 
-from flask import Response, jsonify
+from flask import (Response, jsonify, url_for)
 
 from tracker_11.app_utils import validate_input
 from tracker_11.blueprints.api import api_bp
@@ -16,6 +16,14 @@ _DUMMY_DATA = [
      'course_group': 'SDEV', 'course_desc': 'Introduction to Flask.'}
 ]
 
+@api_bp.route('/favicon.ico')
+def favicon() -> Response:
+    """Loads application icon when making API calls with no HTML.
+
+    :returns: The application icon
+    :rtype: Response
+    """
+    return url_for('static', filename='image/favicon.ico')
 
 @api_bp.route('/api/test', methods=['GET'])
 def get_test_data() -> Response | tuple:

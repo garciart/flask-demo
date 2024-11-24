@@ -21,21 +21,18 @@ python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
 
-from tracker_07 import create_app
-from tracker_07.tests import BaseTestCase
+from tracker_10.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
 
 
-class TestApp(BaseTestCase):
-    """Unit tests for functions and methods in the application's __init__.py.
+class TestPages(BaseTestCase):
+    """Unit tests for functions and methods in the application's blueprints directory.
+
+    Covers web and error pages (e.g., /index, /about, etc)
 
     :param unittest.TestCase BaseTestCase: Inherited from tests/__init__.py
     """
-
-    def test_app(self):
-        """Ensure you created the application instance"""
-        self.assertIsNotNone(self.app)
 
     def test_index_response_code(self):
         """Test that the index page was created by looking at the response code"""
@@ -46,6 +43,16 @@ class TestApp(BaseTestCase):
         """Test that the index page contains the correct contents"""
         response = self.client.get('/', follow_redirects=True)
         self.assertIn(b'Hello, World!', response.data)
+
+    def test_about_response_code(self):
+        """Test that the about page was created by looking at the response code"""
+        response = self.client.get('/about', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_about_content(self):
+        """Test that the about page contains the correct contents"""
+        response = self.client.get('/about', follow_redirects=True)
+        self.assertIn(b'About', response.data)
 
     def test_not_found_response_code(self):
         """Test that the Not Found page was created by looking at the response code"""
@@ -66,46 +73,3 @@ class TestApp(BaseTestCase):
         """Test that the Error page contains the correct contents"""
         response = self.client.get('/doh', follow_redirects=True)
         self.assertIn(b'Internal Server Error', response.data)
-
-    def test_config_name_is_string(self):
-        """Test that create_app() passes when config_name is a string."""
-        try:
-            create_app('default')
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
-    def test_config_name_is_not_string(self):
-        """Test that create_app() fails when config_name is not a string."""
-        with self.assertRaises(TypeError):
-            create_app(1)
-
-    def test_config_name_accepts_valid_value(self):
-        """Test that create_app() passes when config_name is a valid selection."""
-        try:
-            create_app('development')
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
-    def test_config_name_accepts_valid_profiling_value(self):
-        """Test that create_app() passes when config_name is a 'profiler'."""
-        try:
-            create_app('profiler')
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
-    def test_config_name_rejects_invalid_value(self):
-        """Test that create_app() fails when config_name is not a valid selection."""
-        with self.assertRaises(ValueError):
-            create_app('foo')
-
-    def test_log_events_is_bool(self):
-        """Test that create_app() passes when log_events is a boolean."""
-        try:
-            create_app(log_events=False)
-        except (TypeError, ValueError):
-            self.fail('Method raised an exception unexpectedly.')
-
-    def test_log_events_is_not_bool(self):
-        """Test that create_app() fails when config_name is not a string."""
-        with self.assertRaises(TypeError):
-            create_app(log_events=1)
