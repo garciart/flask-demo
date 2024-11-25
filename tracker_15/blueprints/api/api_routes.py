@@ -4,11 +4,12 @@ Test: http://127.0.0.1:5000/api/test
 """
 import os
 
-from flask import (Response, jsonify, send_from_directory)
+from flask import (Response, jsonify, send_from_directory, request)
 
-from tracker_13.app_utils import validate_input
-from tracker_13.blueprints.api import api_bp
-from tracker_13.models.member import Member
+from tracker_15 import db
+from tracker_15.app_utils import validate_input
+from tracker_15.blueprints.api import api_bp
+from tracker_15.models.member import Member
 
 _DUMMY_DATA = [
     {'course_id': 1, 'course_name': 'Python 101', 'course_code': 'CS100',
@@ -58,8 +59,10 @@ def api_get_all_members() -> Response | tuple:
 
     # Exclude the 'password_hash' field
     _filtered_members = [
-        {'member_id': m.member_id, 'member_name': m.member_name,
-         'member_email': m.member_email}
+        {'member_id': m.member_id,
+         'member_name': m.member_name,
+         'member_email': m.member_email,
+         'member_is_admin': m.member_is_admin}
         for m in _members_list
     ]
 
@@ -85,17 +88,69 @@ def api_get_member(member_id: int) -> Response | tuple:
 
     _member = Member.query.get(member_id)
 
-    if _member is None:
+    if not _member:
         return jsonify({'error': 'Member not found'}), 404
 
     _members_list = [_member] if _member is not None else []
 
-    # Exclude the 'member_email' field
+    # Exclude the 'password_hash' field
     _filtered_members = [
-        {'member_id': m.member_id, 'member_name': m.member_name,
-         'member_email': m.member_email}
+        {'member_id': m.member_id,
+         'member_name': m.member_name,
+         'member_email': m.member_email,
+         'member_is_admin': m.member_is_admin}
         for m in _members_list
     ]
 
     # Use jsonify to convert the filtered list to JSON
     return jsonify(members=_filtered_members), 200
+
+
+@api_bp.route('/api/members/<int:member_id>', methods=['PUT'])
+def api_update_member(member_id: int) -> Response | tuple:
+    """Update a member through an API ReST call using their ID.
+
+    Examples:
+
+    Linux:
+    curl -X PUT -H "Content-Type: application/json" -d '{"member_name": "Leto.Atreides", \
+        "member_email": "leto.atreides@atreides.com", "member_is_admin: true}' \
+        http://localhost:5000/api/members/2
+
+    Windows:
+    Invoke-WebRequest -Uri "http://localhost:5000/api/members/2" `
+        -Method Put `
+        -ContentType "application/json" `
+        -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `
+        `"leto.atreides@atreides.com`", `"member_is_admin`": true}"
+
+    :param int member_id: The member to update by ID
+
+    :returns: A response with a message in JSON format
+    :rtype: Response
+    """
+    # External method that throws an exception if member_id is not an int, or it is empty
+    validate_input('member_id', member_id, int)
+
+    # Query the member by ID
+    _member = Member.query.get(member_id)
+
+    # If member is not found, return 404
+    if not _member:
+        return jsonify({'error': 'Member not found'}), 404
+
+    # Get the JSON data from the request
+    data = request.get_json()
+
+    # Update member attributes if provided in the request
+    if 'member_name' in data:
+        _member.member_name = data['member_name']
+    if 'member_email' in data:
+        _member.member_email = data['member_email']
+    if 'member_is_admin' in data:
+        _member.member_is_admin = bool(data['member_is_admin'])
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    return jsonify({'message': f'Successfully updated {_member.member_name}.'}), 200

@@ -19,7 +19,7 @@ _DUMMY_DATA = [
 
 
 @api_bp.route('/favicon.ico')
-def get_favicon() -> Response:
+def api_get_favicon() -> Response:
     """Loads application icon when making API calls with no HTML.
 
     :returns: The favicon.ico file
@@ -31,7 +31,7 @@ def get_favicon() -> Response:
 
 
 @api_bp.route('/api/test', methods=['GET'])
-def get_test_data() -> Response | tuple:
+def api_get_test_data() -> Response | tuple:
     """Get the list of test data when a REST call is made.
 
     :returns: A response with the data in JSON format
@@ -44,7 +44,7 @@ def get_test_data() -> Response | tuple:
 
 
 @api_bp.route('/api/members/all', methods=['GET'])
-def api_members() -> Response | tuple:
+def api_get_all_members() -> Response | tuple:
     """Get the list of members in the database when a REST call is made.
 
     :returns: A response with the data in JSON format
@@ -68,7 +68,7 @@ def api_members() -> Response | tuple:
 
 
 @api_bp.route('/api/members/<int:member_id>', methods=['GET'])
-def api_member(member_id: int) -> Response | tuple:
+def api_get_member(member_id: int) -> Response | tuple:
     """Get a member from the database using their ID when a REST call is made.
 
     :param int member_id: The member to retrieve by ID

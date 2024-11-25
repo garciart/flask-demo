@@ -19,7 +19,7 @@ _DUMMY_DATA = [
 
 
 @api_bp.route('/api/test', methods=['GET'])
-def get_test_data():
+def api_get_test_data():
     # type: () -> Response
     """Get the list of test data when a REST call is made.
 
