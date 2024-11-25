@@ -22,12 +22,6 @@ python -B -m unittest discover tracker_XX/tests -b -v
 """
 
 from tracker_15.tests import BaseTestCase
-from unittest.mock import patch, MagicMock
-from flask import Flask, jsonify
-from flask.testing import FlaskClient
-from tracker_15.blueprints.api import api_bp
-from tracker_15 import db
-from tracker_15.models.member import Member
 
 __author__ = 'Rob Garcia'
 

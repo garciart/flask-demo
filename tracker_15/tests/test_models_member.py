@@ -89,8 +89,7 @@ class TestModelsMember(BaseTestCase):
     def test_verify_password_pass(self):
         """Test that verify_password() passes when the password is correct."""
         _member = Member(member_name='John', member_email='john@foo.bar', password='Change.Me.123')
-        self.assertTrue(_member.verify_password('Change.Me.123',
-                                               _member.password_hash))
+        self.assertTrue(_member.verify_password('Change.Me.123'))
 
     def test_verify_password_type_fail(self):
         """Test that verify_password() fails when the password is the wrong type."""
@@ -102,4 +101,4 @@ class TestModelsMember(BaseTestCase):
     def test_verify_password_value_fail(self):
         """Test that verify_password() fails when the password is incorrect."""
         _member = Member(member_name='John', member_email='john@foo.bar', password='Change.Me.123')
-        self.assertFalse(_member.verify_password('foo', _member.password_hash))
+        self.assertFalse(_member.verify_password('foo'))

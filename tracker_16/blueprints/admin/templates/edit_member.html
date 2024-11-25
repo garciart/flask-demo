@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title_text }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body_header %}
+<h1>Edit Member</h1>
+{% endblock %}
+
+{% block main_content %}
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<hr />
+<form action="" method="post">
+    <!-- Use hidden_tag instead of csrf_token -->
+    {{ form.hidden_tag() }}
+    <p>
+        <p><b>{{ form.member_name.label }}</b></p>
+        {{ form.member_name(size=64) }}<br />
+        {% for error in form.member_name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <p><b>{{ form.member_email.label }}</b></p>
+        {{ form.member_email(size=320) }}<br />
+        {% for error in form.member_email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <div style="border: 1px black solid; padding: 1em;">
+        <p>
+            <i>(Leave both fields blank to continue using the current password.)</i>
+        <p>
+            <p><b>{{ form.password.label }}</b></p>
+            {{ form.password(size=15) }}<br />
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <p><b>{{ form.password2.label }}</b></p>
+            {{ form.password2(size=15) }}<br />
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+    </div>
+    <br />
+    <p>{{ form.member_is_admin() }} <b>{{ form.member_is_admin.label }}</b></p>
+    <hr>
+    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
+            onclick="history.back()"></p>
+</form>
+{% endblock %}

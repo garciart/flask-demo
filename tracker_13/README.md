@@ -49,6 +49,8 @@ curl http://127.0.0.1:5000/api/members/100
 
 If you enabled logging, you will see these calls recorded in your application's logs, helping you to monitor API usage and troubleshoot issues.
 
+Do not forget to register the new Admin blueprint in `__init__.py`.
+
 Your application structure should be like the following:
 
 ```text

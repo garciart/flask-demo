@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title_text }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body_header %}
+<h1>Hello, World!</h1>
+{% endblock %}
+
+{% block main_content %}
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<p>You are using the <b>{{ config_name_text }}</b> configuration and your logging level is
+    <b>{{ logging_level_name_text }} ({{ logging_level_text }})</b>.
+</p>
+<br />
+<table>
+    <caption>List of Members</caption>
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Member Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Admin?</th>
+        </tr>
+    </thead>
+    {% for m in members_data %}
+    <tbody>
+        <tr>
+            <td>{{m.member_id}}</td>
+            <td>{{m.member_name}}</td>
+            <td>{{m.member_email}}</td>
+            <td>{{m.member_is_admin}}</td>
+        </tr>
+    </tbody>
+    {% endfor%}
+</table>
+<br />
+<a href="/about" title="To the About Page!">To the About Page!</a>
+{% endblock %}

@@ -1,13 +1,13 @@
 # Tracker_15
 
-This is a demo of a Flask application that incorporates uses an API to update a member.
+This is a demo of a Flask application that uses an API to update a member.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-You can also update a database by sending a PUT request with a JSON payload containing the information you want to update to an API endpoint. For example, if you wanted to make a member an administrator, you would make the following requests:
+You can update a database by sending a PUT request with a JSON payload containing the information you want to update to an API endpoint. For example, if you wanted to make a member an administrator, you would make the following requests:
 
 In Linux:
 

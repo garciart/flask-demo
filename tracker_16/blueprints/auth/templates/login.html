@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title_text }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body_header %}
+<h1>Sign In</h1>
+{% endblock %}
+
+{% block main_content %}
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<hr />
+<form action="" method="POST" novalidate>
+    <!-- Use hidden_tag instead of csrf_token -->
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.member_name.label }}<br />
+        {{ form.member_name(size=64) }}<br />
+        {% for error in form.member_name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br />
+        {{ form.password(size=15) }}<br />
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    <p>{{ form.submit(class="btn btn-primary") }}</p>
+</form>
+{% endblock %}
