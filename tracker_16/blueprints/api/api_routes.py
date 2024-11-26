@@ -6,6 +6,7 @@ import os
 from typing import Union
 
 from flask import (Response, jsonify, send_from_directory, request)
+from flask_login import login_required
 
 from tracker_16 import db
 from tracker_16.app_utils import validate_input
@@ -109,6 +110,7 @@ def api_get_member(member_id: int) -> Union[Response, tuple]:
 
 
 @api_bp.route('/api/members/<int:member_id>', methods=['PUT'])
+@login_required
 def api_update_member(member_id: int) -> Union[Response, tuple]:
     """Update a member through an API ReST call using their ID.
 

@@ -7,6 +7,8 @@ This is a demo of a Flask application that incorporates authentication.
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
+To prevent anyone from editing member data, we will add authentication to the application.
+
 To get started, install Flask Login:
 
 ```shell
