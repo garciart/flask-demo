@@ -4,7 +4,7 @@ Test: http://127.0.0.1:5000/api/test
 """
 import os
 
-from flask import (Response, jsonify, send_from_directory, request)
+from flask import (Response, abort, jsonify, send_from_directory, request)
 
 from tracker_16 import db
 from tracker_16.app_utils import validate_input
@@ -145,10 +145,13 @@ def api_update_member(member_id: int) -> Response | tuple:
 
     # Update member attributes if provided in the request
     if 'member_name' in data:
+        validate_input("data['member_name']", data['member_name'], str)
         _member.member_name = data['member_name']
     if 'member_email' in data:
+        validate_input("data['member_email']", data['member_email'], str)
         _member.member_email = data['member_email']
     if 'member_is_admin' in data:
+        validate_input("data['member_is_admin']", data['member_is_admin'], bool)
         _member.member_is_admin = bool(data['member_is_admin'])
 
     # Commit the changes to the database

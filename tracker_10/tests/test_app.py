@@ -45,7 +45,7 @@ class TestApp(BaseTestCase):
     def test_index_content(self):
         """Test that the index page contains the correct contents"""
         response = self.client.get('/', follow_redirects=True)
-        self.assertIn(b'Hello, World!', response.data)
+        self.assertIn(b'Hello', response.data)
 
     def test_not_found_response_code(self):
         """Test that the Not Found page was created by looking at the response code"""

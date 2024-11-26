@@ -19,6 +19,11 @@ tracker
 ├── ...
 ├── tracker_12
 |   ├── blueprints
+|   |   ├── admin
+|   |   |   ├── templates
+|   |   |   |   └── view_member.html
+|   |   |   ├── __init__.py
+|   |   |   └── admin_routes.py
 |   |   ├── error
 |   |   |   ├── templates
 |   |   |   |   ├── 404.html
@@ -48,6 +53,7 @@ tracker
 |   |   └── base.html
 |   ├── tests
 |   |   ├── __init__.py
+|   |   ├── test_admin.py
 |   |   ├── test_app.py
 |   |   ├── test_app_utils_1.py
 |   |   ├── test_app_utils_2.py

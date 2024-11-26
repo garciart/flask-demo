@@ -21,7 +21,7 @@ python -m pip install email-validator
 python -m pip freeze > requirements.txt
 ```
 
-Do not forget to register the new Admin blueprint in `__init__.py`. Also, include a reference to the `SECRET_KEY` with a default value in `config.py` so you can perform unit tests (`unittest` and `coverage` will not read `.env` files). 
+Do not forget to register the new Admin blueprint in `__init__.py`. Also, include a reference to the `SECRET_KEY` with a default value in `config.py` so you can perform unit tests (`unittest` and `coverage` will not read `.env` files).
 
 Your application structure should be like the following:
 
@@ -35,7 +35,8 @@ tracker
 |   ├── blueprints
 |   |   ├── admin
 |   |   |   ├── templates
-|   |   |   |   └── edit_member.html
+|   |   |   |   ├── edit_member.html
+|   |   |   |   └── view_member.html
 |   |   |   ├── __init__.py
 |   |   |   ├── admin_forms.py
 |   |   |   └── admin_routes.py

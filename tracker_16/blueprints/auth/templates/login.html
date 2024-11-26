@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body_header %}
-<h1>Sign In</h1>
+<h1>Log In</h1>
 {% endblock %}
 
 {% block main_content %}
@@ -20,14 +20,14 @@
     {{ form.hidden_tag() }}
     <p>
         {{ form.member_name.label }}<br />
-        {{ form.member_name(size=64) }}<br />
+        {{ form.member_name(size=16) }}<br />
         {% for error in form.member_name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
     <p>
         {{ form.password.label }}<br />
-        {{ form.password(size=15) }}<br />
+        {{ form.password(size=16) }}<br />
         {% for error in form.password.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}

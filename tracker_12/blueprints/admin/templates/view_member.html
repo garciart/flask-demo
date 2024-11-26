@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title_text }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body_header %}
+<h1>View Member</h1>
+{% endblock %}
+
+{% block main_content %}
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<hr />
+<br />
+<table>
+    <caption>Member Details</caption>
+    <thead>
+        <th scope="col">Key:</th>
+        <th scope="col">Value:</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Member ID:</td>
+            <td>{{member_id}}</td>
+        </tr>
+        <tr>
+            <td>Member Name:</td>
+            <td>{{member_name}}</td>
+        </tr>
+        <tr>
+            <td>Member Email:</td>
+            <td>{{member_email}}</td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<a href="{{ url_for('main_bp.index') }}" title="Go back home">Go back home</a>
+{% endblock %}

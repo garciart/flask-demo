@@ -117,12 +117,13 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
 
     # Start routing using blueprints
     # Import modules after instantiating 'app' to avoid known circular import problems with Flask
-    from tracker_12.blueprints import main, error
+    from tracker_12.blueprints import main, error, admin
 
     main.get_vars_from_create_app(config_name, _logging_level, _logging_level_name)
 
     _app.register_blueprint(main.main_bp)
     _app.register_blueprint(error.error_bp)
+    _app.register_blueprint(admin.admin_bp)
 
     # Remove after testing
     @_app.route('/doh')

@@ -79,8 +79,7 @@ class Member(UserMixin, db.Model):
 
         self.member_is_admin = member_is_admin
 
-    def get_id(self):
-        # type: () -> int
+    def get_id(self) -> int:
         """Overrides UserMixin get_id so you can use user_id instead of id.
 
         :returns: The user id

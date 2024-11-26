@@ -21,7 +21,7 @@ python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
 
-from tracker_15.tests import BaseTestCase
+from tracker_13.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
 
@@ -43,13 +43,3 @@ class TestAdmin(BaseTestCase):
         """Test that the view_member page contains the correct contents"""
         response = self.client.get('/admin/view_member/1', follow_redirects=True)
         self.assertIn(b'View Member', response.data)
-
-    def test_edit_member_response_code(self):
-        """Test that the edit_member page was created by looking at the response code"""
-        response = self.client.get('/admin/edit_member/1', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
-    def test_edit_member_content(self):
-        """Test that the index page contains the correct contents"""
-        response = self.client.get('/admin/edit_member/1', follow_redirects=True)
-        self.assertIn(b'Edit Member', response.data)

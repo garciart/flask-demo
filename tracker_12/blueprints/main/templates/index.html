@@ -25,6 +25,7 @@
             <th scope="col">ID</th>
             <th scope="col">Member Name</th>
             <th scope="col">Email</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     {% for m in members_data %}
@@ -33,10 +34,11 @@
             <td>{{m.member_id}}</td>
             <td>{{m.member_name}}</td>
             <td>{{m.member_email}}</td>
+            <td><a href="{{ url_for('admin_bp.view_member', member_id=m.member_id) }}" title="View Member">View</a></td>
         </tr>
     </tbody>
     {% endfor%}
 </table>
 <br />
-<a href="/about" title="To the About Page!">To the About Page!</a>
+<a href="{{ url_for('main_bp.about') }}" title="To the About Page!">To the About Page!</a>
 {% endblock %}

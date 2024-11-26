@@ -28,3 +28,34 @@ python -B -m flask --app tracker_09 db upgrade -d tracker_09/migrations
 ```
 
 That will create a `migrations` directory in your package (`tracker_09`) directory.
+
+
+## Background
+
+Python Enhancement Proposals (PEP) 333 and 3333, the Python Web Server Gateway Interface (WSGI), is a specification that defines how a web server communicates with a Python web application or framework. It acts as a bridge between them, increasing portability and allowing you to run Python applications on different web servers with ease.
+Flask is a WSGI application.
+It has a built-in Werkzeug server that converts incoming HTTP requests (GET, POST, etc.)
+
+The Python Web Server Gateway Interface (WSGI) is a specification that defines a standard interface between web servers and Python web applications or frameworks. It acts as a bridge, allowing different web servers to communicate with different Python applications seamlessly.
+Here's a breakdown of WSGI:
+Components:
+Web Server:
+The software that handles incoming HTTP requests from clients (e.g., Apache, Nginx).
+WSGI Server:
+A component that implements the WSGI specification and interacts with the web server (e.g., Gunicorn, uWSGI).
+WSGI Application:
+Your Python web application or framework (e.g., Flask, Django) that adheres to the WSGI specification.
+How it Works:
+The web server receives an HTTP request from a client.
+The web server forwards the request to the WSGI server.
+The WSGI server calls a specific callable object (usually a function) within your WSGI application.
+Your application processes the request, generates a response, and returns it to the WSGI server.
+The WSGI server converts the response to an HTTP response and sends it back to the web server.
+The web server delivers the response to the client.
+Benefits of WSGI:
+Portability:
+You can easily switch between different web servers and frameworks without modifying your application code.
+Flexibility:
+WSGI allows you to build complex web applications by chaining multiple WSGI applications together (middleware).
+Scalability:
+WSGI servers like Gunicorn and uWSGI provide advanced features for handling multiple requests concurrently, improving the performance of your application.

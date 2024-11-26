@@ -75,3 +75,8 @@ class TestAPI(BaseTestCase):
         """Test that an incorrect API member # page contains an error message"""
         response = self.client.get('/api/members/0', follow_redirects=True)
         self.assertIn(b'Member not found', response.data)
+
+    def test_api_update_member_type_fail(self):
+        """Test that api_update_member fails when member_id is not an integer."""
+        response = self.client.put('/api/members/foo', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
