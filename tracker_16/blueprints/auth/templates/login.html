@@ -33,6 +33,7 @@
         {% endfor %}
     </p>
     <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-    <p>{{ form.submit(class="btn btn-primary") }}</p>
+    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
+            onclick="history.back()"></p>
 </form>
 {% endblock %}

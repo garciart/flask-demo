@@ -20,7 +20,7 @@ class EditMemberForm(FlaskForm):
     password = PasswordField('Password')
     password2 = PasswordField('Repeat Password', validators=[EqualTo('password')])
     member_is_admin = BooleanField('This member an administrator')
-    submit = SubmitField('Edit Member')
+    submit = SubmitField('Update Member')
 
     def __init__(self, current_member_name: str,
                  current_member_email: str,

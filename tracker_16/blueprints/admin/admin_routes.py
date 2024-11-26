@@ -2,6 +2,7 @@
 """
 
 from flask import Response, flash, redirect, url_for, render_template
+from flask_login import login_required
 
 from tracker_16 import db
 from tracker_16.app_utils import validate_input
@@ -37,6 +38,7 @@ def view_member(member_id: int) -> str | Response:
 
 
 @admin_bp.route('/admin/edit_member/<int:member_id>', methods=['GET', 'POST'])
+@login_required
 def edit_member(member_id: int) -> str | Response:
     """Use form input to update a member in the database.
 

@@ -6,6 +6,14 @@
 
 {% block head %}
 {{ super() }}
+<style>
+thead {
+    visibility: hidden;
+}
+table, th, td {
+    border: none;
+}
+</style>
 {% endblock %}
 
 {% block body_header %}
@@ -18,36 +26,50 @@
 <form action="" method="post">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
-    <p>
-        <p><b>{{ form.member_name.label }}</b></p>
-        {{ form.member_name(size=64) }}<br />
-        {% for error in form.member_name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        <p><b>{{ form.member_email.label }}</b></p>
-        {{ form.member_email(size=320) }}<br />
-        {% for error in form.member_email.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
+    <br />
+    <table>
+        <caption>Member Details</caption>
+        <thead>
+            <th scope="col">Key:</th>
+            <th scope="col">Value:</th>
+            <th scope="col"></th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ form.member_name.label }}:</td>
+                <td>{{ form.member_name(size=32) }}</td>
+                <td>{% for error in form.member_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ form.member_email.label }}:</td>
+                <td>{{ form.member_email(size=32) }}</td>
+                <td>{% for error in form.member_email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
     <div style="border: 1px black solid; padding: 1em;">
         <p>
             <i>(Leave both fields blank to continue using the current password.)</i>
         <p>
-            <p><b>{{ form.password.label }}</b></p>
-            {{ form.password(size=15) }}<br />
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        <p><b>{{ form.password.label }}</b></p>
+        {{ form.password(size=32) }}<br />
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
         </p>
         <p>
-            <p><b>{{ form.password2.label }}</b></p>
-            {{ form.password2(size=15) }}<br />
-            {% for error in form.password2.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        <p><b>{{ form.password2.label }}</b></p>
+        {{ form.password2(size=32) }}<br />
+        {% for error in form.password2.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
         </p>
     </div>
     <br />

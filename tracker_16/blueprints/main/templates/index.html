@@ -32,7 +32,7 @@
             <th scope="col">Member Name</th>
             <th scope="col">Email</th>
             <th scope="col">Admin?</th>
-            <th scope="col"></th>
+            <th scope="col" colspan="2"></th>
         </tr>
     </thead>
     {% for m in members_data %}
@@ -43,6 +43,7 @@
             <td>{{m.member_email}}</td>
             <td>{{m.member_is_admin}}</td>
             <td><a href="{{ url_for('admin_bp.view_member', member_id=m.member_id) }}" title="View Member">View</a></td>
+            <td><a href="{{ url_for('admin_bp.edit_member', member_id=m.member_id) }}" title="Edit Member">Edit</a></td>
         </tr>
     </tbody>
     {% endfor%}
