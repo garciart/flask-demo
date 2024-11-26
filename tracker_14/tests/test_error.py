@@ -29,7 +29,7 @@ __author__ = 'Rob Garcia'
 class TestError(BaseTestCase):
     """Unit tests for functions and methods in the application's blueprints directory.
 
-    Covers custom error pages (e.g., 404, 500, etc)
+    Covers custom error pages (e.g., 404, 500, etc.)
 
     :param unittest.TestCase.BaseTestCase: Inherited from tests/__init__.py
     """

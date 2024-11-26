@@ -5,6 +5,8 @@ in Flask.
 
 Test: http://127.0.0.1:5000/add_user
 """
+from typing import Union
+
 # Flake8 F401: imports are used for type hints
 from flask import (Response,
                    abort, flash, redirect, render_template, request, url_for)
@@ -31,7 +33,7 @@ SUICIDE_MSG = 'You cannot delete yourself!'
 @admin_bp.route('/add_course', methods=['GET', 'POST'])
 @login_required
 def add_course():
-    # type: () -> str | Response
+    # type: () -> Union[str, Response]
     """Use form input to add a course to the database.
 
     NOTE - Anyone may add a course
@@ -104,7 +106,7 @@ def view_course(course_id):
 @admin_bp.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
 def edit_course(course_id):
-    # type: (int) -> str | Response
+    # type: (int) -> Union[str, Response]
     """Use form input to update a course in the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -152,7 +154,7 @@ def edit_course(course_id):
 @admin_bp.route('/delete_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
 def delete_course(course_id):
-    # type: (int) -> str | Response
+    # type: (int) -> Union[str, Response]
     """Use form input to delete a course from the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -198,7 +200,7 @@ def delete_course(course_id):
 @admin_bp.route('/add_role', methods=['GET', 'POST'])
 @login_required
 def add_role():
-    # type: () -> str | Response
+    # type: () -> Union[str, Response]
     """Use form input to add a role to the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -229,7 +231,7 @@ def add_role():
 @admin_bp.route('/edit_role/<int:role_id>', methods=['GET', 'POST'])
 @login_required
 def edit_role(role_id):
-    # type: (int) -> str | Response
+    # type: (int) -> Union[str, Response]
     """Use form input to update a role in the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -265,7 +267,7 @@ def edit_role(role_id):
 @admin_bp.route('/delete_role/<int:role_id>', methods=['GET', 'POST'])
 @login_required
 def delete_role(role_id):
-    # type: (int) -> str | Response
+    # type: (int) -> Union[str, Response]
     """Use form input to delete a role from the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -302,7 +304,7 @@ def delete_role(role_id):
 @admin_bp.route('/add_user', methods=['GET', 'POST'])
 @login_required
 def add_user():
-    # type: () -> str | Response
+    # type: () -> Union[str, Response]
     """Use form input to add a user to the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -335,7 +337,7 @@ def add_user():
 @admin_bp.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def edit_user(user_id):
-    # type: (int) -> str | Response
+    # type: (int) -> Union[str, Response]
     """Use form input to update a user in the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -375,7 +377,7 @@ def edit_user(user_id):
 @admin_bp.route('/delete_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def delete_user(user_id):
-    # type: (int) -> str | Response
+    # type: (int) -> Union[str, Response]
     """Use form input to delete a user from the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -557,7 +559,7 @@ def assign_course(course_id):
 @admin_bp.route('/update_profile/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def update_profile(user_id):
-    # type: (int) -> str | Response
+    # type: (int) -> Union[str, Response]
     """Use form input to update your profile.
 
     :returns: The HTML code to display with {{ placeholders }} populated \

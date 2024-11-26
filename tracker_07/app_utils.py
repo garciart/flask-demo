@@ -7,6 +7,8 @@ from types import UnionType
 
 __all__ = ['check_system', 'validate_input']
 
+from typing import Union
+
 
 def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
     """Check if the installed Python and Flask versions can run the application.
@@ -16,8 +18,7 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
     :param float min_python_version: The minimum Python version in float format, defaults to 3.08
     :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
 
-    :returns: None
-    :rtype: None
+    :returns None: None
     """
     # Validate inputs
     validate_input('min_python_version', min_python_version, float)
@@ -52,7 +53,7 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
 
 
 def validate_input(obj_name: str, obj_to_check: object,
-                   expected_type: type | tuple | UnionType) -> None:
+                   expected_type: Union[type, tuple, UnionType]) -> None:
     """Validate an input's type and ensure it is not empty.
 
     Use this function to reduce code complexity in calling functions and methods.
@@ -61,8 +62,7 @@ def validate_input(obj_name: str, obj_to_check: object,
     :param object obj_to_check: The input to validate
     :param type/tuple/UnionType expected_type: The expected type or list of types for the input
 
-    :returns: None
-    :rtype: None
+    :returns None: None
     """
     if not isinstance(obj_to_check, expected_type):
         raise TypeError(f"'{obj_name}' is not type {expected_type}. Exiting now...")

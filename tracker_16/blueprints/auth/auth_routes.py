@@ -2,6 +2,7 @@
 
 Test: http://127.0.0.1:5000/login
 """
+from typing import Union
 from urllib.parse import urlsplit
 
 from flask import (Response,
@@ -20,7 +21,7 @@ LOGIN_PAGE = 'auth_bp.login'
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
-def login() -> str | Response:
+def login() -> Union[str, Response]:
     """The login page.
 
     :returns: The HTML code to display with {{ placeholders }} populated, \

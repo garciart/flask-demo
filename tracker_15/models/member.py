@@ -1,6 +1,7 @@
 """Class for the Member database model using SQLAlchemy ORM Declarative Mapping.
 """
 import re
+from typing import Union
 
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
@@ -37,7 +38,7 @@ class Member(db.Model):
         )
 
     def __init__(self, member_name: str, member_email: str,
-                 password: str | None = None, member_is_admin: bool = False) -> None:
+                 password: Union[str, None] = None, member_is_admin: bool = False) -> None:
         """Initialization with validation to ensure valid types and values.
 
         :param str member_name: The username of the member
@@ -50,8 +51,8 @@ class Member(db.Model):
         # Validate inputs
         validate_input('member_name', member_name, str)
         validate_input('member_email', member_email, str)
-        validate_input('password', password, str | None)
-        validate_input('member_is_admin', member_is_admin, bool | None)
+        validate_input('password', password, Union[str, None])
+        validate_input('member_is_admin', member_is_admin, Union[bool, None])
 
         # Validate that member_name:
         # - Starts with a letter
@@ -82,8 +83,7 @@ class Member(db.Model):
 
         :param str password: A password in plain text
 
-        :returns: None
-        :rtype: None
+        :returns None: None
         """
         # Validate inputs
         validate_input('password', password, str)
@@ -101,8 +101,7 @@ class Member(db.Model):
 
         :param str password: The password to validate
 
-        :returns: None
-        :rtype: None
+        :returns None: None
         """
         validate_input('password', password, str)
 

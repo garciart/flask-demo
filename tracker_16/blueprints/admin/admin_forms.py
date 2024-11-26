@@ -30,8 +30,7 @@ class EditMemberForm(FlaskForm):
         :param str current_member_name: The member's current username
         :param str current_member_email: The member's current email
 
-        :returns: None
-        :rtype: None
+        :returns None: None
         """
         super().__init__(*args, **kwargs)
         self.current_member_name = current_member_name
@@ -44,8 +43,7 @@ class EditMemberForm(FlaskForm):
 
         :raises ValidationError: If the submitted member name already exists
 
-        :returns: None
-        :rtype: None
+        :returns None: None
         """
         if member_name.data != self.current_member_name:
             _member = db.session.scalar(select(Member).where(
@@ -60,8 +58,7 @@ class EditMemberForm(FlaskForm):
 
         :raises ValidationError: If the submitted email address already exists
 
-        :returns: None
-        :rtype: None
+        :returns None: None
         """
         if member_email.data != self.current_member_email:
             _member = db.session.scalar(select(Member).where(

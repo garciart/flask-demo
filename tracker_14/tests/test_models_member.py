@@ -21,8 +21,6 @@ python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
 
-import unittest  # pylint: disable=unused-import
-
 from tracker_14.models.member import Member
 from tracker_14.tests import BaseTestCase
 

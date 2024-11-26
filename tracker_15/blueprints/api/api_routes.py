@@ -3,6 +3,7 @@
 Test: http://127.0.0.1:5000/api/test
 """
 import os
+from typing import Union
 
 from flask import (Response, jsonify, send_from_directory, request)
 
@@ -32,7 +33,7 @@ def api_get_favicon() -> Response:
 
 
 @api_bp.route('/api/test', methods=['GET'])
-def api_get_test_data() -> Response | tuple:
+def api_get_test_data() -> Union[Response, tuple]:
     """Get the list of test data when a REST call is made.
 
     :returns: A response with the data in JSON format
@@ -45,7 +46,7 @@ def api_get_test_data() -> Response | tuple:
 
 
 @api_bp.route('/api/members/all', methods=['GET'])
-def api_get_all_members() -> Response | tuple:
+def api_get_all_members() -> Union[Response, tuple]:
     """Get the list of members in the database when a REST call is made.
 
     :returns: A response with the data in JSON format
@@ -71,7 +72,7 @@ def api_get_all_members() -> Response | tuple:
 
 
 @api_bp.route('/api/members/<int:member_id>', methods=['GET'])
-def api_get_member(member_id: int) -> Response | tuple:
+def api_get_member(member_id: int) -> Union[Response, tuple]:
     """Get a member from the database using their ID when a REST call is made.
 
     :param int member_id: The member to retrieve by ID
@@ -108,7 +109,7 @@ def api_get_member(member_id: int) -> Response | tuple:
 
 
 @api_bp.route('/api/members/<int:member_id>', methods=['PUT'])
-def api_update_member(member_id: int) -> Response | tuple:
+def api_update_member(member_id: int) -> Union[Response, tuple]:
     """Update a member through an API ReST call using their ID.
 
     Examples:

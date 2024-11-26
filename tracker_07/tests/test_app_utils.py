@@ -20,8 +20,7 @@
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
-
-import unittest  # pylint: disable=unused-import
+from typing import Union
 
 from tracker_07.app_utils import check_system, validate_input
 from tracker_07.tests import BaseTestCase
@@ -102,7 +101,7 @@ class TestAppUtils(BaseTestCase):
         """Test that validate_inputs() passes when a type in a tuple matches the input type"""
         test_var = 3.14
         try:
-            validate_input(obj_name='test_var', obj_to_check=test_var, expected_type=float | str)
+            validate_input(obj_name='test_var', obj_to_check=test_var, expected_type=Union[float, str])
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 

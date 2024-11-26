@@ -15,6 +15,7 @@ Another advantage of using an application factory is that you can add additional
 
 ```python
 def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flask:
+    ...
 ```
 
 - If you run `python -B -m flask --app tracker_03 run`, `foo_var` will equal `bar`.

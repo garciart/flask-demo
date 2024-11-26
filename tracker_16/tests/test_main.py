@@ -29,7 +29,7 @@ __author__ = 'Rob Garcia'
 class TestMain(BaseTestCase):
     """Unit tests for functions and methods in the application's blueprints directory.
 
-    Covers main pages (e.g., /index, /about, etc)
+    Covers main pages (e.g., /index, /about, etc.)
 
     :param unittest.TestCase.BaseTestCase: Inherited from tests/__init__.py
     """

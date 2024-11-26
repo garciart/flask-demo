@@ -21,7 +21,6 @@ python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
 
-from wtforms import ValidationError
 from tracker_14.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
@@ -30,7 +29,7 @@ __author__ = 'Rob Garcia'
 class TestAdmin(BaseTestCase):
     """Unit tests for functions and methods in the application's blueprints directory.
 
-    Covers web and error pages (e.g., /index, /about, etc)
+    Covers web and error pages (e.g., /index, /about, etc.)
 
     :param unittest.TestCase.BaseTestCase: Inherited from tests/__init__.py
     """

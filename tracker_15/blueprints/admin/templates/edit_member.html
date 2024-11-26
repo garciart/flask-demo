@@ -30,9 +30,11 @@ table, th, td {
     <table>
         <caption>Member Details</caption>
         <thead>
-            <th scope="col">Key:</th>
-            <th scope="col">Value:</th>
-            <th scope="col"></th>
+            <tr>
+                <th scope="col">Key:</th>
+                <th scope="col">Value:</th>
+                <th scope="col"></th>
+            </tr>
         </thead>
         <tbody>
             <tr>
@@ -57,19 +59,22 @@ table, th, td {
     <div style="border: 1px black solid; padding: 1em;">
         <p>
             <i>(Leave both fields blank to continue using the current password.)</i>
-        <p>
-        <p><b>{{ form.password.label }}</b></p>
-        {{ form.password(size=32) }}<br />
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
         </p>
         <p>
-        <p><b>{{ form.password2.label }}</b></p>
-        {{ form.password2(size=32) }}<br />
-        {% for error in form.password2.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+            <b>{{ form.password.label }}</b>
+            <br />
+            {{ form.password(size=32) }}<br />
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <b>{{ form.password2.label }}</b>
+            <br />
+            {{ form.password2(size=32) }}<br />
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
     </div>
     <br />

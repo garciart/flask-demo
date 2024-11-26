@@ -27,6 +27,7 @@ Changes:
 import logging
 
 import flask
+from flask import Response
 
 from tracker_10.app_utils import (validate_input, check_system, start_log_file,
                                   log_page_request)
@@ -82,7 +83,16 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         start_log_file(_app, log_dir='tracker_logs', logging_level=_logging_level)
 
         @_app.after_request
-        def log_response_code(response):
+        def log_response_code(response: Response) -> Response:
+            """Intercept the response, log it, and send it back to the app.
+
+            **NOTE** - This will not change the response.
+
+            :param Response response: The response to log
+
+            :returns: The response without changes
+            :rtype: Response
+            """
             # Capture the request and the response
             log_page_request(_app, flask.request, response)
 
@@ -130,10 +140,13 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
         """
         return flask.render_template('error/500.html', e=e), 500
 
-    # Remove after testing
     @_app.route('/doh')
-    def doh():
-        # Raise an exception to trigger a 500 error
+    def doh() -> None:
+        """Use to raise an exception to trigger a 500 error for testing.
+        Remove before deploying to production.
+
+        :returns None: None
+        """
         raise RuntimeError('This is an intentional 500 error.')
 
     # Return the application instance to the code that invoked 'create_app()'

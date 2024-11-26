@@ -1,5 +1,6 @@
 """admin content routing manager.
 """
+from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template
 
@@ -13,7 +14,7 @@ MEMBERS_PAGE = 'main_bp.index'
 
 
 @admin_bp.route('/admin/view_member/<int:member_id>', methods=['GET'])
-def view_member(member_id: int) -> str | Response:
+def view_member(member_id: int) -> Union[str, Response]:
     """Use form input to view a member in the database.
 
     :param int member_id: The member to retrieve by ID
@@ -37,7 +38,7 @@ def view_member(member_id: int) -> str | Response:
 
 
 @admin_bp.route('/admin/edit_member/<int:member_id>', methods=['GET', 'POST'])
-def edit_member(member_id: int) -> str | Response:
+def edit_member(member_id: int) -> Union[str, Response]:
     """Use form input to update a member in the database.
 
     :param int member_id: The member to edit by ID

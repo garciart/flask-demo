@@ -25,7 +25,6 @@ import sys
 import unittest
 
 from tracker_16 import create_app
-from tracker_16.blueprints.api import api_bp
 
 
 class BaseTestCase(unittest.TestCase):
