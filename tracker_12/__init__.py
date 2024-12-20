@@ -53,7 +53,7 @@ def create_app(config_name: str = 'default', log_events: bool = False) -> flask.
     """
     # Validate inputs
     validate_input('config_name', config_name, str)
-    validate_input('config_name', log_events, bool)
+    validate_input('log_events', log_events, bool)
 
     if config_name not in ['default', 'development', 'profiler']:
         raise ValueError(

@@ -63,7 +63,7 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
 
 
 def validate_input(
-    obj_name: str, obj_to_check: object, expected_type: Union[type, tuple, UnionType]
+        obj_name: str, obj_to_check: object, expected_type: Union[type, tuple, UnionType]
 ) -> None:
     """Validate an input's type and ensure it is not empty.
 
@@ -83,7 +83,7 @@ def validate_input(
 
 
 def start_log_file(
-    app: flask.Flask, log_dir: str = 'tracker_logs', logging_level: int = logging.DEBUG
+        app: flask.Flask, log_dir: str = 'tracker_logs', logging_level: int = logging.DEBUG
 ) -> str:
     """Setup and start logging.
 

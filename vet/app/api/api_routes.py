@@ -2,6 +2,8 @@
 
 Test: http://127.0.0.1:5000/api/test
 """
+from typing import Union
+
 # Flake8 F401: imports are used for type hints
 from flask import (jsonify, Response)
 from app.api import api_bp
@@ -49,7 +51,7 @@ def api_courses():
     return _json_result
 
 
-def __serialize_query_result(query_result: list, exclude: None | str | list = None) -> list:
+def __serialize_query_result(query_result: list, exclude: Union[None, str, list] = None) -> list:
     """Serialize SQLAlchemy query result into a JSON string.
 
     NOTE - Do not tinker! This works and you wasted three hours on this
@@ -73,7 +75,7 @@ def __serialize_query_result(query_result: list, exclude: None | str | list = No
     """
     # Validate inputs
     validate_input('query_result', query_result, list)
-    validate_input('exclude', exclude, (None | str | list))
+    validate_input('exclude', exclude, Union[None, str, list])
 
     # Holds the converted objects
     _converted_list = []

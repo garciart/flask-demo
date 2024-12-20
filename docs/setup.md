@@ -48,13 +48,13 @@ This Flask application will allow you to administer courses and course access us
 
 1. Create initial files and folder structure:
 
-    | File/Folder | Notes |
-    | ----------- | ----- |
-    | `.flaskenv` | During development, set environment variables in this file instead of changing the state of the base OS. The `python-dotenv` package will allow Flask to 'read' the variables as though they were set in the OS, preserving the state of the base OS. Normally, this file *is not* committed to source control. |
-    | `.gitignore` | Contains a list of files that you do not want to commit to source control. |
-    | `app.py` | The entry point of the application (i.e., `python -B -m flask --app blue_app run`). |
-    | `blue_app/config.py` | Contains variables shared by multiple application files. |
-    | `blue_app/__init__.py` | Initializes the Python scripts in the `blue_app` directory as modules and acts as the application factory. |
+    | File/Folder            | Notes                                                                                                                                                                                                                                                                                                           |
+    |------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `.flaskenv`            | During development, set environment variables in this file instead of changing the state of the base OS. The `python-dotenv` package will allow Flask to 'read' the variables as though they were set in the OS, preserving the state of the base OS. Normally, this file *is not* committed to source control. |
+    | `.gitignore`           | Contains a list of files that you do not want to commit to source control.                                                                                                                                                                                                                                      |
+    | `app.py`               | The entry point of the application (i.e., `python -B -m flask --app blue_app run`).                                                                                                                                                                                                                             |
+    | `blue_app/config.py`   | Contains variables shared by multiple application files.                                                                                                                                                                                                                                                        |
+    | `blue_app/__init__.py` | Initializes the Python scripts in the `blue_app` directory as modules and acts as the application factory.                                                                                                                                                                                                      |
 
     Your application tree should look like the following:
 
@@ -92,13 +92,13 @@ This Flask application will allow you to administer courses and course access us
     mkdir -p blue_app/templates
     ```
 
-    | File/Folder | Notes |
-    | ----------- | ----- |
-    | `static` | Contains static files, like Cascading Style Sheets (CSS), images, and scripts, used by HTML files. |
-    | `templates` | Contains HTML files. |
-    | `templates/demo_base.html` | Contains HTML code that is common to more than one web page. |
+    | File/Folder                      | Notes                                                                                                                                                       |
+    |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `static`                         | Contains static files, like Cascading Style Sheets (CSS), images, and scripts, used by HTML files.                                                          |
+    | `templates`                      | Contains HTML files.                                                                                                                                        |
+    | `templates/demo_base.html`       | Contains HTML code that is common to more than one web page.                                                                                                |
     | `templates/demo/demo_child.html` | Contains HTML content in Jinja2 template blocks. When the page renders, Flask replaces the placeholders in `demo_base.html` with the contents of this file. |
-    | `logs` | Contains logs of Flask actions. |
+    | `logs`                           | Contains logs of Flask actions.                                                                                                                             |
 
     Your application tree should look like the following:
 

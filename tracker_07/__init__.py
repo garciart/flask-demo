@@ -17,10 +17,8 @@ import flask
 
 # Import the helper functions
 from tracker_07.app_utils import check_system, validate_input
-
 # Import the runtime configuration classes
 from tracker_07.config import CONFIGS
-
 # Import profiler middleware
 from tracker_07.profiler import add_profiler_middleware
 

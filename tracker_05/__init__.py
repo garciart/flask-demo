@@ -20,7 +20,6 @@ import flask
 
 # Import the helper functions
 from tracker_05.app_utils import check_system, validate_input
-
 # Import the runtime configuration classes
 from tracker_05.config import CONFIGS
 

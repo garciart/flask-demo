@@ -29,7 +29,6 @@ class DevelopmentConfig(Config):
     CONFIG_MSG = 'You are using the development configuration.'
 
 
-
 class ProfilingConfig(Config):
     """Configuration variables and settings for profiling."""
 
@@ -51,6 +50,7 @@ class TestingConfig(Config):
 
     # Return the stack trace, instead of error pages, when testing
     TESTING = True
+
 
 CONFIGS = {
     'default': Config,

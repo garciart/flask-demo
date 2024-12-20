@@ -14,6 +14,7 @@ import sys
 import time
 from logging.handlers import RotatingFileHandler
 from types import UnionType
+from typing import Union
 
 import flask
 from flask_sqlalchemy import SQLAlchemy
@@ -167,7 +168,7 @@ def _start_log_file(
 
 
 def validate_input(obj_name: str, obj_to_check: object,
-                   expected_type: type | tuple | UnionType) -> None:
+                   expected_type: Union[type, tuple, UnionType]) -> None:
     """Validate an input's type and ensure it is not empty.
 
     Use this function to reduce code complexity in calling functions and methods.
@@ -184,7 +185,7 @@ def validate_input(obj_name: str, obj_to_check: object,
         print('obj_name must be type <str>. Exiting now...')
         sys.exit(2)
 
-    if not isinstance(expected_type, type | tuple):
+    if not isinstance(expected_type, Union[type, tuple]):
         print('expected_type must be type <type> or a tuple of types. Exiting now...')
         sys.exit(2)
 
