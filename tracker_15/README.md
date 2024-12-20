@@ -130,7 +130,7 @@ python -B -m flask --app tracker_15 db migrate -m "Initial migration" -d tracker
 # For help with any of these commands, use python -B -m flask --app tracker_15 db --help
 
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_15:create_app('profiler')" run --without-threads
+python -B -m flask --app "tracker_15:create_app('profile')" run --without-threads
 
 # Run the Flask application using HTML files found in the `templates` directory
 python -B -m flask --app tracker_15 run

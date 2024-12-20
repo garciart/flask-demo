@@ -65,7 +65,7 @@ def index() -> str:
     # DOCTYPE prevents Quirks mode
     return f"""<!DOCTYPE html>
         <h1>Hello, World!</h1>
-        <p>This is a demo of A Flask application that uses environment variables.</p>
+        <p>This is a demo of a Flask application that uses environment variables.</p>
         <p>Your encoding is <code>{_default_encoding}</code>.</p>
         <p>This is <code>ENV_USER_DEFINED_VAR</code>, a user-defined variable from the
         <code>.env</code> file: <code>{_env_user_defined_var}</code></p>

@@ -35,7 +35,7 @@ class BaseTestCase(unittest.TestCase):
 
     :param class unittest.TestCase: Class to test single test cases
     """
-    CONFIG_NAME = 'default'
+    CONFIG_NAME = 'testing'
 
     def setUp(self):
         """This method runs before each test"""

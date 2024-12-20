@@ -10,7 +10,7 @@ __all__ = ['check_system', 'validate_input']
 from typing import Union
 
 
-def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
+def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> tuple:
     """Check if the installed Python and Flask versions can run the application.
 
     **NOTE** - Use `3.01` for version `3.1` and `3.10` for version `3.10`.
@@ -18,7 +18,8 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
     :param float min_python_version: The minimum Python version in float format, defaults to 3.08
     :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
 
-    :returns None: None
+    :returns: The Python and Flask versions in float format (`3.01` for version `3.1`, etc.)
+    :rtype: tuple
     """
     # Validate inputs
     validate_input('min_python_version', min_python_version, float)
@@ -50,6 +51,8 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
         raise ValueError(
             f"This application requires Flask {min_flask_version:.2f} or above. Exiting now..."
         )
+
+    return _python_version, _flask_version
 
 
 def validate_input(obj_name: str, obj_to_check: object,

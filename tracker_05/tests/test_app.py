@@ -50,7 +50,7 @@ class TestApp(BaseTestCase):
     def test_config_name_is_string(self):
         """Test that create_app() passes when config_name is a string."""
         try:
-            create_app('default')
+            create_app('testing')
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 
@@ -62,7 +62,7 @@ class TestApp(BaseTestCase):
     def test_config_name_accepts_valid_value(self):
         """Test that create_app() passes when config_name is a valid selection."""
         try:
-            create_app('development')
+            create_app('testing')
         except (TypeError, ValueError):
             self.fail('Method raised an exception unexpectedly.')
 

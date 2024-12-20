@@ -17,7 +17,7 @@ import flask
 __all__ = ['validate_input', 'check_system', 'start_log_file', 'log_page_request']
 
 
-def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
+def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> tuple:
     """Check if the installed Python and Flask versions can run the application.
 
     **NOTE** - Use `3.01` for version `3.1` and `3.10` for version `3.10`.
@@ -25,7 +25,8 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
     :param float min_python_version: The minimum Python version in float format, defaults to 3.08
     :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
 
-    :returns None: None
+    :returns: The Python and Flask versions in float format (`3.01` for version `3.1`, etc.)
+    :rtype: tuple
     """
     # Validate inputs
     validate_input('min_python_version', min_python_version, float)
@@ -58,9 +59,12 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
             f"This application requires Flask {min_flask_version:.2f} or above. Exiting now..."
         )
 
+    return _python_version, _flask_version
 
-def validate_input(obj_name: str, obj_to_check: object,
-                   expected_type: Union[type, tuple, UnionType]) -> None:
+
+def validate_input(
+    obj_name: str, obj_to_check: object, expected_type: Union[type, tuple, UnionType]
+) -> None:
     """Validate an input's type and ensure it is not empty.
 
     Use this function to reduce code complexity in calling functions and methods.
@@ -79,7 +83,7 @@ def validate_input(obj_name: str, obj_to_check: object,
 
 
 def start_log_file(
-        app: flask.Flask, log_dir: str = 'tracker_logs', logging_level: int = logging.DEBUG
+    app: flask.Flask, log_dir: str = 'tracker_logs', logging_level: int = logging.DEBUG
 ) -> str:
     """Setup and start logging.
 
@@ -142,8 +146,9 @@ def start_log_file(
 
     # Use lazy % formatting in logging functions
     # NOTE - Log events will still appear in the console
-    app.logger.info('Starting %s application; setting logging level to %s.',
-                    __package__, _logging_level_name)
+    app.logger.info(
+        'Starting %s application; setting logging level to %s.', __package__, _logging_level_name
+    )
 
     # Set logging to the logging level from config.py
     app.logger.setLevel(logging_level)

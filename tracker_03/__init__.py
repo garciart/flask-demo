@@ -21,13 +21,12 @@ python -B -m flask --app "tracker_03:create_app(foo_var='42')" run
 """
 
 import importlib
-import logging
 import sys
 
 import flask
 
 # Import the runtime configuration classes
-from tracker_03.config import Config, DevConfig
+from tracker_03.config import CONFIGS
 
 __author__ = 'Rob Garcia'
 
@@ -43,24 +42,13 @@ def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flas
     :rtype: flask.Flask
     """
     # Ensure the system meets the prerequisites for the application
-    check_system(min_python_version=3.08, min_flask_version=3.0)
+    _python_version, _flask_version = check_system(min_python_version=3.08, min_flask_version=3.0)
 
     # Create the Flask application instance
     _app = flask.Flask(__name__)
 
     # Load the configuration class from config.py based on the environment
-    # NOTE - Will replace if-elif-else with mapping for readability and maintainability
-    if config_name == 'development':
-        _app.config.from_object(DevConfig())
-    else:
-        _app.config.from_object(Config())
-
-    try:
-        _logging_level = int(_app.config.get('LOGGING_LEVEL', logging.WARNING))
-    except ValueError:
-        _logging_level = logging.WARNING
-
-    _logging_level_name = logging.getLevelName(_logging_level)
+    _app.config.from_object(CONFIGS[config_name])
 
     # Create a route and page
     @_app.route('/')
@@ -74,8 +62,8 @@ def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flas
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
             <h1>Hello, World!</h1>
-            <p>Your are using the <b>{config_name}</b> configuration and your logging level is
-            <b>{_logging_level_name} ({_logging_level})</b>.</p>
+            <p>{_app.config['CONFIG_MSG']}</p>
+            <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             <p>The value of <code>foo</code> is "{foo_var}".</p>
             """
         return _greeting
@@ -84,7 +72,7 @@ def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flas
     return _app
 
 
-def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> None:
+def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> tuple:
     """Check if the installed Python and Flask versions can run the application.
 
     **NOTE** - Use `3.01` for version `3.1` and `3.10` for version `3.10`.
@@ -92,7 +80,8 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
     :param float min_python_version: The minimum Python version in float format, defaults to 3.08
     :param float min_flask_version: The minimum Flask version in float format, defaults to 3.0
 
-    :returns None: None
+    :returns: The Python and Flask versions in float format (`3.01` for version `3.1`, etc.)
+    :rtype: tuple
     """
     # Validate inputs
     if not isinstance(min_python_version, float) or not isinstance(min_flask_version, float):
@@ -126,3 +115,5 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
         raise ValueError(
             f"This application requires Flask {min_flask_version:.2f} or above. Exiting now..."
         )
+
+    return _python_version, _flask_version

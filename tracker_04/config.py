@@ -5,22 +5,25 @@ place before Flask starts, like FLASK_RUN_PORT. Place those variables in .flaske
 
 Usage:
 - app.config.from_object(Config)
-- app.config['LOGGING_LEVEL']
+- app.config['CONFIG_MSG']
 """
 
-import logging
-
-__all__ = ['Config', 'DevConfig']
+__all__ = ['CONFIGS']
 
 
 class Config:
     """Default configuration variables and settings."""
 
-    # WARNING is the default level for the logging module
-    LOGGING_LEVEL = logging.WARNING
+    CONFIG_MSG = 'You are using the default configuration.'
 
 
-class DevConfig(Config):
+class DevelopmentConfig(Config):
     """Configuration variables and settings for development."""
 
-    LOGGING_LEVEL = logging.DEBUG
+    CONFIG_MSG = 'You are using the development configuration.'
+
+
+CONFIGS = {
+    'default': Config,
+    'development': DevelopmentConfig,
+}

@@ -33,7 +33,7 @@ class BaseTestCase(unittest.TestCase):
     This class sets up the application context and provides methods
     to be shared across different test modules.
     """
-    CONFIG_NAME = 'default'
+    CONFIG_NAME = 'testing'
 
     def setUp(self):
         """This method runs before each test"""

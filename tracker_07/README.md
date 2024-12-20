@@ -51,7 +51,7 @@ python -B -m pylint tracker_07
 coverage run -m unittest discover tracker_07/tests -b -v
 coverage report -m
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_07:create_app('profiler')" run --without-threads
+python -B -m flask --app "tracker_07:create_app('profile')" run --without-threads
 ```
 
 > **NOTE** - There is a [known issue with cProfile and threading](https://github.com/pallets/werkzeug/issues/2909 "ProfilerMiddleware raises ValueError: Another profiling tool is already active") that can interfere with rendering images or running JavaScript files in Flask applications.

@@ -44,12 +44,27 @@ class TestError(BaseTestCase):
         response = self.client.get('/oops', follow_redirects=True)
         self.assertIn(b'Not Found', response.data)
 
-    def test_error_response_code(self):
-        """Test that the Error page was created by looking at the response code"""
-        response = self.client.get('/doh', follow_redirects=True)
-        self.assertEqual(response.status_code, 500)
+    def test_error_response(self):
+        """Test that the testing config returned a runtime error"""
+        with self.assertRaises(RuntimeError):
+            self.client.get('/doh', follow_redirects=True)
 
-    def test_error_content(self):
-        """Test that the Error page contains the correct contents"""
-        response = self.client.get('/doh', follow_redirects=True)
+    def test_error_content_and_code(self):
+        """Test that the Error page returns the correct code and contents.
+
+        For this test, you cannot use the 'testing' configuration class.
+        """
+        # Create an application instance
+        app = create_app(config_name='default', log_events=True)
+        app_context = app.app_context()
+        app_context.push()
+        client = app.test_client()
+        # Get and test the response
+        response = client.get('/doh', follow_redirects=True)
         self.assertIn(b'Internal Server Error', response.data)
+        self.assertEqual(response.status_code, 500)
+        # Tear down the application instance
+        app_context.pop()
+        app = None
+        app_context = None
+        client = None
