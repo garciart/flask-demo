@@ -2,18 +2,10 @@
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source .venv/bin/activate` (Linux)
-> - `.venv/Scripts/activate` (Windows)
+> - source .venv/bin/activate (Linux)
+> - .venv/Scripts/activate (Windows)
 
-Usage:
-# Run the unit tests found in `tests/test_app.py`
-# Use Interactive mode
-python -B -m unittest --buffer --verbose tracker_05/tests/test_app.py
-# Use Automatic mode
-echo 'default' | python -B -m unittest --buffer --verbose tracker_05/tests/test_app.py
-
-Changes:
-- Added unit tests.
+Usage: python -B -m unittest --buffer --verbose tracker_05/tests/test_app.py
 """
 
 import flask
@@ -62,7 +54,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
         """
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
+            <h1>Welcome to Tracker!</h1>
             <p>{_app.config['CONFIG_MSG']}</p>
             <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             """

@@ -2,8 +2,8 @@
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source .venv/bin/activate` (Linux)
-> - `.venv/Scripts/activate` (Windows)
+> - source .venv/bin/activate (Linux)
+> - .venv/Scripts/activate (Windows)
 
 Usage:
 # Create a log when running the Flask application
@@ -16,12 +16,6 @@ python -B -m flask --app "tracker_08:create_app('development', True)" run
 > - Do not log events when unit testing or each test will create a log file.
 > - Use the `development` configuration during development or the application will \
     create an empty log file, since the application only logs `logging.INFO`-level messages or less.
-
-Changes:
-- Replaced `import config`. Importing occurs on demand in the `_configure_app` method
-- Replaced configuration if-elif-else with mapping for readability and maintainability
-- Consolidated input validation in the `validate_input` method
-- Added logging
 """
 
 import logging
@@ -105,7 +99,7 @@ def create_app(config_name: str = 'default', log_events: Union[bool, None] = Non
 
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
+            <h1>Welcome to Tracker!</h1>
             <p>{_app.config['CONFIG_MSG']}</p>
             <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             <p>Your logging level is <b>{logging.getLevelName(_logging_level)}

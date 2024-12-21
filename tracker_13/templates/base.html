@@ -3,12 +3,13 @@
 
 <head>
     {% block head %}
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>{% block page_title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="description" content="{% block page_description %}{% endblock %}" />
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content="{% block page_description %}{% endblock %}"/>
+    <link rel="icon" type="image/x-icon"
+          href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}"/>
     {% endblock %}
     <script>
         /* to prevent Firefox FOUC, this must be here */
@@ -20,10 +21,10 @@
 <header>
     {% block body_header %}{% endblock %}
 </header>
-    <hr />
+<hr/>
 <main>
     {% block main_content %}{% endblock %}
-    <hr />
+    <hr/>
 </main>
 <footer>
     {% block footer %}

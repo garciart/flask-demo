@@ -3,8 +3,8 @@ a tool for measuring code coverage of Python programs.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source .venv/bin/activate` (Linux)
-> - `.venv/Scripts/activate` (Windows)
+> - source .venv/bin/activate (Linux)
+> - .venv/Scripts/activate (Windows)
 
 Usage:
 # Run the unit tests found in the `tests` directory using Coverage
@@ -13,9 +13,6 @@ coverage run -m unittest --verbose --buffer tracker_06/tests/test_app.py
 coverage report -m
 # See the coverage report in a browser
 coverage html --directory tracker_06/tests/htmlcov
-
-Changes:
-- Coverage.py does not require code changes.
 """
 
 import flask
@@ -64,7 +61,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
         """
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
+            <h1>Welcome to Tracker!</h1>
             <p>{_app.config['CONFIG_MSG']}</p>
             <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             """

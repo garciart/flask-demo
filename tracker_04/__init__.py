@@ -2,22 +2,10 @@
 
 **NOTE** - Remember to activate your Python virtual environment first:
 
-- `source .venv/bin/activate` (Linux)
-- `.venv/Scripts/activate` (Windows)
+- source .venv/bin/activate (Linux)
+- .venv/Scripts/activate (Windows)
 
-**Usage**:
-
-```
-# Run the Flask application using the configuration variables found in `config.py`
-python -B -m flask --app "tracker_04:create_app(config_name='development')" run
-python -B -m flask --app "tracker_04:create_app('development')" run
-# Run the application using the 'default' configuration
-python -B -m flask --app tracker_04 run
-# Use the 'foo' command-line argument
-python -B -m flask --app "tracker_04:create_app(foo_var='42')" run
-```
-
-**NOTE** - Enclose options in quotation marks when using special characters.
+Usage: python -B -m flask --app tracker_04 run
 """
 
 import flask
@@ -66,7 +54,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
         """
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
+            <h1>Welcome to Tracker!</h1>
             <p>{_app.config['CONFIG_MSG']}</p>
             <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             """

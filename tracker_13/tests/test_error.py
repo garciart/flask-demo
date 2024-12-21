@@ -4,8 +4,8 @@
 
 - Remember to activate your Python virtual environment first:
 
-    - `source .venv/bin/activate` (Linux)
-    - `.venv/Scripts/activate` (Windows)
+    - source .venv/bin/activate (Linux)
+    - .venv/Scripts/activate (Windows)
 
 - Test from the project directory (e.g., `flask-demo`, not `tracker_XX`)
 - Do not log events when unit testing or each test will create a log file.
@@ -14,13 +14,14 @@
   and `--verbose` displays the test's docstring
   (ex., `Test that check_system() fails because min_python_version is not type float ... ok`)
 
-**Usage:**
+Usage:
 
 ```
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
 
+from tracker_13 import create_app
 from tracker_13.tests import BaseTestCase
 
 __author__ = 'Rob Garcia'
@@ -33,6 +34,7 @@ class TestError(BaseTestCase):
 
     :param unittest.TestCase.BaseTestCase: Inherited from tests/__init__.py
     """
+
     def test_not_found_response_code(self):
         """Test that the Not Found page was created by looking at the response code"""
         response = self.client.get('/oops', follow_redirects=True)

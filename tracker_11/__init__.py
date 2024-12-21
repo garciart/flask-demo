@@ -2,17 +2,12 @@
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source .venv/bin/activate` (Linux)
-> - `.venv/Scripts/activate` (Windows)
+> - source .venv/bin/activate (Linux)
+> - .venv/Scripts/activate (Windows)
 
 Usage:
 # Run the Flask application using HTML files found in the `templates` directory
 python -B -m flask --app tracker_11 run
-
-> **NOTE** - Enclose options in quotation marks when using special characters.
-
-Changes:
-- Added a database
 """
 
 import logging

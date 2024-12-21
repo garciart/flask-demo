@@ -2,15 +2,12 @@
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source .venv/bin/activate` (Linux)
-> - `.venv/Scripts/activate` (Windows)
+> - source .venv/bin/activate (Linux)
+> - .venv/Scripts/activate (Windows)
 
 Usage:
 # Profile the application using the built-in Werkzeug profiler:
 python -B -m flask --app "tracker_07:create_app('profile')" run --without-threads
-
-Changes:
-- Added performance profiling.
 """
 
 import flask
@@ -65,7 +62,7 @@ def create_app(config_name: str = 'default') -> flask.Flask:
         """
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
+            <h1>Welcome to Tracker!</h1>
             <p>{_app.config['CONFIG_MSG']}</p>
             <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             """

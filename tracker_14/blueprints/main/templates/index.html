@@ -9,39 +9,41 @@
 {% endblock %}
 
 {% block body_header %}
-<h1>Hello, World!</h1>
+<h1>Welcome to Tracker!</h1>
 {% endblock %}
 
 {% block main_content %}
-<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}"/>
 <p>You are using the <b>{{ config_name_text }}</b> configuration and your logging level is
     <b>{{ logging_level_name_text }} ({{ logging_level_text }})</b>.
 </p>
-<br />
+<br/>
 <table>
     <caption>List of Members</caption>
     <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Member Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Admin?</th>
-            <th scope="col" colspan="2"></th>
-        </tr>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Member Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Admin?</th>
+        <th scope="col" colspan="2"></th>
+    </tr>
     </thead>
     {% for m in members_data %}
     <tbody>
-        <tr>
-            <td>{{m.member_id}}</td>
-            <td>{{m.member_name}}</td>
-            <td>{{m.member_email}}</td>
-            <td>{{m.member_is_admin}}</td>
-            <td><a href="{{ url_for('admin_bp.view_member', member_id=m.member_id) }}" title="View Member">View</a></td>
-            <td><a href="{{ url_for('admin_bp.edit_member', member_id=m.member_id) }}" title="Edit Member">Edit</a></td>
-        </tr>
+    <tr>
+        <td>{{m.member_id}}</td>
+        <td>{{m.member_name}}</td>
+        <td>{{m.member_email}}</td>
+        <td>{{m.member_is_admin}}</td>
+        <td><a href="{{ url_for('admin_bp.view_member', member_id=m.member_id) }}"
+               title="View Member">View</a></td>
+        <td><a href="{{ url_for('admin_bp.edit_member', member_id=m.member_id) }}"
+               title="Edit Member">Edit</a></td>
+    </tr>
     </tbody>
     {% endfor%}
 </table>
-<br />
+<br/>
 <a href="{{ url_for('main_bp.about') }}" title="To the About Page!">To the About Page!</a>
 {% endblock %}

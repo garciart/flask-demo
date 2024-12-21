@@ -2,8 +2,8 @@
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source .venv/bin/activate` (Linux)
-> - `.venv/Scripts/activate` (Windows)
+> - source .venv/bin/activate (Linux)
+> - .venv/Scripts/activate (Windows)
 
 Usage:
 # Redirect the user to a custom error page and logs the error
@@ -14,9 +14,6 @@ python -B -m flask --app "tracker_09:create_app('development', True)" run
 >
 > - Enclose options in quotation marks when using special characters.
 > - Use the `development` configuration so the application will log `logging.INFO`-level messages.
-
-Changes:
-- Added custom 404 and 500 error pages
 """
 
 import logging
@@ -100,7 +97,7 @@ def create_app(config_name: str = 'default', log_events: Union[bool, None] = Non
 
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
+            <h1>Welcome to Tracker!</h1>
             <p>{_app.config['CONFIG_MSG']}</p>
             <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             <p>Your logging level is <b>{logging.getLevelName(_logging_level)} ({_logging_level})</b>.</p>

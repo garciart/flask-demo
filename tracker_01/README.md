@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index() -> str:
-    return '<h1>Hello, World!</h1>'
+    return '<h1>Welcome to Tracker!</h1>'
 ```
 
 The single-file module pattern is great for small demos, but it is not practical for large applications.

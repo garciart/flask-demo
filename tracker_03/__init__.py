@@ -2,8 +2,8 @@
 
 **NOTE** - Remember to activate your Python virtual environment first:
 
-- `source .venv/bin/activate` (Linux)
-- `.venv/Scripts/activate` (Windows)
+- source .venv/bin/activate (Linux)
+- .venv/Scripts/activate (Windows)
 
 **Usage**:
 
@@ -61,7 +61,7 @@ def create_app(config_name: str = 'default', foo_var: str = 'bar') -> flask.Flas
         """
         # DOCTYPE prevents Quirks mode
         _greeting = f"""<!DOCTYPE html>
-            <h1>Hello, World!</h1>
+            <h1>Welcome to Tracker!</h1>
             <p>{_app.config['CONFIG_MSG']}</p>
             <p>You are using Python {_python_version} and Flask {_flask_version}.</p>
             <p>The value of <code>foo</code> is "{foo_var}".</p>

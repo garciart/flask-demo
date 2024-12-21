@@ -36,7 +36,8 @@ class EditMemberForm(FlaskForm):
         self.current_member_name = current_member_name
         self.current_member_email = current_member_email
 
-    def check_member_name(self, member_name: StringField) -> None:
+    # MUST USE validate_{field_name} PATTERN WITH Flask-WTF!
+    def validate_member_name(self, member_name: StringField) -> None:
         """Check if a member already exists in the database.
 
         :param StringField member_name: The member name to check
@@ -49,9 +50,10 @@ class EditMemberForm(FlaskForm):
             _member = db.session.scalar(select(Member).where(
                 Member.member_name == member_name.data))
             if _member is not None:
-                raise ValidationError('Member already exists.')
+                raise ValidationError('Name already exists.')
 
-    def check_email(self, member_email: StringField) -> None:
+    # MUST USE validate_{field_name} PATTERN WITH Flask-WTF!
+    def validate_member_email(self, member_email: StringField) -> None:
         """Check if an email address already exists in the database.
 
         :param StringField member_email: The email address to check

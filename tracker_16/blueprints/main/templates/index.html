@@ -10,7 +10,7 @@
 
 {% block body_header %}
 {% if current_user.is_anonymous %}
-<h1>Hello, World!</h1>
+<h1>Welcome to Tracker!</h1>
 <a class="nav-link" href="{{ url_for('auth_bp.login') }}" title="Log In">Log In</a>
 {% else %}
 <h1>Hello, {{ current_user.member_name }}!</h1>

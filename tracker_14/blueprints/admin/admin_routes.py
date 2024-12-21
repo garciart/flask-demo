@@ -59,6 +59,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
         _member.member_is_admin = _form.member_is_admin.data
         if _form.password.data.strip() != '':
             _member.set_password(_form.password.data)
+        db.session.add(_member)
         db.session.commit()
         flash('Member updated.')
         return redirect(url_for(MEMBERS_PAGE))

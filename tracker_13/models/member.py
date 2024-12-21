@@ -35,7 +35,8 @@ class Member(db.Model):
             f'"member_email": "{self.member_email}"}}'
         )
 
-    def __init__(self, member_name: str, member_email: str, password: Union[str, None] = None) -> None:
+    def __init__(self, member_name: str,
+                 member_email: str, password: Union[str, None] = None) -> None:
         """Initialization with validation to ensure valid types and values.
 
         :param str member_name: The username of the member

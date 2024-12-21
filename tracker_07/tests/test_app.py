@@ -4,8 +4,8 @@
 
 - Remember to activate your Python virtual environment first:
 
-    - `source .venv/bin/activate` (Linux)
-    - `.venv/Scripts/activate` (Windows)
+    - source .venv/bin/activate (Linux)
+    - .venv/Scripts/activate (Windows)
 
 - Test from the project directory (e.g., `flask-demo`, not `tracker_XX`)
 - Do not log events when unit testing or each test will create a log file.
@@ -14,7 +14,7 @@
   and `--verbose` displays the test's docstring
   (ex., `Test that check_system() fails because min_python_version is not type float ... ok`)
 
-**Usage:**
+Usage:
 
 ```
 python -B -m unittest discover tracker_XX/tests -b -v
@@ -45,7 +45,7 @@ class TestApp(BaseTestCase):
     def test_index_content(self):
         """Test that the index page contains the correct contents"""
         response = self.client.get('/', follow_redirects=True)
-        self.assertIn(b'Hello', response.data)
+        self.assertIn(b'Tracker', response.data)
 
     def test_config_name_is_string(self):
         """Test that create_app() passes when config_name is a string."""

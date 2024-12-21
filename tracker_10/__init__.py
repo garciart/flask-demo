@@ -2,26 +2,12 @@
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
-> - `source .venv/bin/activate` (Linux)
-> - `.venv/Scripts/activate` (Windows)
+> - source .venv/bin/activate (Linux)
+> - .venv/Scripts/activate (Windows)
 
-Usage:
-# Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest --verbose --buffer tracker_10/tests/test_app.py
-# See the coverage report in the console
-coverage report -m
-# Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_10:create_app('profile')" run --without-threads
-# Runs the Flask application using HTML files found in the `templates` directory
-# python -B -m flask --app "tracker_10:create_app(config_name='development', log_events=True)" run
-python -B -m flask --app "tracker_10:create_app('development', True)" run
+Usage: python -B -m flask --app tracker_10 run
 
 > **NOTE** - Enclose options in quotation marks when using special characters.
-
-Changes:
-- Moved pages into templates
-- Added a "master" layout page
-- Added Cascading Style Sheets (CSS), images, and JavaScript files
 """
 
 import logging

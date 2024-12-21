@@ -2,10 +2,10 @@
 
 **NOTE** - Remember to activate your Python virtual environment first:
 
-- `source .venv/bin/activate` (Linux)
-- `.venv/Scripts/activate` (Windows)
+- source .venv/bin/activate (Linux)
+- .venv/Scripts/activate (Windows)
 
-**Usage**:
+Usage:
 
 ```
 # Run the application without saving bytecode
@@ -56,6 +56,6 @@ def index() -> str:
     """
     # DOCTYPE prevents Quirks mode
     return """<!DOCTYPE html>
-        <h1>Hello, World!</h1>
+        <h1>Welcome to Tracker!</h1>
         <p>This is a demo of a basic Flask application that uses a package pattern.</p>
         """

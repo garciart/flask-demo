@@ -4,8 +4,8 @@
 
 - Remember to activate your Python virtual environment first:
 
-    - `source .venv/bin/activate` (Linux)
-    - `.venv/Scripts/activate` (Windows)
+    - source .venv/bin/activate (Linux)
+    - .venv/Scripts/activate (Windows)
 
 - Test from the project directory (e.g., `flask-demo`, not `tracker_XX`)
 - Do not log events when unit testing or each test will create a log file.
@@ -14,12 +14,13 @@
   and `--verbose` displays the test's docstring
   (ex., `Test that check_system() fails because min_python_version is not type float ... ok`)
 
-**Usage:**
+Usage:
 
 ```
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
+
 import importlib
 import sys
 import unittest
@@ -33,6 +34,7 @@ class BaseTestCase(unittest.TestCase):
     This class sets up the application context and provides methods
     to be shared across different test modules.
     """
+
     CONFIG_NAME = 'testing'
 
     def setUp(self):
