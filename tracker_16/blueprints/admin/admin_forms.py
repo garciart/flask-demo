@@ -50,7 +50,7 @@ class EditMemberForm(FlaskForm):
             _member = db.session.scalar(select(Member).where(
                 Member.member_name == member_name.data))
             if _member is not None:
-                raise ValidationError('Member already exists.')
+                raise ValidationError('Name already exists.')
 
     # MUST USE validate_{field_name} PATTERN WITH Flask-WTF!
     def validate_member_email(self, member_email: StringField) -> None:

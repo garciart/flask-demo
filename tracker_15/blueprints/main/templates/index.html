@@ -36,8 +36,10 @@
             <td>{{m.member_name}}</td>
             <td>{{m.member_email}}</td>
             <td>{{m.member_is_admin}}</td>
-            <td><a href="{{ url_for('admin_bp.view_member', member_id=m.member_id) }}" title="View Member">View</a></td>
-            <td><a href="{{ url_for('admin_bp.edit_member', member_id=m.member_id) }}" title="Edit Member">Edit</a></td>
+            <td><a href="{{ url_for('admin_bp.view_member', member_id=m.member_id) }}"
+                   title="View Member">View</a></td>
+            <td><a href="{{ url_for('admin_bp.edit_member', member_id=m.member_id) }}"
+                   title="Edit Member">Edit</a></td>
         </tr>
     </tbody>
     {% endfor%}

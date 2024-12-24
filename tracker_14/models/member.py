@@ -38,13 +38,11 @@ class Member(db.Model):
             f'"member_is_admin": "{self.member_is_admin}"}}'
         )
 
-    def __init__(
-            self,
-            member_name: str,
-            member_email: str,
-            password: Union[str, None] = None,
-            member_is_admin: bool = False,
-    ) -> None:
+    def __init__(self,
+                 member_name: str,
+                 member_email: str,
+                 password: Union[str, None] = None,
+                 member_is_admin: bool = False) -> None:
         """Initialization with validation to ensure valid types and values.
 
         :param str member_name: The username of the member

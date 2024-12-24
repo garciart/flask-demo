@@ -59,6 +59,8 @@ def edit_member(member_id: int) -> Union[str, Response]:
         _member.member_is_admin = _form.member_is_admin.data
         if _form.password.data.strip() != '':
             _member.set_password(_form.password.data)
+        # Ensure the object is updated in the session
+        # before committing it to the database
         db.session.add(_member)
         db.session.commit()
         flash('Member updated.')

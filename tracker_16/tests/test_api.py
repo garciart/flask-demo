@@ -40,7 +40,7 @@ class TestAPI(BaseTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_api_get_test_data_response_code(self):
-        """Test that the API test page responded by looking at the response code"""
+        """Test that the API test page was created by looking at the response code"""
         response = self.client.get('/api/test', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
@@ -51,7 +51,7 @@ class TestAPI(BaseTestCase):
         self.assertIn(b'Introduction to Flask', response.data)
 
     def test_api_get_all_members_response_code(self):
-        """Test that the API members page responded by looking at the response code"""
+        """Test that the API members page was created by looking at the response code"""
         response = self.client.get('/api/members/all', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
@@ -61,17 +61,22 @@ class TestAPI(BaseTestCase):
         self.assertIn(b'Leto.Atreides', response.data)
         self.assertIn(b'stilgar.tabr@fremen.com', response.data)
 
-    def test_api_get_member_response_code(self):
-        """Test that the API member # page responded by looking at the response code"""
+    def test_api_single_member_response_code(self):
+        """Test that the API member # page was created by looking at the response code"""
         response = self.client.get('/api/members/3', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
-    def test_api_get_member_content(self):
+    def test_api_single_member_content(self):
         """Test that the API member # page contains the correct contents"""
         response = self.client.get('/api/members/3', follow_redirects=True)
         self.assertIn(b'Paul.Atreides', response.data)
 
-    def test_api_get_member_content_fail(self):
+    def test_api_single_member_content_fail(self):
         """Test that an incorrect API member # page contains an error message"""
         response = self.client.get('/api/members/0', follow_redirects=True)
         self.assertIn(b'Member not found', response.data)
+
+    def test_api_update_member_type_fail(self):
+        """Test that api_update_member fails when member_id is not an integer."""
+        response = self.client.put('/api/members/foo', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)

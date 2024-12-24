@@ -4,7 +4,7 @@
 import flask
 from werkzeug.middleware.profiler import ProfilerMiddleware
 
-from tracker_16.app_utils import (validate_input)
+from tracker_16.app_utils import validate_input
 
 __all__ = ['add_profiler_middleware']
 

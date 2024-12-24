@@ -59,7 +59,8 @@ def api_get_all_members() -> Union[Response, tuple]:
 
     # Exclude the 'password_hash' field
     _filtered_members = [
-        {'member_id': m.member_id, 'member_name': m.member_name,
+        {'member_id': m.member_id,
+         'member_name': m.member_name,
          'member_email': m.member_email}
         for m in _members_list
     ]
@@ -77,6 +78,7 @@ def api_get_member(member_id: int) -> Union[Response, tuple]:
     :returns: A response with the data in JSON format
     :rtype: Response
     """
+    # Validate inputs
     validate_input('member_id', member_id, int)
 
     # Remember, when querying for a single result, like `Foo.query.first()`,
@@ -86,14 +88,15 @@ def api_get_member(member_id: int) -> Union[Response, tuple]:
 
     _member = Member.query.get(member_id)
 
-    if _member is None:
+    if not _member:
         return jsonify({'error': 'Member not found'}), 404
 
     _members_list = [_member] if _member is not None else []
 
     # Exclude the 'member_email' field
     _filtered_members = [
-        {'member_id': m.member_id, 'member_name': m.member_name,
+        {'member_id': m.member_id,
+         'member_name': m.member_name,
          'member_email': m.member_email}
         for m in _members_list
     ]

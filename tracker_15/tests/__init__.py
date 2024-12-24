@@ -20,6 +20,7 @@ Usage:
 python -B -m unittest discover tracker_XX/tests -b -v
 ```
 """
+
 import importlib
 import sys
 import unittest
@@ -33,6 +34,7 @@ class BaseTestCase(unittest.TestCase):
     This class sets up the application context and provides methods
     to be shared across different test modules.
     """
+
     CONFIG_NAME = 'testing'
 
     def setUp(self):

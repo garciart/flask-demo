@@ -43,6 +43,8 @@ def view_member(member_id: int) -> Union[str, Response]:
 def edit_member(member_id: int) -> Union[str, Response]:
     """Use form input to update a member in the database.
 
+    :param int member_id: The member to edit by ID
+
     :returns: The HTML code to display with {{ placeholders }} populated \
         or redirect if the member is not an administrator
     :rtype: str/Response
@@ -59,6 +61,9 @@ def edit_member(member_id: int) -> Union[str, Response]:
         _member.member_is_admin = _form.member_is_admin.data
         if _form.password.data.strip() != '':
             _member.set_password(_form.password.data)
+        # Ensure the object is updated in the session
+        # before committing it to the database
+        db.session.add(_member)
         db.session.commit()
         flash('Member updated.')
         return redirect(url_for(MEMBERS_PAGE))

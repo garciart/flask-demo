@@ -1,5 +1,6 @@
 """Class for the Member database model using SQLAlchemy ORM Declarative Mapping.
 """
+
 import re
 from typing import Union
 
@@ -7,7 +8,7 @@ from flask_login import UserMixin
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from werkzeug.security import (generate_password_hash, check_password_hash)
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from tracker_16 import login_manager
 from tracker_16.app_utils import validate_input
@@ -15,8 +16,8 @@ from tracker_16.models import db
 
 
 class Member(UserMixin, db.Model):
-    """Member database model
-    """
+    """Member database model"""
+
     __tablename__ = 'member'
 
     member_id: Mapped[int] = mapped_column(primary_key=True)
@@ -39,8 +40,11 @@ class Member(UserMixin, db.Model):
             f'"member_is_admin": "{self.member_is_admin}"}}'
         )
 
-    def __init__(self, member_name: str, member_email: str,
-                 password: Union[str, None] = None, member_is_admin: bool = False) -> None:
+    def __init__(self,
+                 member_name: str,
+                 member_email: str,
+                 password: Union[str, None] = None,
+                 member_is_admin: bool = False) -> None:
         """Initialization with validation to ensure valid types and values.
 
         :param str member_name: The username of the member

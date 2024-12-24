@@ -80,7 +80,7 @@ def api_get_member(member_id: int) -> Union[Response, tuple]:
     :returns: A response with the data in JSON format
     :rtype: Response
     """
-    # External method that throws an exception if member_id is not an int, or it is empty
+    # Validate inputs
     validate_input('member_id', member_id, int)
 
     # Remember, when querying for a single result, like `Foo.query.first()`,

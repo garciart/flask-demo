@@ -118,7 +118,7 @@ class TestAdmin(BaseTestCase):
 
     @patch('tracker_14.blueprints.admin.admin_routes.EditMemberForm')
     @patch('tracker_14.models.member.db.session.commit')
-    def test_edit_member_valid_form(self, mock_commit, MockEditMemberForm):
+    def test_edit_member_valid_form(self, mock_commit, mock_edit_member_form):
         """Test the behavior when the form is valid (successful POST)."""
 
         # Create a mock member object
@@ -140,7 +140,7 @@ class TestAdmin(BaseTestCase):
         mock_form.password.data = 'Change.Me.123'  # Ensure this value is set for the test
 
         # Mock the EditMemberForm constructor to return the mock form
-        MockEditMemberForm.return_value = mock_form
+        mock_edit_member_form.return_value = mock_form
 
         # Use test client to simulate the POST request with application context
         with self.app.app_context(), patch(
