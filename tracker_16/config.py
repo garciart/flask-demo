@@ -19,6 +19,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     """Default configuration variables and settings."""
 
+    # Explicitly default to False to prevent enabling debug mode when deploying to production
+    DEBUG = False
+
     CONFIG_MSG = 'You are using the default configuration.'
 
     # Explicitly default to True to ensure rotating logs on production servers
