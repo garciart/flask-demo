@@ -1,20 +1,20 @@
-# Tracker_16
+# Tracker_17
 
 > **IMPORTANT** - NEED TO ADD UNIT TESTS TO TRACKER 16 AND LATER!
 
-This is a demo of a Flask application that incorporates authentication.
+This is a demo of a Flask application that incorporates API authentication.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-To prevent anyone from editing member data, we will add authentication to the application.
+To prevent anyone from editing member data using the API, we will add authentication to the API.
 
-To get started, install Flask Login:
+To get started, install the [Python JSON Web Token (JWT) package](https://pyjwt.readthedocs.io):
 
 ```shell
-python -m pip install flask-login
+python -m pip install pyjwt
 # Update the required packages list
 python -m pip freeze > requirements.txt
 ```
@@ -27,7 +27,7 @@ tracker
 |   └── ...
 ├── tracker_01
 ├── ...
-├── tracker_16
+├── tracker_17
 |   ├── blueprints
 |   |   ├── admin
 |   |   |   ├── templates
@@ -83,7 +83,7 @@ tracker
 |   ├── profiler.py
 |   └── tracker.db
 ├── tracker_logs
-|   └── tracker_16_1234567890.1234567.log
+|   └── tracker_17_1234567890.1234567.log
 ├── __init__.py
 ├── .coverage
 ├── .coveragerc
@@ -99,10 +99,10 @@ Check the code for issues, then run your application. Do not forget to activate 
 
 ```shell
 # Check the application for issues
-python -B -m pylint tracker_16
+python -B -m pylint tracker_17
 
 # Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest discover tracker_16/tests -b -v
+coverage run -m unittest discover tracker_17/tests -b -v
 
 # See the coverage report in the console
 coverage report -m
@@ -110,20 +110,20 @@ coverage report -m
 # Running the unit tests will create the database if it does not exist
 # If so, initialize migration support for the application
 # If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_16 db init --directory tracker_16/migrations
-python -B -m flask --app tracker_16 db init -d tracker_16/migrations
+# python -B -m flask --app tracker_17 db init --directory tracker_17/migrations
+python -B -m flask --app tracker_17 db init -d tracker_17/migrations
 
 # Perform an initial migration to capture the current schema of the database
 # If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_16 db migrate --message "Initial migration" --directory tracker_16/migrations
-python -B -m flask --app tracker_16 db migrate -m "Initial migration" -d tracker_16/migrations
-# For help with any of these commands, use python -B -m flask --app tracker_16 db --help
+# python -B -m flask --app tracker_17 db migrate --message "Initial migration" --directory tracker_17/migrations
+python -B -m flask --app tracker_17 db migrate -m "Initial migration" -d tracker_17/migrations
+# For help with any of these commands, use python -B -m flask --app tracker_17 db --help
 
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_16:create_app('profile')" run --without-threads
+python -B -m flask --app "tracker_17:create_app('profile')" run --without-threads
 
 # Run the Flask application using HTML files found in the `templates` directory
-python -B -m flask --app tracker_16 run
+python -B -m flask --app tracker_17 run
 ```
 
 Based on your operating system, send the PUT request we spoke about earlier to make the member an administrator.
