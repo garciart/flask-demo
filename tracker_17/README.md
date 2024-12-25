@@ -1,6 +1,8 @@
 # Tracker_17
 
-> **IMPORTANT** - NEED TO ADD UNIT TESTS TO TRACKER 16 AND LATER!
+> **IMPORTANT**:
+> - NEED TO ADD UNIT TESTS TO TRACKER 16 AND LATER!
+> - Do not forget to add an endpoint to API routes or you will get an AssertionError!
 
 This is a demo of a Flask application that incorporates API authentication.
 
@@ -124,6 +126,45 @@ python -B -m flask --app "tracker_17:create_app('profile')" run --without-thread
 
 # Run the Flask application using HTML files found in the `templates` directory
 python -B -m flask --app tracker_17 run
+```
+
+```txt
+Linux:
+curl -X PUT -H "Content-Type: application/json" -d '{"username": "admin", \
+    "password": "foobar"}' http://127.0.0.1:5000/api/login
+
+curl -X GET -H "Authorization: Bearer your.jwt.token.here"' \
+    http://127.0.0.1:5000/api/members/all
+
+curl -X GET -H "Authorization: Bearer your.jwt.token.here"' \
+    http://127.0.0.1:5000/api/members/2
+
+curl -X PUT -H "Content-Type: application/json" \
+    -H "Authorization: Bearer your.jwt.token.here" \
+    -d '{"member_name": "Leto.Atreides", \
+    "member_email": "leto.atreides@atreides.com", "member_is_admin": true}' \
+    http://localhost:5000/api/members/2
+
+Windows:
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" `
+    -Method Post `
+    -ContentType "application/json" `
+    -Body "{`"username`": `"admin`", `"password`": `"Change.Me.321`"}"
+
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/all" `
+    -Method GET `
+    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/2" `
+    -Method GET `
+    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+
+Invoke-WebRequest -Uri "http://localhost:5000/api/members/2" `
+    -Method Put `
+    -ContentType "application/json" `
+    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" } `
+    -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `
+    `"leto.atreides@atreides.com`", `"member_is_admin`": true}"
 ```
 
 Based on your operating system, send the PUT request we spoke about earlier to make the member an administrator.

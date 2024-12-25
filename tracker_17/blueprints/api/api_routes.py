@@ -70,7 +70,7 @@ def login() -> Response:
     Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" `
         -Method Post `
         -ContentType "application/json" `
-        -Body "{`"username`": `"admin`", `"password`": `"foobar`"}"
+        -Body "{`"username`": `"admin`", `"password`": `"Change.Me.321`"}"
 
     :returns: The JWT token
     :rtype: Response
@@ -87,6 +87,8 @@ def login() -> Response:
     if member and check_password_hash(member.password_hash, submitted_password):
         # Generate JWT token
         auth_token = encode_auth_token(member.member_id)
+        if 'error' in auth_token.lower():
+            return jsonify({'error': auth_token}), 500
         return jsonify({'message': 'Login successful', 'auth_token': auth_token}), 200
     else:
         return jsonify({'error': 'Invalid credentials'}), 401

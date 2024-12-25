@@ -196,8 +196,8 @@ def encode_auth_token(member_id: int) -> str:
         }
         auth_token = jwt.encode(payload, flask.current_app.config['SECRET_KEY'], algorithm='HS256')
         return auth_token
-    except Exception as e:
-        return str(e)
+    except (KeyError, NotImplementedError, TypeError, jwt.PyJWTError) as e:
+        return f'Error: {str(e)}'
 
 
 def decode_auth_token(auth_token: str) -> Union[int, None]:
