@@ -1,4 +1,4 @@
-# Tracker_17
+# Tracker_18
 
 > **IMPORTANT**:
 > - NEED TO ADD UNIT TESTS TO TRACKER 16 AND LATER!
@@ -29,7 +29,7 @@ tracker
 |   └── ...
 ├── tracker_01
 ├── ...
-├── tracker_17
+├── tracker_18
 |   ├── blueprints
 |   |   ├── admin
 |   |   |   ├── templates
@@ -85,7 +85,7 @@ tracker
 |   ├── profiler.py
 |   └── tracker.db
 ├── tracker_logs
-|   └── tracker_17_1234567890.1234567.log
+|   └── tracker_18_1234567890.1234567.log
 ├── __init__.py
 ├── .coverage
 ├── .coveragerc
@@ -101,10 +101,10 @@ Check the code for issues, then run your application. Do not forget to activate 
 
 ```shell
 # Check the application for issues
-python -B -m pylint tracker_17
+python -B -m pylint tracker_18
 
 # Run the unit tests found in the `tests` directory using Coverage
-coverage run -m unittest discover tracker_17/tests -b -v
+coverage run -m unittest discover tracker_18/tests -b -v
 
 # See the coverage report in the console
 coverage report -m
@@ -112,20 +112,20 @@ coverage report -m
 # Running the unit tests will create the database if it does not exist
 # If so, initialize migration support for the application
 # If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_17 db init --directory tracker_17/migrations
-python -B -m flask --app tracker_17 db init -d tracker_17/migrations
+# python -B -m flask --app tracker_18 db init --directory tracker_18/migrations
+python -B -m flask --app tracker_18 db init -d tracker_18/migrations
 
 # Perform an initial migration to capture the current schema of the database
 # If using older command syntax, uncomment below:
-# python -B -m flask --app tracker_17 db migrate --message "Initial migration" --directory tracker_17/migrations
-python -B -m flask --app tracker_17 db migrate -m "Initial migration" -d tracker_17/migrations
-# For help with any of these commands, use python -B -m flask --app tracker_17 db --help
+# python -B -m flask --app tracker_18 db migrate --message "Initial migration" --directory tracker_18/migrations
+python -B -m flask --app tracker_18 db migrate -m "Initial migration" -d tracker_18/migrations
+# For help with any of these commands, use python -B -m flask --app tracker_18 db --help
 
 # Profile the application using the built-in Werkzeug profiler:
-python -B -m flask --app "tracker_17:create_app('profile')" run --without-threads
+python -B -m flask --app "tracker_18:create_app('profile')" run --without-threads
 
 # Run the Flask application using HTML files found in the `templates` directory
-python -B -m flask --app tracker_17 run
+python -B -m flask --app tracker_18 run
 ```
 
 ```txt

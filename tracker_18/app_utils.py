@@ -118,7 +118,7 @@ def start_log_file(
         os.mkdir(log_dir)
 
     # The name of the log file is the name of the instance,
-    # plus the time the instance was instantiated (tracker_17_1234567890.1234567.log).
+    # plus the time the instance was instantiated (tracker_18_1234567890.1234567.log).
     _log_name = f"{app.name}_{time.time()}"
     _log_path = f"{log_dir}/{_log_name}.log"
 

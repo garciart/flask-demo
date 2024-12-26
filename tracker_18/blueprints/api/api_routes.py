@@ -11,10 +11,10 @@ from flask import Response, jsonify, send_from_directory, request
 from sqlalchemy import func
 from werkzeug.security import check_password_hash
 
-from tracker_17 import db
-from tracker_17.app_utils import validate_input, encode_auth_token, decode_auth_token
-from tracker_17.blueprints.api import api_bp
-from tracker_17.models.member import Member
+from tracker_18 import db
+from tracker_18.app_utils import validate_input, encode_auth_token, decode_auth_token
+from tracker_18.blueprints.api import api_bp
+from tracker_18.models.member import Member
 
 _DUMMY_DATA = [
     {
@@ -32,6 +32,8 @@ _DUMMY_DATA = [
         'course_desc': 'Introduction to Flask.',
     },
 ]
+
+NOT_ADMIN_MSG = 'Only administrators may perform this action.'
 
 
 def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
@@ -63,7 +65,7 @@ def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
         """
         auth_header = request.headers.get('Authorization')
         if not auth_header:
-            return jsonify({'error': 'Authorization token is missing'}), 401
+            return jsonify({'error': 'Missing authorization token.'}), 401
 
         # Token is expected to be in the format "Bearer <token>"
         try:
@@ -120,9 +122,9 @@ def login() -> tuple:
         auth_token = encode_auth_token(member.member_id)
         if 'error' in auth_token.lower():
             return jsonify({'error': auth_token}), 500
-        return jsonify({'message': 'Login successful', 'auth_token': auth_token}), 200
+        return jsonify({'message': 'Login successful.', 'auth_token': auth_token}), 200
     else:
-        return jsonify({'error': 'Invalid credentials'}), 401
+        return jsonify({'error': 'Invalid credentials.'}), 401
 
 
 @api_bp.route('/favicon.ico')
@@ -150,7 +152,7 @@ def api_get_test_data() -> tuple:
 
 @api_bp.route('/api/members/all', methods=['GET'], endpoint='get_all_members')
 @token_required
-def api_get_all_members() -> tuple:
+def api_get_all_members(**kwargs) -> tuple:
     """Get the list of members in the database when a REST call is made.
 
     Examples:
@@ -164,14 +166,18 @@ def api_get_all_members() -> tuple:
         -Method GET `
         -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
 
-    ::returns: The data in JSON format (Response) and the HTTP status code (int)
+    :returns: The data in JSON format (Response) and the HTTP status code (int)
     :rtype: tuple
     """
+    # Check if admin
+    if not kwargs.get('user_is_admin', False):
+        return jsonify({'error': NOT_ADMIN_MSG}), 403
+
     # query.all() always returns a list, even if it is empty
     _members_list = Member.query.all()
 
     if not _members_list:
-        return jsonify({'error': 'No members found'}), 404
+        return jsonify({'error': 'No members found.'}), 404
 
     # Exclude the 'password_hash' field
     _filtered_members = [
@@ -191,7 +197,7 @@ def api_get_all_members() -> tuple:
 # Do not forget to add an endpoint, or you will get an AssertionError!
 @api_bp.route('/api/members/<int:member_id>', methods=['GET'], endpoint='get_member')
 @token_required
-def api_get_member(member_id: int) -> tuple:
+def api_get_member(member_id: int, **kwargs) -> tuple:
     """Get a member from the database using their ID when a REST call is made.
 
     Examples:
@@ -213,6 +219,10 @@ def api_get_member(member_id: int) -> tuple:
     # Validate inputs
     validate_input('member_id', member_id, int)
 
+    # Check if admin
+    if not kwargs.get('user_is_admin', False):
+        return jsonify({'error': NOT_ADMIN_MSG}), 403
+
     # Remember, when querying for a single result, like `Foo.query.first()`,
     # use the following code to return a list if the result was None:
     # _foo = Foo.query.first()
@@ -221,7 +231,7 @@ def api_get_member(member_id: int) -> tuple:
     _member = Member.query.get(member_id)
 
     if not _member:
-        return jsonify({'error': 'Member not found'}), 404
+        return jsonify({'error': 'Member not found.'}), 404
 
     _members_list = [_member] if _member is not None else []
 
@@ -242,7 +252,7 @@ def api_get_member(member_id: int) -> tuple:
 
 @api_bp.route('/api/members/<int:member_id>', methods=['PUT'], endpoint='update_member')
 @token_required
-def api_update_member(member_id: int) -> tuple:
+def api_update_member(member_id: int, **kwargs) -> tuple:
     """Update a member through an API ReST call using their ID.
 
     Examples:
@@ -270,12 +280,16 @@ def api_update_member(member_id: int) -> tuple:
     # External method that throws an exception if member_id is not an int, or it is empty
     validate_input('member_id', member_id, int)
 
+    # Check if admin
+    if not kwargs.get('user_is_admin', False):
+        return jsonify({'error': NOT_ADMIN_MSG}), 403
+
     # Query the member by ID
     _member = Member.query.get(member_id)
 
     # If member is not found, return 404
     if not _member:
-        return jsonify({'error': 'Member not found'}), 404
+        return jsonify({'error': 'Member not found.'}), 404
 
     # Get the JSON data from the request
     data = request.get_json()
