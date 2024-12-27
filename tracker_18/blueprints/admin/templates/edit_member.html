@@ -81,7 +81,9 @@
         </p>
     </div>
     <br />
-    <p>{{ form.member_is_admin() }} <b>{{ form.member_is_admin.label }}</b></p>
+    {% if current_user.member_is_admin %}
+        <p>{{ form.member_is_admin() }} <b>{{ form.member_is_admin.label }}</b></p>
+    {% endif %}
     <hr>
     <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
             onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>

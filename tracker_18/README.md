@@ -2,9 +2,8 @@
 
 > **IMPORTANT**:
 > - NEED TO ADD UNIT TESTS TO TRACKER 16 AND LATER!
-> - Do not forget to add an endpoint to API routes, or you will get an AssertionError!
 
-This is a demo of a Flask application that incorporates API authentication.
+This is a demo of a Flask application that incorporates authorization.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >

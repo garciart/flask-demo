@@ -33,7 +33,7 @@ _DUMMY_DATA = [
     },
 ]
 
-NOT_ADMIN_MSG = 'Only administrators may perform this action.'
+NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
 
 def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
@@ -171,7 +171,7 @@ def api_get_all_members(**kwargs) -> tuple:
     """
     # Check if admin
     if not kwargs.get('user_is_admin', False):
-        return jsonify({'error': NOT_ADMIN_MSG}), 403
+        return jsonify({'error': NOT_AUTH_MSG}), 403
 
     # query.all() always returns a list, even if it is empty
     _members_list = Member.query.all()
@@ -221,7 +221,7 @@ def api_get_member(member_id: int, **kwargs) -> tuple:
 
     # Check if admin
     if not kwargs.get('user_is_admin', False):
-        return jsonify({'error': NOT_ADMIN_MSG}), 403
+        return jsonify({'error': NOT_AUTH_MSG}), 403
 
     # Remember, when querying for a single result, like `Foo.query.first()`,
     # use the following code to return a list if the result was None:
@@ -282,7 +282,7 @@ def api_update_member(member_id: int, **kwargs) -> tuple:
 
     # Check if admin
     if not kwargs.get('user_is_admin', False):
-        return jsonify({'error': NOT_ADMIN_MSG}), 403
+        return jsonify({'error': NOT_AUTH_MSG}), 403
 
     # Query the member by ID
     _member = Member.query.get(member_id)
