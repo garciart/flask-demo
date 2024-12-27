@@ -10,15 +10,7 @@ This is a demo of a Flask application that incorporates authorization.
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
 
-To prevent anyone from editing member data using the API, we will add authentication to the API.
-
-To get started, install the [Python JSON Web Token (JWT) package](https://pyjwt.readthedocs.io):
-
-```shell
-python -m pip install pyjwt
-# Update the required packages list
-python -m pip freeze > requirements.txt
-```
+We will add authorization to the application to prevent members from editing each other's data. Members will only be allowed to view and edit their own information, and administrators can view and edit anyone's data, as well as make other members administrators.
 
 Your application structure should be like the following:
 
@@ -127,45 +119,79 @@ python -B -m flask --app "tracker_18:create_app('profile')" run --without-thread
 python -B -m flask --app tracker_18 run
 ```
 
-```txt
-Linux:
+Based on your operating system, run the following commands in another Terminal. You should be able to view yourself, but not other users unless you are an administrator:
+
+**Linux:**
+
+```bash
+# This command will generate a JSON Web Token (JWT) for Admin
 curl -X PUT -H "Content-Type: application/json" -d '{"username": "admin", \
-    "password": "foobar"}' http://127.0.0.1:5000/api/login
+    "password": "Change.Me.321"}' http://127.0.0.1:5000/api/login
 
-curl -X GET -H "Authorization: Bearer your.jwt.token.here"' \
-    http://127.0.0.1:5000/api/members/all
+# Run the following commands using the generated JWT
+# View all members will work
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/all
 
-curl -X GET -H "Authorization: Bearer your.jwt.token.here"' \
-    http://127.0.0.1:5000/api/members/2
+# View a single member will work
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/2
 
-curl -X PUT -H "Content-Type: application/json" \
-    -H "Authorization: Bearer your.jwt.token.here" \
-    -d '{"member_name": "Leto.Atreides", \
-    "member_email": "leto.atreides@atreides.com", "member_is_admin": true}' \
-    http://localhost:5000/api/members/2
+# This command will generate a JSON Web Token (JWT) for a member
+curl -X PUT -H "Content-Type: application/json" -d '{"username": "leto.atreides", \
+    "password": "Change.Me.123"}' http://127.0.0.1:5000/api/login
 
-Windows:
+# Run the following commands using the generated JWT
+# View all members will NOT work
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/all
+
+# View yourself will work
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/2
+
+# View another member will NOT work
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/3
+```
+
+**Windows:**
+
+```shell
+# This command will generate a JSON Web Token (JWT) for Admin
 Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" `
     -Method Post `
     -ContentType "application/json" `
     -Body "{`"username`": `"admin`", `"password`": `"Change.Me.321`"}"
 
+# View all members will work
 Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/all" `
     -Method GET `
-    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
 
+# View a single member wil work
 Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/2" `
     -Method GET `
-    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
 
-Invoke-WebRequest -Uri "http://localhost:5000/api/members/2" `
-    -Method Put `
+# This command will generate a JSON Web Token (JWT) for a member
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" `
+    -Method Post `
     -ContentType "application/json" `
-    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" } `
-    -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `
-    `"leto.atreides@atreides.com`", `"member_is_admin`": true}"
+    -Body "{`"username`": `"leto.atreides`", `"password`": `"Change.Me.123`"}"
+
+# Run the following commands using the generated JWT
+# View all members will NOT work
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/all" `
+    -Method GET `
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
+
+# View yourself will work
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/2" `
+    -Method GET `
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
+
+# View another member will NOT work
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/3" `
+    -Method GET `
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
 ```
 
-Based on your operating system, send the PUT request we spoke about earlier to make the member an administrator.
+Open a browser and navigate to <http://127.0.0.1:5000>. Login as admin, perform some tasks, and log off. Log back in as a member and try to perform the same tasks. Some will work, while others will not.
 
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
+Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

@@ -97,7 +97,7 @@ def login() -> tuple:
 
     Linux:
     curl -X PUT -H "Content-Type: application/json" -d '{"username": "admin", \
-        "password": "foobar"}' http://127.0.0.1:5000/api/login
+        "password": "Change.Me.321"}' http://127.0.0.1:5000/api/login
 
     Windows:
     Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" `
@@ -158,13 +158,12 @@ def api_get_all_members(**kwargs) -> tuple:
     Examples:
 
     Linux:
-    curl -X GET -H "Authorization: Bearer your.jwt.token.here" \
-        http://127.0.0.1:5000/api/members/all
+    curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/all
 
     Windows:
     Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/all" `
         -Method GET `
-        -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+        -Headers @{ "Authorization" = "Bearer json.web.token" }
 
     :returns: The data in JSON format (Response) and the HTTP status code (int)
     :rtype: tuple
@@ -203,13 +202,12 @@ def api_get_member(member_id: int, **kwargs) -> tuple:
     Examples:
 
     Linux:
-    curl -X GET -H "Authorization: Bearer your.jwt.token.here" \
-        http://127.0.0.1:5000/api/members/2
+    curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/2
 
     Windows:
     Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/2" `
         -Method GET `
-        -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+        -Headers @{ "Authorization" = "Bearer json.web.token" }
 
     :param int member_id: The member to retrieve by ID
 
@@ -219,8 +217,10 @@ def api_get_member(member_id: int, **kwargs) -> tuple:
     # Validate inputs
     validate_input('member_id', member_id, int)
 
+    print("kwargs.get('user_id')", kwargs.get('user_id'), type(kwargs.get('user_id')))
+
     # Check if admin
-    if not kwargs.get('user_is_admin', False):
+    if not kwargs.get('user_is_admin', False) and int(kwargs.get('user_id')) != member_id:
         return jsonify({'error': NOT_AUTH_MSG}), 403
 
     # Remember, when querying for a single result, like `Foo.query.first()`,
@@ -259,7 +259,7 @@ def api_update_member(member_id: int, **kwargs) -> tuple:
 
     Linux:
     curl -X PUT -H "Content-Type: application/json" \
-        -H "Authorization: Bearer your.jwt.token.here" \
+        -H "Authorization: Bearer json.web.token" \
         -d '{"member_name": "Leto.Atreides", \
         "member_email": "leto.atreides@atreides.com", "member_is_admin": true}' \
         http://localhost:5000/api/members/2
@@ -268,9 +268,9 @@ def api_update_member(member_id: int, **kwargs) -> tuple:
     Invoke-WebRequest -Uri "http://localhost:5000/api/members/2" `
         -Method Put `
         -ContentType "application/json" `
-        -Headers @{ "Authorization" = "Bearer your.jwt.token.here" } `
+        -Headers @{ "Authorization" = "Bearer json.web.token" } `
         -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `
-        `"leto.atreides@atreides.com`", `"member_is_admin`": true}"
+        `"leto.atreides@atreides.com`", `"member_is_admin`": true }"
 
     :param int member_id: The member to update by ID
 

@@ -126,6 +126,4 @@ python -B -m flask --app "tracker_16:create_app('profile')" run --without-thread
 python -B -m flask --app tracker_16 run
 ```
 
-Based on your operating system, send the PUT request we spoke about earlier to make the member an administrator.
-
 Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.

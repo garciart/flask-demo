@@ -128,45 +128,78 @@ python -B -m flask --app "tracker_17:create_app('profile')" run --without-thread
 python -B -m flask --app tracker_17 run
 ```
 
-```txt
-Linux:
+Based on your operating system, run the following commands in another Terminal to temporarily make a member an administrator:
+
+**Linux:**
+
+```bash
+# This command will generate a JSON Web Token (JWT)
 curl -X PUT -H "Content-Type: application/json" -d '{"username": "admin", \
-    "password": "foobar"}' http://127.0.0.1:5000/api/login
+    "password": "Change.Me.321"}' http://127.0.0.1:5000/api/login
 
-curl -X GET -H "Authorization: Bearer your.jwt.token.here"' \
-    http://127.0.0.1:5000/api/members/all
+# Run the following commands using the generated JWT
+# View all members
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/all
 
-curl -X GET -H "Authorization: Bearer your.jwt.token.here"' \
-    http://127.0.0.1:5000/api/members/2
+# View a single member
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/2
 
+# Make the member an administrator
 curl -X PUT -H "Content-Type: application/json" \
-    -H "Authorization: Bearer your.jwt.token.here" \
+    -H "Authorization: Bearer json.web.token" \
     -d '{"member_name": "Leto.Atreides", \
     "member_email": "leto.atreides@atreides.com", "member_is_admin": true}' \
     http://localhost:5000/api/members/2
 
-Windows:
+# View a single member
+curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/members/2
+
+# Reset the member
+curl -X PUT -H "Content-Type: application/json" \
+    -H "Authorization: Bearer json.web.token" \
+    -d '{"member_name": "Leto.Atreides", \
+    "member_email": "leto.atreides@atreides.com", "member_is_admin": false}' \
+    http://localhost:5000/api/members/2
+```
+
+**Windows:**
+
+```shell
+# This command will generate a JSON Web Token (JWT)
 Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" `
     -Method Post `
     -ContentType "application/json" `
     -Body "{`"username`": `"admin`", `"password`": `"Change.Me.321`"}"
 
+# Run the following commands using the generated JWT
+# View all members
 Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/all" `
     -Method GET `
-    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
 
+# View a single member
 Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/2" `
     -Method GET `
-    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" }
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
 
+# Make the member an administrator
 Invoke-WebRequest -Uri "http://localhost:5000/api/members/2" `
     -Method Put `
     -ContentType "application/json" `
-    -Headers @{ "Authorization" = "Bearer your.jwt.token.here" } `
-    -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `
-    `"leto.atreides@atreides.com`", `"member_is_admin`": true}"
+    -Headers @{ "Authorization" = "Bearer json.web.token" } `
+    -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `"leto.atreides@atreides.com`", `"member_is_admin`": true }"
+
+# View a single member
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/members/2" `
+    -Method GET `
+    -Headers @{ "Authorization" = "Bearer json.web.token" }
+
+# Reset the member
+Invoke-WebRequest -Uri "http://localhost:5000/api/members/2" `
+    -Method Put `
+    -ContentType "application/json" `
+    -Headers @{ "Authorization" = "Bearer json.web.token" } `
+    -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `"leto.atreides@atreides.com`", `"member_is_admin`": false }"
 ```
 
-Based on your operating system, send the PUT request we spoke about earlier to make the member an administrator.
-
-Open a browser and navigate to <http://127.0.0.1:5000> to view. Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
+Stop the Werkzeug server between runs by pressing <kbd>CTRL</kbd> +  <kbd>C</kbd>. When you are finished, move on to the next version.
