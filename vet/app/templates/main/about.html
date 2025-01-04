@@ -8,14 +8,14 @@
 {% block content %}
 <h1>About Flask Template</h1>
 <p>This demo allows you to administer course access for students.</p>
-<hr>
+<hr />
 <h2>Roles</h2>
 <ul>
     <li><b><i>Chair:</i></b> Owns the course</li>
     <li><b><i>Teacher:</i></b> Can administer a course</li>
     <li><b><i>Student:</i></b> Can view a course</li>
 </ul>
-<hr>
+<hr />
 <h2>Administration</h2>
 <p><b>Course Administration:</b></p>
 <ul>
@@ -26,7 +26,7 @@
     <li><b><i>Delete a Course:</i></b> Chairs who are assigned to the Course</li>
 </ul>
 <p><b>Role and User Administration:</b> Administrators only.</h3>
-<hr>
+<hr />
 <h2>Setup the Test Database</h2>
 <pre>
     # From the project root directory (e.g., ../flask-template)
@@ -34,9 +34,9 @@
     python3 -m flask db migrate -m "Initial migration"
     python3 -m flask db upgrade
     python3 -m db_info.init_db
-    
+
 </pre>
-<hr>
+<hr />
 <h2>How to Run</h2>
 <pre>
     # From the project root directory (e.g., ../flask-template)
@@ -44,7 +44,7 @@
     python3 -m flask --app app run
     python3 -m flask --app app --debug run  # Allow hot reloads
 </pre>
-<hr>
+<hr />
 <h2>How to Test</h2>
 <pre>
     # From the project root directory (e.g., ../flask-template)

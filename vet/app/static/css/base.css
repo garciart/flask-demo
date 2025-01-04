@@ -2,11 +2,6 @@ html {
     font-family: sans-serif;
 }
 
-body {
-    /* Allow room for fixed navbar */
-    margin-top: 10vh !important;
-}
-
 @media only screen and (max-height: 512px) {
 
     /* Ensure the navbar never hides content */
@@ -50,6 +45,11 @@ nav {
     min-height: 85vh;
     padding-top: 1em;
     padding-bottom: 1em;
+}
+
+.message-text {
+    font-weight: bold;
+    color: red;
 }
 
 .flash-block {

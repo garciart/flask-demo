@@ -1,18 +1,21 @@
 """Database models
 """
-from typing import (Optional, List)
-from sqlalchemy import (String, ForeignKey)
-from sqlalchemy.orm import (Mapped, mapped_column, relationship)
-from werkzeug.security import (generate_password_hash, check_password_hash)
-from flask_login import UserMixin
-from app.app_utils import validate_input
-from app import (db, login)
+from typing import Optional, List
 
-# - 'python3 -m flask db init' to create the migration repository
-# - 'python3 -m flask db migrate -m "<message>"' to generate a migration script
+from flask_login import UserMixin
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from app_utils import validate_input
+from . import db, login
+
+
+# - 'python -B -m flask db init' to create the migration repository
+# - 'python -B -m flask db migrate -m '<message>'' to generate a migration script
 #       after making changes to the schema
-# - 'python3 -m flask db upgrade' to apply changes
-# - 'python3 -m flask db downgrade' to undo migration
+# - 'python -B -m flask db upgrade' to apply changes
+# - 'python -B -m flask db downgrade' to undo migration
 
 
 class Course(db.Model):
@@ -24,20 +27,22 @@ class Course(db.Model):
     course_name: Mapped[str] = mapped_column(
         String(64), index=True, unique=True)
     course_code: Mapped[str] = mapped_column(
-        String(64))
+        String(64), unique=True)
     course_group: Mapped[Optional[str]] = mapped_column(
         String(64))
     course_desc: Mapped[Optional[str]] = mapped_column(
         String(256))
 
     associations: Mapped[List['Association']] = relationship(
-        back_populates='course', cascade="all, delete-orphan")
+        back_populates='course', cascade='all, delete-orphan')
 
-    def __repr__(self):
-        return (f'{{"course_id": "{self.course_id}",'
-                f'"course_name": "{self.course_name}",'
-                f'"course_code": "{self.course_code}",'
-                f'"course_desc": "{self.course_desc}"}}')
+    def to_dict(self):
+        return {
+            'course_id': self.course_id,
+            'course_name': self.course_name,
+            'course_code': self.course_code,
+            'course_desc': self.course_desc
+        }
 
 
 class Role(db.Model):
@@ -51,12 +56,14 @@ class Role(db.Model):
     role_privilege: Mapped[int] = mapped_column(unique=True)
 
     associations: Mapped[List['Association']] = relationship(
-        back_populates='role', cascade="all, delete-orphan")
+        back_populates='role', cascade='all, delete-orphan')
 
-    def __repr__(self):
-        return (f'{{"role_id": "{self.role_id}",'
-                f'"role_name": "{self.role_name}",'
-                f'"role_privilege": "{self.role_privilege}"}}')
+    def to_dict(self):
+        return {
+            'role_id': self.role_id,
+            'role_name': self.role_name,
+            'role_privilege': self.role_privilege
+        }
 
 
 class User(UserMixin, db.Model):
@@ -69,23 +76,24 @@ class User(UserMixin, db.Model):
         String(64), index=True, unique=True)
     user_email: Mapped[Optional[str]] = mapped_column(
         String(128), unique=True)
-    is_admin: Mapped[bool] = mapped_column()
-    password_hash: Mapped[Optional[str]] = mapped_column(
+    is_admin: Mapped[bool] = mapped_column(default=True)
+    password_hash: Mapped[str] = mapped_column(
         String(256))
 
     associations: Mapped[List['Association']] = relationship(
-        back_populates='user', cascade="all, delete-orphan")
+        back_populates='user', cascade='all, delete-orphan')
 
-    def __repr__(self):
-        return (f'{{"user_id": "{self.user_id}",'
-                f'"username": "{self.username}",'
-                f'"user_email": "{self.user_email}",'
-                f'"is_admin": "{self.is_admin}",'
-                f'"password_hash": "{self.password_hash}"}}')
+    def to_dict(self):
+        return {
+            'user_id': self.user_id,
+            'username': self.username,
+            'user_email': self.user_email,
+            'is_admin': self.is_admin
+        }
 
     def get_id(self):
         # type: () -> int
-        """Overrides UserMixin get_id so you can use user_id instead of id.
+        """Overrides UserMixin get_id, so you can use user_id instead of id.
 
         :returns: The user id
         :rtype: int
@@ -128,21 +136,23 @@ class Association(db.Model):
     __tablename__ = 'associations'
 
     course_id: Mapped[int] = mapped_column(
-        ForeignKey(Course.course_id), primary_key=True)
+        ForeignKey(Course.course_id), primary_key=True, nullable=False)
     role_id: Mapped[int] = mapped_column(
-        ForeignKey(Role.role_id), primary_key=True)
+        ForeignKey(Role.role_id), primary_key=True, nullable=False)
     user_id: Mapped[int] = mapped_column(
-        ForeignKey(User.user_id), primary_key=True)
+        ForeignKey(User.user_id), primary_key=True, nullable=False)
 
     course: Mapped['Course'] = relationship(
         back_populates='associations')
     role: Mapped['Role'] = relationship(back_populates='associations')
     user: Mapped['User'] = relationship(back_populates='associations')
 
-    def __repr__(self):
-        return (f'{{"course_id": "{self.course_id}",'
-                f'"role_id": "{self.role_id}",'
-                f'"user_id": "{self.user_id}"}}')
+    def to_dict(self):
+        return {
+            'course_id': self.course_id,
+            'role_id': self.role_id,
+            'user_id': self.user_id
+        }
 
 
 @login.user_loader
@@ -151,7 +161,7 @@ def load_user(user_id):
     """Get user information from the database.
 
     :param int user_id: The user ID to search for
-    
+
     :returns: A user object
     :rtype: app.models.User
     """

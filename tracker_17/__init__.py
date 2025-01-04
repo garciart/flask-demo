@@ -1,4 +1,4 @@
-"""A Flask application that incorporates authentication.
+"""A Flask application that incorporates API authentication.
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >

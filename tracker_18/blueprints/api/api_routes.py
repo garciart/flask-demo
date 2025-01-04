@@ -96,8 +96,10 @@ def login() -> tuple:
     Examples:
 
     Linux:
-    curl -X PUT -H "Content-Type: application/json" -d '{"username": "admin", \
-        "password": "Change.Me.321"}' http://127.0.0.1:5000/api/login
+    curl --request POST \
+        --header "Content-Type: application/json" \
+        --data '{"username":"admin","password":"Change.Me.321"}' \
+        http://127.0.0.1:5000/api/login
 
     Windows:
     Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" `

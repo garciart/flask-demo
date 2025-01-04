@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <h1>Update Profile</h1>
-<hr>
+<hr />
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <h2>{{ username }}</h2>
@@ -36,7 +36,7 @@
             {% endfor %}
         </p>
     </div>
-    <hr>
+    <hr />
     <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
             onclick="history.back()"></p>
 </form>

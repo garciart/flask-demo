@@ -1,15 +1,8 @@
-{% extends "base.html" %}
-{% block page_title %}
-{{ page_title }}
-{% endblock %}
-{% block head %}
-{{ super() }}
+{% extends "base.html" %} {% block page_title %} {{ page_title }} {% endblock %} {% block head %} {{ super() }}
 <!-- Using DataTables 2.0.0 -->
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
-{% endblock %}
-{% block content %}
-{% if current_user.is_anonymous %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.dataTables.min.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}" />
+{% endblock %} {% block content %} {% if current_user.is_anonymous %}
 <h1>Welcome!</h1>
 <p>You should log in.</p>
 {% else %}
@@ -36,41 +29,29 @@
       <td>{{ course.course_desc }}</td>
       <td class="text-nowrap">{{ course.role_name }}</td>
       <td class="no-sort text-nowrap">
-        <a class="btn btn-primary" href="{{ url_for('admin.view_course', course_id=course.course_id) }}"
-          title="View">View</a>
+        <a class="btn btn-primary" href="{{ url_for('admin.view_course', course_id=course.course_id) }}" title="View">View</a>
         {% if current_user.is_admin or (course.role_id | default(4)) in [1, 2] %}
-        <a class="btn btn-secondary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
-          title="Assign">Assign</a>
-        <a class="btn btn-warning" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}"
-          title="Edit">Edit</a>
-        {% if current_user.is_admin or (course.role_id | default(4)) in [1] %}
-        <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}"
-          title="Delete">Delete</a>
+        <a class="btn btn-secondary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}" title="Assign">Assign</a>
+        <a class="btn btn-warning" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}" title="Edit">Edit</a>
+        {% endif %} {% if current_user.is_admin or (course.role_id | default(4)) in [1] %}
+        <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}" title="Delete">Delete</a>
         {% endif %}
-        {% else %}
-      <td class="text-nowrap">Enrolled</td>
-      {% endif %}
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-{% endif %}
-{% endblock %}
-{% block footer %}
-{% endblock %}
-{% block scripts %}
-{{ super() }}
+{% endif %} {% endblock %} {% block footer %} {% endblock %} {% block scripts %} {{ super() }}
 <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
 <!-- Using DataTables 2.0.0 -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
 <script type="text/javascript">
-  let table = new DataTable('#data-table', {
-    order: [[0, 'asc']],
+  let table = new DataTable("#data-table", {
+    order: [[0, "asc"]],
     columnDefs: [{ orderable: false, targets: 6 }],
     scrollX: true,
-    autoWidth: false
+    autoWidth: false,
   });
 </script>
 {% endblock %}

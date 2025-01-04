@@ -1,138 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     {% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>
-        {% block page_title %}{% endblock %}
-    </title>
-    <link rel="icon" type="image/x-icon"
-          href="{{ url_for('static', filename='img/favicon.ico') }}"/>
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block page_title %}{% endblock %}</title>
+    <meta name="description" content="{% block page_description %}{% endblock %}" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
     {% endblock %}
-</head>
+    <script>
+      /* to prevent Firefox FOUC, this must be here */
+      let FF_FOUC_FIX;
+    </script>
+  </head>
 
-<body>
-<!-- Prevents Firefox FOUC -->
-<script>let FF_FOUC_FIX;</script>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <!-- Brand -->
-            <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="RGC"
-                     class="nav-logo"/>
-            </a>
-            <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">Flask
-                Template</a>
-            <div class="dropdown ms-auto">
-                <button class="btn btn-secondary dropdown-toggle" type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    Menu
-                </button>
-                <ul class="dropdown-menu">
-                    {% if current_user.is_anonymous %}
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}" title="Log In">Log
-                            In</a>
-                    </li>
-                    {% else %}
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}" title="Home">Home</a>
-                    </li>
-                    <li>
-                        <hr>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin.add_course') }}"
-                           title="Add Course">Add Course</a>
-                    </li>
-                    {% if current_user.is_admin %}
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin.add_role') }}" title="Add Role">Add
-                            Role</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin.add_user') }}" title="Add User">Add
-                            User</a>
-                    </li>
-                    <li>
-                        <hr>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.courses') }}"
-                           title="View Courses">View Courses</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.roles') }}" title="View Roles">View
-                            Roles</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.users') }}" title="View Users">View
-                            Users</a>
-                    </li>
-                    {% endif %}
-                    <li>
-                        <hr>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link"
-                           href="{{ url_for('admin.update_profile', user_id=current_user.get_id()) }}"
-                           title="Update Profile">Update Profile</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('auth.logout') }}" title="Log Out">Log
-                            Out</a>
-                    </li>
-                    {% endif %}
-                    <li>
-                        <hr>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.about') }}"
-                           title="About">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-<main role="main">
-    <div class="container">
-        <div id="content">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li style="color: red;">{{ message }}</li>
-                {% endfor %}
+          <!-- Start Brand -->
+          <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="RGC" class="nav-logo" />
+          </a>
+          <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">Flask Template</a>
+          <!-- End Brand -->
+          <div class="dropdown ms-auto">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</button>
+            <ul class="dropdown-menu">
+              {% if current_user.is_anonymous %}
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('auth.login') }}" title="Log In">Log In</a>
+              </li>
+              {% else %}
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('main.index') }}" title="Home">Home</a>
+              </li>
+              <li>
+                <hr />
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('admin.add_course') }}" title="Add Course">Add Course</a>
+              </li>
+              {% if current_user.is_admin %}
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('admin.add_role') }}" title="Add Role">Add Role</a>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('admin.add_user') }}" title="Add User">Add User</a>
+              </li>
+              <li>
+                <hr />
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('main.courses') }}" title="View Courses">View Courses</a>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('main.roles') }}" title="View Roles">View Roles</a>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('main.users') }}" title="View Users">View Users</a>
+              </li>
+              {% endif %}
+              <li>
+                <hr />
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('admin.update_profile', user_id=current_user.get_id()) }}" title="Update Profile">Update Profile</a>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('auth.logout') }}" title="Log Out">Log Out</a>
+              </li>
+              {% endif %}
+              <li>
+                <hr />
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{{ url_for('main.about') }}" title="About">About</a>
+              </li>
             </ul>
-            {% endif %}
-            {% endwith %}
-            {% block content %}
-            {% endblock %}
+          </div>
         </div>
-    </div>
-</main>
-<footer class="footer">
-    <div class="text-center">
+      </nav>
+    </header>
+    <main role="main">
+      <div class="container">
+        <div id="content">
+          {% with messages = get_flashed_messages() %} {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li class="message-text">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} {% endwith %} {% block content %} {% endblock %}
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="text-center">
         &#169; <span id="currentYear"></span> -
         <a href="{{ url_for('main.index') }}" title="Home">Flask Template</a>
-    </div>
-    {% block footer %}
+      </div>
+      {% block footer %} {% endblock %}
+    </footer>
+    {% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
     {% endblock %}
-</footer>
-{% block scripts %}
-<script type="text/javascript"
-        src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
-{% endblock %}
-</body>
-
+  </body>
 </html>

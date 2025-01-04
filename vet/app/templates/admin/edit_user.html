@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <h1>Edit User</h1>
-<hr>
+<hr />
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
@@ -44,7 +44,7 @@
     </div>
     <br />
     <p>{{ form.is_admin() }} <b>{{ form.is_admin.label }}</b></p>
-    <hr>
+    <hr />
     <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
             onclick="history.back()"></p>
 </form>

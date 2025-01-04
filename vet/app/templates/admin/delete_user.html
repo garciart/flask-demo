@@ -7,13 +7,13 @@
 {% endblock %}
 {% block content %}
 <h1>Delete User</h1>
-<hr>
+<hr />
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p style="color: red;">
         <strong><em>Are you sure you want to delete {{ username }}?</em></strong>
     </p>
-    <hr>
+    <hr />
     <p>{{ form.submit(class="btn btn-danger") }} <input type="button" class="btn btn-secondary" value="Cancel"
             onclick="history.back()"></p>
 </form>

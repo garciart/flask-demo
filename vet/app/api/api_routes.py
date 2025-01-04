@@ -5,7 +5,7 @@ Test: http://127.0.0.1:5000/api/test
 from typing import Union
 
 # Flake8 F401: imports are used for type hints
-from flask import (jsonify, Response)
+from flask import (json, jsonify, Response)
 from app.api import api_bp
 from app.app_utils import validate_input
 from app.models import Course
@@ -33,7 +33,7 @@ def api_get_test_data():
     return _response
 
 
-@api_bp.route('/api/courses', methods=['GET'])
+@api_bp.route('/api/courses', methods=['GET'], endpoint='courses')
 def api_courses():
     # type: () -> Response
     """Get the list of courses in the database when a REST call is made.
@@ -43,12 +43,11 @@ def api_courses():
     """
     _courses = Course.query.all()
 
-    _exclude = ['course_code']
+    # Serialize the list of courses using the `to_dict` method
+    courses_list = [course.to_dict() for course in _courses]
 
-    _json_result = __serialize_query_result(_courses, _exclude)
-    # _json_result = __serialize_query_result(_courses)
-
-    return _json_result
+    # Return the serialized list as a JSON response
+    return jsonify(courses_list)
 
 
 def __serialize_query_result(query_result: list, exclude: Union[None, str, list] = None) -> list:

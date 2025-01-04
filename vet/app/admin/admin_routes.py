@@ -9,7 +9,7 @@ from typing import Union
 
 # Flake8 F401: imports are used for type hints
 from flask import (Response,
-                   abort, flash, redirect, render_template, request, url_for)
+                   abort, flash, json, redirect, render_template, request, url_for)
 from flask_login import (current_user, login_required)
 from app import db
 from app.admin import admin_bp
@@ -72,8 +72,7 @@ def add_course():
 
 @admin_bp.route('/view_course/<int:course_id>')
 @login_required
-def view_course(course_id):
-    # type: (int) -> str
+def view_course(course_id: int) -> str:
     """Display course details.
 
     :returns: The HTML code to display with {{ placeholders }} populated
@@ -86,10 +85,13 @@ def view_course(course_id):
 
     _user_id = int(current_user.get_id())
 
+    # SELECT * FROM associations WHERE associations.user_id = _user_id
+    # AND associations.role_id IN (1, 2, 3);
+
     _assoc = Association.query.filter(
         Association.course_id == _course.course_id,
         Association.user_id == _user_id,
-        ((Association.role_id in ['1', '2', '3']))).all()
+        Association.role_id.in_([1, 2, 3])).all()
 
     # Only assigned users can view courses
     if not current_user.is_admin and len(_assoc) == 0:
@@ -123,7 +125,7 @@ def edit_course(course_id):
     _assoc = Association.query.filter(
         Association.course_id == _course.course_id,
         Association.user_id == _user_id,
-        ((Association.role_id == '1') | (Association.role_id == '2'))).all()
+        Association.role_id.in_([1, 2])).all()
 
     # Only administrators, chairs, and teachers can edit courses
     if not current_user.is_admin and len(_assoc) == 0:
@@ -435,15 +437,22 @@ def assign_course(course_id):
 
     _user_id = int(current_user.get_id())
 
+    # Get the user info from the Association table
+    # Should look like [{'course_id': 16, 'role_id': 1, 'user_id': 2}]
     _assoc = Association.query.filter(
         Association.course_id == course_id,
         Association.user_id == _user_id,
-        ((Association.role_id == '1') | (Association.role_id == '2'))).all()
+        Association.role_id.in_([1, 2])).first()
 
     # Only administrators, chairs, and teachers can edit courses
-    if not current_user.is_admin and len(_assoc) == 0:
+    if not current_user.is_admin and _assoc is None:
         flash(NOT_AUTH_MSG1)
         return redirect(url_for(INDEX_PAGE))
+
+    # _assoc_list = [assoc.to_dict() for assoc in _assoc]
+    _assoc = _assoc.to_dict()
+
+    print(_assoc['role_id'], type(_assoc['role_id']))
 
     # Instantiate the form
     _form = SimpleForm()
@@ -452,21 +461,24 @@ def assign_course(course_id):
     _course = Course.query.get_or_404(course_id)
 
     # Get a list of roles from the database
-    _roles = Role.query.all()
+    # _roles = Role.query.all()
+    _roles = Role.query.filter(Role.role_id >= _assoc['role_id'])
 
-    # Ensure the result is a list so you can iterate over it
-    # even if it only contains one Role object
-    _roles = [_roles] if not isinstance(_roles, list) else _roles
+    # # Ensure the result is a list so you can iterate over it
+    # # even if it only contains one Role object
+    # _roles = [_roles] if not isinstance(_roles, list) else _roles
 
-    # Create a list to hold role information
-    # You will iterate through this list of dictionaries,
-    # instead of a list of Role objects, when you render the webpage,
-    # since you will temporarily add a 'Not Assigned' role to it
-    _roles_list = []
+    # # Create a list to hold role information
+    # # You will iterate through this list of dictionaries,
+    # # instead of a list of Role objects, when you render the webpage,
+    # # since you will temporarily add a 'Not Assigned' role to it
+    # _roles_list = []
 
-    for _r in _roles:
-        _role_dict = _r.__dict__
-        _roles_list.append(_role_dict)
+    # for _r in _roles:
+    #     _role_dict = _r.__dict__
+    #     _roles_list.append(_role_dict)
+
+    _roles_list = [roles.to_dict() for roles in _roles]
 
     # Temporarily add a 'Not Assigned' role
     # Users in this role will be deleted from the Association table
