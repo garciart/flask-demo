@@ -72,18 +72,20 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(
-        String(64), index=True, unique=True)
-    user_email: Mapped[Optional[str]] = mapped_column(
-        String(128), unique=True)
+    username: Mapped[str] = mapped_column(String(64), index=True, unique=True)
+    user_email: Mapped[Optional[str]] = mapped_column(String(128), unique=True)
     is_admin: Mapped[bool] = mapped_column(default=True)
-    password_hash: Mapped[str] = mapped_column(
-        String(256))
+    password_hash: Mapped[str] = mapped_column(String(256))
 
     associations: Mapped[List['Association']] = relationship(
         back_populates='user', cascade='all, delete-orphan')
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """Return the object as a dictionary for conversion to JSON
+
+        :return: The keys and values of the object
+        :rtype: dict
+        """
         return {
             'user_id': self.user_id,
             'username': self.username,

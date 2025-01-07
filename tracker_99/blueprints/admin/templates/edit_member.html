@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title_text }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+    thead {
+        visibility: hidden;
+    }
+
+    table,
+    th,
+    td {
+        border: none;
+    }
+</style>
+{% endblock %}
+
+{% block body_header %}
+<h1>Edit Member</h1>
+{% endblock %}
+
+{% block main_content %}
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<hr />
+<form action="" method="post">
+    <!-- Use hidden_tag instead of csrf_token -->
+    {{ form.hidden_tag() }}
+    <br />
+    <table>
+        <caption>Member Details</caption>
+        <thead>
+            <tr>
+                <th scope="col">Key:</th>
+                <th scope="col">Value:</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ form.member_name.label }}:</td>
+                <td>{{ form.member_name(size=32) }}</td>
+                <td>{% for error in form.member_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ form.member_email.label }}:</td>
+                <td>{{ form.member_email(size=32) }}</td>
+                <td>{% for error in form.member_email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <div style="border: 1px black solid; padding: 1em;">
+        <p>
+            <i>(Leave both fields blank to continue using the current password.)</i>
+        </p>
+        <p>
+            <b>{{ form.password.label }}</b>
+            <br />
+            {{ form.password(size=32) }}<br />
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <b>{{ form.password2.label }}</b>
+            <br />
+            {{ form.password2(size=32) }}<br />
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+    </div>
+    <br />
+    {% if current_user.member_is_admin %}
+        <p>{{ form.member_is_admin() }} <b>{{ form.member_is_admin.label }}</b></p>
+    {% endif %}
+    <hr>
+    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
+            onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>
+</form>
+{% endblock %}

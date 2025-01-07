@@ -53,8 +53,8 @@ class Config:
     # Get the secret key from the environment or, if undefined,
     # use a default value to protect against Cross-site request forgery (CRSF) attacks
     # Always include a default value, since unittest cannot get values from .env and .flaskenv
-    # Same as: os.environ.get('SECRET_KEY') or 'default_secret_key'
-    SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
+    # Same as: os.environ.get('SECRET_KEY') or 'BACKUP_CSRF_PROTECTION_KEY'
+    SECRET_KEY = os.getenv('SECRET_KEY', 'BACKUP_CSRF_PROTECTION_KEY')
 
     # Ensure CSRF protection is enabled
     WTF_CSRF_ENABLED = True
