@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block main_content %}
+<h1>Add Member</h1>
+<hr />
+<form action="" method="post">
+    <!-- Use hidden_tag instead of csrf_token -->
+    {{ form.hidden_tag() }}
+    <p>
+        <p><b>{{ form.member_name.label }}</b></p>
+        {{ form.member_name(size=64) }}<br />
+        {% for error in form.member_name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <p><b>{{ form.member_email.label }}</b></p>
+        {{ form.member_email(size=128) }}<br />
+        {% for error in form.member_email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <p><b>{{ form.password.label }}</b></p>
+        {{ form.password(size=32) }}<br />
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <p><b>{{ form.password2.label }}</b></p>
+        {{ form.password2(size=32) }}<br />
+        {% for error in form.password2.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.member_is_admin() }} <b>{{ form.member_is_admin.label }}</b></p>
+    <hr />
+    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
+            onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>
+</form>
+{% endblock %}

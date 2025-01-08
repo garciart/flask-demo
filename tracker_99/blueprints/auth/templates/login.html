@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block page_title %}
-{{ page_title_text }}
+{{ page_title }}
 {% endblock %}
 {% block page_description %}{{ page_description_text }}{% endblock %}
 
@@ -8,30 +8,22 @@
 {{ super() }}
 {% endblock %}
 
-{% block body_header %}
-<h1>Log In</h1>
-{% endblock %}
-
 {% block main_content %}
-<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<h1>Log In</h1>
 <hr />
 <form action="" method="POST" novalidate>
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
-    <p>
-        {{ form.member_name.label }}<br />
-        {{ form.member_name(size=16) }}<br />
-        {% for error in form.member_name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}<br />
-        {{ form.password(size=16) }}<br />
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
+    <p><b>{{ form.member_name.label }}</b></p>
+    <p>{{ form.member_name(size=32) }}</p>
+    {% for error in form.member_name.errors %}
+    <p class="message-text">{{ error }}</p>
+    {% endfor %}
+    <p><b>{{ form.password.label }}</b></p>
+    <p>{{ form.password(size=32) }}<br /></p>
+    {% for error in form.password.errors %}
+    <p class="message-text">{{ error }}</p>
+    {% endfor %}
     <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
     <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
             onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>

@@ -2,18 +2,17 @@
 
 Test: http://127.0.0.1:5000/login
 """
+
 from typing import Union
 from urllib.parse import urlsplit
 
-from flask import (Response,
-                   flash, redirect, render_template,
-                   request, url_for)
-from flask_login import (current_user, login_user, logout_user)
+from flask import Response, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_user, logout_user
 from sqlalchemy import select
 
 from tracker_99 import db
 from tracker_99.blueprints.auth import auth_bp
-from tracker_99.blueprints.auth.auth_forms import (LoginForm)
+from tracker_99.blueprints.auth.auth_forms import LoginForm
 from tracker_99.models.models import Course, Member, Role, Association
 
 INDEX_PAGE = 'main_bp.index'
@@ -33,13 +32,15 @@ def login() -> Union[str, Response]:
         return redirect(url_for(INDEX_PAGE))
 
     _page_title = 'Log In'
+    _page_description = 'Log In'
+
     _form = LoginForm()
 
     if _form.validate_on_submit():
 
         _member = db.session.scalar(
-            select(Member).where(
-                Member.member_name.ilike(_form.member_name.data)))
+            select(Member).where(Member.member_name.ilike(_form.member_name.data))
+        )
 
         print(_form.password.data)
 
@@ -54,12 +55,13 @@ def login() -> Union[str, Response]:
         if not _next_page or urlsplit(_next_page).netloc != '':
             _next_page = url_for(INDEX_PAGE)
 
-        flash(f'Welcome, {_member.member_name}!')
+        # flash(f'Welcome, {_member.member_name}!')
 
         return redirect(_next_page)
 
-    return render_template('login.html',
-                           page_title=_page_title, form=_form)
+    return render_template(
+        'login.html', page_title=_page_title, page_description_text=_page_description, form=_form
+    )
 
 
 @auth_bp.route('/logout')

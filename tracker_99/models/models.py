@@ -23,22 +23,21 @@ class Member(UserMixin, db.Model):
 
     member_id: Mapped[int] = mapped_column(primary_key=True)
     # Using RFC 5321, 5322, and 3696 for member name and email lengths
-    member_name: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    member_name: Mapped[str] = mapped_column(String(64), nullable=False)
     member_email: Mapped[str] = mapped_column(String(320), nullable=False, unique=True)
     password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
     member_is_admin: Mapped[bool] = mapped_column(nullable=False)
 
-    associations: Mapped[List['Association']] = relationship('Association',
-                                                             back_populates='member',
-                                                             cascade=CASCADE_ARG
-                                                             )
+    associations: Mapped[List['Association']] = relationship(
+        'Association', back_populates='member', cascade=CASCADE_ARG
+    )
 
     def __init__(
-            self,
-            member_name: str,
-            member_email: str,
-            password: Union[str, None] = None,
-            member_is_admin: bool = False,
+        self,
+        member_name: str,
+        member_email: str,
+        password: Union[str, None] = None,
+        member_is_admin: bool = False,
     ) -> None:
         """Initialization with validation to ensure valid types and values.
 
@@ -92,7 +91,8 @@ class Member(UserMixin, db.Model):
 
         :param str password: A password in plain text
 
-        :returns None: None
+        :returns: None
+        :rtype: None
         """
         # Validate inputs
         validate_input('password', password, str)
@@ -110,7 +110,8 @@ class Member(UserMixin, db.Model):
 
         :param str password: The password to validate
 
-        :returns None: None
+        :returns: None
+        :rtype: None
         """
         validate_input('password', password, str)
 
@@ -171,19 +172,21 @@ class Course(db.Model):
     course_group: Mapped[Optional[str]] = mapped_column(String(64))
     course_desc: Mapped[Optional[str]] = mapped_column(String(256))
 
-    # Here are the unique constraints
+    # Courses can have the same name or code, but not both
     __table_args__ = (
-        UniqueConstraint('course_name'),
-        UniqueConstraint('course_code'),
         UniqueConstraint('course_name', 'course_code', name='uq_course_name_code'),
     )
 
-    associations: Mapped[List['Association']] = relationship('Association',
-                                                             back_populates='course',
-                                                             cascade=CASCADE_ARG
-                                                             )
+    associations: Mapped[List['Association']] = relationship(
+        'Association', back_populates='course', cascade=CASCADE_ARG
+    )
 
     def to_dict(self):
+        """Return the object as a dictionary for conversion to JSON
+
+        :return: The keys and values of the object
+        :rtype: dict
+        """
         return {
             'course_id': self.course_id,
             'course_name': self.course_name,
@@ -193,22 +196,28 @@ class Course(db.Model):
 
 
 class Role(db.Model):
-    """Role database model
-    """
+    """Role database model"""
+
     __tablename__ = 'roles'
 
     role_id: Mapped[int] = mapped_column(primary_key=True)
     role_name: Mapped[str] = mapped_column(String(64), unique=True)
     role_privilege: Mapped[int] = mapped_column(unique=True)
 
-    associations: Mapped[List['Association']] = relationship('Association', back_populates='role',
-                                                             cascade=CASCADE_ARG)
+    associations: Mapped[List['Association']] = relationship(
+        'Association', back_populates='role', cascade=CASCADE_ARG
+    )
 
     def to_dict(self):
+        """Return the object as a dictionary for conversion to JSON
+
+        :return: The keys and values of the object
+        :rtype: dict
+        """
         return {
             'role_id': self.role_id,
             'role_name': self.role_name,
-            'role_privilege': self.role_privilege
+            'role_privilege': self.role_privilege,
         }
 
 
@@ -216,13 +225,16 @@ class Association(db.Model):
     """Association database model
     Note: This is a three-way relationship
     """
+
     __tablename__ = 'associations'
 
-    course_id: Mapped[int] = mapped_column(ForeignKey(Course.course_id), primary_key=True,
-                                           nullable=False)
+    course_id: Mapped[int] = mapped_column(
+        ForeignKey(Course.course_id), primary_key=True, nullable=False
+    )
     role_id: Mapped[int] = mapped_column(ForeignKey(Role.role_id), primary_key=True, nullable=False)
-    member_id: Mapped[int] = mapped_column(ForeignKey(Member.member_id), primary_key=True,
-                                           nullable=False)
+    member_id: Mapped[int] = mapped_column(
+        ForeignKey(Member.member_id), primary_key=True, nullable=False
+    )
 
     course: Mapped['Course'] = relationship(back_populates='associations')
     role: Mapped['Role'] = relationship(back_populates='associations')
@@ -236,8 +248,9 @@ class Association(db.Model):
         return False
 
     def to_dict(self):
-        return {
-            'course_id': self.course_id,
-            'role_id': self.role_id,
-            'member_id': self.member_id
-        }
+        """Return the object as a dictionary for conversion to JSON
+
+        :return: The keys and values of the object
+        :rtype: dict
+        """
+        return {'course_id': self.course_id, 'role_id': self.role_id, 'member_id': self.member_id}

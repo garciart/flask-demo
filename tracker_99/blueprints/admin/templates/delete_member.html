@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block main_content %}
+<h1>Delete Member</h1>
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<hr />
+<form action="" method="post">
+    <!-- Use hidden_tag instead of csrf_token -->
+    {{ form.hidden_tag() }}
+    <p style="color: red;">
+        <strong><em>Are you sure you want to delete {{ member_name }}?</em></strong>
+    </p>
+    <hr />
+    <p>{{ form.submit(class="btn btn-danger") }} <input type="button" class="btn btn-secondary" value="Cancel"
+            onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>
+</form>
+{% endblock %}

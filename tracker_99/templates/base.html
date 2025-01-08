@@ -5,14 +5,17 @@
     {% block head %}
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>{% block page_title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block page_title %}{% endblock %} - Tracker</title>
     <meta name="description" content="{% block page_description %}{% endblock %}"/>
     <link rel="icon" type="image/x-icon"
           href="{{ url_for('static', filename='img/favicon.ico') }}"/>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}"/>
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
+    <!-- Using DataTables 2.0.0 -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css') }}"/>
     {% endblock %}
     <script>
@@ -26,12 +29,11 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <!-- Start Brand -->
-            <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">
+            <a class="navbar-brand" href="{{ url_for('main_bp.index') }}" title="Home">
                 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="RGC"
                      class="nav-logo"/>
             </a>
-            <a class="navbar-brand" href="{{ url_for('main.index') }}" title="Home">Flask
-                Template</a>
+            <a class="navbar-brand" href="{{ url_for('main_bp.index') }}" title="Home">Tracker</a>
             <!-- End Brand -->
             <div class="dropdown ms-auto">
                 <button class="btn btn-secondary dropdown-toggle" type="button"
@@ -40,43 +42,27 @@
                 <ul class="dropdown-menu">
                     {% if current_user.is_anonymous %}
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}" title="Log In">Log
+                        <a class="nav-link" href="{{ url_for('auth_bp.login') }}" title="Log In">Log
                             In</a>
                     </li>
                     {% else %}
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}" title="Home">Home</a>
+                        <a class="nav-link" href="{{ url_for('main_bp.index') }}" title="Home">Home</a>
+                    </li>
+                    {% if current_user.member_is_admin %}
+                    <li>
+                        <hr/>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="nav-link" href="{{ url_for('admin_bp.add_member') }}" title="Add Member">Add
+                            Member</a>
                     </li>
                     <li>
                         <hr/>
                     </li>
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin.add_course') }}"
-                           title="Add Course">Add Course</a>
-                    </li>
-                    {% if current_user.is_admin %}
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin.add_role') }}" title="Add Role">Add
-                            Role</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin.add_user') }}" title="Add User">Add
-                            User</a>
-                    </li>
-                    <li>
-                        <hr/>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.courses') }}"
-                           title="View Courses">View Courses</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.roles') }}" title="View Roles">View
-                            Roles</a>
-                    </li>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.users') }}" title="View Users">View
-                            Users</a>
+                        <a class="nav-link" href="{{ url_for('main_bp.members') }}" title="View Members">View
+                            Members</a>
                     </li>
                     {% endif %}
                     <li>
@@ -84,11 +70,11 @@
                     </li>
                     <li class="dropdown-item">
                         <a class="nav-link"
-                           href="{{ url_for('admin.update_profile', user_id=current_user.get_id()) }}"
+                           href="{{ url_for('admin_bp.update_profile', member_id=current_user.get_id()) }}"
                            title="Update Profile">Update Profile</a>
                     </li>
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('auth.logout') }}" title="Log Out">Log
+                        <a class="nav-link" href="{{ url_for('auth_bp.logout') }}" title="Log Out">Log
                             Out</a>
                     </li>
                     {% endif %}
@@ -96,8 +82,8 @@
                         <hr/>
                     </li>
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main.about') }}"
-                           title="About">About</a>
+                        <a class="nav-link" href="{{ url_for('main_bp.about') }}"
+                           title="To the About Page!">About</a>
                     </li>
                 </ul>
             </div>
@@ -122,12 +108,36 @@
 </main>
 <footer class="footer">
     {% block footer_content %} {% endblock %}
-    <small>
-        &#169; <span id="currentYear"></span> -
-        <a href="{{ url_for('main.index') }}" title="Home">Tracker.</a> All Rights Reserved.
-    </small>
+    <div class="text-center">
+        <small>
+            &#169; <span id="currentYear"></span> -
+            <a href="{{ url_for('main_bp.index') }}" title="Home">Tracker.</a> All Rights Reserved.
+        </small>
+    </div>
 </footer>
 {% block scripts %}
+<script type="text/javascript"
+        src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
+<!-- Using DataTables 2.0.0 -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+{% if current_user.member_is_admin %}
+<script type="text/javascript">
+  let table = new DataTable('#data-table', {
+    columnDefs: [{ orderable: false, targets: 3 }],
+    scrollX: true,
+    autoWidth: false
+  });
+</script>
+{% else %}
+<script type="text/javascript">
+  let table = new DataTable('#data-table', {
+    scrollX: true,
+    autoWidth: false
+  });
+</script>
+{% endif %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/site.js') }}"></script>
 {% endblock %}
 </body>

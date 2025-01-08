@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block page_title %}
-{{ page_title_text }}
+{{ page_title }}
 {% endblock %}
 {% block page_description %}{{ page_description_text }}{% endblock %}
 
@@ -8,15 +8,15 @@
 {{ super() }}
 {% endblock %}
 
-{% block body_header %}
-<h1>What a piece of junk!</h1>
-<p><i>({{ e.code }}: {{ e.name }})</i></p>
-{% endblock %}
-
 {% block main_content %}
-<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
-<p>Looks like those special modifications I made aren't working.</p>
-<p>But we're a little rushed, so if you'll just
-    <a href='/index' rel='nofollow' target='_self' title='Home'>click this link</a>,
-    we'll get outta here.</p>
+<div class="text-center">
+    <h1>What a piece of junk!</h1>
+    <p><i>({{ e.code }}: {{ e.name }})</i></p>
+    <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+    <p>Looks like those special modifications I made aren't working.</p>
+    <p>But we're a little rushed, so if you'll just
+        <a href='/index' rel='nofollow' target='_self' title='Home'>click this link</a>,
+        we'll get outta here.
+    </p>
+</div>
 {% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+{% block page_description %}{{ page_description_text }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block main_content %}
+{% if not current_user.member_is_admin %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to administrators.</p>
+{% else %}
+<h1>Welcome, {{ current_user.member_name }}!</h1>
+<table id="data-table" class="table table-striped display caption-top">
+  <caption class="text-center">List of Members</caption>
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">ID</th>
+      <th scope="col">Email</th>
+      {% if current_user.member_is_admin %}
+      <th scope="col">Actions</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {% for member in members %}
+    <tr>
+      <th scope="row">{{ member.member_name }}</th>
+      <td>{{ member.member_id }}</td>
+      <td>{{ member.member_email }}</td>
+      {% if current_user.member_is_admin %}
+      <td class="text-nowrap">
+        <a class="btn btn-primary" href="{{ url_for('admin_bp.edit_member', member_id=member.member_id) }}"
+          title="Edit">Edit</a>
+        <a class="btn btn-danger" href="{{ url_for('admin_bp.delete_member', member_id=member.member_id) }}"
+          title="Delete">Delete</a>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}
+{% block footer_content %}
+{{ super() }}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{% endblock %}

@@ -51,12 +51,12 @@ tracker
 |   |   └── member.py
 |   ├── static
 |   |   ├── css
-|   |   |   └── main.css
+|   |   |   └── default.css
 |   |   ├── img
 |   |   |   ├── favicon.ico
 |   |   |   └── logo.png
 |   |   └── js
-|   |       └── main.js
+|   |       └── site.js
 |   ├── templates
 |   |   └── base.html
 |   ├── tests

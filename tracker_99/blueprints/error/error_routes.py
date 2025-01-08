@@ -20,7 +20,7 @@ def page_not_found(e) -> tuple:
     return (
         flask.render_template(
             '404.html',
-            page_title_text=_page_title,
+            page_title=_page_title,
             page_description_text=_page_description,
             e=e,
         ),
@@ -42,7 +42,7 @@ def server_error(e) -> tuple:
     return (
         flask.render_template(
             '500.html',
-            page_title_text=_page_title,
+            page_title=_page_title,
             page_description_text=_page_description,
             e=e,
         ),

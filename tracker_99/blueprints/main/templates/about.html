@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block page_title %}
-{{ page_title_text }}
+{{ page_title }}
 {% endblock %}
 {% block page_description %}{{ page_description_text }}{% endblock %}
 
@@ -8,12 +8,13 @@
 {{ super() }}
 {% endblock %}
 
-{% block body_header %}
-<h1>Welcome to the About Page!</h1>
-{% endblock %}
-
 {% block main_content %}
-<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
-<h2>We are all about the page!</h2>
-<a href="{{ url_for('main_bp.index') }}" title="Go back home">Go back home</a>
+<div class="text-center">
+    <h1>Hello there!</h1>
+    <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+    <p>It is a period of civil war.</p>
+    <p>Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire.</p>
+    <p>During the battle, Rebel spies managed to steal a bunch of stuff, including this database.</p>
+    <a href="{{ url_for('main_bp.index') }}" title="To the Home Page!">Home</a>
+</div>
 {% endblock %}

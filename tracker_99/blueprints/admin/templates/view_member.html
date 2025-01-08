@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block page_title %}
-{{ page_title_text }}
+{{ page_title }}
 {% endblock %}
 {% block page_description %}{{ page_description_text }}{% endblock %}
 
@@ -8,14 +8,9 @@
 {{ super() }}
 {% endblock %}
 
-{% block body_header %}
-<h1>View Member</h1>
-{% endblock %}
-
 {% block main_content %}
-<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+<h1>View Member</h1>
 <hr />
-<br />
 <table>
     <caption>Member Details</caption>
     <thead>
