@@ -26,7 +26,7 @@ class Member(UserMixin, db.Model):
     member_name: Mapped[str] = mapped_column(String(64), nullable=False)
     member_email: Mapped[str] = mapped_column(String(320), nullable=False, unique=True)
     password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
-    member_is_admin: Mapped[bool] = mapped_column(nullable=False)
+    is_admin: Mapped[bool] = mapped_column(nullable=False)
 
     associations: Mapped[List['Association']] = relationship(
         'Association', back_populates='member', cascade=CASCADE_ARG
@@ -37,7 +37,7 @@ class Member(UserMixin, db.Model):
         member_name: str,
         member_email: str,
         password: Union[str, None] = None,
-        member_is_admin: bool = False,
+        is_admin: bool = False,
     ) -> None:
         """Initialization with validation to ensure valid types and values.
 
@@ -46,13 +46,13 @@ class Member(UserMixin, db.Model):
         :param str password: A password for the member in plain text, defaults to None,
             which prevents the database from accepting the member
             unless the password is set using `set_password()`
-        :param bool member_is_admin: The email address of the member
+        :param bool is_admin: The email address of the member
         """
         # Validate inputs
         validate_input('member_name', member_name, str)
         validate_input('member_email', member_email, str)
         validate_input('password', password, Union[str, None])
-        validate_input('member_is_admin', member_is_admin, Union[bool, None])
+        validate_input('is_admin', is_admin, Union[bool, None])
 
         # Validate that member_name:
         # - Starts with a letter
@@ -76,7 +76,7 @@ class Member(UserMixin, db.Model):
             # Initialize password hash
             self.set_password(password)
 
-        self.member_is_admin = member_is_admin
+        self.is_admin = is_admin
 
     def get_id(self) -> int:
         """Overrides UserMixin get_id so you can use member_id instead of id.
@@ -142,7 +142,7 @@ class Member(UserMixin, db.Model):
             'member_id': self.member_id,
             'member_name': self.member_name,
             'member_email': self.member_email,
-            'member_is_admin': self.member_is_admin,
+            'is_admin': self.is_admin,
         }
 
 

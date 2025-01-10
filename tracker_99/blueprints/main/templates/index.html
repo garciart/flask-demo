@@ -11,39 +11,62 @@
 {% block main_content %}
 {% if current_user.is_anonymous %}
 <h1>Welcome to Tracker!</h1>
+<p>You should log in.</p>
 {% else %}
 <h1>Hello, {{ current_user.member_name }}!</h1>
 {% endif %}
-<br />
 <table id="data-table" class="table table-striped display caption-top">
-  <caption class="text-center">List of Members</caption>
   <thead>
     <tr>
+      <th scope="col">Name</th>
       <th scope="col">ID</th>
-      <th scope="col">Member Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Admin?</th>
-      <th scope="col" colspan="2"></th>
+      <th scope="col">Code</th>
+      <th scope="col">Group</th>
+      <th scope="col">Description</th>
+      <th scope="col">Role</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody class="table-group-divider">
-    {% for m in members_data %}
+    {% for course in courses %}
     <tr>
-      <td>{{m.member_id}}</td>
-      <td>{{m.member_name}}</td>
-      <td>{{m.member_email}}</td>
-      <td>{{m.member_is_admin}}</td>
-      <td><a href="{{ url_for('admin_bp.view_member', member_id=m.member_id) }}" title="View Member">View</a></td>
-      <td><a href="{{ url_for('admin_bp.edit_member', member_id=m.member_id) }}" title="Edit Member">Edit</a></td>
+      <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
+      <td class="text-nowrap">{{ course.course_id }}</td>
+      <td class="text-nowrap">{{ course.course_code }}</td>
+      <td class="text-nowrap">{{ course.course_group }}</td>
+      <td>{{ course.course_desc }}</td>
+      <td class="text-nowrap">{{ course.role_name }}</td>
+      <td class="no-sort text-nowrap">
+        <a class="btn btn-primary" href="{{ url_for('admin.view_course', course_id=course.course_id) }}"
+          title="View">View</a>
+        {% if current_user.is_admin or (course.role_id | default(4)) in [1, 2] %}
+        <a class="btn btn-secondary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
+          title="Assign">Assign</a>
+        <a class="btn btn-warning" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}"
+          title="Edit">Edit</a>
+        {% endif %} {% if current_user.is_admin or (course.role_id | default(4)) in [1] %}
+        <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}"
+          title="Delete">Delete</a>
+        {% endif %}
+      </td>
     </tr>
-    {% endfor%}
+    {% endfor %}
   </tbody>
 </table>
-<br />
 {% endblock %}
+
 {% block footer_content %}
 {{ super() }}
 {% endblock %}
+
 {% block scripts %}
 {{ super() }}
+<script type="text/javascript">
+  let table = new DataTable("#data-table", {
+    order: [[0, "asc"]],
+    columnDefs: [{ orderable: false, targets: 6 }],
+    scrollX: true,
+    autoWidth: false,
+  });
+</script>
 {% endblock %}

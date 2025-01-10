@@ -13,30 +13,29 @@
 <h1>Welcome to Tracker!</h1>
 <p>This page is restricted to administrators.</p>
 {% else %}
-<h1>Welcome, {{ current_user.member_name }}!</h1>
+<h1>Welcome, {{ current_user.username }}!</h1>
 <table id="data-table" class="table table-striped display caption-top">
-  <caption class="text-center">List of Members</caption>
+  <caption class="text-center">List of Roles</caption>
   <thead>
     <tr>
       <th scope="col">Name</th>
       <th scope="col">ID</th>
-      <th scope="col">Email</th>
+      <th scope="col">Privilege Level</th>
       {% if current_user.is_admin %}
       <th scope="col">Actions</th>
       {% endif %}
     </tr>
   </thead>
   <tbody class="table-group-divider">
-    {% for member in members %}
+    {% for role in roles %}
     <tr>
-      <th scope="row" class="text-nowrap">{{ member.member_name }}</th>
-      <td class="text-nowrap">{{ member.member_id }}</td>
-      <td class="text-nowrap">{{ member.member_email }}</td>
+      <th scope="row" class="text-nowrap">{{ role.role_name }}</th>
+      <td class="text-nowrap">{{ role.role_id }}</td>
+      <td class="text-nowrap">{{ role.role_privilege }}</td>
       {% if current_user.is_admin %}
       <td class="text-nowrap">
-        <a class="btn btn-primary" href="{{ url_for('admin_bp.edit_member', member_id=member.member_id) }}"
-          title="Edit">Edit</a>
-        <a class="btn btn-danger" href="{{ url_for('admin_bp.delete_member', member_id=member.member_id) }}"
+        <a class="btn btn-primary" href="{{ url_for('admin.edit_role', role_id=role.role_id) }}" title="Edit">Edit</a>
+        <a class="btn btn-danger" href="{{ url_for('admin.delete_role', role_id=role.role_id) }}"
           title="Delete">Delete</a>
       </td>
       {% endif %}

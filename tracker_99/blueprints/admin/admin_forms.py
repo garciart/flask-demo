@@ -32,7 +32,7 @@ class AddMemberForm(FlaskForm):
     password2 = PasswordField(
         PASSWORD_FIELD_LABEL, validators=[DataRequired(), EqualTo('password')]
     )
-    member_is_admin = BooleanField('This member an administrator')
+    is_admin = BooleanField('This member an administrator')
     submit = SubmitField('Add Member')
 
     # MUST USE validate_{field_name} PATTERN WITH Flask-WTF!
@@ -88,7 +88,7 @@ class EditMemberForm(FlaskForm):
     member_email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password')
     password2 = PasswordField(PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
-    member_is_admin = BooleanField('This member is an administrator')
+    is_admin = BooleanField('This member is an administrator')
     submit = SubmitField('Update Member')
 
     def __init__(

@@ -9,15 +9,15 @@
 {% endblock %}
 
 {% block main_content %}
-<h1>Delete Member</h1>
+<h1>Delete Course</h1>
 <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
 <hr />
 <form action="" method="post">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
-    <p class="message-text">Are you sure you want to delete {{ member_name }}?</p>
+    <p class="message-text">Are you sure you want to delete {{ course_name }}?</p>
     <hr />
     <p>{{ form.submit(class="btn btn-danger") }} <input type="button" class="btn btn-secondary" value="Cancel"
-            onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>
+            onclick="window.location.href='{{ url_for('main_bp.courses') }}'"></p>
 </form>
 {% endblock %}

@@ -42,27 +42,38 @@
                 <ul class="dropdown-menu">
                     {% if current_user.is_anonymous %}
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('auth_bp.login') }}" title="Log In">Log
-                            In</a>
+                        <a class="nav-link" href="{{ url_for('auth_bp.login') }}" title="Log In">Log In</a>
                     </li>
                     {% else %}
                     <li class="dropdown-item">
                         <a class="nav-link" href="{{ url_for('main_bp.index') }}" title="Home">Home</a>
                     </li>
-                    {% if current_user.member_is_admin %}
                     <li>
                         <hr/>
                     </li>
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin_bp.add_member') }}" title="Add Member">Add
-                            Member</a>
+                        <a class="nav-link" href="{{ url_for('admin_bp.add_course') }}"
+                           title="Add Course">Add Course</a>
+                    </li>
+                    {% if current_user.is_admin %}
+                    <li class="dropdown-item">
+                        <a class="nav-link" href="{{ url_for('admin_bp.add_role') }}" title="Add Role">Add Role</a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="nav-link" href="{{ url_for('admin_bp.add_member') }}" title="Add Member">Add Member</a>
                     </li>
                     <li>
                         <hr/>
                     </li>
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('main_bp.members') }}" title="View Members">View
-                            Members</a>
+                        <a class="nav-link" href="{{ url_for('main_bp.courses') }}"
+                           title="View Courses">View Courses</a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="nav-link" href="{{ url_for('main_bp.roles') }}" title="View Roles">View Roles</a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="nav-link" href="{{ url_for('main_bp.members') }}" title="View Members">View Members</a>
                     </li>
                     {% endif %}
                     <li>
@@ -74,8 +85,7 @@
                            title="Update Profile">Update Profile</a>
                     </li>
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('auth_bp.logout') }}" title="Log Out">Log
-                            Out</a>
+                        <a class="nav-link" href="{{ url_for('auth_bp.logout') }}" title="Log Out">Log Out</a>
                     </li>
                     {% endif %}
                     <li>
@@ -83,7 +93,7 @@
                     </li>
                     <li class="dropdown-item">
                         <a class="nav-link" href="{{ url_for('main_bp.about') }}"
-                           title="To the About Page!">About</a>
+                           title="About">About</a>
                     </li>
                 </ul>
             </div>
@@ -122,22 +132,6 @@
 <!-- Using DataTables 2.0.0 -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
-{% if current_user.member_is_admin %}
-<script type="text/javascript">
-  let table = new DataTable('#data-table', {
-    columnDefs: [{ orderable: false, targets: 3 }],
-    scrollX: true,
-    autoWidth: false
-  });
-</script>
-{% else %}
-<script type="text/javascript">
-  let table = new DataTable('#data-table', {
-    scrollX: true,
-    autoWidth: false
-  });
-</script>
-{% endif %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/site.js') }}"></script>
 {% endblock %}
 </body>

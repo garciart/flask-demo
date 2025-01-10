@@ -15,7 +15,7 @@ from tracker_99.blueprints.admin.admin_forms import (
     DeleteMemberForm,
     UpdateProfileForm,
 )
-from tracker_99.models.models import Course, Member, Role, Association
+from tracker_99.models.models import Member, Association
 
 INDEX_PAGE = 'main_bp.index'
 MEMBERS_PAGE = 'main_bp.index'
@@ -32,7 +32,7 @@ def add_member() -> Union[str, Response]:
     :rtype: str/Response
     """
     # Only administrators can add members
-    if not current_user.member_is_admin:
+    if not current_user.is_admin:
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))
 
@@ -45,7 +45,7 @@ def add_member() -> Union[str, Response]:
         _member = Member(
             member_name=_form.member_name.data,
             member_email=_form.member_email.data,
-            member_is_admin=_form.member_is_admin.data,
+            is_admin=_form.is_admin.data,
         )
         _member.set_password(_form.password.data)
         # Ensure the object is updated in the session
@@ -80,7 +80,7 @@ def view_member(member_id: int) -> Union[str, Response]:
     validate_input('member_id', member_id, int)
 
     # Admins can view any profile, and members can view their own profile
-    if not current_user.member_is_admin and current_user.member_id != member_id:
+    if not current_user.is_admin and current_user.member_id != member_id:
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))
 
@@ -114,7 +114,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
     validate_input('member_id', member_id, int)
 
     # Admins can view any profile, and members can view their own profile
-    if not current_user.member_is_admin and current_user.member_id != member_id:
+    if not current_user.is_admin and current_user.member_id != member_id:
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))
 
@@ -127,7 +127,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
     if _form.validate_on_submit():
         _member.member_name = _form.member_name.data
         _member.member_email = _form.member_email.data
-        _member.member_is_admin = _form.member_is_admin.data
+        _member.is_admin = _form.is_admin.data
         if _form.password.data.strip() != '':
             _member.set_password(_form.password.data)
         # Ensure the object is updated in the session
@@ -141,7 +141,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
     # Re-displays page with flash messages (e.g., errors, etc.)
     _form.member_name.data = _member.member_name
     _form.member_email.data = _member.member_email
-    _form.member_is_admin.data = _member.member_is_admin
+    _form.is_admin.data = _member.is_admin
     return render_template(
         'edit_member.html',
         page_title=_page_title,
@@ -166,7 +166,7 @@ def delete_member(member_id: int) -> Union[str, Response]:
     validate_input('member_id', member_id, int)
 
     # Only administrators can delete members
-    if not current_user.member_is_admin:
+    if not current_user.is_admin:
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))
 
@@ -248,3 +248,5 @@ def update_profile(member_id: int) -> Union[str, Response]:
         form=_form,
         member_name=_member_name,
     )
+
+

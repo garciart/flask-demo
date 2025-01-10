@@ -82,7 +82,7 @@ def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
         member = Member.query.filter_by(member_id=user_id).first()
         if member:
             # If token is valid, pass user information to the protected route
-            return f(*args, **kwargs, user_id=user_id, user_is_admin=member.member_is_admin)
+            return f(*args, **kwargs, user_id=user_id, user_is_admin=member.is_admin)
         else:
             return jsonify({'error': 'User not found.'}), 404
 
@@ -186,7 +186,7 @@ def api_get_all_members(**kwargs) -> tuple:
             'member_id': m.member_id,
             'member_name': m.member_name,
             'member_email': m.member_email,
-            'member_is_admin': m.member_is_admin,
+            'is_admin': m.is_admin,
         }
         for m in _members_list
     ]
@@ -243,7 +243,7 @@ def api_get_member(member_id: int, **kwargs) -> tuple:
             'member_id': m.member_id,
             'member_name': m.member_name,
             'member_email': m.member_email,
-            'member_is_admin': m.member_is_admin,
+            'is_admin': m.is_admin,
         }
         for m in _members_list
     ]
@@ -263,7 +263,7 @@ def api_update_member(member_id: int, **kwargs) -> tuple:
     curl -X PUT -H "Content-Type: application/json" \
         -H "Authorization: Bearer json.web.token" \
         -d '{"member_name": "Leto.Atreides", \
-        "member_email": "leto.atreides@atreides.com", "member_is_admin": true}' \
+        "member_email": "leto.atreides@atreides.com", "is_admin": true}' \
         http://localhost:5000/api/members/2
 
     Windows:
@@ -272,7 +272,7 @@ def api_update_member(member_id: int, **kwargs) -> tuple:
         -ContentType "application/json" `
         -Headers @{ "Authorization" = "Bearer json.web.token" } `
         -Body "{`"member_name`": `"Leto.Atreides`", `"member_email`": `
-        `"leto.atreides@atreides.com`", `"member_is_admin`": true }"
+        `"leto.atreides@atreides.com`", `"is_admin`": true }"
 
     :param int member_id: The member to update by ID
 
@@ -303,9 +303,9 @@ def api_update_member(member_id: int, **kwargs) -> tuple:
     if 'member_email' in data:
         validate_input("data['member_email']", data['member_email'], str)
         _member.member_email = data['member_email']
-    if 'member_is_admin' in data:
-        validate_input("data['member_is_admin']", data['member_is_admin'], bool)
-        _member.member_is_admin = bool(data['member_is_admin'])
+    if 'is_admin' in data:
+        validate_input("data['is_admin']", data['is_admin'], bool)
+        _member.is_admin = bool(data['is_admin'])
 
     # Commit the changes to the database
     db.session.commit()

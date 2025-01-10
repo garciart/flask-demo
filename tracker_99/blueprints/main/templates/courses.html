@@ -15,28 +15,34 @@
 {% else %}
 <h1>Welcome, {{ current_user.member_name }}!</h1>
 <table id="data-table" class="table table-striped display caption-top">
-  <caption class="text-center">List of Members</caption>
+  <caption class="text-center">List of Courses</caption>
   <thead>
     <tr>
       <th scope="col">Name</th>
       <th scope="col">ID</th>
-      <th scope="col">Email</th>
+      <th scope="col">Code</th>
+      <th scope="col">Group</th>
+      <th scope="col">Description</th>
       {% if current_user.is_admin %}
       <th scope="col">Actions</th>
       {% endif %}
     </tr>
   </thead>
   <tbody class="table-group-divider">
-    {% for member in members %}
+    {% for course in courses %}
     <tr>
-      <th scope="row" class="text-nowrap">{{ member.member_name }}</th>
-      <td class="text-nowrap">{{ member.member_id }}</td>
-      <td class="text-nowrap">{{ member.member_email }}</td>
+      <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
+      <td class="text-nowrap">{{ course.course_id }}</td>
+      <td class="text-nowrap">{{ course.course_code }}</td>
+      <td class="text-nowrap">{{ course.course_group }}</td>
+      <td>{{ course.course_desc }}</td>
       {% if current_user.is_admin %}
       <td class="text-nowrap">
-        <a class="btn btn-primary" href="{{ url_for('admin_bp.edit_member', member_id=member.member_id) }}"
+        <a class="btn btn-primary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
+          title="Assign">Assign</a>
+        <a class="btn btn-warning" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}"
           title="Edit">Edit</a>
-        <a class="btn btn-danger" href="{{ url_for('admin_bp.delete_member', member_id=member.member_id) }}"
+        <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}"
           title="Delete">Delete</a>
       </td>
       {% endif %}
@@ -56,7 +62,7 @@
 {% if current_user.is_admin %}
 <script type="text/javascript">
   let table = new DataTable('#data-table', {
-    columnDefs: [{ orderable: false, targets: 3 }],
+    columnDefs: [{ orderable: false, targets: 5 }],
     scrollX: true,
     autoWidth: false
   });

@@ -16,27 +16,27 @@
     {{ form.hidden_tag() }}
     <h2>{{ member_name }}</h2>
     <p>
-        <p><b>{{ form.member_email.label }}</b></p>
+        <p><b>{{ form.member_email.label )):</b></p>
         {{ form.member_email(size=128) }}<br />
         {% for error in form.member_email.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+        <p class="message-text">{{ error }}</p>
         {% endfor %}
     </p>
     <div style="border: 1px black solid; padding: 1em;">
         <p>
             <i>(Leave both fields blank to continue using the current password.)</i>
         <p>
-            <p><b>{{ form.password.label }}</b></p>
+            <p><b>{{ form.password.label )):</b></p>
             {{ form.password(size=32) }}<br />
             {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <p class="message-text">{{ error }}</p>
             {% endfor %}
         </p>
         <p>
-            <p><b>{{ form.password2.label }}</b></p>
+            <p><b>{{ form.password2.label )):</b></p>
             {{ form.password2(size=32) }}<br />
             {% for error in form.password2.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <p class="message-text">{{ error }}</p>
             {% endfor %}
         </p>
     </div>

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block main_content %}
-<h1>View Member</h1>
+<h1>View Course</h1>
 <hr />
 
 <table class="table">
@@ -22,20 +22,24 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Member ID:</b></td>
-            <td><i>{{member_id}}</i></td>
+            <td><b>Course Name:</b></td>
+            <td><i>{{ course_name }}</i></td>
         </tr>
         <tr>
-            <td><b>Member Name:</b></td>
-            <td><i>{{member_name}}</i></td>
+            <td><b>Course Code:</b></td>
+            <td><i>{{ course_code }}</i></td>
         </tr>
         <tr>
-            <td><b>Member Email:</b></td>
-            <td><i>{{member_email}}</i></td>
+            <td><b>Course Group:</b></td>
+            <td><i>{{ course_group }}</i></td>
+        </tr>
+        <tr>
+            <td><b>Course Description:</b></td>
+            <td><i>{{ course_desc }}</i></td>
         </tr>
     </tbody>
 </table>
-<br />
-<p>{{ form.submit(class="btn btn-danger") }} <input type="button" class="btn btn-secondary" value="Home"
-        onclick="window.location.href='{{ url_for('main_bp.members') }}'"></p>
+<hr />
+<p><input type="button" class="btn btn-secondary" value="Cancel"
+        onclick="window.location.href='{{ url_for('main_bp.roles') }}'"></p>
 {% endblock %}

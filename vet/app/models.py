@@ -7,7 +7,7 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app_utils import validate_input
+from .app_utils import validate_input
 from . import db, login
 
 

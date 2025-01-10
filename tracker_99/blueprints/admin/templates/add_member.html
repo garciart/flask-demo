@@ -15,34 +15,34 @@
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
     <p>
-        <p><b>{{ form.member_name.label }}</b></p>
-        {{ form.member_name(size=64) }}<br />
+        <p><b>{{ form.member_name.label )):</b></p>
+        <p>{{ form.member_name(size=64) }}</p>
         {% for error in form.member_name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+        <p class="message-text">{{ error }}</p>
         {% endfor %}
     </p>
     <p>
-        <p><b>{{ form.member_email.label }}</b></p>
-        {{ form.member_email(size=128) }}<br />
+        <p><b>{{ form.member_email.label )):</b></p>
+        <p>{{ form.member_email(size=128) }}</p>
         {% for error in form.member_email.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+        <p class="message-text">{{ error }}</p>
         {% endfor %}
     </p>
     <p>
-        <p><b>{{ form.password.label }}</b></p>
-        {{ form.password(size=32) }}<br />
+        <p><b>{{ form.password.label )):</b></p>
+        <p>{{ form.password(size=32) }}</p>
         {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+        <p class="message-text">{{ error }}</p>
         {% endfor %}
     </p>
     <p>
-        <p><b>{{ form.password2.label }}</b></p>
-        {{ form.password2(size=32) }}<br />
+        <p><b>{{ form.password2.label )):</b></p>
+        <p>{{ form.password2(size=32) }}</p>
         {% for error in form.password2.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+        <p class="message-text">{{ error }}</p>
         {% endfor %}
     </p>
-    <p>{{ form.member_is_admin() }} <b>{{ form.member_is_admin.label }}</b></p>
+    <p>{{ form.is_admin() }} <b>{{ form.is_admin.label )):</b></p>
     <hr />
     <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
             onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>

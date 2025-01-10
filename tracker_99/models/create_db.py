@@ -116,7 +116,7 @@ def create_db():
     db.session.commit()
 
     _members = [
-        Member(member_name='Admin', member_email='admin@tracker.com', member_is_admin=True),
+        Member(member_name='Admin', member_email='admin@tracker.com', is_admin=True),
         Member(member_name='Leto.Atreides', member_email='leto.atreides@atreides.com'),
         Member(member_name='Paul.Atreides', member_email='paul.atreides@atreides.com'),
         Member(member_name='Jessica.Nerus', member_email='jessica.nerus@atreides.com'),
@@ -228,3 +228,7 @@ def create_db():
         Association(member_id='4', course_id='16', role_id='3'),
         Association(member_id='5', course_id='16', role_id='3'),
     ]
+
+    # Add associations and commit
+    db.session.add_all(_associations)
+    db.session.commit()

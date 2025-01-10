@@ -9,23 +9,26 @@
 {% endblock %}
 
 {% block main_content %}
-<h1>Log In</h1>
+<h1>Add Role</h1>
 <hr />
-<form action="" method="POST" novalidate>
+<form action="" method="post">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
-    <p><b>{{ form.member_name.label )):</b></p>
-    <p>{{ form.member_name(size=32) }}</p>
-    {% for error in form.member_name.errors %}
+
+    <p><b>{{ form.role_name.label )):</b></p>
+    <p>{{ form.role_name(size=64) }}</p>
+    {% for error in form.role_name.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
-    <p><b>{{ form.password.label )):</b></p>
-    <p>{{ form.password(size=32) }}</p>
-    {% for error in form.password.errors %}
+
+    <p><b>{{ form.role_privilege.label )):</b></p>
+    <p>{{ form.role_privilege(size=64) }}</p>
+    {% for error in form.role_privilege.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
-    <p>{{ form.remember_me() }} {{ form.remember_me.label )):</p>
+
+    <hr />
     <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
-            onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>
+            onclick="window.location.href='{{ url_for('main_bp.roles') }}'"></p>
 </form>
 {% endblock %}
