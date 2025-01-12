@@ -2,36 +2,42 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
+{% if current_user.is_anonymous %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to administrators and members only.</p>
+{% else %}
 <h1>View Role</h1>
-<hr />
+<hr/>
 
 <table class="table">
-    <caption>Member Details</caption>
+    <caption class="d-none">Role Details</caption>
     <thead>
-        <tr>
-            <th scope="col" class="d-none">Key:</th>
-            <th scope="col" class="d-none">Value:</th>
-        </tr>
+    <tr>
+        <th scope="col" class="d-none">Key:</th>
+        <th scope="col" class="d-none">Value:</th>
+    </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><b>Role Name:</b></td>
-            <td><i>{{ course_name }}</i></td>
-        </tr>
-        <tr>
-            <td><b>Role Privilege:</b></td>
-            <td><i>{{ course_code }}</i></td>
-        </tr>
+    <tr>
+        <td><b>Role Name:</b></td>
+        <td><i>{{ role.role_name }}</i></td>
+    </tr>
+    <tr>
+        <td><b>Role Privilege:</b></td>
+        <td><i>{{ role.role_privilege }}</i></td>
+    </tr>
     </tbody>
 </table>
-<hr />
-<p><input type="button" class="btn btn-secondary" value="Cancel"
-        onclick="window.location.href='{{ url_for('main_bp.roles') }}'"></p>
+{% endif %}
+<p>
+    <input type="button" class="btn btn-secondary" value="Return to Roles"
+          onclick="window.location.href='{{ url_for('main_bp.roles') }}'">
+</p>
 {% endblock %}

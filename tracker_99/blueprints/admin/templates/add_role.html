@@ -2,33 +2,40 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
+{% if current_user.is_anonymous %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to administrators and members only.</p>
+{% else %}
 <h1>Add Role</h1>
-<hr />
-<form action="" method="post">
+<hr/>
+<form action="" method="post" class="no-break-submit-btn">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
 
-    <p><b>{{ form.role_name.label )):</b></p>
+    <p><b>{{ form.role_name.label }}:</b></p>
     <p>{{ form.role_name(size=64) }}</p>
     {% for error in form.role_name.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <p><b>{{ form.role_privilege.label )):</b></p>
+    <p><b>{{ form.role_privilege.label }}:</b></p>
     <p>{{ form.role_privilege(size=64) }}</p>
     {% for error in form.role_privilege.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <hr />
-    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
-            onclick="window.location.href='{{ url_for('main_bp.roles') }}'"></p>
+    <hr/>
+    {{ form.submit(class="btn btn-primary") }}
 </form>
+{% endif %}
+<input type="button" class="btn btn-secondary"
+       value="Cancel"
+               onclick="window.location.href='{{ url_for('main_bp.roles') }}'">
 {% endblock %}

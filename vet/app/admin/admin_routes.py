@@ -32,8 +32,7 @@ SUICIDE_MSG = 'You cannot delete yourself!'
 
 @admin_bp.route('/add_course', methods=['GET', 'POST'])
 @login_required
-def add_course():
-    # type: () -> Union[str, Response]
+def add_course() -> Union[str, Response]:
     """Use form input to add a course to the database.
 
     NOTE - Anyone may add a course
@@ -107,8 +106,7 @@ def view_course(course_id: int) -> str:
 
 @admin_bp.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
-def edit_course(course_id):
-    # type: (int) -> Union[str, Response]
+def edit_course(course_id) -> Union[str, Response]:
     """Use form input to update a course in the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \
@@ -155,8 +153,7 @@ def edit_course(course_id):
 
 @admin_bp.route('/delete_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
-def delete_course(course_id):
-    # type: (int) -> Union[str, Response]
+def delete_course(course_id: int) -> Union[str, Response]:
     """Use form input to delete a course from the database.
 
     :returns: The HTML code to display with {{ placeholders }} populated \

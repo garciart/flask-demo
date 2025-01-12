@@ -47,6 +47,12 @@ nav {
     padding-bottom: 1em;
 }
 
+.no-break-submit-btn {
+    display:inline;
+    margin:0;
+    padding:0;
+}
+
 .message-text {
     font-weight: bold;
     color: red;

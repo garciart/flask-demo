@@ -2,26 +2,30 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
+{% if current_user.is_anonymous %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to administrators.</p>
+{% else %}
 <h1>Edit Member</h1>
-<hr />
-<form action="" method="post">
+<hr/>
+<form action="" method="post" class="no-break-submit-btn">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
 
-    <p><b>{{ form.member_name.label )):</b></p>
+    <p><b>{{ form.member_name.label }}:</b></p>
     <p>{{ form.member_name(size=32) }}</p>
     {% for error in form.member_name.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <p><b>{{ form.member_email.label )):</b></p>
+    <p><b>{{ form.member_email.label }}:</b></p>
     <p>{{ form.member_email(size=32) }}</p>
     {% for error in form.member_email.errors %}
     <p class="message-text">{{ error }}</p>
@@ -29,25 +33,27 @@
 
     <div style="border: 1px black solid; padding: 1em;">
         <p><i>(Leave both fields blank to continue using the current password.)</i></p>
-        <p><b>{{ form.password.label )):</b></p>
+        <p><b>{{ form.password.label }}:</b></p>
         <p>{{ form.password(size=32) }}</p>
         {% for error in form.password.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}
 
-        <p><b>{{ form.password2.label )):</b></p>
+        <p><b>{{ form.password2.label }}:</b></p>
         <p>{{ form.password2(size=32) }}</p>
         {% for error in form.password2.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}
-        </p>
+
     </div>
-    <br />
     {% if current_user.is_admin %}
-    <p>{{ form.is_admin() }} <b>{{ form.is_admin.label )):</b></p>
+    <p>{{ form.is_admin() }} <b>{{ form.is_admin.label }}:</b></p>
     {% endif %}
     <hr>
-    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
-            onclick="window.location.href='{{ url_for('main_bp.members') }}'"></p>
+    {{ form.submit(class="btn btn-primary") }}
 </form>
+{% endif %}
+<input type="button" class="btn btn-secondary"
+       value="Cancel"
+       onclick="window.location.href='{{ url_for('main_bp.members') }}'">
 {% endblock %}

@@ -2,53 +2,60 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
-{% if not current_user.is_admin %}
+{% if current_user.is_anonymous %}
 <h1>Welcome to Tracker!</h1>
-<p>This page is restricted to administrators.</p>
+<p>You should log in.</p>
 {% else %}
 <h1>Welcome, {{ current_user.member_name }}!</h1>
 <table id="data-table" class="table table-striped display caption-top">
-  <caption class="text-center">List of Courses</caption>
-  <thead>
+    <caption class="text-center">List of Courses</caption>
+    <thead>
     <tr>
-      <th scope="col">Name</th>
-      <th scope="col">ID</th>
-      <th scope="col">Code</th>
-      <th scope="col">Group</th>
-      <th scope="col">Description</th>
-      {% if current_user.is_admin %}
-      <th scope="col">Actions</th>
-      {% endif %}
+        <th scope="col">Name</th>
+        <th scope="col">ID</th>
+        <th scope="col">Code</th>
+        <th scope="col">Group</th>
+        <th scope="col">Description</th>
+        <th scope="col">Role</th>
+        <th scope="col">Actions</th>
     </tr>
-  </thead>
-  <tbody class="table-group-divider">
+    </thead>
+    <tbody class="table-group-divider">
     {% for course in courses %}
     <tr>
-      <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
-      <td class="text-nowrap">{{ course.course_id }}</td>
-      <td class="text-nowrap">{{ course.course_code }}</td>
-      <td class="text-nowrap">{{ course.course_group }}</td>
-      <td>{{ course.course_desc }}</td>
-      {% if current_user.is_admin %}
-      <td class="text-nowrap">
-        <a class="btn btn-primary" href="{{ url_for('admin.assign_course', course_id=course.course_id) }}"
-          title="Assign">Assign</a>
-        <a class="btn btn-warning" href="{{ url_for('admin.edit_course', course_id=course.course_id) }}"
-          title="Edit">Edit</a>
-        <a class="btn btn-danger" href="{{ url_for('admin.delete_course', course_id=course.course_id) }}"
-          title="Delete">Delete</a>
-      </td>
-      {% endif %}
+        <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
+        <td class="text-nowrap">{{ course.course_id }}</td>
+        <td class="text-nowrap">{{ course.course_code }}</td>
+        <td class="text-nowrap">{{ course.course_group }}</td>
+        <td>{{ course.course_desc }}</td>
+        <td class="text-nowrap">{{ course.role_name }}</td>
+        <td class="no-sort text-nowrap">
+            <a class="btn btn-primary"
+               href="{{ url_for('admin_bp.view_course', course_id=course.course_id) }}"
+               title="View">View</a>
+            {% if current_user.is_admin or (course.role_id | default(4)) in [1, 2] %}
+            <a class="btn btn-secondary"
+               href="{{ url_for('admin_bp.assign_course', course_id=course.course_id) }}"
+               title="Assign">Assign</a>
+            <a class="btn btn-warning"
+               href="{{ url_for('admin_bp.edit_course', course_id=course.course_id) }}"
+               title="Edit">Edit</a>
+            {% endif %} {% if current_user.is_admin or (course.role_id | default(4)) in [1] %}
+            <a class="btn btn-danger"
+               href="{{ url_for('admin_bp.delete_course', course_id=course.course_id) }}"
+               title="Delete">Delete</a>
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
-  </tbody>
+    </tbody>
 </table>
 {% endif %}
 {% endblock %}
@@ -59,20 +66,12 @@
 
 {% block scripts %}
 {{ super() }}
-{% if current_user.is_admin %}
 <script type="text/javascript">
-  let table = new DataTable('#data-table', {
-    columnDefs: [{ orderable: false, targets: 5 }],
-    scrollX: true,
-    autoWidth: false
-  });
+    let table = new DataTable("#data-table", {
+      order: [[0, "asc"]],
+      columnDefs: [{ orderable: false, targets: 6 }],
+      scrollX: true,
+      autoWidth: false,
+    });
 </script>
-{% else %}
-<script type="text/javascript">
-  let table = new DataTable('#data-table', {
-    scrollX: true,
-    autoWidth: false
-  });
-</script>
-{% endif %}
 {% endblock %}

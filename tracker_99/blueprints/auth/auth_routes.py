@@ -13,7 +13,7 @@ from sqlalchemy import select
 from tracker_99 import db
 from tracker_99.blueprints.auth import auth_bp
 from tracker_99.blueprints.auth.auth_forms import LoginForm
-from tracker_99.models.models import Course, Member, Role, Association
+from tracker_99.models.models import Member
 
 INDEX_PAGE = 'main_bp.index'
 LOGIN_PAGE = 'auth_bp.login'
@@ -60,7 +60,7 @@ def login() -> Union[str, Response]:
         return redirect(_next_page)
 
     return render_template(
-        'login.html', page_title=_page_title, page_description_text=_page_description, form=_form
+        'login.html', page_title=_page_title, page_description=_page_description, form=_form
     )
 
 

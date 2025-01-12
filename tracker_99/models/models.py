@@ -6,7 +6,7 @@ from typing import List, Union, Optional
 
 from flask_login import UserMixin
 from sqlalchemy import String, UniqueConstraint, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from tracker_99 import login_manager
@@ -19,7 +19,7 @@ CASCADE_ARG = 'all, delete-orphan'
 class Member(UserMixin, db.Model):
     """Member database model"""
 
-    __tablename__ = 'member'
+    __tablename__ = 'members'
 
     member_id: Mapped[int] = mapped_column(primary_key=True)
     # Using RFC 5321, 5322, and 3696 for member name and email lengths
@@ -33,11 +33,11 @@ class Member(UserMixin, db.Model):
     )
 
     def __init__(
-        self,
-        member_name: str,
-        member_email: str,
-        password: Union[str, None] = None,
-        is_admin: bool = False,
+            self,
+            member_name: str,
+            member_email: str,
+            password: Union[str, None] = None,
+            is_admin: bool = False,
     ) -> None:
         """Initialization with validation to ensure valid types and values.
 
@@ -191,6 +191,7 @@ class Course(db.Model):
             'course_id': self.course_id,
             'course_name': self.course_name,
             'course_code': self.course_code,
+            'course_group': self.course_group,
             'course_desc': self.course_desc,
         }
 
@@ -207,6 +208,22 @@ class Role(db.Model):
     associations: Mapped[List['Association']] = relationship(
         'Association', back_populates='role', cascade=CASCADE_ARG
     )
+
+    @validates('role_privilege')
+    def validate_role_privilege(self, _, value: str) -> str:
+        """Ensure that role privilege is between 1 and 3
+
+        :param str _: The key, i.e., role_privilege. Not used
+        :param str value: The role privilege value to check
+
+        :raises ValueError: If the value is not between 1 and 3
+
+        :return: The value if no exception was raised
+        :rtype: str
+        """
+        if int(value) < 1 or int(value) > 3:
+            raise ValueError("role_privilege must be between 1 and 3.")
+        return value
 
     def to_dict(self):
         """Return the object as a dictionary for conversion to JSON

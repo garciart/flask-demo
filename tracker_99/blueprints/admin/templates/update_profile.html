@@ -2,46 +2,50 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
-<h1>Update Profile</h1>
-<hr />
-<form action="" method="post">
+{% if current_user.is_anonymous %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to members only.</p>
+{% else %}
+<h1>Update {{ member.member_name }}</h1>
+<hr/>
+<form action="" method="post" class="no-break-submit-btn">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
-    <h2>{{ member_name }}</h2>
-    <p>
-        <p><b>{{ form.member_email.label )):</b></p>
-        {{ form.member_email(size=128) }}<br />
-        {% for error in form.member_email.errors %}
+
+    <p><b>{{ form.member_email.label }}:</b></p>
+    <p>{{ form.member_email(size=128) }}</p>
+    {% for error in form.member_email.errors %}
+    <p class="message-text">{{ error }}</p>
+    {% endfor %}
+
+    <div style="border: 1px black solid; padding: 1em;">
+        <p><i>(Leave both fields blank to continue using the current password.)</i></p>
+
+        <p><b>{{ form.password.label }}:</b></p>
+        <p>{{ form.password(size=32) }}</p>
+        {% for error in form.password.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}
-    </p>
-    <div style="border: 1px black solid; padding: 1em;">
-        <p>
-            <i>(Leave both fields blank to continue using the current password.)</i>
-        <p>
-            <p><b>{{ form.password.label )):</b></p>
-            {{ form.password(size=32) }}<br />
-            {% for error in form.password.errors %}
-            <p class="message-text">{{ error }}</p>
-            {% endfor %}
-        </p>
-        <p>
-            <p><b>{{ form.password2.label )):</b></p>
-            {{ form.password2(size=32) }}<br />
-            {% for error in form.password2.errors %}
-            <p class="message-text">{{ error }}</p>
-            {% endfor %}
-        </p>
+
+        <p><b>{{ form.password2.label }}:</b></p>
+        <p>{{ form.password2(size=32) }}</p>
+        {% for error in form.password2.errors %}
+        <p class="message-text">{{ error }}</p>
+        {% endfor %}
+
     </div>
-    <hr />
-    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
-            onclick="window.location.href='{{ url_for('main_bp.index') }}'"></p>
+    <hr/>
+    {{ form.submit(class="btn btn-primary") }}
 </form>
+{% endif %}
+<input type="button" class="btn btn-secondary"
+       value="Cancel"
+       onclick="window.location.href='{{ url_for('main_bp.index') }}'">
 {% endblock %}

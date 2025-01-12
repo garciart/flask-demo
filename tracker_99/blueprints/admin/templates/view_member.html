@@ -2,40 +2,47 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
+{% if current_user.is_anonymous %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to administrators.</p>
+<hr/>
+{% else %}
 <h1>View Member</h1>
-<hr />
+<hr/>
 
 <table class="table">
-    <caption>Member Details</caption>
+    <caption class="d-none">Member Details</caption>
     <thead>
-        <tr>
-            <th scope="col" class="d-none">Key:</th>
-            <th scope="col" class="d-none">Value:</th>
-        </tr>
+    <tr>
+        <th scope="col" class="d-none">Key:</th>
+        <th scope="col" class="d-none">Value:</th>
+    </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><b>Member ID:</b></td>
-            <td><i>{{member_id}}</i></td>
-        </tr>
-        <tr>
-            <td><b>Member Name:</b></td>
-            <td><i>{{member_name}}</i></td>
-        </tr>
-        <tr>
-            <td><b>Member Email:</b></td>
-            <td><i>{{member_email}}</i></td>
-        </tr>
+    <tr>
+        <td><b>Member ID:</b></td>
+        <td><i>{{member.member_id}}</i></td>
+    </tr>
+    <tr>
+        <td><b>Member Name:</b></td>
+        <td><i>{{member.member_name}}</i></td>
+    </tr>
+    <tr>
+        <td><b>Member Email:</b></td>
+        <td><i>{{member.member_email}}</i></td>
+    </tr>
     </tbody>
 </table>
-<br />
-<p>{{ form.submit(class="btn btn-danger") }} <input type="button" class="btn btn-secondary" value="Home"
-        onclick="window.location.href='{{ url_for('main_bp.members') }}'"></p>
+{% endif %}
+<p>
+    <input type="button" class="btn btn-secondary" value="Return to Members"
+           onclick="window.location.href='{{ url_for('main_bp.members') }}'">
+</p>
 {% endblock %}

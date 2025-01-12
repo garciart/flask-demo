@@ -2,45 +2,52 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
+{% if current_user.is_anonymous %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to administrators and members only.</p>
+{% else %}
 <h1>Add Course</h1>
-<hr />
-<form action="" method="post">
+<hr/>
+<form action="" method="post" class="no-break-submit-btn">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
 
-    <p><b>{{ form.course_name.label )):</b></p>
+    <p><b>{{ form.course_name.label }}:</b></p>
     <p>{{ form.course_name(size=64) }}</p>
     {% for error in form.course_name.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <p><b>{{ form.course_code.label )):</b></p>
+    <p><b>{{ form.course_code.label }}:</b></p>
     <p>{{ form.course_code(size=64) }}</p>
     {% for error in form.course_code.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <p><b>{{ form.course_group.label )):</b></p>
+    <p><b>{{ form.course_group.label }}:</b></p>
     <p>{{ form.course_group(size=64) }}</p>
     {% for error in form.course_group.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <p><b>{{ form.course_desc.label )):</b></p>
+    <p><b>{{ form.course_desc.label }}:</b></p>
     <p>{{ form.course_desc(rows="4", cols="64") }}</p>
     {% for error in form.course_desc.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <hr />
-    <p>{{ form.submit(class="btn btn-primary") }} <input type="button" class="btn btn-secondary" value="Cancel"
-            onclick="window.location.href='{{ url_for('main_bp.courses') }}'"></p>
+    <hr/>
+    {{ form.submit(class="btn btn-primary") }}
 </form>
+{% endif %}
+<input type="button" class="btn btn-secondary"
+       value="Cancel"
+       onclick="window.location.href='{{ url_for('main_bp.courses') }}'">
 {% endblock %}

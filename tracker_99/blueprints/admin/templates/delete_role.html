@@ -2,22 +2,30 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
+{% if current_user.is_anonymous %}
+<h1>Welcome to Tracker!</h1>
+<p>This page is restricted to administrators and members only.</p>
+{% else %}
 <h1>Delete Role</h1>
-<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
-<hr />
-<form action="" method="post">
+<img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}"/>
+<hr/>
+<form action="" method="post" class="no-break-submit-btn">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
-    <p class="message-text">Are you sure you want to delete {{ role_name }} ({{ role_privilege }})?</p>
-    <hr />
-    <p>{{ form.submit(class="btn btn-danger") }} <input type="button" class="btn btn-secondary" value="Cancel"
-            onclick="window.location.href='{{ url_for('main_bp.roles') }}'"></p>
+    <p class="message-text">Are you sure you want to delete {{ role.role_name }} ({{ role.role_privilege
+        }})?</p>
+    <hr/>
+    {{ form.submit(class="btn btn-danger") }}
 </form>
+{% endif %}
+<input type="button" class="btn btn-secondary"
+       value="Cancel"
+       onclick="window.location.href='{{ url_for('main_bp.roles') }}'">
 {% endblock %}

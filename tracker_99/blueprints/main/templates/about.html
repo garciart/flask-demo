@@ -2,7 +2,7 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
@@ -11,10 +11,12 @@
 {% block main_content %}
 <div class="text-center">
     <h1>Hello there!</h1>
-    <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+    <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}"/>
     <p>It is a period of civil war.</p>
-    <p>Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire.</p>
-    <p>During the battle, Rebel spies managed to steal a bunch of stuff, including this database.</p>
+    <p>Rebel spaceships, striking from a hidden base, have won their first victory against the evil
+        Galactic Empire.</p>
+    <p>During the battle, Rebel spies managed to steal a bunch of stuff, including this
+        database.</p>
     <a href="{{ url_for('main_bp.index') }}" title="To the Home Page!">Home</a>
 </div>
 {% endblock %}

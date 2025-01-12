@@ -2,46 +2,49 @@
 {% block page_title %}
 {{ page_title }}
 {% endblock %}
-{% block page_description %}{{ page_description_text }}{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
 
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block main_content %}
-{% if not current_user.is_admin %}
+{% if current_user.is_anonymous %}
 <h1>Welcome to Tracker!</h1>
-<p>This page is restricted to administrators.</p>
+<p>This page is restricted to administrators and members only.</p>
 {% else %}
 <h1>Welcome, {{ current_user.username }}!</h1>
 <table id="data-table" class="table table-striped display caption-top">
-  <caption class="text-center">List of Roles</caption>
-  <thead>
+    <caption class="text-center">List of Roles</caption>
+    <thead>
     <tr>
-      <th scope="col">Name</th>
-      <th scope="col">ID</th>
-      <th scope="col">Privilege Level</th>
-      {% if current_user.is_admin %}
-      <th scope="col">Actions</th>
-      {% endif %}
+        <th scope="col">Name</th>
+        <th scope="col">ID</th>
+        <th scope="col">Privilege Level</th>
+        {% if current_user.is_admin %}
+        <th scope="col">Actions</th>
+        {% endif %}
     </tr>
-  </thead>
-  <tbody class="table-group-divider">
+    </thead>
+    <tbody class="table-group-divider">
     {% for role in roles %}
     <tr>
-      <th scope="row" class="text-nowrap">{{ role.role_name }}</th>
-      <td class="text-nowrap">{{ role.role_id }}</td>
-      <td class="text-nowrap">{{ role.role_privilege }}</td>
-      {% if current_user.is_admin %}
-      <td class="text-nowrap">
-        <a class="btn btn-primary" href="{{ url_for('admin.edit_role', role_id=role.role_id) }}" title="Edit">Edit</a>
-        <a class="btn btn-danger" href="{{ url_for('admin.delete_role', role_id=role.role_id) }}"
-          title="Delete">Delete</a>
-      </td>
-      {% endif %}
+        <th scope="row" class="text-nowrap">{{ role.role_name }}</th>
+        <td class="text-nowrap">{{ role.role_id }}</td>
+        <td class="text-nowrap">{{ role.role_privilege }}</td>
+        {% if current_user.is_admin %}
+        <td class="text-nowrap">
+            <a class="btn btn-primary"
+               href="{{ url_for('admin_bp.edit_role', role_id=role.role_id) }}"
+               title="Edit">Edit</a>
+            <a class="btn btn-danger"
+               href="{{ url_for('admin_bp.delete_role', role_id=role.role_id) }}"
+               title="Delete">Delete</a>
+        </td>
+        {% endif %}
     </tr>
     {% endfor %}
-  </tbody>
+    </tbody>
 </table>
 {% endif %}
 {% endblock %}
@@ -54,18 +57,18 @@
 {{ super() }}
 {% if current_user.is_admin %}
 <script type="text/javascript">
-  let table = new DataTable('#data-table', {
-    columnDefs: [{ orderable: false, targets: 3 }],
-    scrollX: true,
-    autoWidth: false
-  });
+    let table = new DataTable('#data-table', {
+      columnDefs: [{ orderable: false, targets: 3 }],
+      scrollX: true,
+      autoWidth: false
+    });
 </script>
 {% else %}
 <script type="text/javascript">
-  let table = new DataTable('#data-table', {
-    scrollX: true,
-    autoWidth: false
-  });
+    let table = new DataTable('#data-table', {
+      scrollX: true,
+      autoWidth: false
+    });
 </script>
 {% endif %}
 {% endblock %}
