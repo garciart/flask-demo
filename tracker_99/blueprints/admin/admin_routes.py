@@ -91,11 +91,8 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     FROM members
     WHERE members.member_id NOT IN (2, 3, 4, 16);
     """
-    _unassigned_members = (
-        db.session.query(Member.member_id, Member.member_name)
-        .filter(Member.member_id.notin_(_assigned_member_ids))
-        .all()
-    )
+    _unassigned_members = (db.session.query(Member.member_id, Member.member_name).filter(
+        Member.member_id.notin_(_assigned_member_ids)).all())
 
     # Convert _unassigned_members to a list of dictionaries
     # Make sure the keys correspond to their values
@@ -202,7 +199,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     _form = SimpleForm()
 
     # Default behavior if not sending data to the server (POST, etc.)
-    # Also re-displays page with flash messages (e.g., errors, etc.)
+    # Re-displays page with flash messages (e.g., errors, etc.)
     return render_template(
         'assign_course.html',
         page_title=_page_title,

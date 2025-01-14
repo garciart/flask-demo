@@ -6,8 +6,8 @@ import flask
 from flask import Response
 from flask_login import current_user, login_required
 
-from tracker_99.models import db
 from tracker_99.blueprints.main import main_bp
+from tracker_99.models import db
 from tracker_99.models.models import Course, Member, Role, Association
 
 INDEX_PAGE = 'main_bp.index'

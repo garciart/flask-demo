@@ -33,11 +33,11 @@ class Member(UserMixin, db.Model):
     )
 
     def __init__(
-        self,
-        member_name: str,
-        member_email: str,
-        password: Union[str, None] = None,
-        is_admin: bool = False,
+            self,
+            member_name: str,
+            member_email: str,
+            password: Union[str, None] = None,
+            is_admin: bool = False,
     ) -> None:
         """Initialization with validation to ensure valid types and values.
 
