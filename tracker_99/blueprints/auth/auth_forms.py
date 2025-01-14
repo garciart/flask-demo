@@ -10,7 +10,7 @@ class LoginForm(FlaskForm):
 
     :param flask_wtf.FlaskForm: Base class for creating WTForms
     """
-    member_name = StringField('Username', validators=[DataRequired()])
+    member_name = StringField('Member Name', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')

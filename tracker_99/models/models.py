@@ -33,15 +33,15 @@ class Member(UserMixin, db.Model):
     )
 
     def __init__(
-            self,
-            member_name: str,
-            member_email: str,
-            password: Union[str, None] = None,
-            is_admin: bool = False,
+        self,
+        member_name: str,
+        member_email: str,
+        password: Union[str, None] = None,
+        is_admin: bool = False,
     ) -> None:
         """Initialization with validation to ensure valid types and values.
 
-        :param str member_name: The username of the member
+        :param str member_name: The name of the member
         :param str member_email: The email address of the member
         :param str password: A password for the member in plain text, defaults to None,
             which prevents the database from accepting the member
@@ -173,9 +173,7 @@ class Course(db.Model):
     course_desc: Mapped[Optional[str]] = mapped_column(String(256))
 
     # Courses can have the same name or code, but not both
-    __table_args__ = (
-        UniqueConstraint('course_name', 'course_code', name='uq_course_name_code'),
-    )
+    __table_args__ = (UniqueConstraint('course_name', 'course_code', name='uq_course_name_code'),)
 
     associations: Mapped[List['Association']] = relationship(
         'Association', back_populates='course', cascade=CASCADE_ARG

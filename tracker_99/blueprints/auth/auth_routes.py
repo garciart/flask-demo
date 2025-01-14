@@ -42,10 +42,8 @@ def login() -> Union[str, Response]:
             select(Member).where(Member.member_name.ilike(_form.member_name.data))
         )
 
-        print(_form.password.data)
-
         if _member is None or not _member.verify_password(_form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid member name or password')
             return redirect(url_for(LOGIN_PAGE))
 
         login_user(_member, remember=_form.remember_me.data)

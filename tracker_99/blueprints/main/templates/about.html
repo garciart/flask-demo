@@ -16,7 +16,12 @@
     <p>Rebel spaceships, striking from a hidden base, have won their first victory against the evil
         Galactic Empire.</p>
     <p>During the battle, Rebel spies managed to steal a bunch of stuff, including this
-        database.</p>
-    <a href="{{ url_for('main_bp.index') }}" title="To the Home Page!">Home</a>
+        application.</p>
+    <h2>Welcome to Tracker!</h2>
+    <hr/>
+    <input type="button" class="btn btn-primary"
+       value="Return Home"
+       title="To the Home Page!"
+       onclick="window.location.href='{{ url_for('main_bp.index') }}'">
 </div>
 {% endblock %}

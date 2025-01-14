@@ -187,6 +187,9 @@ def roles() -> Union[str, Response]:
     _roles = [_roles] if not isinstance(_roles, list) else _roles
 
     _html = flask.render_template(
-        'roles.html', page_title=_page_title, page_description=_page_description, roles=_roles
+        'roles.html',
+        page_title=_page_title,
+        page_description=_page_description,
+        roles=_roles
     )
     return _html

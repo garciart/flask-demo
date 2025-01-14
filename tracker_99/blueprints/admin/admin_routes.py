@@ -5,6 +5,7 @@ from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from tracker_99 import db
@@ -17,15 +18,19 @@ INDEX_PAGE = 'main_bp.index'
 COURSES_PAGE = 'main_bp.courses'
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
+
 @admin_bp.route('/admin/assign_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
-def assign_course(course_id:int) -> Union[str, Response]:
+def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     """Assign members to a course.
+
+    NOTE - (NOSONAR) This method updates information in a three-way association table,
+    and I am accepting a code complexity of 18.
 
     :param int course_id: The ID of the course to modify access
 
     :returns: The HTML code to display with {{ placeholders }} populated
-    :rtype: str
+    :rtype: str/Response
     """
     # Validate inputs
     validate_input('course_id', course_id, int)
@@ -33,127 +38,164 @@ def assign_course(course_id:int) -> Union[str, Response]:
     _page_title = 'Assign Course'
     _page_description = 'Assign Course'
 
-    # Administrators have full access
-    if current_user.is_admin:
-        """
-        SELECT * FROM associations WHERE course_id = 16
-        """
-        _assoc = Association.query.filter(Association.course_id == course_id).first()
-    else:
-        _member_id = int(current_user.get_id())
-        # Get the member info from the Association table
-        # Should look like [{'course_id': 16, 'role_id': 1, 'member_id': 2}]
-        """
-        SELECT * FROM associations WHERE course_id = 16 AND role_id IN (1, 2) AND member_id = 2 LIMIT 1;
-        """
-        _assoc = Association.query.filter(
-            Association.course_id == course_id,
-            Association.member_id == _member_id,
-            Association.role_id.in_([1, 2])).first()
-
-    # Only administrators, chairs, and teachers can edit courses
-    if _assoc is None:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
-
-    # _assoc_list = [assoc.to_dict() for assoc in _assoc]
-    _assoc = _assoc.to_dict()
-
-    print(_assoc['role_id'], type(_assoc['role_id']))
-
-    # Instantiate the form
-    _form = SimpleForm()
-
     # Get the course data (e.g., course_id, course_name) from the database
     _course = Course.query.get_or_404(course_id)
 
-    # Get a list of roles from the database
-    # _roles = Role.query.all()
-    _roles = Role.query.filter(Role.role_id >= _assoc['role_id'])
+    # Get the members assigned to the course
+    # The query will generate a list of tuples
+    # Each tuple in the list will have the role_id, member_id, member_name, and role_privilege
+    # of member assigned to the course in that order, like
+    # [(1, 16, 'Stilgar.Tabr', 3), (2, 2, 'Leto.Atreides', 2), ...]
+    """
+    SELECT associations.role_id,
+        members.member_id,
+        members.member_name,
+        roles.role_privilege
+    FROM associations,
+        members,
+        roles
+    WHERE associations.course_id = 12 AND
+        associations.member_id = members.member_id AND
+        associations.role_id = roles.role_id;
+    """
+    _assigned_members = (
+        db.session.query(
+            Association.role_id, Member.member_id, Member.member_name, Role.role_privilege
+        )
+        .join(Member, Association.member_id == Member.member_id)
+        .join(Role, Association.role_id == Role.role_id)
+        .filter(Association.course_id == course_id)
+        .all()
+    )
 
-    # # Ensure the result is a list so you can iterate over it
-    # # even if it only contains one Role object
-    # _roles = [_roles] if not isinstance(_roles, list) else _roles
+    # Convert _assigned_members to a list of dictionaries
+    # Make sure the keys correspond to the values
+    _keys = ['role_id', 'member_id', 'member_name', 'role_privilege']
+    _assigned_members = [dict(zip(_keys, row)) for row in _assigned_members]
 
-    # # Create a list to hold role information
-    # # You will iterate through this list of dictionaries,
-    # # instead of a list of Role objects, when you render the webpage,
-    # # since you will temporarily add a 'Not Assigned' role to it
-    # _roles_list = []
+    # Get the ID of the current user
+    _member_id = int(current_user.get_id())
 
-    # for _r in _roles:
-    #     _role_dict = _r.__dict__
-    #     _roles_list.append(_role_dict)
+    # Only chairs and teachers of the course and admins can assign other members
+    if not current_user.is_admin and not any(
+        a['member_id'] == _member_id and a['role_privilege'] > 1 for a in _assigned_members
+    ):
+        flash(NOT_AUTH_MSG)
+        return redirect(url_for(INDEX_PAGE))
 
-    _roles_list = [roles.to_dict() for roles in _roles]
+    # Get a list of ID for assigned members
+    _assigned_member_ids = [a['member_id'] for a in _assigned_members]
+
+    # Get a list of unassigned members
+    """
+    SELECT members.member_id,
+           members.member_name
+    FROM members
+    WHERE members.member_id NOT IN (2, 3, 4, 16);
+    """
+    _unassigned_members = (
+        db.session.query(Member.member_id, Member.member_name)
+        .filter(Member.member_id.notin_(_assigned_member_ids))
+        .all()
+    )
+
+    # Convert _unassigned_members to a list of dictionaries
+    # Make sure the keys correspond to their values
+    _keys = ['member_id', 'member_name']
+    _unassigned_members = [dict(zip(_keys, row)) for row in _unassigned_members]
+
+    # Members cannot elevate their privileges
+    # (teachers cannot reassign themselves to chairs, etc.)
+    # and they cannot reassign other members at or above their privilege level
+    # (teachers cannot assign or reassign other teachers, etc.)
+    # Therefore, set the cutoff to one less than the privilege level of the current user
+    if not current_user.is_admin:
+        _cutoff_privilege_level = (
+            int(
+                next(
+                    (
+                        a['role_privilege']
+                        for a in _assigned_members
+                        if _member_id == a['member_id']
+                    ),
+                    2,
+                )
+            )
+            - 1
+        )
+    else:
+        _cutoff_privilege_level = 99
+
+    # Get members with privilege less than the level of the current user
+    _touchable_members = [
+        a for a in _assigned_members if int(a['role_privilege']) <= _cutoff_privilege_level
+    ]
+
+
+    # Match the structure of _unassigned_members and _touchable_members
+    # by adding required key-value pairs
+    for u in _unassigned_members:
+        u['role_id'] = 4
+        u['role_privilege'] = 0
+
+    # Combine the two lists of dictionaries
+    _members_list = _touchable_members + _unassigned_members
+
+    # Get info for roles less than the privilege level of the current user
+    # Use ORDER BY for rendering in the template by privilege level
+    """
+    SELECT role_id, role_name FROM roles WHERE roles.role_privilege < 2 ORDER BY role_privilege DESC;
+    """
+    _roles_list = (
+        db.session.query(Role.role_id, Role.role_name)
+        .filter(Role.role_privilege <= _cutoff_privilege_level)
+        .order_by(Role.role_privilege.desc())
+        .all()
+    )
 
     # Temporarily add a 'Not Assigned' role
     # Members in this role will be deleted from the Association table
     # or skipped if they are not in the table
-    # You will not store 'Not Assigned' members, since that will increase
+    # Do not store 'Not Assigned' members, since that will increase
     # the size of the Association table and slow down queries
     _roles_list.append({"role_id": 4, "role_name": "Not Assigned"})
 
-    # Get a list of members by name from the database
-    _members = Member.query.order_by(Member.member_name).all()
-
-    # Ensure the result is a list so you can iterate over it
-    # even if it only contains one Member object
-    _members = [_members] if not isinstance(_members, list) else _members
-
-    # Create a list to hold member information
-    # You will iterate through this list of dictionaries,
-    # instead of a list of Member objects, when you render the webpage,
-    # since you have to temporarily add a 'role_id' column
-    _members_list = []
-
-    for _u in _members:
-        _member_dict = _u.__dict__
-
-        # Temporarily add a 'role_id' column
-        # and set the default value to 4 ('Not Assigned')
-        # That will ensure at least one radio button is checked
-        # when you render the webpage
-        _member_dict['role_id'] = 4
-
-        # Update the role_id if a value exists in the Association Table
-        _a = Association.query.filter(
-            Association.course_id == _course.course_id,
-            Association.member_id == _member_dict['member_id']).first()
-
-        if _a is not None:
-            _member_dict['role_id'] = _a.role_id
-
-        # Add the member with the 'role_id' column to the list
-        _members_list.append(_member_dict)
-
     if request.method == 'POST':
+        # Get all associations for the given course in advance
+        _existing_associations = {
+            a.member_id: a
+            for a in Association.query.filter(Association.course_id == _course.course_id).all()
+        }
+
         # Iterate through each member and check if their assignment has changed
         for _u in _members_list:
+            # Get the current assignment in the Association table
             _member_id = str(_u['member_id'])
 
-            _a = Association.query.filter(
-                Association.course_id == _course.course_id,
-                Association.member_id == _member_id).first()
+            # Get the value of the selected radio button in the template for the member
+            # Using the member_id in the name keeps each group unique (name="2_role")
+            _role_id = int(request.form.get(f'{_member_id}_role'))
 
-            _role_id = int(request.form.get(_member_id))
+            # Check if the member already has an association
+            _a = _existing_associations.get(int(_member_id))
 
-            # If the assignment does not exist in the Association table
+            # Add an association if the assignment does not exist in the Association table
             # but the course is now assigned
             if _a is None and _role_id < 4:
                 print('Adding...')
-                _new_assoc = Association(course_id=_course.course_id,
-                                        role_id=_role_id,
-                                        member_id=_member_id)
+                _new_assoc = Association(
+                    course_id=_course.course_id, role_id=_role_id, member_id=_member_id
+                )
                 db.session.add(_new_assoc)
 
-            # If the assignment exist in the Association table
+            # Delete the association if the assignment exists in the Association table
             # but the course is now unassigned
             elif _a is not None and _role_id == 4:
                 print('Deleting...')
                 db.session.delete(_a)
 
-            # If the row exist in the Association table but the role changed
+            # Update the association if the assignment exists exist in the Association table
+            # but the role has changed
             elif _a is not None and _a.role_id != _role_id:
                 print('Updating...')
                 _a.role_id = _role_id
@@ -165,12 +207,17 @@ def assign_course(course_id:int) -> Union[str, Response]:
 
         return redirect(url_for(INDEX_PAGE))
 
+    # Instantiate the form
+    _form = SimpleForm()
+
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
     return render_template(
         'assign_course.html',
-        page_title='Assign Members to Course',
+        page_title=_page_title,
+        page_description=_page_description,
         course_name=_course.course_name,
         form=_form,
-        roles=_roles_list,
-        members_list=_members_list)
+        roles_list=_roles_list,
+        members_list=_members_list,
+    )

@@ -26,20 +26,20 @@
         </tr>
         </thead>
         <tbody>
-        {% for u in members_list %}
+        {% for m in members_list %}
         <tr>
-            <td class="text-nowrap">{{ u['member_name'] }}</td>
-            <td class="text-nowrap">{{ u['member_id'] }}</td>
+            <td class="text-nowrap">{{ m.member_name }}</td>
+            <td class="text-nowrap">{{ m.member_id }}</td>
             <td>
-                {% for r in roles %}
-                {% if u['role_id'] == r.role_id %}
+                {% for r in roles_list %}
+                {% if m.role_id == r.role_id %}
                 <span class="border-start border-end px-3">
-                <input type="radio" name="{{ u['member_id'] }}" value="{{ r['role_id'] }}" checked/>
+                <input type="radio" name="{{ m.member_id }}_role" value="{{ r.role_id }}" checked/>
                     {{ r.role_name }}
                 </span>
                 {% else %}
                 <span class="border-start border-end px-3">
-                <input type="radio" name="{{ u['member_id'] }}" value="{{ r['role_id'] }}"/>
+                <input type="radio" name="{{ m.member_id }}_role" value="{{ r.role_id }}"/>
                     {{ r.role_name }}
                 </span>
                 {% endif %}

@@ -14,6 +14,11 @@ html {
     }
 }
 
+th {
+    /* Left-align table headers */
+    text-align: left;
+}
+
 a {
     /* Do not underline links */
     text-decoration: none;

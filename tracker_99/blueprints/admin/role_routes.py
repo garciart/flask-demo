@@ -54,10 +54,10 @@ def add_role() -> Union[str, Response]:
             db.session.add(_role)
             db.session.commit()
             flash('Addition successful.')
+            return redirect(url_for(ROLES_PAGE))
         except SQLAlchemyError as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
-        return redirect(url_for(ROLES_PAGE))
 
     # Default behavior if not sending data to the server (POST, etc.)
     # Re-displays page with flash messages (e.g., errors, etc.)
@@ -150,10 +150,10 @@ def edit_role(role_id: int) -> Union[str, Response]:
             # db.session.add(_role)
             db.session.commit()
             flash('Update successful.')
+            return redirect(url_for(ROLES_PAGE))
         except SQLAlchemyError as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')
-        return redirect(url_for(ROLES_PAGE))
 
     # Default behavior if not sending data to the server (POST, etc.)
     # Re-displays page with flash messages (e.g., errors, etc.)
@@ -208,10 +208,10 @@ def delete_role(role_id: int) -> Union[str, Response]:
             db.session.delete(_role)
             db.session.commit()
             flash('Delete successful.')
+            return redirect(url_for(ROLES_PAGE))
         except SQLAlchemyError as e:
             db.session.rollback()
             flash(f'Delete failed: {str(e)}', 'error')
-        return redirect(url_for(ROLES_PAGE))
 
     # Default behavior if not sending data to the server (POST, etc.)
     # And re-displays page with flash messages (e.g., errors, etc.)

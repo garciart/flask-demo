@@ -4,7 +4,7 @@
 from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
-from flask_login import login_required
+from flask_login import current_user, login_required
 from sqlalchemy.exc import SQLAlchemyError
 
 from tracker_99 import db
@@ -50,11 +50,22 @@ def add_course() -> Union[str, Response]:
             """
             db.session.add(_course)
             db.session.commit()
+
+            # Get row_id of the new course
+            _new_id = _course.course_id
+
+            # Add the course and chair to the association table
+            _member_id = int(current_user.get_id())
+            _assoc = Association(course_id=_new_id, role_id=1, member_id=_member_id)
+
+            db.session.add(_assoc)
+            db.session.commit()
+
             flash('Addition successful.')
+            return redirect(url_for(COURSES_PAGE))
         except SQLAlchemyError as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
-        return redirect(url_for(COURSES_PAGE))
 
     # Default behavior if not sending data to the server (POST, etc.)
     # Re-displays page with flash messages (e.g., errors, etc.)
@@ -143,10 +154,10 @@ def edit_course(course_id: int) -> Union[str, Response]:
             # db.session.add(_course)
             db.session.commit()
             flash('Update successful.')
+            return redirect(url_for(COURSES_PAGE))
         except SQLAlchemyError as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')
-        return redirect(url_for(COURSES_PAGE))
 
     # Default behavior if not sending data to the server (POST, etc.)
     # Re-displays page with flash messages (e.g., errors, etc.)
@@ -196,10 +207,10 @@ def delete_course(course_id: int) -> Union[str, Response]:
             db.session.delete(_course)
             db.session.commit()
             flash('Delete successful.')
+            return redirect(url_for(COURSES_PAGE))
         except SQLAlchemyError as e:
             db.session.rollback()
             flash(f'Delete failed: {str(e)}', 'error')
-        return redirect(url_for(COURSES_PAGE))
 
     # Default behavior if not sending data to the server (POST, etc.)
     # And re-displays page with flash messages (e.g., errors, etc.)
