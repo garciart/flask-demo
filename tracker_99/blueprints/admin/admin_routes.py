@@ -5,8 +5,6 @@ from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
-from sqlalchemy import select
-from sqlalchemy.exc import SQLAlchemyError
 
 from tracker_99 import db
 from tracker_99.app_utils import validate_input
@@ -78,7 +76,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
 
     # Only chairs and teachers of the course and admins can assign other members
     if not current_user.is_admin and not any(
-        a['member_id'] == _member_id and a['role_privilege'] > 1 for a in _assigned_members
+            a['member_id'] == _member_id and a['role_privilege'] > 1 for a in _assigned_members
     ):
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))
@@ -111,17 +109,11 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # Therefore, set the cutoff to one less than the privilege level of the current user
     if not current_user.is_admin:
         _cutoff_privilege_level = (
-            int(
-                next(
-                    (
-                        a['role_privilege']
-                        for a in _assigned_members
-                        if _member_id == a['member_id']
-                    ),
-                    2,
-                )
-            )
-            - 1
+                int(next((
+                    a['role_privilege']
+                    for a in _assigned_members
+                    if _member_id == a['member_id']
+                ), 2, )) - 1
         )
     else:
         _cutoff_privilege_level = 99
@@ -130,7 +122,6 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     _touchable_members = [
         a for a in _assigned_members if int(a['role_privilege']) <= _cutoff_privilege_level
     ]
-
 
     # Match the structure of _unassigned_members and _touchable_members
     # by adding required key-value pairs
@@ -194,7 +185,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
                 print('Deleting...')
                 db.session.delete(_a)
 
-            # Update the association if the assignment exists exist in the Association table
+            # Update the association if the assignment exists in the Association table
             # but the role has changed
             elif _a is not None and _a.role_id != _role_id:
                 print('Updating...')

@@ -25,8 +25,8 @@ from tracker_99.models.models import Course, Member, Role
 # - Be at least 4 characters long
 NAME_REGEX = r'^[A-Za-z][A-Za-z0-9._-]{3,}$'
 INVALID_NAME_MSG = (
-    'Names must be at least 4 characters long, start with a letter, '
-    + 'and contain only letters, numbers, periods, underscores, and dashes.'
+        'Names must be at least 4 characters long, start with a letter, '
+        + 'and contain only letters, numbers, periods, underscores, and dashes.'
 )
 # Text fields must:
 # - Start with a letter or number
@@ -34,8 +34,8 @@ INVALID_NAME_MSG = (
 # - Be at least 4 characters long
 TEXT_REGEX = r'^[A-Za-z0-9][A-Za-z0-9._\s-]{3,}$'
 INVALID_TEXT_MSG = (
-    'Text fields must be at least 4 characters long, start with a letter or number, '
-    + 'and contain only letters, numbers, periods, underscores, dashes, and spaces.'
+        'Text fields must be at least 4 characters long, start with a letter or number, '
+        + 'and contain only letters, numbers, periods, underscores, dashes, and spaces.'
 )
 # Ensure the password meets validation criteria:
 # - A minimum of eight characters
@@ -43,8 +43,8 @@ INVALID_TEXT_MSG = (
 # - At least one uppercase letter, one lowercase letter and one number
 PASSWORD_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$'
 INVALID_PASSWORD_MSG = (
-    'Password must be between 8-15 characters long, '
-    + 'contain at least one uppercase letter, one lowercase letter, and one number.'
+        'Password must be between 8-15 characters long, '
+        + 'contain at least one uppercase letter, one lowercase letter, and one number.'
 )
 PASSWORD_FIELD_LABEL = 'Repeat Password'
 INVALID_EMAIL_MSG = 'Email address already exists.'
@@ -172,7 +172,7 @@ class AddMemberForm(FlaskForm):
         """
         # SELECT * FROM members WHERE LOWER(members.member_name) = LOWER("LeTo.ATREIDES");
         if db.session.scalar(
-            select(Member).where(func.lower(Member.member_name) == func.lower(member_name.data))
+                select(Member).where(func.lower(Member.member_name) == func.lower(member_name.data))
         ):
             raise ValidationError('Name already exists.')
 
@@ -189,7 +189,8 @@ class AddMemberForm(FlaskForm):
         """
         # SELECT * FROM members WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
         if db.session.scalar(
-            select(Member).where(func.lower(Member.member_email) == func.lower(member_email.data))
+                select(Member).where(
+                    func.lower(Member.member_email) == func.lower(member_email.data))
         ):
             raise ValidationError(INVALID_EMAIL_MSG)
 
@@ -214,7 +215,7 @@ class EditMemberForm(FlaskForm):
     submit = SubmitField('Update Member')
 
     def __init__(
-        self, current_member_name: str, current_member_email: str, *args, **kwargs
+            self, current_member_name: str, current_member_email: str, *args, **kwargs
     ) -> None:
         """Get the name and email of the member being edited.
 
@@ -241,7 +242,7 @@ class EditMemberForm(FlaskForm):
         """
         # SELECT * FROM members WHERE LOWER(members.member_name) = LOWER("LeTo.ATREIDES");
         if member_name.data != self.current_member_name and db.session.scalar(
-            select(Member).where(func.lower(Member.member_name) == func.lower(member_name.data))
+                select(Member).where(func.lower(Member.member_name) == func.lower(member_name.data))
         ):
             raise ValidationError('Name already exists.')
 
@@ -258,7 +259,8 @@ class EditMemberForm(FlaskForm):
         """
         # SELECT * FROM members WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
         if member_email.data != self.current_member_email and db.session.scalar(
-            select(Member).where(func.lower(Member.member_email) == func.lower(member_email.data))
+                select(Member).where(
+                    func.lower(Member.member_email) == func.lower(member_email.data))
         ):
             raise ValidationError(INVALID_EMAIL_MSG)
 
@@ -305,7 +307,8 @@ class UpdateProfileForm(FlaskForm):
         """
         # SELECT * FROM members WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
         if member_email.data != self.current_member_email and db.session.scalar(
-            select(Member).where(func.lower(Member.member_email) == func.lower(member_email.data))
+                select(Member).where(
+                    func.lower(Member.member_email) == func.lower(member_email.data))
         ):
             raise ValidationError(INVALID_EMAIL_MSG)
 
@@ -384,7 +387,7 @@ class EditRoleForm(FlaskForm):
     submit = SubmitField('Update Role')
 
     def __init__(
-        self, original_role_name: str, original_role_privilege: str, *args: any, **kwargs: any
+            self, original_role_name: str, original_role_privilege: str, *args: any, **kwargs: any
     ) -> None:
         """Get the name and privilege of the role being edited.
 

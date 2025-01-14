@@ -14,7 +14,7 @@ from werkzeug.security import check_password_hash
 from tracker_99 import db
 from tracker_99.app_utils import validate_input, encode_auth_token, decode_auth_token
 from tracker_99.blueprints.api import api_bp
-from tracker_99.models.models import Course, Member, Role, Association
+from tracker_99.models.models import Member
 
 _DUMMY_DATA = [
     {
@@ -51,7 +51,7 @@ def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
     """
 
     @wraps(f)
-    def decorated_function(*args, **kwargs) -> Union[tuple, str]:
+    def wrapped_function(*args, **kwargs) -> Union[tuple, str]:
         """Checks for authorization and then runs the wrapped function.
 
         This function checks for a valid JWT token in the `Authorization` header.
@@ -86,7 +86,7 @@ def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
         else:
             return jsonify({'error': 'User not found.'}), 404
 
-    return decorated_function
+    return wrapped_function
 
 
 @api_bp.route('/api/login', methods=['POST'])

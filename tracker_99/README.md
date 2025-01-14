@@ -3,14 +3,12 @@
 > **IMPORTANT**:
 > - NEED TO ADD UNIT TESTS TO TRACKER 16 AND LATER!
 
-This is a demo of a Flask application that incorporates authorization.
+This is a demo of a Flask application that allows you to control course assignments using role-based access control (RBAC).
 
 > **NOTE** - Remember to activate your Python virtual environment first:
 >
 > - `source .venv/bin/activate` (Linux)
 > - `.venv/Scripts/activate` (Windows)
-
-We will add authorization to the application to prevent members from editing each other's data. Members will only be allowed to view and edit their own information, and administrators can view and edit anyone's data, as well as make other members administrators.
 
 Your application structure should be like the following:
 
@@ -24,11 +22,26 @@ tracker
 |   ├── blueprints
 |   |   ├── admin
 |   |   |   ├── templates
+|   |   |   |   ├── add_course.html
+|   |   |   |   ├── add_member.html
+|   |   |   |   ├── add_role.html
+|   |   |   |   ├── assign_course.html
+|   |   |   |   ├── delete_course.html
+|   |   |   |   ├── delete_member.html
+|   |   |   |   ├── delete_role.html
+|   |   |   |   ├── edit_course.html
 |   |   |   |   ├── edit_member.html
-|   |   |   |   └── view_member.html
+|   |   |   |   ├── edit_role.html
+|   |   |   |   ├── update_profile.html
+|   |   |   |   ├── view_course.html
+|   |   |   |   ├── view_member.html
+|   |   |   |   └── view_role.html
 |   |   |   ├── __init__.py
 |   |   |   ├── admin_forms.py
-|   |   |   └── admin_routes.py
+|   |   |   ├── admin_routes.py
+|   |   |   ├── course_routes.py
+|   |   |   ├── member_routes.py
+|   |   |   └── role_routes.py
 |   |   ├── api
 |   |   |   ├── __init__.py
 |   |   |   └── api_routes.py
