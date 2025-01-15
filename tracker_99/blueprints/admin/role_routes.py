@@ -30,6 +30,11 @@ def add_role() -> Union[str, Response]:
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str/Response
     """
+    # Temporarily disabled here, in base.html, and roles.html
+    if 1 == 1:
+        flash('Adding, editing, or deleting roles is disabled at this time.')
+        return redirect(url_for(INDEX_PAGE))
+
     # Only administrators can add roles
     if not current_user.is_admin:
         flash(NOT_AUTH_MSG)
@@ -114,6 +119,11 @@ def edit_role(role_id: int) -> Union[str, Response]:
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str/Response
     """
+    # Temporarily disabled here, in base.html, and roles.html
+    if 1 == 1:
+        flash('Adding, editing, or deleting roles is disabled at this time.')
+        return redirect(url_for(INDEX_PAGE))
+
     # Validate inputs
     validate_input('role_id', role_id, int)
 
@@ -175,7 +185,11 @@ def delete_role(role_id: int) -> Union[str, Response]:
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str/Response
     """
-
+    # Temporarily disabled here, in base.html, and roles.html
+    if 1 == 1:
+        flash('Adding, editing, or deleting roles is disabled at this time.')
+        return redirect(url_for(INDEX_PAGE))
+    
     # Validate inputs
     validate_input('role_id', role_id, int)
 

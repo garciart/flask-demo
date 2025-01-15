@@ -57,7 +57,7 @@
                     </li>
                     {% if current_user.is_admin %}
                     <li class="dropdown-item">
-                        <a class="nav-link" href="{{ url_for('admin_bp.add_role') }}" title="Add Role">Add Role</a>
+                        <a class="nav-link disabled text-muted" href="{{ url_for('admin_bp.add_role') }}" title="Add Role">Add Role</a>
                     </li>
                     <li class="dropdown-item">
                         <a class="nav-link" href="{{ url_for('admin_bp.add_member') }}" title="Add Member">Add Member</a>

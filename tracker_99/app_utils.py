@@ -66,25 +66,25 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
         )
 
     # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
-    _python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
+    _python_version = float(f'{sys.version_info.major}.{sys.version_info.minor:02d}')
 
     # Ensure you are using the correct version of Python
-    print(f"Your Python version is {_python_version}.")
+    print(f'Your Python version is {_python_version}.')
     if _python_version < min_python_version:
         raise ValueError(
-            f"Flask 3 requires Python {min_python_version:.2f} or above. Exiting now..."
+            f'Flask 3 requires Python {min_python_version:.2f} or above. Exiting now...'
         )
 
     # Get the Flask major and minor version numbers and convert them to a float
-    _raw_flask_version = importlib.metadata.version("flask")
+    _raw_flask_version = importlib.metadata.version('flask')
     _flask_version_major, _flask_version_minor = map(int, _raw_flask_version.split('.')[:2])
-    _flask_version = float(f"{_flask_version_major}.{_flask_version_minor:02d}")
+    _flask_version = float(f'{_flask_version_major}.{_flask_version_minor:02d}')
 
     # Ensure you are using the correct version of Flask
-    print(f"Your Flask version is {_raw_flask_version}.")
+    print(f'Your Flask version is {_raw_flask_version}.')
     if float(_flask_version) < min_flask_version:
         raise ValueError(
-            f"This application requires Flask {min_flask_version:.2f} or above. Exiting now..."
+            f'This application requires Flask {min_flask_version:.2f} or above. Exiting now...'
         )
 
     return _python_version, _flask_version
@@ -119,8 +119,8 @@ def start_log_file(
 
     # The name of the log file is the name of the instance,
     # plus the time the instance was instantiated (tracker_99_1234567890.1234567.log).
-    _log_name = f"{app.name}_{time.time()}"
-    _log_path = f"{log_dir}/{_log_name}.log"
+    _log_name = f'{app.name}_{time.time()}'
+    _log_path = f'{log_dir}/{_log_name}.log'
 
     # Use multiple small logs for easy reading
     _file_handler = RotatingFileHandler(
@@ -135,8 +135,8 @@ def start_log_file(
     # Example entry: "2024-07-09 22:08:25,132", "192.168.56.1", "9132", "INFO",
     # "Starting Flask application."
     _msg_format = (
-        f"\"%(asctime)s\", \"{_server_ip_address}\", \"%(process)d\", \"%(levelname)s\", "
-        f"\"%(message)s\""
+        f'"%(asctime)s", "{_server_ip_address}", "%(process)d", "%(levelname)s", '
+        f'"%(message)s\"'
     )
     _formatter = logging.Formatter(_msg_format)
     _file_handler.setFormatter(_formatter)
@@ -184,8 +184,8 @@ def log_page_request(app: flask.Flask, request: flask.Request, response: flask.R
 
     # Log the requested page and client address
     app.logger.info(
-        f"{request.path} requested by {_client_address} using {request.method}; "
-        f"{response.status}."
+        f'{request.path} requested by {_client_address} using {request.method}; '
+        f'{response.status}.'
     )
 
 

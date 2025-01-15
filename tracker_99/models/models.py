@@ -60,12 +60,12 @@ class Member(UserMixin, db.Model):
         # - Must be at least 4 characters long
         name_regex = r'^[A-Za-z][A-Za-z0-9._-]{3,}$'
         if not re.fullmatch(name_regex, member_name):
-            raise ValueError("Invalid member name.")
+            raise ValueError('Invalid member name.')
 
         # Validate that member_email matches the email pattern
         email_regex = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}$'
         if not re.fullmatch(email_regex, member_email):
-            raise ValueError("Invalid member email.")
+            raise ValueError('Invalid member email.')
 
         # Set the member_name and member_email
         self.member_name = member_name
@@ -117,7 +117,7 @@ class Member(UserMixin, db.Model):
 
         password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$'
         if not re.fullmatch(password_regex, password):
-            raise ValueError("Invalid password.")
+            raise ValueError('Invalid password.')
 
     def verify_password(self, password_to_verify: str) -> bool:
         """Converts input to a hash and compares it against an existing hash
@@ -220,7 +220,9 @@ class Role(db.Model):
         :rtype: str
         """
         if int(value) < 1 or int(value) > 3:
-            raise ValueError("role_privilege must be between 1 and 3.")
+            raise ValueError(
+                'role_privilege must be between 1 and 3.'
+                'Higher privileges are reserved for future use.')
         return value
 
     def to_dict(self):

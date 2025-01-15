@@ -14,9 +14,10 @@ html {
     }
 }
 
-th {
-    /* Left-align table headers */
-    text-align: left;
+/* Use to disable anchors, etc. */
+.disabled {
+    pointer-events: none;
+    cursor: default;
 }
 
 a {
@@ -53,9 +54,9 @@ nav {
 }
 
 .no-break-submit-btn {
-    display:inline;
-    margin:0;
-    padding:0;
+    display: inline;
+    margin: 0;
+    padding: 0;
 }
 
 .message-text {

@@ -1,4 +1,4 @@
-"""API content routing manager.
+"""API content routing manager for members.
 
 Test: http://127.0.0.1:5000/api/test
 """
@@ -50,7 +50,7 @@ def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
 
         # Token is expected to be in the format "Bearer <token>"
         try:
-            _auth_token = _auth_header.split(" ")[1]
+            _auth_token = _auth_header.split(' ')[1]
         except IndexError:
             return jsonify({'error': 'Invalid token format.'}), 400
 
@@ -63,6 +63,9 @@ def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
         # I considered adding is_admin to the token in app_utils.py
         # so I would not have to perform the additional query, but I left it here,
         # in case I wanted to add other attributes, like member_name, etc.
+        """
+        SELECT * FROM members WHERE member_id = 1 LIMIT 1;
+        """
         _requester = Member.query.filter_by(member_id=_requester_id).first()
         if _requester:
             # If token is valid, pass requester information to the protected route
@@ -100,7 +103,7 @@ def api_members_all(**kwargs) -> tuple:
 
     # query.all() always returns a list, even if it is empty
     """
-    SELECT * FROM MEMBERS;
+    SELECT * FROM members;
     """
     _members_list = Member.query.all()
 
@@ -211,7 +214,7 @@ def api_get_member(member_id: int, **kwargs) -> tuple:
 
     # Verify member exists
     """
-    SELECT * FROM MEMBERS WHERE member_id = 17;
+    SELECT * FROM members WHERE member_id = 17;
     """
     _member = Member.query.get_or_404(member_id)
 
@@ -259,7 +262,7 @@ def api_edit_member(member_id: int, **kwargs) -> tuple:
 
     # Verify member exists
     """
-    SELECT * FROM MEMBERS WHERE member_id = 17;
+    SELECT * FROM members WHERE member_id = 17;
     """
     _member = Member.query.get_or_404(member_id)
 
@@ -328,7 +331,7 @@ def api_delete_member(member_id: int, **kwargs) -> tuple:
 
     # Verify member exists
     """
-    SELECT * FROM MEMBERS WHERE member_id = 17;
+    SELECT * FROM members WHERE member_id = 17;
     """
     _member = Member.query.get_or_404(member_id)
 

@@ -14,6 +14,7 @@
 <p>This page is restricted to administrators and members only.</p>
 {% else %}
 <h1>Welcome, {{ current_user.member_name }}!</h1>
+<p><i class="text-danger">(Adding, editing, or deleting roles is disabled at this time.)</i></p>
 <table id="data-table" class="table table-striped display caption-top">
     <caption class="text-center">List of Roles</caption>
     <thead>
@@ -34,10 +35,10 @@
         <td class="text-nowrap">{{ role.role_privilege }}</td>
         {% if current_user.is_admin %}
         <td class="text-nowrap">
-            <a class="btn btn-primary"
+            <a class="btn btn-primary disabled"
                href="{{ url_for('admin_bp.edit_role', role_id=role.role_id) }}"
                title="Edit">Edit</a>
-            <a class="btn btn-danger"
+            <a class="btn btn-danger disabled"
                href="{{ url_for('admin_bp.delete_role', role_id=role.role_id) }}"
                title="Delete">Delete</a>
         </td>
