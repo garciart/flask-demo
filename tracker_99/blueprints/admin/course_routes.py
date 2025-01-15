@@ -56,7 +56,7 @@ def add_course() -> Union[str, Response]:
 
             # Add the course and chair to the association table
             _member_id = int(current_user.get_id())
-            _assoc = Association(course_id=_new_id, role_id=1, member_id=_member_id)
+            _assoc = Association(course_id=_new_id, role_id=4, member_id=_member_id)
 
             db.session.add(_assoc)
             db.session.commit()

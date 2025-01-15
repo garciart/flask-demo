@@ -366,7 +366,7 @@ class AddRoleForm(FlaskForm):
         :returns: None
         :rtype: None
         """
-        # SELECT * FROM roles WHERE roles.role_privilege = 3;
+        # SELECT * FROM roles WHERE roles.role_privilege = 10;
         _role = db.session.scalar(select(Role).where(Role.role_privilege == role_privilege.data))
         if _role is not None:
             raise ValidationError('Privilege level already assigned.')
@@ -382,7 +382,7 @@ class EditRoleForm(FlaskForm):
         'Role name', validators=[DataRequired(), Regexp(TEXT_REGEX, message=INVALID_TEXT_MSG)]
     )
     role_privilege = IntegerField(
-        'Privilege Level', validators=[DataRequired(), NumberRange(min=1, max=3)]
+        'Privilege Level', validators=[DataRequired(), NumberRange(min=1, max=99)]
     )
     submit = SubmitField('Update Role')
 
@@ -432,7 +432,7 @@ class EditRoleForm(FlaskForm):
         :rtype: None
         """
         if role_privilege.data != self.original_role_privilege:
-            # SELECT * FROM roles WHERE roles.role_privilege = 3;
+            # SELECT * FROM roles WHERE roles.role_privilege = 10;
             _role = db.session.scalar(
                 select(Role).where(Role.role_privilege == role_privilege.data)
             )

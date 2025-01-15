@@ -40,14 +40,14 @@
             <a class="btn btn-primary"
                href="{{ url_for('admin_bp.view_course', course_id=course.course_id) }}"
                title="View">View</a>
-            {% if current_user.is_admin or (course.role_id | default(4)) in [2, 3] %}
+            {% if current_user.is_admin or (course.role_id | default(1)) in [3, 4] %}
             <a class="btn btn-secondary"
                href="{{ url_for('admin_bp.assign_course', course_id=course.course_id) }}"
                title="Assign">Assign</a>
             <a class="btn btn-warning"
                href="{{ url_for('admin_bp.edit_course', course_id=course.course_id) }}"
                title="Edit">Edit</a>
-            {% endif %} {% if current_user.is_admin or (course.role_id | default(4)) in [3] %}
+            {% endif %} {% if current_user.is_admin or (course.role_id | default(1)) in [4] %}
             <a class="btn btn-danger"
                href="{{ url_for('admin_bp.delete_course', course_id=course.course_id) }}"
                title="Delete">Delete</a>

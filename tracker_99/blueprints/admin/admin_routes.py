@@ -15,6 +15,10 @@ from tracker_99.models.models import Course, Member, Role, Association
 INDEX_PAGE = 'main_bp.index'
 COURSES_PAGE = 'main_bp.courses'
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
+# Only members with role_privileges greater than or equal to 10,
+# like chairs and teachers of the course and admins,
+# can assign other members to a course
+DEFAULT_CUTOFF_PRIVILEGE = 10
 
 
 @admin_bp.route('/admin/assign_course/<int:course_id>', methods=['GET', 'POST'])
@@ -43,7 +47,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # The query will generate a list of tuples
     # Each tuple in the list will have the role_id, member_id, member_name, and role_privilege
     # of member assigned to the course in that order, like
-    # [(1, 16, 'Stilgar.Tabr', 3), (2, 2, 'Leto.Atreides', 2), ...]
+    # [(1, 16, 'Stilgar.Tabr', 20), (2, 2, 'Leto.Atreides', 10), ...]
     """
     SELECT associations.role_id,
         members.member_id,
@@ -52,9 +56,9 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     FROM associations,
         members,
         roles
-    WHERE associations.course_id = 12 AND
-        associations.member_id = members.member_id AND
-        associations.role_id = roles.role_id;
+    WHERE associations.member_id = members.member_id AND
+        associations.role_id = roles.role_id AND
+        associations.course_id = 12;
     """
     _assigned_members = (
         db.session.query(
@@ -74,9 +78,11 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # Get the ID of the current user
     _member_id = int(current_user.get_id())
 
-    # Only chairs and teachers of the course and admins can assign other members
+    # Only members with role_privileges greater than or equal to 10,
+    # like chairs and teachers of the course and admins,
+    # can assign other members to a course
     if not current_user.is_admin and not any(
-            a['member_id'] == _member_id and a['role_privilege'] > 1 for a in _assigned_members
+            a['member_id'] == _member_id and a['role_privilege'] >= DEFAULT_CUTOFF_PRIVILEGE for a in _assigned_members
     ):
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))
@@ -104,13 +110,14 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # and they cannot reassign other members at or above their privilege level
     # (teachers cannot assign or reassign other teachers, etc.)
     # Therefore, set the cutoff to one less than the privilege level of the current user
+    # This sets the default to assigning members as students only
     if not current_user.is_admin:
         _cutoff_privilege_level = (
-                int(next((
-                    a['role_privilege']
-                    for a in _assigned_members
-                    if _member_id == a['member_id']
-                ), 2, )) - 1
+            int(next((
+                a['role_privilege']
+                for a in _assigned_members
+                if _member_id == a['member_id']
+            ), DEFAULT_CUTOFF_PRIVILEGE, )) - 1
         )
     else:
         _cutoff_privilege_level = 99
@@ -123,7 +130,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # Match the structure of _unassigned_members and _touchable_members
     # by adding required key-value pairs
     for u in _unassigned_members:
-        u['role_id'] = 4
+        u['role_id'] = 1
         u['role_privilege'] = 0
 
     # Combine the two lists of dictionaries
@@ -132,7 +139,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # Get info for roles less than the privilege level of the current user
     # Use ORDER BY for rendering in the template by privilege level
     """
-    SELECT role_id, role_name FROM roles WHERE roles.role_privilege < 2 ORDER BY role_privilege DESC;
+    SELECT role_id, role_name FROM roles WHERE roles.role_privilege < 10 ORDER BY role_privilege DESC;
     """
     _roles_list = (
         db.session.query(Role.role_id, Role.role_name)
@@ -141,12 +148,12 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
         .all()
     )
 
-    # Temporarily add a 'Not Assigned' role
+    # Temporarily add a 'Unassigned' role
     # Members in this role will be deleted from the Association table
     # or skipped if they are not in the table
-    # Do not store 'Not Assigned' members, since that will increase
+    # Do not store 'Unassigned' members, since that will increase
     # the size of the Association table and slow down queries
-    _roles_list.append({"role_id": 4, "role_name": "Not Assigned"})
+    _roles_list.append({"role_id": 1, "role_name": "Unassigned"})
 
     if request.method == 'POST':
         # Get all associations for the given course in advance
@@ -169,7 +176,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
 
             # Add an association if the assignment does not exist in the Association table
             # but the course is now assigned
-            if _a is None and _role_id < 4:
+            if _a is None and _role_id != 1:
                 print('Adding...')
                 _new_assoc = Association(
                     course_id=_course.course_id, role_id=_role_id, member_id=_member_id
@@ -178,7 +185,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
 
             # Delete the association if the assignment exists in the Association table
             # but the course is now unassigned
-            elif _a is not None and _role_id == 4:
+            elif _a is not None and _role_id == 1:
                 print('Deleting...')
                 db.session.delete(_a)
 

@@ -207,22 +207,62 @@ class Role(db.Model):
         'Association', back_populates='role', cascade=CASCADE_ARG
     )
 
-    @validates('role_privilege')
-    def validate_role_privilege(self, _, value: str) -> str:
-        """Ensure that role privilege is between 1 and 3
+    # @validates('role_privilege')
+    # def validate_role_privilege(self, _, value: str) -> str:
+    #     """Ensure that role privilege is between 1 and 99
 
-        :param str _: The key, i.e., role_privilege. Not used
-        :param str value: The role privilege value to check
+    #     :param str _: The key, i.e., role_privilege. Not used
+    #     :param str value: The role privilege value to check
 
-        :raises ValueError: If the value is not between 1 and 3
+    #     :raises ValueError: If the value is not between 1 and 99
+
+    #     :return: The value if no exception was raised
+    #     :rtype: str
+    #     """
+    #     if int(value) < 1 or int(value) > 99:
+    #         raise ValueError(
+    #             'role_privilege must be between 1 and 99.'
+    #             'Higher privileges are reserved for future use.')
+    #     return value
+
+    @validates('role_id')
+    def validate_role_id(self, key, value: str) -> str:
+        """Prevent members from assigning role_id 1.
+
+        Students in the 'Unassigned' role will be deleted
+        from the Associations table to save space
+
+        :param str _: The key, i.e., role_id. Not used
+        :param str value: The role id value to check
+
+        :raises ValueError: If the role name is not 'Unassigned'
 
         :return: The value if no exception was raised
         :rtype: str
         """
-        if int(value) < 1 or int(value) > 3:
+        if int(value) == 1 and str(self.role_name).lower() != 'unassigned':
             raise ValueError(
-                'role_privilege must be between 1 and 3.'
-                'Higher privileges are reserved for future use.')
+                'Role ID 1 is reserved for unassigned members and cannot be used')
+        return value
+
+
+    @validates('role_privilege')
+    def validate_role_privilege(self, key, value: str) -> str:
+        """Ensure that role privilege is between 1 and 99 if the role is not 'Unassigned'.
+
+        :param str _: The key, i.e., role_privilege. Not used
+        :param str value: The role privilege value to check
+
+        :raises ValueError: If the value is not between 1 and 99
+
+        :return: The value if no exception was raised
+        :rtype: str
+        """
+        if str(self.role_name).lower() != 'unassigned':
+            if int(value) < 1 or int(value) > 99:
+                raise ValueError(
+                    'role_privilege must be between 1 and 99.'
+                    'Higher privileges are reserved for future use.')
         return value
 
     def to_dict(self):
@@ -257,12 +297,12 @@ class Association(db.Model):
     role: Mapped['Role'] = relationship(back_populates='associations')
     member: Mapped['Member'] = relationship(back_populates='associations')
 
-    def has_access_to_course(self, course: 'Course', role_name: str) -> bool:
-        """Check if the member has access to the course with a specific role."""
-        for association in self.associations:
-            if association.course == course and association.role.role_name == role_name:
-                return True
-        return False
+    # def has_access_to_course(self, course: 'Course', role_name: str) -> bool:
+    #     """Check if the member has access to the course with a specific role."""
+    #     for association in self.associations:
+    #         if association.course == course and association.role.role_name == role_name:
+    #             return True
+    #     return False
 
     def to_dict(self):
         """Return the object as a dictionary for conversion to JSON
