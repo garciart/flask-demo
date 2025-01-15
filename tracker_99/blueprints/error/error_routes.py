@@ -1,7 +1,7 @@
 """Error content routing manager.
 """
 
-import flask
+from flask import render_template, jsonify, request
 
 from tracker_99.blueprints.error import error_bp
 
@@ -11,21 +11,26 @@ from tracker_99.blueprints.error import error_bp
 def page_not_found(e) -> tuple:
     """Render an error page if the requested page or resource was not found on the server.
 
-    :returns: The HTML code to render and the response code
+    Sends a JSON response instead if caused by an ReST call.
+
+    :returns: The HTML code to render or JSON message and the response code
     :rtype: tuple
     """
-    _page_title = 'We must be cautious...'
-    _page_description = 'Not Found'
+    if '/api/' in request.url:
+        return jsonify({'error': f'{str(e)}'}), 404
+    else:
+        _page_title = 'We must be cautious...'
+        _page_description = 'Not Found'
 
-    return (
-        flask.render_template(
-            '404.html',
-            page_title=_page_title,
-            page_description=_page_description,
-            e=e,
-        ),
-        404,
-    )
+        return (
+            render_template(
+                '404.html',
+                page_title=_page_title,
+                page_description=_page_description,
+                e=e,
+            ),
+            404,
+        )
 
 
 # Blueprint's equivalent of Flask errorhandler is app_errorhandler
@@ -33,18 +38,23 @@ def page_not_found(e) -> tuple:
 def server_error(e) -> tuple:
     """Render an error page if there is a server error.
 
-    :returns: The HTML code to render and the response code
+    Sends a JSON response instead if caused by an ReST call.
+
+    :returns: The HTML code to render or JSON message and the response code
     :rtype: tuple
     """
-    _page_title = 'Chewie!!!'
-    _page_description = 'Internal Server Error'
+    if '/api/' in request.url:
+        return jsonify({'error': f'{str(e)}'}), 500
+    else:
+        _page_title = 'Chewie!!!'
+        _page_description = 'Internal Server Error'
 
-    return (
-        flask.render_template(
-            '500.html',
-            page_title=_page_title,
-            page_description=_page_description,
-            e=e,
-        ),
-        500,
-    )
+        return (
+            render_template(
+                '500.html',
+                page_title=_page_title,
+                page_description=_page_description,
+                e=e,
+            ),
+            500,
+        )

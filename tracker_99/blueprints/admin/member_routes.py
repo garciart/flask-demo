@@ -124,7 +124,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
     # Validate inputs
     validate_input('member_id', member_id, int)
 
-    # Admins can view any profile, and members can view their own profile
+    # Admins can edit any profile, and members can edit their own profile
     if not current_user.is_admin and current_user.member_id != member_id:
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))

@@ -7,19 +7,19 @@ Test: http://127.0.0.1:5000/add_user
 """
 from typing import Union
 
-# Flake8 F401: imports are used for type hints
-from flask import (Response,
-                   abort, flash, json, redirect, render_template, request, url_for)
-from flask_login import (current_user, login_required)
 from app import db
 from app.admin import admin_bp
 from app.admin.admin_forms import (SimpleForm,
-    AddUserForm, DeleteUserForm, EditUserForm,
-    AddRoleForm, DeleteRoleForm, EditRoleForm,
-    AddCourseForm, DeleteCourseForm, EditCourseForm,
-    UpdateProfileForm)
-from app.models import (User, Role, Course, Association)
+                                   AddUserForm, DeleteUserForm, EditUserForm,
+                                   AddRoleForm, DeleteRoleForm, EditRoleForm,
+                                   AddCourseForm, DeleteCourseForm, EditCourseForm,
+                                   UpdateProfileForm)
 from app.app_utils import validate_input
+from app.models import (User, Role, Course, Association)
+# Flake8 F401: imports are used for type hints
+from flask import (Response,
+                   flash, redirect, render_template, request, url_for)
+from flask_login import (current_user, login_required)
 
 INDEX_PAGE = 'main.index'
 USERS_PAGE = 'main.users'
@@ -66,7 +66,7 @@ def add_course() -> Union[str, Response]:
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
     return render_template('admin/add_course.html', page_title='Add Course',
-                            form=_form)
+                           form=_form)
 
 
 @admin_bp.route('/view_course/<int:course_id>')
@@ -98,10 +98,10 @@ def view_course(course_id: int) -> str:
         return redirect(url_for(INDEX_PAGE))
 
     return render_template('admin/view_course.html', page_title='View Course',
-                           course_name = _course.course_name,
-                           course_code = _course.course_code,
-                           course_group = _course.course_group,
-                           course_desc = _course.course_desc)
+                           course_name=_course.course_name,
+                           course_code=_course.course_code,
+                           course_group=_course.course_group,
+                           course_desc=_course.course_desc)
 
 
 @admin_bp.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
@@ -148,7 +148,7 @@ def edit_course(course_id) -> Union[str, Response]:
     _form.course_group.data = _course.course_group
     _form.course_desc.data = _course.course_desc
     return render_template('admin/edit_course.html', page_title='Edit Course',
-                        form=_form)
+                           form=_form)
 
 
 @admin_bp.route('/delete_course/<int:course_id>', methods=['GET', 'POST'])
@@ -192,8 +192,8 @@ def delete_course(course_id: int) -> Union[str, Response]:
     # Also re-displays page with flash messages (e.g., errors, etc.)
     _course_name = _course.course_name
     return render_template('admin/delete_course.html',
-                            page_title='Delete Course', course_name=_course_name,
-                            form=_form)
+                           page_title='Delete Course', course_name=_course_name,
+                           form=_form)
 
 
 @admin_bp.route('/add_role', methods=['GET', 'POST'])
@@ -224,7 +224,7 @@ def add_role():
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
     return render_template('admin/add_role.html', page_title='Add Role',
-                            form=_form)
+                           form=_form)
 
 
 @admin_bp.route('/edit_role/<int:role_id>', methods=['GET', 'POST'])
@@ -260,7 +260,7 @@ def edit_role(role_id):
     _form.role_name.data = _role.role_name
     _form.role_privilege.data = _role.role_privilege
     return render_template('admin/edit_role.html', page_title='Edit Role',
-                            form=_form)
+                           form=_form)
 
 
 @admin_bp.route('/delete_role/<int:role_id>', methods=['GET', 'POST'])
@@ -296,8 +296,8 @@ def delete_role(role_id):
     _role_name = _role.role_name
     _role_privilege = _role.role_privilege
     return render_template('admin/delete_role.html', page_title='Delete Role',
-                            role_name=_role_name,
-                            role_privilege=_role_privilege, form=_form)
+                           role_name=_role_name,
+                           role_privilege=_role_privilege, form=_form)
 
 
 @admin_bp.route('/add_user', methods=['GET', 'POST'])
@@ -330,7 +330,7 @@ def add_user():
     # Default behavior if not sending data to the server (POST, etc.)
     # Also re-displays page with flash messages (e.g., errors, etc.)
     return render_template('admin/add_user.html', page_title='Add User',
-                            form=_form)
+                           form=_form)
 
 
 @admin_bp.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
@@ -370,7 +370,7 @@ def edit_user(user_id):
     _form.user_email.data = _user.user_email
     _form.is_admin.data = _user.is_admin
     return render_template('admin/edit_user.html', page_title='Edit User',
-                            form=_form)
+                           form=_form)
 
 
 @admin_bp.route('/delete_user/<int:user_id>', methods=['GET', 'POST'])
@@ -415,7 +415,7 @@ def delete_user(user_id):
     # Also re-displays page with flash messages (e.g., errors, etc.)
     _username = _user.username
     return render_template('admin/delete_user.html', page_title='Delete User',
-                            username=_username, form=_form)
+                           username=_username, form=_form)
 
 
 @admin_bp.route('/assign_course/<int:course_id>', methods=['GET', 'POST'])
@@ -533,8 +533,8 @@ def assign_course(course_id):
             if _a is None and _role_id < 4:
                 print('Adding...')
                 _new_assoc = Association(course_id=_course.course_id,
-                                        role_id=_role_id,
-                                        user_id=_user_id)
+                                         role_id=_role_id,
+                                         user_id=_user_id)
                 db.session.add(_new_assoc)
 
             # If the assignment exist in the Association table
@@ -564,6 +564,7 @@ def assign_course(course_id):
         form=_form,
         roles=_roles_list,
         users_list=_users_list)
+
 
 @admin_bp.route('/update_profile/<int:user_id>', methods=['GET', 'POST'])
 @login_required
@@ -599,5 +600,5 @@ def update_profile(user_id):
     _username = _user.username
     _form.user_email.data = _user.user_email
     return render_template('admin/update_profile.html',
-                            page_title='Update Profile', form=_form,
-                            username=_username)
+                           page_title='Update Profile', form=_form,
+                           username=_username)
