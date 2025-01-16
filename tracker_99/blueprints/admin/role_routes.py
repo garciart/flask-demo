@@ -17,12 +17,13 @@ from tracker_99.blueprints.admin.admin_forms import (
 )
 from tracker_99.models.models import Role, Association
 
+# Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
+# pylint: disable=broad-except
+
 INDEX_PAGE = 'main_bp.index'
 ROLES_PAGE = 'main_bp.roles'
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
-# Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
-# pylint: disable=broad-except
 
 
 @admin_bp.route('/admin/add_role', methods=['GET', 'POST'])

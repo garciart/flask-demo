@@ -33,7 +33,7 @@ curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJle
 
 curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" -H "Content-Type: application/json" -d '{"role_privilege": 25}' http://127.0.0.1:5000/api/roles/edit/5
 
-{"message":"PUT: Successfully updated Foo ."}
+{"message":"PUT: Successfully updated Foo."}
 
 
 curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" http://127.0.0.1:5000/api/roles/delete/99
@@ -43,4 +43,4 @@ curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ey
 
 curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" http://127.0.0.1:5000/api/roles/delete/5
 
-{"message":"PUT: Successfully deleted Foo ."}
+{"message":"PUT: Successfully deleted Foo."}

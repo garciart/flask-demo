@@ -47,7 +47,7 @@ curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJle
     -d '{"course_name": "Building Good Python Applications", "course_desc": "Much better!"}' \
     http://127.0.0.1:5000/api/courses/edit/3
 
-{"message":"PUT: Successfully updated Building Good Python Applications ."}
+{"message":"PUT: Successfully updated Building Good Python Applications."}
 
 
 curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/delete/3
@@ -62,4 +62,4 @@ curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ey
 
 curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/delete/17
 
-{"message":"PUT: Successfully deleted Building Good Python Applications ."}
+{"message":"PUT: Successfully deleted Building Good Python Applications."}

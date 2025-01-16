@@ -20,7 +20,7 @@ curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJle
 
 curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIwODEyMjQsImlhdCI6MTczNjg5NzIyNCwic3ViIjoiMSJ9.dAbkhTkli4B96WBCridEgtvYYjFUFyMXn9uDC1qCQFA" -H "Content-Type: application/json" -d '{"is_admin": true, "password": "Change.Me.999"}' http://localhost:5000/api/members/edit/17
 
-{"message":"PUT: Successfully updated foo.bar ."}
+{"message":"PUT: Successfully updated foo.bar."}
 
 curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIwODEyMjQsImlhdCI6MTczNjg5NzIyNCwic3ViIjoiMSJ9.dAbkhTkli4B96WBCridEgtvYYjFUFyMXn9uDC1qCQFA" http://127.0.0.1:5000/api/members/get/17
 
@@ -28,7 +28,7 @@ curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJle
 
 curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIwODEyMjQsImlhdCI6MTczNjg5NzIyNCwic3ViIjoiMSJ9.dAbkhTkli4B96WBCridEgtvYYjFUFyMXn9uDC1qCQFA" -H "Content-Type: application/json" -d '{"is_admin": false, "password": "Change.Me.123"}' http://localhost:5000/api/members/edit/17
 
-{"message":"PUT: Successfully updated foo.bar ."}
+{"message":"PUT: Successfully updated foo.bar."}
 
 curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIwODEyMjQsImlhdCI6MTczNjg5NzIyNCwic3ViIjoiMSJ9.dAbkhTkli4B96WBCridEgtvYYjFUFyMXn9uDC1qCQFA" http://127.0.0.1:5000/api/members/get/17
 
@@ -36,7 +36,7 @@ curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJle
 
 curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIwODEyMjQsImlhdCI6MTczNjg5NzIyNCwic3ViIjoiMSJ9.dAbkhTkli4B96WBCridEgtvYYjFUFyMXn9uDC1qCQFA" http://127.0.0.1:5000/api/members/delete/17
 
-{"message":"PUT: Successfully deleted foo.bar ."}
+{"message":"PUT: Successfully deleted foo.bar."}
 
 curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIwODEyMjQsImlhdCI6MTczNjg5NzIyNCwic3ViIjoiMSJ9.dAbkhTkli4B96WBCridEgtvYYjFUFyMXn9uDC1qCQFA" http://127.0.0.1:5000/api/members/get/17
 

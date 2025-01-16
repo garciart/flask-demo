@@ -7,18 +7,17 @@ from functools import wraps
 from typing import Any, Callable, Union
 
 from flask import jsonify, request
-from sqlalchemy.exc import SQLAlchemyError
 
 from tracker_99 import db
 from tracker_99.app_utils import validate_input, decode_auth_token
 from tracker_99.blueprints.api import api_bp
-from tracker_99.models.models import Association, Role, Member
-
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
-NOT_FOUND_MSG = 'No roles found.'
+from tracker_99.models.models import Role, Member
 
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
 # pylint: disable=broad-except
+
+NOT_AUTH_MSG = 'You do not have permission to perform that action.'
+NOT_FOUND_MSG = 'No roles found.'
 
 
 def token_required(f: Callable[..., Any]) -> Callable[..., Any]:

@@ -14,6 +14,9 @@ from tracker_99.app_utils import validate_input, decode_auth_token
 from tracker_99.blueprints.api import api_bp
 from tracker_99.models.models import Association, Course, Member, Role
 
+# Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
+# pylint: disable=broad-except
+
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 NOT_FOUND_MSG = 'No courses found.'
 # Only members with role_privileges greater than or equal to 10,
@@ -22,9 +25,6 @@ CUTOFF_PRIVILEGE_EDITOR = 10
 # Only members with role_privileges greater than or equal to 20,
 # like chairs of the course and admins, can edit a course
 CUTOFF_PRIVILEGE_OWNER = 20
-
-# Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
-# pylint: disable=broad-except
 
 
 def token_required(f: Callable[..., Any]) -> Callable[..., Any]:

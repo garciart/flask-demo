@@ -14,10 +14,10 @@ from tracker_99.app_utils import validate_input, decode_auth_token
 from tracker_99.blueprints.api import api_bp
 from tracker_99.models.models import Association, Member
 
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
-
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
 # pylint: disable=broad-except
+
+NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
 
 def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
