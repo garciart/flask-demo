@@ -3,9 +3,9 @@
 This file also turns the directory into a package whose scripts can be imported as modules.
 """
 
-import flask
+from flask import Blueprint
 
-error_bp = flask.Blueprint('error_bp', __name__, template_folder='templates')
+error_bp = Blueprint('error_bp', __name__, template_folder='templates')
 
 # Import the other modules in the package after instantiating
 # the Blueprint to avoid known circular import problems with Flask

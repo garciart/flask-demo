@@ -12,7 +12,7 @@ from logging.handlers import RotatingFileHandler
 from types import UnionType
 from typing import Union
 
-import flask
+from flask import Flask, Request, Response, current_app
 import jwt
 
 __all__ = [
@@ -25,9 +25,9 @@ __all__ = [
 ]
 
 
-def validate_input(
-        obj_name: str, obj_to_check: object, expected_type: Union[type, tuple, UnionType]
-) -> None:
+def validate_input(obj_name: str, obj_to_check: object,
+                   expected_type: Union[type, tuple, UnionType],
+                   allow_empty: bool = False) -> None:
     """Validate an input's type and ensure it is not empty.
 
     Use this function to reduce code complexity in calling functions and methods.
@@ -41,8 +41,9 @@ def validate_input(
     if not isinstance(obj_to_check, expected_type):
         raise TypeError(f"'{obj_name}' is not type {expected_type}. Exiting now...")
 
-    if isinstance(obj_to_check, (str, list, dict)) and len(obj_to_check) == 0:
-        raise ValueError(f"'{obj_name}' is empty. Exiting now...")
+    if not allow_empty:
+        if isinstance(obj_to_check, (str, list, dict)) and len(obj_to_check) == 0:
+            raise ValueError(f"'{obj_name}' is empty. Exiting now...")
 
 
 def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.0) -> tuple:
@@ -91,7 +92,7 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
 
 
 def start_log_file(
-        app: flask.Flask, log_dir: str = 'tracker_logs', logging_level: int = logging.DEBUG
+        app: Flask, log_dir: str = 'tracker_logs', logging_level: int = logging.DEBUG
 ) -> None:
     """Setup and start logging.
 
@@ -101,7 +102,7 @@ def start_log_file(
     make hot fixes, you may end up with a huge log file. Therefore, I recommend you do not log \
     events when in debug mode (`python flask --debug run`)
 
-    :param flask.Flask app: The application instance
+    :param Flask app: The application instance
     :param str log_dir: The directory that will hold the log files
     :param int logging_level: The level of messages to log. The default is to log DEBUG \
         messages (level 10) or greater
@@ -109,7 +110,7 @@ def start_log_file(
     :returns None: None
     """
     # Validate inputs
-    validate_input('app', app, flask.Flask)
+    validate_input('app', app, Flask)
     validate_input('log_dir', log_dir, str)
     validate_input('logging_level', logging_level, int)
 
@@ -165,19 +166,19 @@ def start_log_file(
     time.sleep(0.1)
 
 
-def log_page_request(app: flask.Flask, request: flask.Request, response: flask.Response) -> None:
+def log_page_request(app: Flask, request: Request, response: Response) -> None:
     """Log information about the client when a page is requested.
 
-    :param flask.Flask app: The application instance
-    :param flask.Request request: The client's request object
-    :param flask.Response response: The server's response object
+    :param Flask app: The application instance
+    :param Request request: The client's request object
+    :param Response response: The server's response object
 
     :returns None: None
     """
     # Validate inputs
-    validate_input('app', app, flask.Flask)
-    validate_input('request', request, flask.Request)
-    validate_input('response', response, flask.Response)
+    validate_input('app', app, Flask)
+    validate_input('request', request, Request)
+    validate_input('response', response, Response)
 
     # Get the address of the requester
     _client_address = request.environ.get('HTTP_X_FORWARDED_FOR') or request.environ['REMOTE_ADDR']
@@ -208,7 +209,7 @@ def encode_auth_token(member_id: int, expiration_in_min: int = 60) -> str:
             # Subject is the member ID
             'sub': str(member_id),
         }
-        auth_token = jwt.encode(payload, flask.current_app.config['SECRET_KEY'], algorithm='HS256')
+        auth_token = jwt.encode(payload, current_app.config['SECRET_KEY'], algorithm='HS256')
         return auth_token
     except (KeyError, NotImplementedError, TypeError, jwt.PyJWTError) as e:
         return f'Error: {str(e)}'
@@ -224,7 +225,7 @@ def decode_auth_token(auth_token: str) -> Union[int, None]:
     """
     try:
         payload = jwt.decode(
-            auth_token, flask.current_app.config['SECRET_KEY'], algorithms=['HS256']
+            auth_token, current_app.config['SECRET_KEY'], algorithms=['HS256']
         )
         return payload['sub']
     except jwt.ExpiredSignatureError as e:

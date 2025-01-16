@@ -3,9 +3,9 @@
 This file also turns the directory into a package whose scripts can be imported as modules.
 """
 
-import flask
+from flask import Blueprint
 
-auth_bp = flask.Blueprint('auth_bp', __name__, template_folder='templates')
+auth_bp = Blueprint('auth_bp', __name__, template_folder='templates')
 
 # Import the other modules in the package after instantiating
 # the Blueprint to avoid known circular import problems with Flask

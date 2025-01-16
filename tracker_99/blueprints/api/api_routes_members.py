@@ -153,23 +153,23 @@ def api_add_member(**kwargs) -> tuple:
         return jsonify({'error': NOT_AUTH_MSG}), 403
 
     # Get the JSON data from the request
-    data = request.get_json()
+    _data = request.get_json()
 
     # Add member if all attributes are provided and correct
-    validate_input("data['member_name']", data['member_name'], str)
-    validate_input("data['member_email']", data['member_email'], str)
-    validate_input("data['is_admin']", data['is_admin'], bool)
-    validate_input("data['password']", data['password'], str)
+    validate_input("_data['member_name']", _data['member_name'], str)
+    validate_input("_data['member_email']", _data['member_email'], str)
+    validate_input("_data['is_admin']", _data['is_admin'], bool)
+    validate_input("_data['password']", _data['password'], str)
 
     try:
         # Instantiate a Member object
         _member = Member(
-            member_name=data['member_name'],
-            member_email=data['member_email'],
-            is_admin=data['is_admin'],
+            member_name=_data['member_name'],
+            member_email=_data['member_email'],
+            is_admin=_data['is_admin'],
         )
         # Use the setter in the Member class to set Member.password_hash
-        _member.set_password(data['password'])
+        _member.set_password(_data['password'])
         """
         INSERT INTO members (member_name, member_email, password_hash, is_admin)
         VALUES ("farok.tabr", "farok.tabr@fremen.com", "scrypt:32768:8:1$...", 0);
@@ -268,21 +268,21 @@ def api_edit_member(member_id: int, **kwargs) -> tuple:
 
     try:
         # Get the JSON data from the request
-        data = request.get_json()
+        _data = request.get_json()
 
         # Validate and update member attributes if provided in the request
-        if 'member_name' in data:
-            validate_input("data['member_name']", data['member_name'], str)
-            _member.member_name = data['member_name']
-        if 'member_email' in data:
-            validate_input("data['member_email']", data['member_email'], str)
-            _member.member_email = data['member_email']
-        if 'is_admin' in data:
-            validate_input("data['is_admin']", data['is_admin'], bool)
-            _member.is_admin = bool(data['is_admin'])
-        if 'password' in data:
-            validate_input("data['password']", data['password'], str)
-            _member.set_password(data['password'])
+        if 'member_name' in _data:
+            validate_input("_data['member_name']", _data['member_name'], str)
+            _member.member_name = _data['member_name']
+        if 'member_email' in _data:
+            validate_input("_data['member_email']", _data['member_email'], str)
+            _member.member_email = _data['member_email']
+        if 'is_admin' in _data:
+            validate_input("_data['is_admin']", _data['is_admin'], bool)
+            _member.is_admin = bool(_data['is_admin'])
+        if 'password' in _data:
+            validate_input("_data['password']", _data['password'], str)
+            _member.set_password(_data['password'])
         """
         UPDATE members
         SET member_name = "Farok.Tabr",

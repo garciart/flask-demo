@@ -126,63 +126,83 @@ def api_courses_all(**kwargs) -> tuple:
     return jsonify(courses=_filtered_courses), 200
 
 
-# # Do not forget to add an endpoint, or you will get an AssertionError!
-# @api_bp.route('/api/members/add', methods=['POST'], endpoint='add_member')
-# @token_required
-# def api_add_member(**kwargs) -> tuple:
-#     """Respond to an API request to add a member.
+# Do not forget to add an endpoint, or you will get an AssertionError!
+@api_bp.route('/api/courses/add', methods=['POST'], endpoint='add_course')
+@token_required
+def api_add_course(**kwargs) -> tuple:
+    """Respond to an API request to add a course.
 
-#     Bash:
-#     curl -X POST -H "Content-Type: application/json" \
-#         -H "Authorization: Bearer json.web.token" \
-#         -d '{"member_name": "Farok.Tabr", "member_email": "farok.tabr@fremen.com", "is_admin": false, "password": "Change.Me.123"}' \
-#         http://127.0.0.1:5000/api/members/add
+    Bash:
+    curl -X POST -H "Content-Type: application/json" \
+        -H "Authorization: Bearer json.web.token" \
+        -d '{"course_name": "Building Bad Python Applications", "course_code": "SDEV 301", "course_group": "SDEV", "course_desc": "Not recommended!"}' \
+        http://127.0.0.1:5000/api/courses/add
 
-#     PS:
-#     Invoke-WebRequest -Method Post \
-#         -ContentType "application/json" \
-#         -Headers "Authorization: Bearer json.web.token" \
-#         -Body "{`"member_name`": `"Farok.Tabr`", `"member_email`": `"farok.tabr@fremen.com`", `"is_admin`": false, `"password`": `"Change.Me.123`"}" \
-#         -Uri "http://127.0.0.1:5000/api/members/add"
+    curl -X POST -H "Content-Type: application/json" \
+        -d '{"course_name": "Building Bad Python Applications", "course_code": "SDEV 301", "course_group": "SDEV", "course_desc": "Not recommended!"}' \
+        http://127.0.0.1:5000/api/courses/add
 
-#      :returns: A status message with the HTTP status code (Response, int)
-#     :rtype: tuple
-#     """
-#     # Only administrators can add members
-#     # is_admin is a kwarg from the @token_required decorator
-#     if not kwargs.get('requester_is_admin', False):
-#         return jsonify({'error': NOT_AUTH_MSG}), 403
+    curl -X POST -H "Content-Type: application/json" \
+        -d '{"course_name": "Building Bad Python Applications", "course_code": "SDEV 301"}' \
+        http://127.0.0.1:5000/api/courses/add
 
-#     # Get the JSON data from the request
-#     data = request.get_json()
+    PS:
+    Invoke-WebRequest -Method Post \
+        -ContentType "application/json" \
+        -Headers "Authorization: Bearer json.web.token" \
+        -Body "{`"course_name`": `"Building Bad Python Applications`", `"course_code`": `"farok.tabr@fremen.com`", `"course_group`": `"SDEV`", `"course_desc`": `"Not recommended!`"}" \
+        -Uri "http://127.0.0.1:5000/api/courses/add"
 
-#     # Add member if all attributes are provided and correct
-#     validate_input("data['member_name']", data['member_name'], str)
-#     validate_input("data['member_email']", data['member_email'], str)
-#     validate_input("data['is_admin']", data['is_admin'], bool)
-#     validate_input("data['password']", data['password'], str)
+    :returns: A status message with the HTTP status code (Response, int)
+    :rtype: tuple
+    """
+    _member_id = kwargs.get('requester_id', 0)
 
-#     try:
-#         # Instantiate a Member object
-#         _member = Member(
-#             member_name=data['member_name'],
-#             member_email=data['member_email'],
-#             is_admin=data['is_admin'],
-#         )
-#         # Use the setter in the Member class to set Member.password_hash
-#         _member.set_password(data['password'])
-#         """
-#         INSERT INTO members (member_name, member_email, password_hash, is_admin)
-#         VALUES ("farok.tabr", "farok.tabr@fremen.com", "scrypt:32768:8:1$...", 0);
-#         """
-#         db.session.add(_member)
-#         db.session.commit()
-#         _new_id = _member.get_id()
-#         return jsonify(
-#             {'message': f'POST: Successfully added {_member.member_name} ({_new_id}).'}), 200
-#     except SQLAlchemyError as e:
-#         db.session.rollback()
-#         return jsonify({'message': f'Addition failed: {str(e)}'}), 200
+    # Get the JSON data from the request
+    _data = request.get_json()
+
+    print("_data['course_name']", _data['course_name'], type(_data['course_name']))
+    print(_data.get('course_name', ''))
+
+    _course_name = _data.get('course_name', '')
+    _course_code = _data.get('course_code', '')
+    _course_group = _data.get('course_group', '')
+    _course_desc = _data.get('course_desc', '')
+
+    # Add course if all attributes are provided and correct
+    validate_input("_course_name", _course_name, str)
+    validate_input("_course_code", _course_code, str)
+    validate_input("_course_group", _course_group, str, allow_empty=True)
+    validate_input("_course_desc", _course_desc, str, allow_empty=True)
+
+    try:
+        # Instantiate a Course object
+        _course = Course(
+            course_name=_course_name,
+            course_code=_course_code,
+            course_group=_course_group,
+            course_desc=_course_desc,
+        )
+        """
+        INSERT INTO courses (course_name, course_code, course_group, course_desc)
+        VALUES ("Building Bad Python Applications", "SDEV 301", "SDEV", "Not recommended!");
+        """
+        db.session.add(_course)
+        db.session.commit()
+
+        # Get row_id of the new course
+        _new_id = _course.course_id
+
+        # Add the course and chair to the association table
+        _assoc = Association(course_id=_new_id, role_id=4, member_id=_member_id)
+
+        db.session.add(_assoc)
+        db.session.commit()
+        return jsonify(
+            {'message': f'POST: Successfully added {_course.course_name} ({_new_id}).'}), 200
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({'message': f'Addition failed: {str(e)}'}), 200
 
 
 # Do not forget to add an endpoint, or you will get an AssertionError!
@@ -208,14 +228,20 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
     validate_input('course_id', course_id, int)
 
     _member_id = kwargs.get('requester_id', 0)
-    _assoc = Association.query.filter(
-        Association.course_id == course_id, Association.member_id == _member_id)
 
-    # Admins can view any profile, and courses can view their own profile
+    # Admins can view any course, and members can view assigned courses
     # kwargs are from the @token_required decorator
-    if (not kwargs.get('requester_is_admin', False)) and (
-            int(kwargs.get('requester_id', 0)) != course_id):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+    if (not kwargs.get('requester_is_admin', False)):
+        """
+        SELECT * FROM associations WHERE course_id = 2 AND member_id = 6;
+        """
+        _assoc = Association.query.filter(
+            Association.course_id == course_id,
+            Association.member_id == _member_id,
+        ).first()
+
+        if not _assoc:
+            return jsonify({'error': NOT_AUTH_MSG}), 403
 
     # Verify course exists
     """
@@ -274,21 +300,21 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
 
 #     try:
 #         # Get the JSON data from the request
-#         data = request.get_json()
+#         _data = request.get_json()
 
 #         # Validate and update member attributes if provided in the request
-#         if 'member_name' in data:
-#             validate_input("data['member_name']", data['member_name'], str)
-#             _member.member_name = data['member_name']
-#         if 'member_email' in data:
-#             validate_input("data['member_email']", data['member_email'], str)
-#             _member.member_email = data['member_email']
-#         if 'is_admin' in data:
-#             validate_input("data['is_admin']", data['is_admin'], bool)
-#             _member.is_admin = bool(data['is_admin'])
-#         if 'password' in data:
-#             validate_input("data['password']", data['password'], str)
-#             _member.set_password(data['password'])
+#         if 'member_name' in _data:
+#             validate_input("_data['member_name']", _data['member_name'], str)
+#             _member.member_name = _data['member_name']
+#         if 'member_email' in _data:
+#             validate_input("_data['member_email']", _data['member_email'], str)
+#             _member.member_email = _data['member_email']
+#         if 'is_admin' in _data:
+#             validate_input("_data['is_admin']", _data['is_admin'], bool)
+#             _member.is_admin = bool(_data['is_admin'])
+#         if 'password' in _data:
+#             validate_input("_data['password']", _data['password'], str)
+#             _member.set_password(_data['password'])
 #         """
 #         UPDATE members
 #         SET member_name = "Farok.Tabr",

@@ -12,8 +12,7 @@ import logging
 import os
 from typing import Union
 
-import flask
-from flask import Response
+from flask import Flask, Response, request
 
 # Import the helper functions
 from tracker_99.app_utils import validate_input, check_system, start_log_file, log_page_request
@@ -31,7 +30,7 @@ from tracker_99.profiler import add_profiler_middleware
 __author__ = 'Rob Garcia'
 
 
-def create_app(config_name: str = 'default', log_events: Union[bool, None] = None) -> flask.Flask:
+def create_app(config_name: str = 'default', log_events: Union[bool, None] = None) -> Flask:
     """Application Factory.
 
     :param str config_name: An alternate configuration from `config.py` for \
@@ -39,7 +38,7 @@ def create_app(config_name: str = 'default', log_events: Union[bool, None] = Non
     :param bool or None log_events: Allows you to override LOGGING_ENABLED configuration setting
 
     :returns: The Flask application instance
-    :rtype: flask.Flask
+    :rtype: Flask
     """
     # Validate inputs
     validate_input('config_name', config_name, str)
@@ -52,7 +51,7 @@ def create_app(config_name: str = 'default', log_events: Union[bool, None] = Non
     _python_version, _flask_version = check_system()
 
     # Create the Flask application instance
-    _app = flask.Flask(__name__)
+    _app = Flask(__name__)
 
     # Load the configuration class from config.py based on the environment
     _app.config.from_object(CONFIGS[config_name])
@@ -80,7 +79,7 @@ def create_app(config_name: str = 'default', log_events: Union[bool, None] = Non
             :rtype: Response
             """
             # Capture the request and the response
-            log_page_request(_app, flask.request, response)
+            log_page_request(_app, request, response)
 
             # Do not forget to return the response to the client, or the app will crash
             return response
@@ -118,10 +117,10 @@ def create_app(config_name: str = 'default', log_events: Union[bool, None] = Non
     return _app
 
 
-def _configure_logging(app: flask.Flask, log_events: Union[bool, None] = None) -> tuple:
+def _configure_logging(app: Flask, log_events: Union[bool, None] = None) -> tuple:
     """Configure the database
 
-    :param flask.Flask app: The original Flask application instance
+    :param Flask app: The original Flask application instance
     :param bool or None log_events: Allows you to override LOGGING_ENABLED configuration setting
 
     :returns: The revised Flask application instance, the logging-enabled flag, \
@@ -129,7 +128,7 @@ def _configure_logging(app: flask.Flask, log_events: Union[bool, None] = None) -
     :rtype: tuple
     """
     # Validate inputs
-    validate_input('app', app, flask.Flask)
+    validate_input('app', app, Flask)
     validate_input('log_events', log_events, Union[bool, None])
 
     # Configure logging
@@ -160,15 +159,15 @@ def _configure_logging(app: flask.Flask, log_events: Union[bool, None] = None) -
     return app, _logging_enabled, _logging_level
 
 
-def _configure_database(app: flask.Flask) -> flask.Flask:
+def _configure_database(app: Flask) -> Flask:
     """Configure the database
 
-    :param flask.Flask app: The original Flask application instance
+    :param Flask app: The original Flask application instance
     :returns: The revised Flask application instance
-    :rtype: flask.Flask
+    :rtype: Flask
     """
     # Validate inputs
-    validate_input('app', app, flask.Flask)
+    validate_input('app', app, Flask)
 
     # Bind the database instance to the app
     db.init_app(app)

@@ -226,11 +226,10 @@ class Role(db.Model):
     #     return value
 
     @validates('role_id')
-    def validate_role_id(self, key, value: str) -> str:
+    def validate_role_id(self, _, value: str) -> str:
         """Prevent members from assigning role_id 1.
 
-        Students in the 'Unassigned' role will be deleted
-        from the Associations table to save space
+        Students in the 'Unassigned' role will be deleted from the Associations table to save space
 
         :param str _: The key, i.e., role_id. Not used
         :param str value: The role id value to check
@@ -247,7 +246,7 @@ class Role(db.Model):
 
 
     @validates('role_privilege')
-    def validate_role_privilege(self, key, value: str) -> str:
+    def validate_role_privilege(self, _, value: str) -> str:
         """Ensure that role privilege is between 1 and 99 if the role is not 'Unassigned'.
 
         :param str _: The key, i.e., role_privilege. Not used

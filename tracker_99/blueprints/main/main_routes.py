@@ -2,8 +2,11 @@
 """
 from typing import Union
 
-import flask
 from flask import Response
+from flask import render_template
+from flask import redirect
+from flask import url_for
+from flask import flash
 from flask_login import current_user, login_required
 
 from tracker_99.blueprints.main import main_bp
@@ -60,7 +63,7 @@ def index() -> Union[str, Response]:
     # Convert to list if there is only one result
     _courses = [_courses] if not isinstance(_courses, list) else _courses
 
-    return flask.render_template(
+    return render_template(
         'index.html',
         page_title=_page_title,
         page_description=_page_description,
@@ -78,7 +81,7 @@ def about() -> Union[str, Response]:
     _page_title = 'About...'
     _page_description = 'About Page'
 
-    return flask.render_template(
+    return render_template(
         'about.html', page_title=_page_title, page_description=_page_description
     )
 
@@ -91,7 +94,7 @@ def courses() -> Union[str, Response]:
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str/Response
     """
-    return flask.redirect(flask.url_for(INDEX_PAGE))
+    return redirect(url_for(INDEX_PAGE))
 
 
 @main_bp.route('/members')
@@ -104,8 +107,8 @@ def members() -> Union[str, Response]:
     """
     # Redirect if not an Administrator
     if not current_user.is_admin:
-        flask.flash(NOT_AUTH_MSG)
-        return flask.redirect(flask.url_for(INDEX_PAGE))
+        flash(NOT_AUTH_MSG)
+        return redirect(url_for(INDEX_PAGE))
 
     _page_title = 'View Members'
     _page_description = 'List of Members'
@@ -115,7 +118,7 @@ def members() -> Union[str, Response]:
     # Convert to list if there is only one result
     _members = [_members] if not isinstance(_members, list) else _members
 
-    _html = flask.render_template(
+    _html = render_template(
         'members.html',
         page_title=_page_title,
         page_description=_page_description,
@@ -134,8 +137,8 @@ def roles() -> Union[str, Response]:
     """
     # Redirect if not an Administrator
     if not current_user.is_admin:
-        flask.flash(NOT_AUTH_MSG)
-        return flask.redirect(flask.url_for(INDEX_PAGE))
+        flash(NOT_AUTH_MSG)
+        return redirect(url_for(INDEX_PAGE))
 
     _page_title = 'View Roles'
     _page_description = 'List of Roles'
@@ -145,7 +148,7 @@ def roles() -> Union[str, Response]:
     # Convert to list if there is only one result
     _roles = [_roles] if not isinstance(_roles, list) else _roles
 
-    _html = flask.render_template(
+    _html = render_template(
         'roles.html',
         page_title=_page_title,
         page_description=_page_description,

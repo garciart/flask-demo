@@ -1,7 +1,7 @@
 """Add profiling support to the Flask application using the Werkzeug ProfilerMiddleware.
 """
 
-import flask
+from flask import Flask
 from werkzeug.middleware.profiler import ProfilerMiddleware
 
 from tracker_99.app_utils import validate_input
@@ -9,17 +9,17 @@ from tracker_99.app_utils import validate_input
 __all__ = ['add_profiler_middleware']
 
 
-def add_profiler_middleware(app: flask.Flask) -> flask.Flask:
+def add_profiler_middleware(app: Flask) -> Flask:
     """Wraps the application instance in middleware that profiles each request
     using the cProfile module.
 
-    :param flask.Flask app: The application instance
+    :param Flask app: The application instance
 
     :returns: The wrapped application instance
-    :rtype: flask.Flask
+    :rtype: Flask
     """
     # Validate inputs
-    validate_input('app', app, flask.Flask)
+    validate_input('app', app, Flask)
 
     # Add ProfilerMiddleware to your Flask app.
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
