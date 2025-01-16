@@ -9,7 +9,7 @@ from sqlalchemy import String, UniqueConstraint, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from tracker_99 import login_manager
+from tracker_99 import login_manager, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.models import db
 
@@ -54,32 +54,26 @@ class Member(UserMixin, db.Model):
         validate_input('password', password, Union[str, None])
         validate_input('is_admin', is_admin, Union[bool, None])
 
-        # Validate that member_name:
-        # - Starts with a letter
-        # - Contains only letters, numbers, underscores, and periods
-        # - Must Be at least 3 characters long
-        name_regex = r'^[A-Za-z][A-Za-z0-9\.\_\-]{2,}$'
-        if not re.fullmatch(name_regex, member_name):
+        if not re.fullmatch(c.NAME_REGEX, member_name):
             raise ValueError('Invalid member name.')
 
         # Validate that member_email matches the email pattern
-        email_regex = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}$'
-        if not re.fullmatch(email_regex, member_email):
+        if not re.fullmatch(c.EMAIL_REGEX, member_email):
             raise ValueError('Invalid member email.')
 
         # Set the member_name and member_email
-        self.member_name = member_name
-        self.member_email = member_email
+        self.member_name = Mapped[member_name]
+        self.member_email = Mapped[member_email]
 
         if password is not None:
             self.validate_password(password)
             # Initialize password hash
             self.set_password(password)
 
-        self.is_admin = is_admin
+        self.is_admin = Mapped[is_admin]
 
     def get_id(self) -> int:
-        """Overrides UserMixin get_id so you can use member_id instead of id.
+        """Overrides UserMixin get_id, so you can use member_id instead of id.
 
         :returns: The member ID
         :rtype: int
@@ -98,7 +92,7 @@ class Member(UserMixin, db.Model):
         validate_input('password', password, str)
         self.validate_password(password)
 
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = Mapped[generate_password_hash(password)]
 
     @staticmethod
     def validate_password(password: str) -> None:
@@ -115,8 +109,7 @@ class Member(UserMixin, db.Model):
         """
         validate_input('password', password, str)
 
-        password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$'
-        if not re.fullmatch(password_regex, password):
+        if not re.fullmatch(c.PASSWORD_REGEX, password):
             raise ValueError('Invalid password.')
 
     def verify_password(self, password_to_verify: str) -> bool:
@@ -207,24 +200,6 @@ class Role(db.Model):
         'Association', back_populates='role', cascade=CASCADE_ARG
     )
 
-    # @validates('role_privilege')
-    # def validate_role_privilege(self, _, value: str) -> str:
-    #     """Ensure that role privilege is between 1 and 99
-
-    #     :param str _: The key, i.e., role_privilege. Not used
-    #     :param str value: The role privilege value to check
-
-    #     :raises ValueError: If the value is not between 1 and 99
-
-    #     :return: The value if no exception was raised
-    #     :rtype: str
-    #     """
-    #     if int(value) < 1 or int(value) > 99:
-    #         raise ValueError(
-    #             'role_privilege must be between 1 and 99.'
-    #             'Higher privileges are reserved for future use.')
-    #     return value
-
     @validates('role_id')
     def validate_role_id(self, _, value: str) -> str:
         """Prevent members from assigning role_id 1.
@@ -243,7 +218,6 @@ class Role(db.Model):
             raise ValueError(
                 'Role ID 1 is reserved for unassigned members and cannot be used')
         return value
-
 
     @validates('role_privilege')
     def validate_role_privilege(self, _, value: str) -> str:

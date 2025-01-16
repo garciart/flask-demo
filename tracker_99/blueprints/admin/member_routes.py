@@ -5,9 +5,8 @@ from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
-from sqlalchemy.exc import SQLAlchemyError
 
-from tracker_99 import db
+from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.admin import admin_bp
 from tracker_99.blueprints.admin.admin_forms import (
@@ -18,12 +17,9 @@ from tracker_99.blueprints.admin.admin_forms import (
 )
 from tracker_99.models.models import Member, Association
 
+
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
 # pylint: disable=broad-except
-
-INDEX_PAGE = 'main_bp.index'
-MEMBERS_PAGE = 'main_bp.members'
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
 
 @admin_bp.route('/admin/add_member', methods=['GET', 'POST'])
@@ -37,8 +33,8 @@ def add_member() -> Union[str, Response]:
     """
     # Only administrators can add members
     if not current_user.is_admin:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'Add Member'
     _page_description = 'Add Member'
@@ -62,7 +58,7 @@ def add_member() -> Union[str, Response]:
             db.session.add(_member)
             db.session.commit()
             flash('Addition successful.')
-            return redirect(url_for(MEMBERS_PAGE))
+            return redirect(url_for(c.MEMBERS_PAGE))
         except Exception as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
@@ -93,8 +89,8 @@ def view_member(member_id: int) -> Union[str, Response]:
 
     # Admins can view any profile, and members can view their own profile
     if not current_user.is_admin and current_user.member_id != member_id:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'View Member'
     _page_description = 'View Member'
@@ -129,8 +125,8 @@ def edit_member(member_id: int) -> Union[str, Response]:
 
     # Admins can edit any profile, and members can edit their own profile
     if not current_user.is_admin and current_user.member_id != member_id:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'Edit Member'
     _page_description = 'Edit Member'
@@ -168,7 +164,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
             # db.session.add(_member)
             db.session.commit()
             flash('Update successful.')
-            return redirect(url_for(MEMBERS_PAGE))
+            return redirect(url_for(c.MEMBERS_PAGE))
         except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')
@@ -200,13 +196,13 @@ def delete_member(member_id: int) -> Union[str, Response]:
 
     # Only administrators can delete members
     if not current_user.is_admin:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     # Do not let members delete themselves!
     if current_user.get_id() == member_id:
         flash('You cannot delete yourself!')
-        return redirect(url_for(INDEX_PAGE))
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'Delete Member'
     _page_description = 'Delete Member'
@@ -234,7 +230,7 @@ def delete_member(member_id: int) -> Union[str, Response]:
             db.session.flush()
             db.session.commit()
             flash('Delete successful.')
-            return redirect(url_for(MEMBERS_PAGE))
+            return redirect(url_for(c.MEMBERS_PAGE))
         except Exception as e:
             db.session.rollback()
             flash(f'Delete failed: {str(e)}', 'error')
@@ -267,8 +263,8 @@ def update_profile(member_id: int) -> Union[str, Response]:
 
     # Only you can update your profile
     if current_user.get_id() != member_id:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'Update Profile'
     _page_description = 'Update Profile'
@@ -301,7 +297,7 @@ def update_profile(member_id: int) -> Union[str, Response]:
             # db.session.add(_member)
             db.session.commit()
             flash('Update successful.')
-            return redirect(url_for(INDEX_PAGE))
+            return redirect(url_for(c.INDEX_PAGE))
         except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')

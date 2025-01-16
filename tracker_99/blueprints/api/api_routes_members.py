@@ -5,15 +5,14 @@ Test: http://127.0.0.1:5000/api/test
 
 from flask import jsonify, request
 
-from tracker_99 import db
+from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.api import api_bp, token_required
 from tracker_99.models.models import Association, Member
 
+
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
 # pylint: disable=broad-except
-
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
 
 # Do not forget to add an endpoint, or you will get an AssertionError!
@@ -36,7 +35,7 @@ def api_members_all(**kwargs) -> tuple:
     # Only administrators view all members
     # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # query.all() always returns a list, even if it is empty
     """
@@ -87,7 +86,7 @@ def api_add_member(**kwargs) -> tuple:
     # Only administrators can add members
     # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Get the JSON data from the request
     _data = request.get_json()
@@ -149,7 +148,7 @@ def api_get_member(member_id: int, **kwargs) -> tuple:
     # Get kwargs from the @token_required decorator
     if (not kwargs.get('requester_is_admin', False)) and (
             int(kwargs.get('requester_id', 0)) != member_id):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Verify member exists
     """
@@ -197,7 +196,7 @@ def api_edit_member(member_id: int, **kwargs) -> tuple:
     # Get kwargs from the @token_required decorator
     if (not kwargs.get('requester_is_admin', False)) and (
             int(kwargs.get('requester_id', 0)) != member_id):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Verify member exists
     """
@@ -262,7 +261,7 @@ def api_delete_member(member_id: int, **kwargs) -> tuple:
     # Only administrators can delete members
     # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Do not let members delete themselves!
     if int(kwargs.get('requester_id', 0)) == member_id:

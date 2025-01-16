@@ -18,7 +18,7 @@ The application will authenticate the requestor and return a JSON Web Token (JWT
 {"error":"Invalid credentials."}
 ```
 
-Afterwards, the requestor will use the token to make API requests for information using the following format:
+Afterward, the requestor will use the token to make API requests for information using the following format:
 
 ```sh
 curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/courses/get/17

@@ -11,6 +11,8 @@ CUTOFF_PRIVILEGE_EDITOR = 10
 # like chairs of the course and admins, can edit a course
 CUTOFF_PRIVILEGE_OWNER = 20
 
+EMAIL_REGEX = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}$'
+
 INDEX_PAGE = 'main_bp.index'
 INVALID_EMAIL_MSG = 'Email address already exists.'
 INVALID_NAME_MSG = (

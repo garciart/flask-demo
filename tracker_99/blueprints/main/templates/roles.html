@@ -14,13 +14,11 @@
 <p>This page is restricted to administrators and members only.</p>
 {% else %}
 <h1>Welcome, {{ current_user.member_name }}!</h1>
-<p><i class="text-danger">
-    <ul>
-        <li>Adding, editing, or deleting roles is disabled at this time.</li>
-        <li>Members with a privilege level less than 10 can only view course information.</li>
-        <li>Role ID 1, name 'Unassigned', and privilege 0 are reserved and cannot be used.</li>
-    </u>
-</i></p>
+<ul class="text-danger font-italic">
+    <li>Adding, editing, or deleting roles is disabled at this time.</li>
+    <li>Members with a privilege level less than 10 can only view course information.</li>
+    <li>Role ID 1, name 'Unassigned', and privilege 0 are reserved and cannot be used.</li>
+</ul>
 <table id="data-table" class="table table-striped display caption-top">
     <caption class="text-center">List of Roles</caption>
     <thead>

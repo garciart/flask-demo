@@ -10,13 +10,10 @@ from flask import Response, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
 from sqlalchemy import select
 
-from tracker_99 import db
+from tracker_99 import db, constants as c
 from tracker_99.blueprints.auth import auth_bp
 from tracker_99.blueprints.auth.auth_forms import LoginForm
 from tracker_99.models.models import Member
-
-INDEX_PAGE = 'main_bp.index'
-LOGIN_PAGE = 'auth_bp.login'
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -29,7 +26,7 @@ def login() -> Union[str, Response]:
     :rtype: str/Response
     """
     if current_user.is_authenticated:
-        return redirect(url_for(INDEX_PAGE))
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'Log In'
     _page_description = 'Log In'
@@ -44,14 +41,14 @@ def login() -> Union[str, Response]:
 
         if _member is None or not _member.verify_password(_form.password.data):
             flash('Invalid member name or password')
-            return redirect(url_for(LOGIN_PAGE))
+            return redirect(url_for(c.LOGIN_PAGE))
 
         login_user(_member, remember=_form.remember_me.data)
 
         _next_page = request.args.get('next')
 
         if not _next_page or urlsplit(_next_page).netloc != '':
-            _next_page = url_for(INDEX_PAGE)
+            _next_page = url_for(c.INDEX_PAGE)
 
         # flash(f'Welcome, {_member.member_name}!')
 
@@ -71,4 +68,4 @@ def logout() -> Response:
     """
     logout_user()
     flash('You have been logged out.')
-    return redirect(url_for(INDEX_PAGE))
+    return redirect(url_for(c.INDEX_PAGE))

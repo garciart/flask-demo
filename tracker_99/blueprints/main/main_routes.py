@@ -3,18 +3,16 @@
 from typing import Union
 
 from flask import Response
-from flask import render_template
-from flask import redirect
-from flask import url_for
 from flask import flash
+from flask import redirect
+from flask import render_template
+from flask import url_for
 from flask_login import current_user, login_required
 
+from tracker_99 import constants as c
 from tracker_99.blueprints.main import main_bp
 from tracker_99.models import db
 from tracker_99.models.models import Course, Member, Role, Association
-
-INDEX_PAGE = 'main_bp.index'
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
 
 @main_bp.route('/')
@@ -93,7 +91,7 @@ def courses() -> Union[str, Response]:
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str/Response
     """
-    return redirect(url_for(INDEX_PAGE))
+    return redirect(url_for(c.INDEX_PAGE))
 
 
 @main_bp.route('/members')
@@ -106,8 +104,8 @@ def members() -> Union[str, Response]:
     """
     # Redirect if not an Administrator
     if not current_user.is_admin:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'View Members'
     _page_description = 'List of Members'
@@ -136,8 +134,8 @@ def roles() -> Union[str, Response]:
     """
     # Redirect if not an Administrator
     if not current_user.is_admin:
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'View Roles'
     _page_description = 'List of Roles'

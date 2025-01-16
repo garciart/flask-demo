@@ -5,16 +5,14 @@ Test: http://127.0.0.1:5000/api/test
 
 from flask import jsonify, request
 
-from tracker_99 import db
+from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.api import api_bp, token_required
 from tracker_99.models.models import Role
 
+
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
 # pylint: disable=broad-except
-
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
-NOT_FOUND_MSG = 'No roles found.'
 
 
 # Do not forget to add an endpoint, or you will get an AssertionError!
@@ -38,7 +36,7 @@ def api_roles_all(**kwargs) -> tuple:
     _is_admin = kwargs.get('requester_is_admin', False)
 
     if not _is_admin:
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Administrators can view all roles
     # query.all() always returns a list, even if it is empty
@@ -48,7 +46,7 @@ def api_roles_all(**kwargs) -> tuple:
     _roles_list = Role.query.all()
 
     if not _roles_list:
-        return jsonify({'error': NOT_FOUND_MSG}), 404
+        return jsonify({'error': c.NOT_FOUND_MSG}), 404
 
     # Exclude the 'password_hash' field
     _filtered_roles = [
@@ -89,7 +87,7 @@ def api_add_role(**kwargs) -> tuple:
     # Only administrators can add roles
     # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Get the JSON data from the request
     _data = request.get_json()
@@ -149,7 +147,7 @@ def api_get_role(role_id: int, **kwargs) -> tuple:
     # Only administrators can add roles
     # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Verify role exists
     """
@@ -195,7 +193,7 @@ def api_edit_role(role_id: int, **kwargs) -> tuple:
     # Only administrators can add roles
     # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Verify role exists
     """
@@ -251,7 +249,7 @@ def api_delete_role(role_id: int, **kwargs) -> tuple:
     # Only administrators can add roles
     # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Verify role exists
     """

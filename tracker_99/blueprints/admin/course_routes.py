@@ -5,9 +5,8 @@ from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
-from sqlalchemy.exc import SQLAlchemyError
 
-from tracker_99 import db
+from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.admin import admin_bp
 from tracker_99.blueprints.admin.admin_forms import (
@@ -17,12 +16,9 @@ from tracker_99.blueprints.admin.admin_forms import (
 )
 from tracker_99.models.models import Course, Association
 
+
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
 # pylint: disable=broad-except
-
-INDEX_PAGE = 'main_bp.index'
-COURSES_PAGE = 'main_bp.courses'
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
 
 @admin_bp.route('/admin/add_course', methods=['GET', 'POST'])
@@ -65,7 +61,7 @@ def add_course() -> Union[str, Response]:
             db.session.commit()
 
             flash('Addition successful.')
-            return redirect(url_for(COURSES_PAGE))
+            return redirect(url_for(c.COURSES_PAGE))
         except Exception as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
@@ -157,7 +153,7 @@ def edit_course(course_id: int) -> Union[str, Response]:
             # db.session.add(_course)
             db.session.commit()
             flash('Update successful.')
-            return redirect(url_for(COURSES_PAGE))
+            return redirect(url_for(c.COURSES_PAGE))
         except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')
@@ -210,7 +206,7 @@ def delete_course(course_id: int) -> Union[str, Response]:
             db.session.delete(_course)
             db.session.commit()
             flash('Delete successful.')
-            return redirect(url_for(COURSES_PAGE))
+            return redirect(url_for(c.COURSES_PAGE))
         except Exception as e:
             db.session.rollback()
             flash(f'Delete failed: {str(e)}', 'error')

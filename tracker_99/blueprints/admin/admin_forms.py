@@ -16,38 +16,8 @@ from wtforms.validators import (
 )
 from wtforms.widgets import TextArea
 
-from tracker_99 import db
+from tracker_99 import db, constants as c
 from tracker_99.models.models import Course, Member, Role
-
-# Member names must:
-# - Start with a letter
-# - Contain only letters, numbers, underscores, and periods
-# - Be at least 3 characters long
-NAME_REGEX = r'^[A-Za-z][A-Za-z0-9\.\_\-]{2,}$'
-INVALID_NAME_MSG = (
-        'Names must Be at least 3 characters long, start with a letter, '
-        + 'and contain only letters, numbers, periods, underscores, and dashes.'
-)
-# Text fields must:
-# - Start with a letter or number
-# - Contain only letters, numbers, periods, underscores, dashes, and spaces
-# - Be at least 3 characters long
-TEXT_REGEX = r'^[A-Za-z0-9][A-Za-z0-9 \.\_\-]{2,}$'
-INVALID_TEXT_MSG = (
-        'Text fields must Be at least 3 characters long, start with a letter or number, '
-        + 'and contain only letters, numbers, periods, underscores, dashes, and spaces.'
-)
-# Ensure the password meets validation criteria:
-# - A minimum of eight characters
-# - A maximum of fifteen characters
-# - At least one uppercase letter, one lowercase letter and one number
-PASSWORD_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$'
-INVALID_PASSWORD_MSG = (
-        'Password must be between 8-15 characters long, '
-        + 'contain at least one uppercase letter, one lowercase letter, and one number.'
-)
-PASSWORD_FIELD_LABEL = 'Repeat Password'
-INVALID_EMAIL_MSG = 'Email address already exists.'
 
 
 # CUSTOM VALIDATORS WITHOUT A FIELD NAME IN THE FUNCTION NAME MUST BE DEFINED BEFORE USE!
@@ -62,7 +32,9 @@ def validate_unique_course(form: Form, field: Field) -> None:
 
     # Query the database to check if a course with the same name and code exists
     # but exclude the current course when editing
-    # SELECT * FROM courses WHERE courses.course_name='Building Secure Python Applications' AND course_code='SDEV 300' LIMIT 1;
+    # SELECT * FROM courses
+    # WHERE courses.course_name='Building Secure Python Applications' AND
+    #     course_code='SDEV 300' LIMIT 1;
     existing_course = Course.query.filter(
         Course.course_name == course_name, Course.course_code == course_code
     ).first()
@@ -81,7 +53,8 @@ class AddCourseForm(FlaskForm):
 
     course_name = StringField(
         'Course',
-        validators=[DataRequired(), Length(max=64), Regexp(TEXT_REGEX, message=INVALID_TEXT_MSG)]
+        validators=[DataRequired(), Length(max=64), Regexp(
+            c.TEXT_REGEX, message=c.INVALID_TEXT_MSG)]
     )
     course_code = StringField(
         'Code',
@@ -89,7 +62,7 @@ class AddCourseForm(FlaskForm):
             DataRequired(),
             Length(max=64),
             validate_unique_course,
-            Regexp(TEXT_REGEX, message=INVALID_TEXT_MSG),
+            Regexp(c.TEXT_REGEX, message=c.INVALID_TEXT_MSG),
         ]
     )
     course_group = StringField(
@@ -107,7 +80,8 @@ class EditCourseForm(FlaskForm):
 
     course_name = StringField(
         'Course',
-        validators=[DataRequired(), Length(max=64), Regexp(TEXT_REGEX, message=INVALID_TEXT_MSG)]
+        validators=[DataRequired(), Length(max=64), Regexp(
+            c.TEXT_REGEX, message=c.INVALID_TEXT_MSG)]
     )
     course_code = StringField(
         'Code',
@@ -115,7 +89,7 @@ class EditCourseForm(FlaskForm):
             DataRequired(),
             Length(max=64),
             validate_unique_course,
-            Regexp(TEXT_REGEX, message=INVALID_TEXT_MSG)
+            Regexp(c.TEXT_REGEX, message=c.INVALID_TEXT_MSG)
         ]
     )
     course_group = StringField(
@@ -142,7 +116,8 @@ class AddMemberForm(FlaskForm):
 
     member_name = StringField(
         'Member Name',
-        validators=[DataRequired(), Length(max=64), Regexp(NAME_REGEX, message=INVALID_NAME_MSG)]
+        validators=[DataRequired(), Length(max=64), Regexp(
+            c.NAME_REGEX, message=c.INVALID_NAME_MSG)]
     )
     member_email = StringField('Email', validators=[DataRequired(), Email(), Length(max=320)])
     password = PasswordField(
@@ -150,11 +125,11 @@ class AddMemberForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(max=15),
-            Regexp(PASSWORD_REGEX, message=INVALID_PASSWORD_MSG)
+            Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG)
         ]
     )
     password2 = PasswordField(
-        PASSWORD_FIELD_LABEL, validators=[DataRequired(), EqualTo('password')]
+        c.PASSWORD_FIELD_LABEL, validators=[DataRequired(), EqualTo('password')]
     )
     is_admin = BooleanField('This member an administrator')
     submit = SubmitField('Add Member')
@@ -187,12 +162,13 @@ class AddMemberForm(FlaskForm):
         :returns: None
         :rtype: None
         """
-        # SELECT * FROM members WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
+        # SELECT * FROM members
+        # WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
         if db.session.scalar(
                 select(Member).where(
                     func.lower(Member.member_email) == func.lower(member_email.data))
         ):
-            raise ValidationError(INVALID_EMAIL_MSG)
+            raise ValidationError(c.INVALID_EMAIL_MSG)
 
 
 class EditMemberForm(FlaskForm):
@@ -203,14 +179,15 @@ class EditMemberForm(FlaskForm):
 
     member_name = StringField(
         'Member Name',
-        validators=[DataRequired(), Length(max=64), Regexp(NAME_REGEX, message=INVALID_NAME_MSG)]
+        validators=[DataRequired(), Length(max=64), Regexp(
+            c.NAME_REGEX, message=c.INVALID_NAME_MSG)]
     )
     member_email = StringField('Email', validators=[DataRequired(), Email(), Length(max=320)])
     password = PasswordField(
         'Password',
-        validators=[Length(max=15), Regexp(PASSWORD_REGEX, message=INVALID_PASSWORD_MSG)]
+        validators=[Length(max=15), Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG)]
     )
-    password2 = PasswordField(PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
+    password2 = PasswordField(c.PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
     is_admin = BooleanField('This member is an administrator')
     submit = SubmitField('Update Member')
 
@@ -257,12 +234,13 @@ class EditMemberForm(FlaskForm):
         :returns: None
         :rtype: None
         """
-        # SELECT * FROM members WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
+        # SELECT * FROM members
+        # WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
         if member_email.data != self.current_member_email and db.session.scalar(
                 select(Member).where(
                     func.lower(Member.member_email) == func.lower(member_email.data))
         ):
-            raise ValidationError(INVALID_EMAIL_MSG)
+            raise ValidationError(c.INVALID_EMAIL_MSG)
 
 
 class UpdateProfileForm(FlaskForm):
@@ -277,10 +255,10 @@ class UpdateProfileForm(FlaskForm):
         validators=[
             Optional(),
             Length(max=15),
-            Regexp(PASSWORD_REGEX, message=INVALID_PASSWORD_MSG),
+            Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG),
         ]
     )
-    password2 = PasswordField(PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
+    password2 = PasswordField(c.PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
     submit = SubmitField('Update Member')
 
     def __init__(self, current_member_email: str, *args, **kwargs) -> None:
@@ -305,12 +283,13 @@ class UpdateProfileForm(FlaskForm):
         :returns: None
         :rtype: None
         """
-        # SELECT * FROM members WHERE LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
+        # SELECT * FROM members WHERE
+        # LOWER(members.member_email) = LOWER("LeTo.ATREIDES@atreides.com");
         if member_email.data != self.current_member_email and db.session.scalar(
                 select(Member).where(
                     func.lower(Member.member_email) == func.lower(member_email.data))
         ):
-            raise ValidationError(INVALID_EMAIL_MSG)
+            raise ValidationError(c.INVALID_EMAIL_MSG)
 
 
 class DeleteMemberForm(FlaskForm):
@@ -330,7 +309,8 @@ class AddRoleForm(FlaskForm):
 
     role_name = StringField(
         'Role',
-        validators=[DataRequired(), Length(max=64), Regexp(TEXT_REGEX, message=INVALID_TEXT_MSG)]
+        validators=[DataRequired(), Length(max=64), Regexp(
+            c.TEXT_REGEX, message=c.INVALID_TEXT_MSG)]
     )
     role_privilege = IntegerField(
         'Privilege Level', validators=[DataRequired(), NumberRange(min=1, max=3)]
@@ -379,7 +359,7 @@ class EditRoleForm(FlaskForm):
     """
 
     role_name = StringField(
-        'Role name', validators=[DataRequired(), Regexp(TEXT_REGEX, message=INVALID_TEXT_MSG)]
+        'Role name', validators=[DataRequired(), Regexp(c.TEXT_REGEX, message=c.INVALID_TEXT_MSG)]
     )
     role_privilege = IntegerField(
         'Privilege Level', validators=[DataRequired(), NumberRange(min=1, max=99)]

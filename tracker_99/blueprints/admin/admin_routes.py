@@ -6,19 +6,11 @@ from typing import Union
 from flask import Response, flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
 
-from tracker_99 import db
+from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.admin import admin_bp
 from tracker_99.blueprints.admin.admin_forms import SimpleForm
 from tracker_99.models.models import Course, Member, Role, Association
-
-INDEX_PAGE = 'main_bp.index'
-COURSES_PAGE = 'main_bp.courses'
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
-# Only members with role_privileges greater than or equal to 10,
-# like chairs and teachers of the course and admins,
-# can assign other members to a course
-DEFAULT_CUTOFF_PRIVILEGE = 10
 
 
 @admin_bp.route('/admin/assign_course/<int:course_id>', methods=['GET', 'POST'])
@@ -82,10 +74,11 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # like chairs and teachers of the course and admins,
     # can assign other members to a course
     if not current_user.is_admin and not any(
-            a['member_id'] == _member_id and a['role_privilege'] >= DEFAULT_CUTOFF_PRIVILEGE for a in _assigned_members
+            a['member_id'] == _member_id and a['role_privilege'] >= c.CUTOFF_PRIVILEGE_EDITOR for a
+            in _assigned_members
     ):
-        flash(NOT_AUTH_MSG)
-        return redirect(url_for(INDEX_PAGE))
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     # Get a list of ID for assigned members
     _assigned_member_ids = [a['member_id'] for a in _assigned_members]
@@ -113,11 +106,11 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # This sets the default to assigning members as students only
     if not current_user.is_admin:
         _cutoff_privilege_level = (
-            int(next((
-                a['role_privilege']
-                for a in _assigned_members
-                if _member_id == a['member_id']
-            ), DEFAULT_CUTOFF_PRIVILEGE, )) - 1
+                int(next((
+                    a['role_privilege']
+                    for a in _assigned_members
+                    if _member_id == a['member_id']
+                ), c.CUTOFF_PRIVILEGE_EDITOR, )) - 1
         )
     else:
         _cutoff_privilege_level = 99
@@ -139,7 +132,8 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # Get info for roles less than the privilege level of the current user
     # Use ORDER BY for rendering in the template by privilege level
     """
-    SELECT role_id, role_name FROM roles WHERE roles.role_privilege < 10 ORDER BY role_privilege DESC;
+    SELECT role_id, role_name FROM roles
+    WHERE roles.role_privilege < 10 ORDER BY role_privilege DESC;
     """
     _roles_list = (
         db.session.query(Role.role_id, Role.role_name)
@@ -200,7 +194,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
 
         db.session.commit()
 
-        return redirect(url_for(INDEX_PAGE))
+        return redirect(url_for(c.INDEX_PAGE))
 
     # Instantiate the form
     _form = SimpleForm()

@@ -12,8 +12,8 @@ from logging.handlers import RotatingFileHandler
 from types import UnionType
 from typing import Union
 
-from flask import Flask, Request, Response, current_app
 import jwt
+from flask import Flask, Request, Response, current_app
 
 __all__ = [
     'validate_input',
@@ -35,6 +35,7 @@ def validate_input(obj_name: str, obj_to_check: object,
     :param str obj_name: The name of the input to validate
     :param object obj_to_check: The input to validate
     :param type/tuple/UnionType expected_type: The expected type or list of types for the input
+    :param bool allow_empty: Check type, but allow empty strings, etc.
 
     :returns None: None
     """
@@ -202,8 +203,8 @@ def encode_auth_token(member_id: int, expiration_in_min: int = 60) -> str:
     try:
         payload = {
             # Token expires in 1 hour
-            'exp': datetime.datetime.now(datetime.timezone.utc)
-                   + datetime.timedelta(expiration_in_min),
+            'exp': datetime.datetime.now(
+                datetime.timezone.utc) + datetime.timedelta(expiration_in_min),
             # Issued at
             'iat': datetime.datetime.now(datetime.timezone.utc),
             # Subject is the member ID

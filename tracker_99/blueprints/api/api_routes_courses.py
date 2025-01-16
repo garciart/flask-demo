@@ -10,22 +10,12 @@ from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.api import api_bp, token_required
 from tracker_99.models.models import Association, Course, Member, Role
 
+
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
 # pylint: disable=broad-except
 
 
-NOT_AUTH_MSG = 'You do not have permission to perform that action.'
-NOT_FOUND_MSG = 'No courses found.'
-# Only members with role_privileges greater than or equal to 10,
-# like chairs and teachers of the course and admins, can edit a course
-CUTOFF_PRIVILEGE_EDITOR = 10
-# Only members with role_privileges greater than or equal to 20,
-# like chairs of the course and admins, can edit a course
-CUTOFF_PRIVILEGE_OWNER = 20
-
 # Do not forget to add an endpoint, or you will get an AssertionError!
-
-
 @api_bp.route('/api/courses/all', methods=['GET'], endpoint='courses_all')
 @token_required
 def api_courses_all(**kwargs) -> tuple:
@@ -67,7 +57,7 @@ def api_courses_all(**kwargs) -> tuple:
             Association).filter(Association.member_id == _member_id).all()
 
     if not _courses_list:
-        return jsonify({'error': NOT_FOUND_MSG}), 404
+        return jsonify({'error': c.NOT_FOUND_MSG}), 404
 
     # Exclude the 'password_hash' field
     _filtered_courses = [
@@ -114,7 +104,7 @@ def api_add_course(**kwargs) -> tuple:
     """
     _member = Member.query.get_or_404(_member_id)
     if not _member:
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+        return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Get the JSON data from the request
     _data = request.get_json()
@@ -197,7 +187,7 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
         ).first()
 
         if not _assoc:
-            return jsonify({'error': NOT_FOUND_MSG}), 403
+            return jsonify({'error': c.NOT_FOUND_MSG}), 403
 
     # Verify course exists
     """
@@ -256,7 +246,7 @@ def api_edit_course(course_id: int, **kwargs) -> tuple:
         """
         _course = Course.query.get_or_404(course_id)
         if not _course:
-            return jsonify({'error': NOT_FOUND_MSG}), 404
+            return jsonify({'error': c.NOT_FOUND_MSG}), 404
     else:
         # Members can edit their own courses
         """
@@ -277,10 +267,10 @@ def api_edit_course(course_id: int, **kwargs) -> tuple:
         if _result:
             _course, _role_privilege = _result
         else:
-            return jsonify({'error': NOT_FOUND_MSG}), 404
+            return jsonify({'error': c.NOT_FOUND_MSG}), 404
 
-        if _role_privilege < CUTOFF_PRIVILEGE_EDITOR:
-            return jsonify({'error': NOT_AUTH_MSG}), 403
+        if _role_privilege < c.CUTOFF_PRIVILEGE_EDITOR:
+            return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     try:
         # Get the JSON data from the request
@@ -350,7 +340,7 @@ def api_delete_course(course_id: int, **kwargs) -> tuple:
         """
         _course = Course.query.get_or_404(course_id)
         if not _course:
-            return jsonify({'error': NOT_FOUND_MSG}), 404
+            return jsonify({'error': c.NOT_FOUND_MSG}), 404
     else:
         # Members can edit their own courses
         """
@@ -371,12 +361,12 @@ def api_delete_course(course_id: int, **kwargs) -> tuple:
         if _result:
             _course, _role_privilege = _result
         else:
-            return jsonify({'error': NOT_FOUND_MSG}), 404
+            return jsonify({'error': c.NOT_FOUND_MSG}), 404
 
-        print(_role_privilege, CUTOFF_PRIVILEGE_OWNER)
+        print(_role_privilege, c.CUTOFF_PRIVILEGE_OWNER)
 
-        if _role_privilege < CUTOFF_PRIVILEGE_OWNER:
-            return jsonify({'error': NOT_AUTH_MSG}), 403
+        if _role_privilege < c.CUTOFF_PRIVILEGE_OWNER:
+            return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Save name for message after deletion
     _course_name = _course.course_name
