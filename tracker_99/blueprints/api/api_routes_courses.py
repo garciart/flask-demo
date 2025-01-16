@@ -12,9 +12,19 @@ from sqlalchemy.exc import SQLAlchemyError
 from tracker_99 import db
 from tracker_99.app_utils import validate_input, decode_auth_token
 from tracker_99.blueprints.api import api_bp
-from tracker_99.models.models import Association, Course, Member
+from tracker_99.models.models import Association, Course, Member, Role
 
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
+NOT_FOUND_MSG = 'No courses found.'
+# Only members with role_privileges greater than or equal to 10,
+# like chairs and teachers of the course and admins, can edit a course
+CUTOFF_PRIVILEGE_EDITOR = 10
+# Only members with role_privileges greater than or equal to 20,
+# like chairs of the course and admins, can edit a course
+CUTOFF_PRIVILEGE_OWNER = 20
+
+# Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
+# pylint: disable=broad-except
 
 
 def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
@@ -96,30 +106,43 @@ def api_courses_all(**kwargs) -> tuple:
     :returns: The data in JSON format or an error message with the HTTP status code (Response, int)
     :rtype: tuple
     """
-    # Only administrators view all courses
-    # is_admin is a kwarg from the @token_required decorator
-    if not kwargs.get('requester_is_admin', False):
-        return jsonify({'error': NOT_AUTH_MSG}), 403
+    # Get kwargs from the @token_required decorator
+    _member_id = kwargs.get('requester_id', 0)
+    _is_admin = kwargs.get('requester_is_admin', False)
 
-    # query.all() always returns a list, even if it is empty
-    """
-    SELECT * FROM courses;
-    """
-    _courses_list = Course.query.all()
+    if _is_admin:
+        # Administrators can view all courses
+        # query.all() always returns a list, even if it is empty
+        """
+        SELECT * FROM courses;
+        """
+        _courses_list = Course.query.all()
+    else:
+        """
+        SELECT courses.*
+        FROM courses,
+            associations
+        WHERE associations.member_id = 2 AND
+            associations.course_id = courses.course_id;
+        """
+        # _courses_list = Course.query.join(Association).filter(
+        #     Association.member_id == _member_id).all()
+        _courses_list = db.session.query(Course).join(
+            Association).filter(Association.member_id == _member_id).all()
 
     if not _courses_list:
-        return jsonify({'error': 'No courses found.'}), 404
+        return jsonify({'error': NOT_FOUND_MSG}), 404
 
     # Exclude the 'password_hash' field
     _filtered_courses = [
         {
-            'course_id': c.course_id,
-            'course_name': c.course_name,
-            'course_code': c.course_code,
-            'course_group': c.course_group,
-            'course_desc': c.course_desc,
+            'course_id': course.course_id,
+            'course_name': course.course_name,
+            'course_code': course.course_code,
+            'course_group': course.course_group,
+            'course_desc': course.course_desc,
         }
-        for c in _courses_list
+        for course in _courses_list
     ]
 
     # Use jsonify to convert the filtered list to JSON
@@ -133,36 +156,32 @@ def api_add_course(**kwargs) -> tuple:
     """Respond to an API request to add a course.
 
     Bash:
-    curl -X POST -H "Content-Type: application/json" \
-        -H "Authorization: Bearer json.web.token" \
-        -d '{"course_name": "Building Bad Python Applications", "course_code": "SDEV 301", "course_group": "SDEV", "course_desc": "Not recommended!"}' \
-        http://127.0.0.1:5000/api/courses/add
-
-    curl -X POST -H "Content-Type: application/json" \
-        -d '{"course_name": "Building Bad Python Applications", "course_code": "SDEV 301", "course_group": "SDEV", "course_desc": "Not recommended!"}' \
-        http://127.0.0.1:5000/api/courses/add
-
-    curl -X POST -H "Content-Type: application/json" \
+    curl -X POST -H "Authorization: Bearer json.web.token" \
+        -H "Content-Type: application/json" \
         -d '{"course_name": "Building Bad Python Applications", "course_code": "SDEV 301"}' \
         http://127.0.0.1:5000/api/courses/add
 
     PS:
     Invoke-WebRequest -Method Post \
-        -ContentType "application/json" \
         -Headers "Authorization: Bearer json.web.token" \
-        -Body "{`"course_name`": `"Building Bad Python Applications`", `"course_code`": `"farok.tabr@fremen.com`", `"course_group`": `"SDEV`", `"course_desc`": `"Not recommended!`"}" \
+        -ContentType "application/json" \
+        -Body "{`"course_name`": `"Building Bad Python Applications`", `"course_code`": `"SDEV 301`"}" \
         -Uri "http://127.0.0.1:5000/api/courses/add"
 
     :returns: A status message with the HTTP status code (Response, int)
     :rtype: tuple
     """
+    # Check if valid member
     _member_id = kwargs.get('requester_id', 0)
+    """
+    SELECT member_id FROM members WHERE member_id = 0;
+    """
+    _member = Member.query.get_or_404(_member_id)
+    if not _member:
+        return jsonify({'error': NOT_AUTH_MSG}), 403
 
     # Get the JSON data from the request
     _data = request.get_json()
-
-    print("_data['course_name']", _data['course_name'], type(_data['course_name']))
-    print(_data.get('course_name', ''))
 
     _course_name = _data.get('course_name', '')
     _course_code = _data.get('course_code', '')
@@ -198,9 +217,10 @@ def api_add_course(**kwargs) -> tuple:
 
         db.session.add(_assoc)
         db.session.commit()
+
         return jsonify(
             {'message': f'POST: Successfully added {_course.course_name} ({_new_id}).'}), 200
-    except SQLAlchemyError as e:
+    except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Addition failed: {str(e)}'}), 200
 
@@ -212,12 +232,12 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
     """Respond to an API request for course information.
 
     Bash:
-    curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/courses/get/2
+    curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/courses/get/17
 
     PS:
     Invoke-WebRequest -Method GET \
         -Headers @{ "Authorization" = "Bearer json.web.token" } \
-        -Uri "http://127.0.0.1:5000/api/courses/get/2"
+        -Uri "http://127.0.0.1:5000/api/courses/get/17"
 
     :param int course_id: The course to retrieve by ID
 
@@ -230,10 +250,10 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
     _member_id = kwargs.get('requester_id', 0)
 
     # Admins can view any course, and members can view assigned courses
-    # kwargs are from the @token_required decorator
+    # Get kwargs from the @token_required decorator
     if (not kwargs.get('requester_is_admin', False)):
         """
-        SELECT * FROM associations WHERE course_id = 2 AND member_id = 6;
+        SELECT * FROM associations WHERE course_id = 17 AND member_id = 2;
         """
         _assoc = Association.query.filter(
             Association.course_id == course_id,
@@ -241,11 +261,11 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
         ).first()
 
         if not _assoc:
-            return jsonify({'error': NOT_AUTH_MSG}), 403
+            return jsonify({'error': NOT_FOUND_MSG}), 403
 
     # Verify course exists
     """
-    SELECT * FROM courses WHERE course_id = 2;
+    SELECT * FROM courses WHERE course_id = 17;
     """
     _course = Course.query.get_or_404(course_id)
 
@@ -261,129 +281,184 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
     return jsonify(course=_course_data), 200
 
 
-# # Do not forget to add an endpoint, or you will get an AssertionError!
-# @api_bp.route('/api/members/edit/<int:member_id>', methods=['PUT'], endpoint='edit_member')
-# @token_required
-# def api_edit_member(member_id: int, **kwargs) -> tuple:
-#     """Respond to an API request to edit a member.
+# Do not forget to add an endpoint, or you will get an AssertionError!
+@api_bp.route('/api/courses/edit/<int:course_id>', methods=['PUT'], endpoint='edit_course')
+@token_required
+def api_edit_course(course_id: int, **kwargs) -> tuple:
+    """Respond to an API request to edit a course.
 
-#     Bash:
-#     curl -X PUT -H "Content-Type: application/json" \
-#         -H "Authorization: Bearer json.web.token" \
-#         -d '{"is_admin": true}' \
-#         http://127.0.0.1:5000/api/members/edit/2
+    Bash:
+    curl -X PUT -H "Authorization: Bearer json.web.token" \
+        -H "Content-Type: application/json" \
+        -d '{"course_name": "Building Good Python Applications", "course_desc": "Much better!"}' \
+        http://127.0.0.1:5000/api/courses/edit/17
 
-#     PS:
-#     Invoke-WebRequest -Method Put \
-#         -ContentType "application/json" \
-#         -Headers "Authorization: Bearer json.web.token" \
-#         -Body "{`"is_admin`": false}" \
-#         -Uri "http://127.0.0.1:5000/api/members/edit/2"
+    PS:
+    Invoke-WebRequest -Method Put \
+        -ContentType "application/json" \
+        -Headers "Authorization: Bearer json.web.token" \
+        -Body "{`"course_name`": `"Building Good Python Applications`", `"course_desc`": `"Much better!`"}' \
+        -Uri "http://127.0.0.1:5000/api/courses/edit/17"
 
-#     :returns: A status message with the HTTP status code (Response, int)
-#     :rtype: tuple
-#     """
-#     # Validate inputs
-#     validate_input('member_id', member_id, int)
+    :returns: A status message with the HTTP status code (Response, int)
+    :rtype: tuple
+    """
+    # Validate inputs
+    validate_input('course_id', course_id, int)
 
-#     # Admins can edit any profile, and members can edit their own profile
-#     # kwargs are from the @token_required decorator
-#     if (not kwargs.get('requester_is_admin', False)) and (
-#             int(kwargs.get('requester_id', 0)) != member_id):
-#         return jsonify({'error': NOT_AUTH_MSG}), 403
+    # Get kwargs from the @token_required decorator
+    _member_id = kwargs.get('requester_id', 2)
+    _is_admin = kwargs.get('requester_is_admin', False)
 
-#     # Verify member exists
-#     """
-#     SELECT * FROM members WHERE member_id = 17;
-#     """
-#     _member = Member.query.get_or_404(member_id)
+    if _is_admin:
+        # Administrators can view all courses
+        # query.all() always returns a list, even if it is empty
+        """
+        SELECT *
+        FROM courses
+        WHERE courses.course_id = 12
+        """
+        _course = Course.query.get_or_404(course_id)
+        if not _course:
+            return jsonify({'error': NOT_FOUND_MSG}), 404
+    else:
+        # Members can edit their own courses
+        """
+        SELECT courses.*, role_privilege
+        FROM courses,
+            associations,
+            roles
+        WHERE associations.member_id = 2 AND
+            courses.course_id = 12 AND
+            associations.course_id = courses.course_id AND
+            associations.role_id = roles.role_id;
+        """
+        _result = (db.session.query(Course, Role.role_privilege)
+                   .join(Association, Association.course_id == Course.course_id)
+                   .join(Role, Association.role_id == Role.role_id)
+                   .filter(Association.member_id == _member_id, Course.course_id == course_id)
+                   .first())
+        if _result:
+            _course, _role_privilege = _result
+        else:
+            return jsonify({'error': NOT_FOUND_MSG}), 404
 
-#     try:
-#         # Get the JSON data from the request
-#         _data = request.get_json()
+        if _role_privilege < CUTOFF_PRIVILEGE_EDITOR:
+            return jsonify({'error': NOT_AUTH_MSG}), 403
 
-#         # Validate and update member attributes if provided in the request
-#         if 'member_name' in _data:
-#             validate_input("_data['member_name']", _data['member_name'], str)
-#             _member.member_name = _data['member_name']
-#         if 'member_email' in _data:
-#             validate_input("_data['member_email']", _data['member_email'], str)
-#             _member.member_email = _data['member_email']
-#         if 'is_admin' in _data:
-#             validate_input("_data['is_admin']", _data['is_admin'], bool)
-#             _member.is_admin = bool(_data['is_admin'])
-#         if 'password' in _data:
-#             validate_input("_data['password']", _data['password'], str)
-#             _member.set_password(_data['password'])
-#         """
-#         UPDATE members
-#         SET member_name = "Farok.Tabr",
-#             member_email = "farok.tabr@fremen.com",
-#             password_hash = "scrypt:32768:8:1$...",
-#             is_admin = 0
-#         WHERE member_id = 17;
-#         """
-#         # db.session.add(_member)
-#         db.session.commit()
-#         return jsonify({'message': f'PUT: Successfully updated {_member.member_name} .'}), 200
-#     except SQLAlchemyError as e:
-#         db.session.rollback()
-#         return jsonify({'message': f'Update failed: {str(e)}'}), 200
+    try:
+        # Get the JSON data from the request
+        _data = request.get_json()
+
+        # Validate and update course attributes if provided in the request
+        if 'course_name' in _data:
+            validate_input("_data['course_name']", _data['course_name'], str)
+            _course.course_name = _data['course_name']
+        if 'course_code' in _data:
+            validate_input("_data['course_code']", _data['course_code'], str)
+            _course.course_email = _data['course_code']
+        if 'course_group' in _data:
+            validate_input("_data['course_group']", _data['course_group'], str)
+            _course.course_group = _data['course_group']
+        if 'course_desc' in _data:
+            validate_input("_data['course_desc']", _data['course_desc'], str)
+            _course.course_desc = _data['course_desc']
+        """
+        UPDATE courses
+        SET course_name = "Building Bad Python Applications",
+            course_code = "SDEV 301",
+            course_group = "SDEV",
+            course_desc = "Not recommended!"
+        WHERE course_id = 17;
+        """
+        # db.session.add(_course)
+        db.session.commit()
+        return jsonify({'message': f'PUT: Successfully updated {_course.course_name}.'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': f'Update failed: {str(e)}'}), 200
 
 
-# # Do not forget to add an endpoint, or you will get an AssertionError!
-# @api_bp.route('/api/members/delete/<int:member_id>', methods=['DELETE'], endpoint='delete_member')
-# @token_required
-# def api_delete_member(member_id: int, **kwargs) -> tuple:
-#     """Respond to an API request to delete a member.
+# Do not forget to add an endpoint, or you will get an AssertionError!
+@api_bp.route('/api/courses/delete/<int:course_id>', methods=['DELETE'], endpoint='delete_course')
+@token_required
+def api_delete_course(course_id: int, **kwargs) -> tuple:
+    """Respond to an API request to delete a course.
 
-#     Bash:
-#     curl -X DELETE -H "Authorization: Bearer json.web.token" \
-#         http://127.0.0.1:5000/api/members/delete/2
+    Bash:
+    curl -X DELETE -H "Authorization: Bearer json.web.token" \
+        http://127.0.0.1:5000/api/courses/delete/2
 
-#     PS:
-#     Invoke-WebRequest -Method DELETE \
-#         -Headers @{ "Authorization" = "Bearer json.web.token" } \
-#         -Uri "http://127.0.0.1:5000/api/members/delete/2"
+    PS:
+    Invoke-WebRequest -Method DELETE \
+        -Headers @{ "Authorization" = "Bearer json.web.token" } \
+        -Uri "http://127.0.0.1:5000/api/courses/delete/2"
 
-#     :returns: A status message with the HTTP status code (Response, int)
-#     :rtype: tuple
-#     """
-#     # Validate inputs
-#     validate_input('member_id', member_id, int)
+    :returns: A status message with the HTTP status code (Response, int)
+    :rtype: tuple
+    """
+    # Validate inputs
+    validate_input('course_id', course_id, int)
 
-#     # Only administrators can delete members
-#     # is_admin is a kwarg from the @token_required decorator
-#     if not kwargs.get('requester_is_admin', False):
-#         return jsonify({'error': NOT_AUTH_MSG}), 403
+    # Get kwargs from the @token_required decorator
+    _member_id = kwargs.get('requester_id', 2)
+    _is_admin = kwargs.get('requester_is_admin', False)
 
-#     # Do not let members delete themselves!
-#     if int(kwargs.get('requester_id', 0)) == member_id:
-#         return jsonify({'error': 'You cannot delete yourself!'}), 400
+    if _is_admin:
+        # Administrators can view all courses
+        # query.all() always returns a list, even if it is empty
+        """
+        SELECT *
+        FROM courses
+        WHERE courses.course_id = 12
+        """
+        _course = Course.query.get_or_404(course_id)
+        if not _course:
+            return jsonify({'error': NOT_FOUND_MSG}), 404
+    else:
+        # Members can edit their own courses
+        """
+        SELECT courses.*, role_privilege
+        FROM courses,
+            associations,
+            roles
+        WHERE associations.member_id = 2 AND
+            courses.course_id = 12 AND
+            associations.course_id = courses.course_id AND
+            associations.role_id = roles.role_id;
+        """
+        _result = (db.session.query(Course, Role.role_privilege)
+                   .join(Association, Association.course_id == Course.course_id)
+                   .join(Role, Association.role_id == Role.role_id)
+                   .filter(Association.member_id == _member_id, Course.course_id == course_id)
+                   .first())
+        if _result:
+            _course, _role_privilege = _result
+        else:
+            return jsonify({'error': NOT_FOUND_MSG}), 404
 
-#     # Verify member exists
-#     """
-#     SELECT * FROM members WHERE member_id = 17;
-#     """
-#     _member = Member.query.get_or_404(member_id)
+        print(_role_privilege, CUTOFF_PRIVILEGE_OWNER)
 
-#     # Save name for message after deletion
-#     _member_name = _member.member_name
+        if _role_privilege < CUTOFF_PRIVILEGE_OWNER:
+            return jsonify({'error': NOT_AUTH_MSG}), 403
 
-#     try:
-#         # Delete association data first
-#         """
-#         DELETE FROM associations WHERE member_id = 17;
-#         """
-#         Association.query.filter(Association.member_id == _member.member_id).delete()
-#         """
-#         DELETE FROM members WHERE member_id = 17;
-#         """
-#         db.session.delete(_member)
-#         # Ensure changes are pushed before commit
-#         db.session.flush()
-#         db.session.commit()
-#         return jsonify({'message': f'PUT: Successfully deleted {_member_name} .'}), 200
-#     except SQLAlchemyError as e:
-#         db.session.rollback()
-#         return jsonify({'message': f'Delete failed: {str(e)}'}), 200
+    # Save name for message after deletion
+    _course_name = _course.course_name
+
+    try:
+        # Delete association data first
+        """
+        DELETE FROM associations WHERE course_id = 17;
+        """
+        Association.query.filter(Association.course_id == _course.course_id).delete()
+        """
+        DELETE FROM courses WHERE course_id = 17;
+        """
+        db.session.delete(_course)
+        # Ensure changes are pushed before commit
+        db.session.flush()
+        db.session.commit()
+        return jsonify({'message': f'PUT: Successfully deleted {_course_name}.'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': f'Delete failed: {str(e)}'}), 200

@@ -1,0 +1,46 @@
+curl --request POST --header "Content-Type: application/json" --data '{"username":"admin","password":"Change.Me.321"}' http://127.0.0.1:5000/api/login
+
+{"auth_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8","message":"Login successful."}
+
+
+curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" http://127.0.0.1:5000/api/roles/all
+
+{"roles":[{"role_id":2,"role_name":"Student","role_privilege":1},{"role_id":3,"role_name":"Teacher","role_privilege":10},{"role_id":4,"role_name":"Chair","role_privilege":20}]}
+
+
+curl -X POST -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" \
+    -H "Content-Type: application/json" \
+    -d '{"role_name": "Foo", "role_privilege": 15}' \
+    http://127.0.0.1:5000/api/roles/add
+
+{"message":"POST: Successfully added Foo (5)."}
+
+
+curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" http://127.0.0.1:5000/api/roles/get/99
+
+{"error":"404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again."}
+
+
+curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" http://127.0.0.1:5000/api/roles/get/5
+
+{"role":{"role_id":5,"role_name":"Foo","role_privilege":15}}
+
+
+curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" -H "Content-Type: application/json" -d '{"role_privilege": 100}' http://127.0.0.1:5000/api/roles/edit/5
+
+{"message":"Update failed: role_privilege must be between 1 and 99.Higher privileges are reserved for future use."}
+
+
+curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" -H "Content-Type: application/json" -d '{"role_privilege": 25}' http://127.0.0.1:5000/api/roles/edit/5
+
+{"message":"PUT: Successfully updated Foo ."}
+
+
+curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" http://127.0.0.1:5000/api/roles/delete/99
+
+{"error":"404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again."}
+
+
+curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzg3MTEsImlhdCI6MTczNzA1NDcxMSwic3ViIjoiMSJ9.3y6JsZ19cDDjDPZQUOKN21RxdHXX0VJuHRQwQvXETl8" http://127.0.0.1:5000/api/roles/delete/5
+
+{"message":"PUT: Successfully deleted Foo ."}

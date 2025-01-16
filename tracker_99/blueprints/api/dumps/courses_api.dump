@@ -1,0 +1,65 @@
+curl --request POST --header "Content-Type: application/json" --data '{"username":"leto.atreides","password":"Change.Me.123"}' http://127.0.0.1:5000/api/login
+
+{"auth_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc","message":"Login successful."}
+
+
+curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/all
+
+{"courses":[{"course_code":"CMSC 115","course_desc":"A study of structured and object-oriented programming using the Java language.","course_group":"CMSC","course_id":1,"course_name":"Introductory Programming"},{"course_code":"CMSC 495","course_desc":"An overview of computer technologies, with an emphasis on integration of concepts, practical application, and critical thinking.","course_group":"CMSC","course_id":4,"course_name":"Capstone in Computer Science"},{"course_code":"CMIT 202","course_desc":"A thorough review of computer hardware and software, with emphasis on the application of current and appropriate computing safety and environmental practices.","course_group":"CMIT","course_id":8,"course_name":"Fundamentals of Computer Troubleshooting"},{"course_code":"DATA 300","course_desc":"An examination of the role of data science within business and society.","course_group":"DATA","course_id":12,"course_name":"Foundations of Data Science"},{"course_code":"CSIA 350","course_desc":"A study of the application and integration of cybersecurity principles, frameworks, standards, and best practices to the management, governance, and policy development processes for businesses.","course_group":"CSIA","course_id":16,"course_name":"Cybersecurity in Business and Industry"}]}
+
+
+curl -X POST -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" \
+    -H "Content-Type: application/json" \
+    -d '{"course_name": "Building Bad Python Applications", "course_code": "SDEV 301"}' \
+    http://127.0.0.1:5000/api/courses/add
+
+{"message":"POST: Successfully added Building Bad Python Applications (17)."}
+
+
+curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/get/3
+
+{"error":"No courses found."}
+
+
+curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/get/17
+
+{"course":{"course_code":"SDEV 301","course_desc":"","course_group":"","course_id":17,"course_name":"Building Bad Python Applications"}}
+
+
+curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" \
+     -H "Content-Type: application/json" \
+     -d '{"course_name": "Building Good Python Applications", "course_desc": "Much better!"}' \
+     http://127.0.0.1:5000/api/courses/edit/3
+
+{"error":"No courses found."}
+
+
+curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" \
+     -H "Content-Type: application/json" \
+     -d '{"course_name": "Building Good Python Applications", "course_desc": "Much better!"}' \
+     http://127.0.0.1:5000/api/courses/edit/4
+
+{"error":"You do not have permission to perform that action."}
+
+
+curl -X PUT -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" \
+    -H "Content-Type: application/json" \
+    -d '{"course_name": "Building Good Python Applications", "course_desc": "Much better!"}' \
+    http://127.0.0.1:5000/api/courses/edit/3
+
+{"message":"PUT: Successfully updated Building Good Python Applications ."}
+
+
+curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/delete/3
+
+{"error":"No courses found."}
+
+
+curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/delete/4
+
+{"error":"You do not have permission to perform that action."}
+
+
+curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMzIyOTgsImlhdCI6MTczNzA0ODI5OCwic3ViIjoiMiJ9.b48rGwp6K60E4wODPtgTciR-L0BwUlaKsAdyi2635oc" http://127.0.0.1:5000/api/courses/delete/17
+
+{"message":"PUT: Successfully deleted Building Good Python Applications ."}

@@ -63,8 +63,8 @@ class Member(UserMixin, db.Model):
         # Validate that member_name:
         # - Starts with a letter
         # - Contains only letters, numbers, underscores, and periods
-        # - Must be at least 4 characters long
-        name_regex = r'^[A-Za-z][A-Za-z0-9._-]{3,}$'
+        # - Must Be at least 3 characters long
+        name_regex = r'^[A-Za-z][A-Za-z0-9\.\_\-]{2,}$'
         if not re.fullmatch(name_regex, member_name):
             raise ValueError("Invalid member name.")
 

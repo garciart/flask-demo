@@ -22,19 +22,19 @@ from tracker_99.models.models import Course, Member, Role
 # Member names must:
 # - Start with a letter
 # - Contain only letters, numbers, underscores, and periods
-# - Be at least 4 characters long
-NAME_REGEX = r'^[A-Za-z][A-Za-z0-9._-]{3,}$'
+# - Be at least 3 characters long
+NAME_REGEX = r'^[A-Za-z][A-Za-z0-9\.\_\-]{2,}$'
 INVALID_NAME_MSG = (
-        'Names must be at least 4 characters long, start with a letter, '
+        'Names must Be at least 3 characters long, start with a letter, '
         + 'and contain only letters, numbers, periods, underscores, and dashes.'
 )
 # Text fields must:
 # - Start with a letter or number
 # - Contain only letters, numbers, periods, underscores, dashes, and spaces
-# - Be at least 4 characters long
-TEXT_REGEX = r'^[A-Za-z0-9][A-Za-z0-9._\s-]{3,}$'
+# - Be at least 3 characters long
+TEXT_REGEX = r'^[A-Za-z0-9][A-Za-z0-9 \.\_\-]{2,}$'
 INVALID_TEXT_MSG = (
-        'Text fields must be at least 4 characters long, start with a letter or number, '
+        'Text fields must Be at least 3 characters long, start with a letter or number, '
         + 'and contain only letters, numbers, periods, underscores, dashes, and spaces.'
 )
 # Ensure the password meets validation criteria:

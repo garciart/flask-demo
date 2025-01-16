@@ -18,7 +18,7 @@ NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 # Only members with role_privileges greater than or equal to 10,
 # like chairs and teachers of the course and admins,
 # can assign other members to a course
-DEFAULT_CUTOFF_PRIVILEGE = 10
+CUTOFF_PRIVILEGE_EDITOR = 10
 
 
 @admin_bp.route('/admin/assign_course/<int:course_id>', methods=['GET', 'POST'])
@@ -82,7 +82,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # like chairs and teachers of the course and admins,
     # can assign other members to a course
     if not current_user.is_admin and not any(
-            a['member_id'] == _member_id and a['role_privilege'] >= DEFAULT_CUTOFF_PRIVILEGE for a in _assigned_members
+            a['member_id'] == _member_id and a['role_privilege'] >= CUTOFF_PRIVILEGE_EDITOR for a in _assigned_members
     ):
         flash(NOT_AUTH_MSG)
         return redirect(url_for(INDEX_PAGE))
@@ -117,7 +117,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
                 a['role_privilege']
                 for a in _assigned_members
                 if _member_id == a['member_id']
-            ), DEFAULT_CUTOFF_PRIVILEGE, )) - 1
+            ), CUTOFF_PRIVILEGE_EDITOR, )) - 1
         )
     else:
         _cutoff_privilege_level = 99

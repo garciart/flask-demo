@@ -16,6 +16,9 @@ from tracker_99.models.models import Association, Member
 
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
+# Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
+# pylint: disable=broad-except
+
 
 def token_required(f: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator that protects a route by requiring a valid JWT token.
@@ -97,7 +100,7 @@ def api_members_all(**kwargs) -> tuple:
     :rtype: tuple
     """
     # Only administrators view all members
-    # is_admin is a kwarg from the @token_required decorator
+    # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
         return jsonify({'error': NOT_AUTH_MSG}), 403
 
@@ -148,7 +151,7 @@ def api_add_member(**kwargs) -> tuple:
     :rtype: tuple
     """
     # Only administrators can add members
-    # is_admin is a kwarg from the @token_required decorator
+    # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
         return jsonify({'error': NOT_AUTH_MSG}), 403
 
@@ -176,10 +179,12 @@ def api_add_member(**kwargs) -> tuple:
         """
         db.session.add(_member)
         db.session.commit()
+
         _new_id = _member.get_id()
+
         return jsonify(
             {'message': f'POST: Successfully added {_member.member_name} ({_new_id}).'}), 200
-    except SQLAlchemyError as e:
+    except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Addition failed: {str(e)}'}), 200
 
@@ -207,7 +212,7 @@ def api_get_member(member_id: int, **kwargs) -> tuple:
     validate_input('member_id', member_id, int)
 
     # Admins can view any profile, and members can view their own profile
-    # kwargs are from the @token_required decorator
+    # Get kwargs from the @token_required decorator
     if (not kwargs.get('requester_is_admin', False)) and (
             int(kwargs.get('requester_id', 0)) != member_id):
         return jsonify({'error': NOT_AUTH_MSG}), 403
@@ -255,7 +260,7 @@ def api_edit_member(member_id: int, **kwargs) -> tuple:
     validate_input('member_id', member_id, int)
 
     # Admins can edit any profile, and members can edit their own profile
-    # kwargs are from the @token_required decorator
+    # Get kwargs from the @token_required decorator
     if (not kwargs.get('requester_is_admin', False)) and (
             int(kwargs.get('requester_id', 0)) != member_id):
         return jsonify({'error': NOT_AUTH_MSG}), 403
@@ -293,8 +298,8 @@ def api_edit_member(member_id: int, **kwargs) -> tuple:
         """
         # db.session.add(_member)
         db.session.commit()
-        return jsonify({'message': f'PUT: Successfully updated {_member.member_name} .'}), 200
-    except SQLAlchemyError as e:
+        return jsonify({'message': f'PUT: Successfully updated {_member.member_name}.'}), 200
+    except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Update failed: {str(e)}'}), 200
 
@@ -321,7 +326,7 @@ def api_delete_member(member_id: int, **kwargs) -> tuple:
     validate_input('member_id', member_id, int)
 
     # Only administrators can delete members
-    # is_admin is a kwarg from the @token_required decorator
+    # Get kwargs from the @token_required decorator
     if not kwargs.get('requester_is_admin', False):
         return jsonify({'error': NOT_AUTH_MSG}), 403
 
@@ -351,7 +356,7 @@ def api_delete_member(member_id: int, **kwargs) -> tuple:
         # Ensure changes are pushed before commit
         db.session.flush()
         db.session.commit()
-        return jsonify({'message': f'PUT: Successfully deleted {_member_name} .'}), 200
-    except SQLAlchemyError as e:
+        return jsonify({'message': f'PUT: Successfully deleted {_member_name}.'}), 200
+    except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Delete failed: {str(e)}'}), 200

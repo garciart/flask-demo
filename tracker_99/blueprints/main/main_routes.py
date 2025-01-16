@@ -14,7 +14,6 @@ from tracker_99.models import db
 from tracker_99.models.models import Course, Member, Role, Association
 
 INDEX_PAGE = 'main_bp.index'
-MEMBERS_PAGE = 'main_bp.index'
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
 

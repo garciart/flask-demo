@@ -22,6 +22,9 @@ INDEX_PAGE = 'main_bp.index'
 MEMBERS_PAGE = 'main_bp.members'
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 
+# Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
+# pylint: disable=broad-except
+
 
 @admin_bp.route('/admin/add_member', methods=['GET', 'POST'])
 @login_required
@@ -60,7 +63,7 @@ def add_member() -> Union[str, Response]:
             db.session.commit()
             flash('Addition successful.')
             return redirect(url_for(MEMBERS_PAGE))
-        except SQLAlchemyError as e:
+        except Exception as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
 
@@ -166,7 +169,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
             db.session.commit()
             flash('Update successful.')
             return redirect(url_for(MEMBERS_PAGE))
-        except SQLAlchemyError as e:
+        except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')
 
@@ -232,7 +235,7 @@ def delete_member(member_id: int) -> Union[str, Response]:
             db.session.commit()
             flash('Delete successful.')
             return redirect(url_for(MEMBERS_PAGE))
-        except SQLAlchemyError as e:
+        except Exception as e:
             db.session.rollback()
             flash(f'Delete failed: {str(e)}', 'error')
 
@@ -299,7 +302,7 @@ def update_profile(member_id: int) -> Union[str, Response]:
             db.session.commit()
             flash('Update successful.')
             return redirect(url_for(INDEX_PAGE))
-        except SQLAlchemyError as e:
+        except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')
 
