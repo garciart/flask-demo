@@ -122,16 +122,17 @@ def api_add_course(**kwargs) -> tuple:
 
     try:
         # Instantiate a Course object
+        """
+        INSERT INTO courses (course_name, course_code, course_group, course_desc)
+        VALUES ("Building Bad Python Applications", "SDEV 301", "SDEV", "Not recommended!");
+        """
         _course = Course(
             course_name=_course_name,
             course_code=_course_code,
             course_group=_course_group,
             course_desc=_course_desc,
         )
-        """
-        INSERT INTO courses (course_name, course_code, course_group, course_desc)
-        VALUES ("Building Bad Python Applications", "SDEV 301", "SDEV", "Not recommended!");
-        """
+
         db.session.add(_course)
         db.session.commit()
 
@@ -148,7 +149,7 @@ def api_add_course(**kwargs) -> tuple:
             {'message': f'POST: Successfully added {_course.course_name} ({_new_id}).'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': f'Addition failed: {str(e)}'}), 200
+        return jsonify({'message': f'Addition failed: {str(e)}'}), 500
 
 
 # Do not forget to add an endpoint, or you will get an AssertionError!
@@ -173,11 +174,12 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
     # Validate inputs
     validate_input('course_id', course_id, int)
 
+    # Get kwargs from the @token_required decorator
     _member_id = kwargs.get('requester_id', 0)
+    _is_admin = kwargs.get('requester_is_admin', False)
 
     # Admins can view any course, and members can view assigned courses
-    # Get kwargs from the @token_required decorator
-    if not kwargs.get('requester_is_admin', False):
+    if not _is_admin:
         """
         SELECT * FROM associations WHERE course_id = 17 AND member_id = 2;
         """
@@ -302,7 +304,7 @@ def api_edit_course(course_id: int, **kwargs) -> tuple:
         return jsonify({'message': f'PUT: Successfully updated {_course.course_name}.'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': f'Update failed: {str(e)}'}), 200
+        return jsonify({'message': f'Update failed: {str(e)}'}), 500
 
 
 # Do not forget to add an endpoint, or you will get an AssertionError!
@@ -384,7 +386,7 @@ def api_delete_course(course_id: int, **kwargs) -> tuple:
         # Ensure changes are pushed before commit
         db.session.flush()
         db.session.commit()
-        return jsonify({'message': f'PUT: Successfully deleted {_course_name}.'}), 200
+        return jsonify({'message': f'DELETE: Successfully deleted {_course_name}.'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': f'Delete failed: {str(e)}'}), 200
+        return jsonify({'message': f'Deletion failed: {str(e)}'}), 500

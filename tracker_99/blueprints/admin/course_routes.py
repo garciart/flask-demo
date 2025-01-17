@@ -209,7 +209,7 @@ def delete_course(course_id: int) -> Union[str, Response]:
             return redirect(url_for(c.COURSES_PAGE))
         except Exception as e:
             db.session.rollback()
-            flash(f'Delete failed: {str(e)}', 'error')
+            flash(f'Deletion failed: {str(e)}', 'error')
 
     # Default behavior if not sending data to the server (POST, etc.)
     # And re-displays page with flash messages (e.g., errors, etc.)

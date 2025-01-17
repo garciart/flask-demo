@@ -1,0 +1,12 @@
+{
+    "course_code": "DATA 300",
+    "course_desc": "An examination of the role of data science within business and society.",
+    "course_group": "DATA",
+    "course_id": 12,
+    "course_name": "Foundations of Data Science",
+    "member_id": 2,
+    "member_name": "Leto.Atreides",
+    "role_id": 3,
+    "role_name": "Teacher",
+    "role_privilege": 10
+}

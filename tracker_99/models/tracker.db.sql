@@ -1,38 +1,38 @@
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS associations (
-	course_id INTEGER NOT NULL, 
-	role_id INTEGER NOT NULL, 
-	member_id INTEGER NOT NULL, 
-	PRIMARY KEY (course_id, role_id, member_id), 
-	FOREIGN KEY(course_id) REFERENCES courses (course_id), 
-	FOREIGN KEY(role_id) REFERENCES roles (role_id), 
-	FOREIGN KEY(member_id) REFERENCES members (member_id)
+    course_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL,
+    member_id INTEGER NOT NULL,
+    PRIMARY KEY (course_id, role_id, member_id),
+    FOREIGN KEY(course_id) REFERENCES courses (course_id),
+    FOREIGN KEY(role_id) REFERENCES roles (role_id),
+    FOREIGN KEY(member_id) REFERENCES members (member_id)
 );
 CREATE TABLE IF NOT EXISTS courses (
-	course_id INTEGER NOT NULL, 
-	course_name VARCHAR(64) NOT NULL, 
-	course_code VARCHAR(64) NOT NULL, 
-	course_group VARCHAR(64), 
-	course_desc VARCHAR(256), 
-	PRIMARY KEY (course_id), 
-	CONSTRAINT uq_course_name_code UNIQUE (course_name, course_code)
+    course_id INTEGER NOT NULL,
+    course_name VARCHAR(64) NOT NULL,
+    course_code VARCHAR(64) NOT NULL,
+    course_group VARCHAR(64),
+    course_desc VARCHAR(256),
+    PRIMARY KEY (course_id),
+    CONSTRAINT uq_course_name_code UNIQUE (course_name, course_code)
 );
 CREATE TABLE IF NOT EXISTS members (
-	member_id INTEGER NOT NULL, 
-	member_name VARCHAR(64) NOT NULL, 
-	member_email VARCHAR(320) NOT NULL, 
-	password_hash VARCHAR(128) NOT NULL, 
-	is_admin BOOLEAN NOT NULL, 
-	PRIMARY KEY (member_id), 
-	UNIQUE (member_email)
+    member_id INTEGER NOT NULL,
+    member_name VARCHAR(64) NOT NULL,
+    member_email VARCHAR(320) NOT NULL,
+    password_hash VARCHAR(128) NOT NULL,
+    is_admin BOOLEAN NOT NULL,
+    PRIMARY KEY (member_id),
+    UNIQUE (member_email)
 );
 CREATE TABLE IF NOT EXISTS roles (
-	role_id INTEGER NOT NULL, 
-	role_name VARCHAR(64) NOT NULL, 
-	role_privilege INTEGER NOT NULL, 
-	PRIMARY KEY (role_id), 
-	UNIQUE (role_name), 
-	UNIQUE (role_privilege)
+    role_id INTEGER NOT NULL,
+    role_name VARCHAR(64) NOT NULL,
+    role_privilege INTEGER NOT NULL,
+    PRIMARY KEY (role_id),
+    UNIQUE (role_name),
+    UNIQUE (role_privilege)
 );
 INSERT INTO "associations" ("course_id","role_id","member_id") VALUES (1,4,2),
  (1,3,3),

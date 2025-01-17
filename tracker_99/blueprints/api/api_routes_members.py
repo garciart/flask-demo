@@ -119,7 +119,7 @@ def api_add_member(**kwargs) -> tuple:
             {'message': f'POST: Successfully added {_member.member_name} ({_new_id}).'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': f'Addition failed: {str(e)}'}), 200
+        return jsonify({'message': f'Addition failed: {str(e)}'}), 500
 
 
 # Do not forget to add an endpoint, or you will get an AssertionError!
@@ -234,7 +234,7 @@ def api_edit_member(member_id: int, **kwargs) -> tuple:
         return jsonify({'message': f'PUT: Successfully updated {_member.member_name}.'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': f'Update failed: {str(e)}'}), 200
+        return jsonify({'message': f'Update failed: {str(e)}'}), 500
 
 
 # Do not forget to add an endpoint, or you will get an AssertionError!
@@ -289,7 +289,7 @@ def api_delete_member(member_id: int, **kwargs) -> tuple:
         # Ensure changes are pushed before commit
         db.session.flush()
         db.session.commit()
-        return jsonify({'message': f'PUT: Successfully deleted {_member_name}.'}), 200
+        return jsonify({'message': f'DELETE: Successfully deleted {_member_name}.'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': f'Delete failed: {str(e)}'}), 200
+        return jsonify({'message': f'Deletion failed: {str(e)}'}), 500

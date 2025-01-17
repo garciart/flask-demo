@@ -191,11 +191,11 @@ def log_page_request(app: Flask, request: Request, response: Response) -> None:
     )
 
 
-def encode_auth_token(member_id: int, expiration_in_min: int = 60) -> str:
+def encode_auth_token(member_id: int, expiration_in_min: int = 15) -> str:
     """Generates the authorization token for a member.
 
     :param int member_id: The ID of the member in the database.
-    :param int expiration_in_min: The duration of the token in minutes.
+    :param int expiration_in_min: The duration of the token in minutes, defaults to 15
 
     :returns: The authorization token.
     :rtype: str

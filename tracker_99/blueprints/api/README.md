@@ -54,10 +54,11 @@ curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/
 
 ## API Endpoints
 
-- /api/login - Get JSON WEb Token
+- /api/login - Get JSON Web Token
 - /api/courses/all - View all courses (Admin) or assigned courses
 - /api/courses/add - Add a course
-- /api/courses/get/<int:course_id> - View an assigned course
+- /api/courses/get/<int:course_id> - View an assigned course (course ID, name, code, group, and description)
+- /api/courses/get/details/<int:course_id> - View course details and all members assigned to a course and their roles (Admin) or view your role in an assigned course
 - /api/courses/edit/<int:course_id> - Edit an assigned course (if privileged)
 - /api/courses/delete/<int:course_id> - Delete an assigned course (if privileged)
 - /api/members/all - View all members (Admin only)
@@ -65,3 +66,10 @@ curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/
 - /api/members/get/<int:member_id> - View a member (Admin) or your own profile
 - /api/members/edit/<int:member_id> - Edit a member (Admin) or your own profile
 - /api/members/delete/<int:member_id> - Delete a member (Admin only)
+- /api/roles/all - View all roles (Admin only)
+- /api/roles/add - Add a role (Admin only)
+- /api/roles/get/<int:role_id> - View a role (Admin only)
+- /api/roles/edit/<int:role_id> - Edit a role (Admin only)
+- /api/roles/delete/<int:role_id> - Delete a member (Admin only)
+- /api/courses/ - Add `[POST]`, edit `[PUT]`, or delete `[DELETE]` a course assignment. Must have a privilege level higher than the assignee.
+- 
