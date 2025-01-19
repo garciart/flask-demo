@@ -20,6 +20,46 @@ from tracker_99.models.models import Association, Course, Member, Role
 # pylint: disable=broad-except
 
 
+@api_bp.route('/api/login', methods=['POST'])
+def login() -> tuple:
+    """Return a JWT token for API requests if the requester's credentials are valid.
+
+    Bash:
+    curl --request POST \
+        --header "Content-Type: application/json" \
+        --data '{"username":"admin","password":"Change.Me.321"}' \
+        http://127.0.0.1:5000/api/login
+
+    PS:
+    Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" \
+        -Method Post \
+        -ContentType "application/json" \
+        -Body "{`"username`":`"admin`",`"password`":`"Change.Me.321`"}"
+
+    :returns: The JWT token or an error message with the HTTP status code (Response, int)
+    :rtype: tuple
+    """
+    # Get the contents of the curl --data option and assign them to variables
+    _data = request.get_json()
+    _submitted_name = _data.get('username')
+    _submitted_password = _data.get('password')
+
+    # Find requester by name (case-insensitive comparison)
+    _requester = Member.query.filter(
+        func.lower(Member.member_name) == func.lower(_submitted_name)
+    ).first()
+
+    # Ensure the requester is a member with correct credentials
+    if _requester and check_password_hash(_requester.password_hash, _submitted_password):
+        # Generate a JWT token containing the member ID
+        _auth_token = encode_auth_token(_requester.member_id)
+        if 'error' in _auth_token.lower():
+            return jsonify({'error': _auth_token}), 500
+        return jsonify({'message': 'Login successful.', 'auth_token': _auth_token}), 200
+    else:
+        return jsonify({'error': 'Invalid credentials.'}), 401
+
+
 # Do not forget to add an endpoint, or you will get an AssertionError!
 @api_bp.route('/api/courses/get/details/<int:course_id>', methods=['GET'],
               endpoint='get_details')
@@ -266,46 +306,6 @@ def api_assign_course(**kwargs) -> tuple:
             return jsonify({'message': f'Deletion failed: {str(e)}'}), 500
 
     return jsonify('No action taken'), 204
-
-
-@api_bp.route('/api/login', methods=['POST'])
-def login() -> tuple:
-    """Return a JWT token for API requests if the requester's credentials are valid.
-
-    Bash:
-    curl --request POST \
-        --header "Content-Type: application/json" \
-        --data '{"username":"admin","password":"Change.Me.321"}' \
-        http://127.0.0.1:5000/api/login
-
-    PS:
-    Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/login" \
-        -Method Post \
-        -ContentType "application/json" \
-        -Body "{`"username`":`"admin`",`"password`":`"Change.Me.321`"}"
-
-    :returns: The JWT token or an error message with the HTTP status code (Response, int)
-    :rtype: tuple
-    """
-    # Get the contents of the curl --data option and assign them to variables
-    _data = request.get_json()
-    _submitted_name = _data.get('username')
-    _submitted_password = _data.get('password')
-
-    # Find requester by name (case-insensitive comparison)
-    _requester = Member.query.filter(
-        func.lower(Member.member_name) == func.lower(_submitted_name)
-    ).first()
-
-    # Ensure the requester is a member with correct credentials
-    if _requester and check_password_hash(_requester.password_hash, _submitted_password):
-        # Generate a JWT token containing the member ID
-        _auth_token = encode_auth_token(_requester.member_id)
-        if 'error' in _auth_token.lower():
-            return jsonify({'error': _auth_token}), 500
-        return jsonify({'message': 'Login successful.', 'auth_token': _auth_token}), 200
-    else:
-        return jsonify({'error': 'Invalid credentials.'}), 401
 
 
 @api_bp.route('/favicon.ico')

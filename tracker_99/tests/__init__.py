@@ -1,4 +1,8 @@
 """Contains pytest fixtures and code used or shared by multiple test modules.
+
+Run with -s option to allow tests to use the 'print' command within the tests
+to display messages along with pylint output (i.e., `pytest tracker_99/tests -s` or
+`coverage run -m pytest tracker_99/tests -s`)
 """
 
 import pytest
@@ -10,7 +14,7 @@ from tracker_99 import create_app
 
 
 @pytest.fixture()
-def app(request: FixtureRequest) -> Flask:
+def app(request: FixtureRequest):
     """Fixture to create the Flask application instance.
 
     :param FixtureRequest request: A request from a test or fixture function
@@ -35,6 +39,7 @@ def app(request: FixtureRequest) -> Flask:
     app.config.update(
         {
             "TESTING": True,
+            "LOGIN_DISABLED": True
         }
     )
 
