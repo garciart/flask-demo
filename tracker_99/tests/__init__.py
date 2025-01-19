@@ -22,19 +22,31 @@ def app(request: FixtureRequest):
     :yields: The Flask application instance to test
     :yield type: Flask
     """
-    # Logging is enabled by default in the Tracker app.
-    # However, since each test creates a Tracker instance,
-    # each test will generate a small log file, which is usually not needed.
-    # To only create log files when testing logging functions and methods,
-    # use indirect parameterization to pass a 'log/no_log' argument from the test.
-    # 'log' means enable logging, and 'no_log' means disable logging.
-    # Passing no argument also disables logging.
-    log_events = (request.param == 'log')
+    # Set the default run configuration to...'default'! :)
+    _config_name = 'default'
 
-    if log_events:
-        app = create_app()
-    else:
-        app = create_app(log_events=False)
+    # By default, logging requests and responses is enabled in the Tracker app.
+    # Since each test creates a Tracker instance, each test will generate a small log file.
+    # which is usually not necessary for the test.
+    # To avoid this, set the default log_events value to False for testing
+    _log_events = False
+
+    # If the test needs to use a different configuration file or needs to log events,
+    # you can pass the values to `create_app(...)` directly in the test,
+    # or you can use indirect parametrization to pass arguments from the test to this fixture
+    # before creating the instance:
+    #
+    # @pytest.mark.parametrize(
+    #     'app', [{'config_name': 'foo', 'log_events': True}], indirect=True)
+    # def test_app(client: FlaskClient, app: Flask) -> None:
+    #     """Ensure you created the application instance.
+    #
+    # The following code will retrieve the parameters:
+    if hasattr(request, 'param'):
+        _config_name = request.param.get('config_name', 'default')
+        _log_events = request.param.get('log_events', False)
+
+    app = create_app(config_name=_config_name, log_events=_log_events)
 
     app.config.update(
         {

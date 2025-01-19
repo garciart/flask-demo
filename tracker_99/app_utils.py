@@ -71,7 +71,7 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
     _python_version = float(f'{sys.version_info.major}.{sys.version_info.minor:02d}')
 
     # Ensure you are using the correct version of Python
-    print(f'Your Python version is {_python_version}.')
+    # print(f'Your Python version is {_python_version}.')
     if _python_version < min_python_version:
         raise ValueError(
             f'Flask 3 requires Python {min_python_version:.2f} or above. Exiting now...'
@@ -83,7 +83,7 @@ def check_system(min_python_version: float = 3.08, min_flask_version: float = 3.
     _flask_version = float(f'{_flask_version_major}.{_flask_version_minor:02d}')
 
     # Ensure you are using the correct version of Flask
-    print(f'Your Flask version is {_raw_flask_version}.')
+    # print(f'Your Flask version is {_raw_flask_version}.')
     if float(_flask_version) < min_flask_version:
         raise ValueError(
             f'This application requires Flask {min_flask_version:.2f} or above. Exiting now...'
