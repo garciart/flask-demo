@@ -101,7 +101,7 @@ class TestingConfig(Config):
     WTF_CSRF_ENABLED = False
 
     SERVER_NAME = '127.0.0.1:5000'
-    PREFERRED_URL_SCHEME = 'https'
+    PREFERRED_URL_SCHEME = 'http'
 
 
 CONFIGS = {
