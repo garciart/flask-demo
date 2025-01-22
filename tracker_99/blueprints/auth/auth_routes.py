@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 
 from flask import Response, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
+from markupsafe import escape
 from sqlalchemy import select
 
 from tracker_99 import db, constants as c
@@ -33,8 +34,10 @@ def login() -> Union[str, Response]:
 
     _form = LoginForm()
 
-    if _form.validate_on_submit():
+    # Always redirect to the index page to avoid URL injections
+    _next_page = url_for(c.INDEX_PAGE)
 
+    if request.method == 'POST' and _form.validate_on_submit():
         _member = db.session.scalar(
             select(Member).where(Member.member_name.ilike(_form.member_name.data))
         )
@@ -45,17 +48,13 @@ def login() -> Union[str, Response]:
 
         login_user(_member, remember=_form.remember_me.data)
 
-        _next_page = request.args.get('next')
-
-        if not _next_page or urlsplit(_next_page).netloc != '':
-            _next_page = url_for(c.INDEX_PAGE)
-
-        # flash(f'Welcome, {_member.member_name}!')
-
         return redirect(_next_page)
 
+    print(_next_page)
+
     return render_template(
-        'login.html', page_title=_page_title, page_description=_page_description, form=_form
+        'login.html', page_title=_page_title, page_description=_page_description,
+        form=_form, next_page=_next_page
     )
 
 

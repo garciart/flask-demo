@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS courses (
     course_name VARCHAR(64) NOT NULL,
     course_code VARCHAR(64) NOT NULL,
     course_group VARCHAR(64),
+    course_key BLOB,
     course_desc VARCHAR(256),
     PRIMARY KEY (course_id),
     CONSTRAINT uq_course_name_code UNIQUE (course_name, course_code)

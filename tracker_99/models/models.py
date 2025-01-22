@@ -1,11 +1,14 @@
 """Classes for the database models using SQLAlchemy ORM Declarative Mapping.
 """
 
+import os
 import re
 from typing import List, Union, Optional
 
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from flask_login import UserMixin
-from sqlalchemy import String, UniqueConstraint, ForeignKey
+from sqlalchemy import String, UniqueConstraint, ForeignKey, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -33,11 +36,11 @@ class Member(UserMixin, db.Model):
     )
 
     def __init__(
-            self,
-            member_name: str,
-            member_email: str,
-            password: Union[str, None] = None,
-            is_admin: bool = False,
+        self,
+        member_name: str,
+        member_email: str,
+        password: Union[str, None] = None,
+        is_admin: bool = False,
     ) -> None:
         """Initialization with validation to ensure valid types and values.
 
@@ -46,13 +49,13 @@ class Member(UserMixin, db.Model):
         :param str password: A password for the member in plain text, defaults to None,
             which prevents the database from accepting the member
             unless the password is set using `set_password()`
-        :param bool is_admin: The email address of the member
+        :param bool is_admin: True if the user is an administrator
         """
         # Validate inputs
         validate_input('member_name', member_name, str)
         validate_input('member_email', member_email, str)
         validate_input('password', password, Union[str, None])
-        validate_input('is_admin', is_admin, Union[bool, None])
+        validate_input('is_admin', is_admin, bool)
 
         if not re.fullmatch(c.NAME_REGEX, member_name):
             raise ValueError('Invalid member name.')
@@ -62,15 +65,15 @@ class Member(UserMixin, db.Model):
             raise ValueError('Invalid member email.')
 
         # Set the member_name and member_email
-        self.member_name = Mapped[member_name]
-        self.member_email = Mapped[member_email]
+        self.member_name = member_name
+        self.member_email = member_email
 
         if password is not None:
             self.validate_password(password)
             # Initialize password hash
             self.set_password(password)
 
-        self.is_admin = Mapped[is_admin]
+        self.is_admin = is_admin
 
     def get_id(self) -> int:
         """Overrides UserMixin get_id, so you can use member_id instead of id.
@@ -92,7 +95,7 @@ class Member(UserMixin, db.Model):
         validate_input('password', password, str)
         self.validate_password(password)
 
-        self.password_hash = Mapped[generate_password_hash(password)]
+        self.password_hash = generate_password_hash(password)
 
     @staticmethod
     def validate_password(password: str) -> None:
@@ -163,6 +166,7 @@ class Course(db.Model):
     course_name: Mapped[str] = mapped_column(String(64), nullable=False)
     course_code: Mapped[str] = mapped_column(String(64), nullable=False)
     course_group: Mapped[Optional[str]] = mapped_column(String(64))
+    course_key: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
     course_desc: Mapped[Optional[str]] = mapped_column(String(256))
 
     # Courses can have the same name or code, but not both
@@ -171,6 +175,126 @@ class Course(db.Model):
     associations: Mapped[List['Association']] = relationship(
         'Association', back_populates='course', cascade=CASCADE_ARG
     )
+
+    # pylint: disable-next=[too-many-arguments, too-many-positional-arguments]
+    def __init__(
+        self,
+        course_name: str,
+        course_code: str,
+        course_group: Union[str, None] = None,
+        course_key: Union[str, None] = None,
+        course_desc: Union[str, None] = None,
+    ) -> None:
+        """Initialization with validation to ensure valid types and values.
+
+        :param str course_name: The long name of the course
+        :param str course_code: The short name or code of the course (SDEV 101)
+        :param str course_group: The group the course belongs to (SDEV, etc.)
+        :param str course_key: A password for the course in plain text, defaults to None
+        :param str course_desc: A description of the course
+        """
+        # Validate inputs
+        validate_input('course_name', course_name, str)
+        validate_input('course_code', course_code, str)
+        validate_input('course_group', course_group, Union[str, None], allow_empty=True)
+        validate_input('course_key', course_key, Union[str, None], allow_empty=True)
+        validate_input('course_desc', course_desc, Union[str, None], allow_empty=True)
+
+        if not re.fullmatch(c.TEXT_REGEX, course_name):
+            raise ValueError('Invalid course name.')
+
+        if not re.fullmatch(c.TEXT_REGEX, course_code):
+            raise ValueError('Invalid course code.')
+
+        # Set the member_name and member_email
+        self.course_name = course_name
+        self.course_code = course_code
+
+        if course_group is not None and course_group.strip() != '':
+            if not re.fullmatch(c.TEXT_REGEX, course_group):
+                raise ValueError('Invalid course group.')
+            self.course_group = course_group
+
+        if course_desc is not None and course_desc.strip() != '':
+            self.course_desc = course_desc
+
+        if course_key is not None and course_key.strip() != '':
+            self.validate_password(course_key)
+            # Initialize password hash
+            self.set_key(course_key)
+
+    def set_key(self, plain_text_key: str) -> None:
+        """Encrypt a key using AES-GCM.
+
+        :param str plain_text_key: The text to encrypt
+
+        :returns: None
+        :rtype: None
+        """
+        validate_input('plain_text', plain_text_key, str)
+
+        # Get the 256-bit key (32 bytes) from the environment and convert it to a byte string
+        # The environment variable KEY_32 should contain a 32-byte (256-bit) key.
+        _env_key_32 = os.environ.get('KEY_32', 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF')
+        _key = str.encode(_env_key_32, encoding='utf-8')
+        assert len(_key) == 32, "Key must be 32 bytes to use AES-256 encryption."
+
+        # Generate a random initialization vector (IV) / nonce
+        # GCM standard is 96 bits (12 bytes);
+        # longer IV's do not improve security and may hurt performance
+        _iv = os.urandom(12)
+
+        # Instantiate a cipher object that defines how encryption will be performed
+        _cipher = Cipher(algorithms.AES(_key), modes.GCM(_iv), backend=default_backend())
+
+        # Convert the plain text to a byte string and encrypt
+        _byte_str = str.encode(plain_text_key, encoding='utf-8')
+        _encryptor = _cipher.encryptor()
+        _ciphertext = _encryptor.update(_byte_str) + _encryptor.finalize()
+
+        # Combine the IV, cyphertext, and tag into an encrypted package
+        _encrypted_data = _iv + _ciphertext + _encryptor.tag
+
+        self.course_key = _encrypted_data
+
+    @staticmethod
+    def decrypt_text(encrypted_data: bytes) -> str:
+        """Decrypt AES-GCM encrypted data.
+
+        :param bytes encrypted_data: The initialization vector (IV) / nonce, ciphertext, \
+            and tag to decrypt
+
+        :returns: The decrypted text
+        :rtype: str
+        """
+        validate_input('encrypted_data', encrypted_data, bytes)
+
+        # Get the 256-bit key (32 bytes) from the environment and convert it to a byte string
+        # The environment variable KEY_32 should contain a 32-byte (256-bit) key.
+        _env_key_32 = os.environ.get('KEY_32', 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF')
+        _key = str.encode(_env_key_32, encoding='utf-8')
+        assert len(_key) == 32, "Key must be 32 bytes to use AES-256 encryption."
+
+        # Extract the IV, tag, and ciphertext from the encrypted data
+        # The first 12 bytes are the IV
+        _iv = encrypted_data[:12]
+
+        # The last 16 bytes are the tag
+        _tag = encrypted_data[-16:]
+
+        # The remainder is the ciphertext
+        _ciphertext = encrypted_data[12:-16]
+
+        # Instantiate a cipher object that defines how decryption will be performed
+        _cipher = Cipher(algorithms.AES(_key), modes.GCM(_iv, _tag), backend=default_backend())
+
+        # Decrypt the ciphertext in the encrypted data
+        _decryptor = _cipher.decryptor()
+        _decrypted_text = (_decryptor.update(_ciphertext) + _decryptor.finalize()).decode(
+            encoding='utf-8'
+        )
+
+        return _decrypted_text
 
     def to_dict(self):
         """Return the object as a dictionary for conversion to JSON
@@ -183,6 +307,7 @@ class Course(db.Model):
             'course_name': self.course_name,
             'course_code': self.course_code,
             'course_group': self.course_group,
+            'course_key': self.course_key,
             'course_desc': self.course_desc,
         }
 
@@ -215,8 +340,7 @@ class Role(db.Model):
         :rtype: str
         """
         if int(value) == 1 and str(self.role_name).lower() != 'unassigned':
-            raise ValueError(
-                'Role ID 1 is reserved for unassigned members and cannot be used')
+            raise ValueError('Role ID 1 is reserved for unassigned members and cannot be used')
         return value
 
     @validates('role_privilege')
@@ -235,7 +359,8 @@ class Role(db.Model):
             if int(value) < 1 or int(value) > 99:
                 raise ValueError(
                     'role_privilege must be between 1 and 99.'
-                    'Higher privileges are reserved for future use.')
+                    'Higher privileges are reserved for future use.'
+                )
         return value
 
     def to_dict(self):
@@ -273,13 +398,6 @@ class Association(db.Model):
     course: Mapped['Course'] = relationship(back_populates='associations')
     role: Mapped['Role'] = relationship(back_populates='associations')
     member: Mapped['Member'] = relationship(back_populates='associations')
-
-    # def has_access_to_course(self, course: 'Course', role_name: str) -> bool:
-    #     """Check if the member has access to the course with a specific role."""
-    #     for association in self.associations:
-    #         if association.course == course and association.role.role_name == role_name:
-    #             return True
-    #     return False
 
     def to_dict(self):
         """Return the object as a dictionary for conversion to JSON

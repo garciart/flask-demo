@@ -4,21 +4,28 @@ Run with -s option to allow tests to use the 'print' command within the tests
 to display messages along with pylint output (i.e., `pytest tracker_99/tests -s` or
 `coverage run -m pytest tracker_99/tests -s`)
 """
+
 import click
 import pytest
 from flask import Flask
-from flask.testing import FlaskClient, FlaskCliRunner
+from flask.testing import FlaskCliRunner
 
 from tracker_99 import create_app
-from tracker_99.tests import app, client, runner
+# W0611: Unused app imported from . (unused-import) is a false positive
+# pylint: disable=unused-import
+from tracker_99.tests import app, runner
 
 
-# Use indirect parametrization to turn logging on or off
+# W0621: Redefining name 'app' from outer scope is a false positive
+# In pytest, functions require 'app' as an argument
+# pylint: disable=redefined-outer-name
+
+
+# Example of using indirect parametrization to turn logging on or off
 @pytest.mark.parametrize('app', [{'log_events': False}], indirect=True)
-def test_app(client: FlaskClient, app: Flask) -> None:
+def test_app(app: Flask) -> None:
     """Ensure you created the application instance.
 
-    :param FlaskClient client: The fixture that sends requests (GET, POST, etc.) to app
     :param Flask app: The Flask application instance used for test
 
     :returns: None
@@ -26,6 +33,12 @@ def test_app(client: FlaskClient, app: Flask) -> None:
     """
     with app.test_request_context():
         assert app is not None
+
+
+###
+# The following tests do not need to use fixtures
+# and can call create_app directly
+###
 
 
 def test_config_name_is_valid():
@@ -56,10 +69,10 @@ def test_log_events_is_invalid_type():
         create_app(log_events=1)
 
 
-"""
-The following code demonstrates using and testing Click with Flask.
-It is not a necessary part of the application.
-"""
+###
+# The following code demonstrates using and testing Click with Flask.
+# It is not a necessary part of the application.
+###
 
 
 @click.command()
@@ -75,11 +88,10 @@ def hello_command(name):
     click.echo(f'Hello, {name}!')
 
 
-def test_hello_command(runner: FlaskCliRunner, app: Flask) -> None:
+def test_hello_command(runner: FlaskCliRunner) -> None:
     """Test the contents of the result of a CLI command.
 
     :param FlaskCliRunner runner: The fixture to invoke the Click command
-    :param Flask app: The Flask application instance used for test
 
     :returns: None
     :rtype: None

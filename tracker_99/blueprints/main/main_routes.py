@@ -33,8 +33,8 @@ def index() -> Union[str, Response]:
         _member_id = int(current_user.get_id())
 
         """
-        SELECT courses.course_id, courses.course_name, courses.course_code,
-            courses.course_group, courses.course_desc, roles.role_id, roles.role_name
+        SELECT courses.course_id, courses.course_name, courses.course_code, courses.course_group,
+            courses.course_key, courses.course_desc, roles.role_id, roles.role_name
         FROM courses
         JOIN associations ON courses.course_id = associations.course_id
         JOIN roles ON roles.role_id = associations.role_id
@@ -47,6 +47,7 @@ def index() -> Union[str, Response]:
                 Course.course_name,
                 Course.course_code,
                 Course.course_group,
+                Course.course_key,
                 Course.course_desc,
                 Role.role_id,
                 Role.role_name,

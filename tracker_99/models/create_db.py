@@ -4,7 +4,6 @@
 from tracker_99.models import db
 from tracker_99.models.models import Course, Member, Role, Association
 
-
 def create_db():
     """Function to initialize the database (create tables and insert data)"""
     # Create tables if they don't exist
@@ -110,6 +109,12 @@ def create_db():
         ),
     ]
     # pylint: enable=line-too-long
+
+    # Set keys for courses
+    _demo_key = 'Change.Me.123'
+
+    for c in _courses:
+        c.set_key(_demo_key)
 
     # Add courses and commit
     db.session.add_all(_courses)

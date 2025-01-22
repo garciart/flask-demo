@@ -8,8 +8,14 @@ from flask import Flask
 from flask.testing import FlaskClient
 from flask_login import current_user
 
+# W0611: Unused app imported from . (unused-import) is a false positive
+# pylint: disable=unused-import
 from tracker_99.tests import app, client
 
+
+# W0621: Redefining name 'app' from outer scope is a false positive
+# In pytest, functions require 'app' as an argument
+# pylint: disable=redefined-outer-name
 
 def test_index_page_code_pass(client: FlaskClient, app: Flask) -> None:
     """Test the HTTP response code to a request for the Index page.
@@ -45,11 +51,10 @@ def test_index_page_content_pass(client: FlaskClient, app: Flask) -> None:
         assert b"Welcome" in response.data
 
 
-def test_about_page_code_pass(client: FlaskClient, app: Flask) -> None:
+def test_about_page_code_pass(client: FlaskClient) -> None:
     """Test the HTTP response code to a request for the About page.
 
     :param FlaskClient client: The fixture that sends requests (GET, POST, etc.) to app
-    :param Flask app: The Flask application instance used for test
 
     :returns: None
     :rtype: None
@@ -58,11 +63,10 @@ def test_about_page_code_pass(client: FlaskClient, app: Flask) -> None:
     assert response.status_code == 200
 
 
-def test_about_page_content_pass(client: FlaskClient, app: Flask) -> None:
+def test_about_page_content_pass(client: FlaskClient) -> None:
     """Test the HTTP response code to a request for the About page.
 
     :param FlaskClient client: The fixture that sends requests (GET, POST, etc.) to app
-    :param Flask app: The Flask application instance used for test
 
     :returns: None
     :rtype: None

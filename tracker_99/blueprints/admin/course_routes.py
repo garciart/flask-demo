@@ -1,10 +1,12 @@
 """Course Administration Routing Manager.
 """
 
+import sqlite3
 from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
+from sqlalchemy import exc
 
 from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
@@ -43,9 +45,13 @@ def add_course() -> Union[str, Response]:
                 course_group=_form.course_group.data,
                 course_desc=_form.course_desc.data,
             )
+            # Use the setter in the Course class to set Course.course_key
+            _course.set_key(_form.course_key.data)
             """
-            INSERT INTO courses (course_name, course_code, course_group, course_desc)
-            VALUES ("Building Bad Python Applications", "SDEV 301", "SDEV", "Not recommended!");
+            INSERT INTO courses (course_name, course_code, course_group, course_key, course_desc)
+            VALUES ("Building Bad Python Applications", "SDEV 301", "SDEV",
+                b'\xe1<\x9c\x01~\xd0_S\x8fR\xf8\x92W\x80|\xc1AAJ\xeb\xd8\xf3\xa4f\xd4&%1\r\xe7\xfaI\x1eO5\xa0\xa1\x9f\x99W\xab',
+                "Not recommended!");
             """
             db.session.add(_course)
             db.session.commit()
@@ -62,6 +68,9 @@ def add_course() -> Union[str, Response]:
 
             flash('Addition successful.')
             return redirect(url_for(c.COURSES_PAGE))
+        except exc.IntegrityError:
+            db.session.rollback()
+            flash('Addition failed: Course exists', 'error')
         except Exception as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
@@ -97,6 +106,8 @@ def view_course(course_id: int) -> Union[str, Response]:
     SELECT * FROM courses WHERE course_id = 17;
     """
     _course = Course.query.get_or_404(course_id)
+
+    _course.course_key = Course.decrypt_text(_course.course_key)
 
     return render_template(
         'view_course.html',
@@ -141,12 +152,17 @@ def edit_course(course_id: int) -> Union[str, Response]:
             _course.course_name = _form.course_name.data
             _course.course_code = _form.course_code.data
             _course.course_group = _form.course_group.data
+            # Only update the password if data was entered in the password fields
+            if _form.course_key.data.strip() != '':
+                # Use the setter in the Course class to set Course.course_key
+                _course.set_key(_form.course_key.data)
             _course.course_desc = _form.course_desc.data
             """
             UPDATE courses
             SET course_name = "Building Better Python Applications",
                 course_code = "SDEV 305",
                 course_group = "SDEV",
+                course_key = b'\xe1<\x9c\x01~\xd0_S\x8fR\xf8\x92W\x80|\xc1AAJ\xeb\xd8\xf3\xa4f\xd4&%1\r\xe7\xfaI\x1eO5\xa0\xa1\x9f\x99W\xab'
                 course_desc = "Better than before!"
             WHERE course_id = 17;
             """
@@ -154,6 +170,9 @@ def edit_course(course_id: int) -> Union[str, Response]:
             db.session.commit()
             flash('Update successful.')
             return redirect(url_for(c.COURSES_PAGE))
+        except exc.IntegrityError:
+            db.session.rollback()
+            flash('Update failed: Course exists', 'error')
         except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')

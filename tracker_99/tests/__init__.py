@@ -46,24 +46,24 @@ def app(request: FixtureRequest):
         _config_name = request.param.get('config_name', 'default')
         _log_events = request.param.get('log_events', False)
 
-    app = create_app(config_name=_config_name, log_events=_log_events)
+    _app = create_app(config_name=_config_name, log_events=_log_events)
 
-    app.config.update(
-        {
-            "TESTING": True,
-            "LOGIN_DISABLED": True
-        }
-    )
+    _app.config.update({"TESTING": True, "LOGIN_DISABLED": True})
 
-    """
-    Additional setup code goes here
-    """
+    ###
+    # Add additional setup code here
+    ###
 
-    yield app
+    yield _app
 
-    """
-    Clean-up and resource reset goes here
-    """
+    ###
+    # Add clean-up and resource reset here
+    ###
+
+
+# W0621: Redefining name 'app' from outer scope is a false positive
+# In pytest, functions require 'app' as an argument
+# pylint: disable=redefined-outer-name
 
 
 @pytest.fixture()

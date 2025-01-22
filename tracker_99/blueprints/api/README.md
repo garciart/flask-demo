@@ -25,7 +25,7 @@ curl -X GET -H "Authorization: Bearer json.web.token" http://127.0.0.1:5000/api/
 ```
 
 ```txt
-{"course":{"course_code":"FOO 101","course_desc":"An introduction to Foo.","course_group":"FOO","course_id":17,"course_name":"Intro to Foo"}}
+{"course":{"course_code":"FOO 101","course_desc":"An introduction to Foo.","course_group":"FOO","course_id":17,"course_key":b'...',"course_name":"Intro to Foo"}}
 ```
 
 -----

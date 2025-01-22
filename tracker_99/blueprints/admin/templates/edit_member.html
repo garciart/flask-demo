@@ -44,8 +44,8 @@
         {% for error in form.password2.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}
-
     </div>
+
     {% if current_user.is_admin %}
     <p>{{ form.is_admin() }} <b>{{ form.is_admin.label }}:</b></p>
     {% endif %}

@@ -125,6 +125,7 @@ def api_get_details(course_id: int, **kwargs) -> tuple:
             'course_name': _course.course_name,
             'course_code': _course.course_code,
             'course_group': _course.course_group,
+            'course_key': _course.course_key,
             'course_desc': _course.course_desc,
             'role_id': _role.role_id,
             'role_name': _role.role_name,
@@ -149,8 +150,11 @@ def api_get_details(course_id: int, **kwargs) -> tuple:
 # Do not forget to add an endpoint, or you will get an AssertionError!
 @api_bp.route('/api/courses/assign', methods=['POST', 'PUT', 'DELETE'], endpoint='assign_course')
 @token_required
-def api_assign_course(**kwargs) -> tuple:
+def api_assign_course(**kwargs) -> tuple:  # NOSONAR
     """Respond to an API request to assign a member to a course.
+
+    NOTE - (NOSONAR) This method updates information in a three-way association table,
+    and I am accepting the code complexity above 15.
 
     Bash:
     curl -X POST -H "Authorization: Bearer json.web.token" \
@@ -328,6 +332,7 @@ _DUMMY_DATA = [
         'course_name': 'Python 101',
         'course_code': 'CS100',
         'course_group': 'SDEV',
+        'course_key': 'Change.Me.123',
         'course_desc': 'Introduction to Python.',
     },
     {
@@ -335,6 +340,7 @@ _DUMMY_DATA = [
         'course_name': 'Flask 101',
         'course_code': 'CS101',
         'course_group': 'SDEV',
+        'course_key': 'Change.Me.123',
         'course_desc': 'Introduction to Flask.',
     },
 ]

@@ -19,7 +19,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     """Assign members to a course.
 
     NOTE - (NOSONAR) This method updates information in a three-way association table,
-    and I am accepting a code complexity of 18.
+    and I am accepting the code complexity above 15.
 
     :param int course_id: The ID of the course to modify access
 

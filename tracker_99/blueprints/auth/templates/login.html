@@ -11,9 +11,10 @@
 {% block main_content %}
 <h1>Log In</h1>
 <hr />
-<form action="" method="POST" novalidate>
+<form action="" method="POST">
     <!-- Use hidden_tag instead of csrf_token -->
     {{ form.hidden_tag() }}
+    <input type="hidden" name="next" value="{{ next_page }}">
     <p><b>{{ form.member_name.label }}:</b></p>
     <p>{{ form.member_name(size=32) }}</p>
     {% for error in form.member_name.errors %}

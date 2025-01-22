@@ -41,7 +41,7 @@ def validate_unique_course(form: Form, field: Field) -> None:
 
     if existing_course:
         raise ValidationError(
-            f"A course with name '{course_name}' and code '{course_code}' already exists."
+            f"A course named '{course_name}' ('{course_code}') already exists."
         )
 
 
@@ -68,6 +68,17 @@ class AddCourseForm(FlaskForm):
     course_group = StringField(
         'Group', validators=[Length(max=64)]
     )
+    course_key = PasswordField(
+        'Course Key',
+        validators=[
+            DataRequired(),
+            Length(max=15),
+            Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG)
+        ]
+    )
+    course_key2 = PasswordField(
+        'Repeat Course Key', validators=[DataRequired(), EqualTo('course_key')]
+    )
     course_desc = StringField('Description', widget=TextArea(), validators=[Length(max=256)])
     submit = SubmitField('Add Course')
 
@@ -88,13 +99,20 @@ class EditCourseForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(max=64),
-            validate_unique_course,
             Regexp(c.TEXT_REGEX, message=c.INVALID_TEXT_MSG)
         ]
     )
     course_group = StringField(
         'Group', validators=[Length(max=64)]
     )
+    course_key = PasswordField(
+        'Course Key',
+        validators=[
+            Optional(),
+            Length(max=15),
+            Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG)]
+    )
+    course_key2 = PasswordField('Repeat Course Key', validators=[EqualTo('course_key')])
     course_desc = StringField('Description', widget=TextArea(), validators=[Length(max=256)])
     submit = SubmitField('Update Course')
 
@@ -185,7 +203,10 @@ class EditMemberForm(FlaskForm):
     member_email = StringField('Email', validators=[DataRequired(), Email(), Length(max=320)])
     password = PasswordField(
         'Password',
-        validators=[Length(max=15), Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG)]
+        validators=[
+            Optional(),
+            Length(max=15),
+            Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG)]
     )
     password2 = PasswordField(c.PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
     is_admin = BooleanField('This member is an administrator')

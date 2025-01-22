@@ -66,6 +66,7 @@ def api_courses_all(**kwargs) -> tuple:
             'course_name': course.course_name,
             'course_code': course.course_code,
             'course_group': course.course_group,
+            'course_key': course.course_key,
             'course_desc': course.course_desc,
         }
         for course in _courses_list
@@ -112,24 +113,29 @@ def api_add_course(**kwargs) -> tuple:
     _course_name = _data.get('course_name', '')
     _course_code = _data.get('course_code', '')
     _course_group = _data.get('course_group', '')
+    _course_key = _data.get('course_key', '')
     _course_desc = _data.get('course_desc', '')
 
     # Add course if all attributes are provided and correct
     validate_input("_course_name", _course_name, str)
     validate_input("_course_code", _course_code, str)
     validate_input("_course_group", _course_group, str, allow_empty=True)
+    validate_input("_course_key", _course_key, str)
     validate_input("_course_desc", _course_desc, str, allow_empty=True)
 
     try:
         # Instantiate a Course object
         """
-        INSERT INTO courses (course_name, course_code, course_group, course_desc)
-        VALUES ("Building Bad Python Applications", "SDEV 301", "SDEV", "Not recommended!");
+        INSERT INTO courses (course_name, course_code, course_group, course_key, course_desc)
+        VALUES ("Building Bad Python Applications", "SDEV 301", "SDEV",
+            b'\xe1<\x9c\x01~\xd0_S\x8fR\xf8\x92W\x80|\xc1AAJ\xeb\xd8\xf3\xa4f\xd4&%1\r\xe7\xfaI\x1eO5\xa0\xa1\x9f\x99W\xab',
+            "Not recommended!");
         """
         _course = Course(
             course_name=_course_name,
             course_code=_course_code,
             course_group=_course_group,
+            course_key=_course_key,
             course_desc=_course_desc,
         )
 
@@ -202,6 +208,7 @@ def api_get_course(course_id: int, **kwargs) -> tuple:
         'course_name': _course.course_name,
         'course_code': _course.course_code,
         'course_group': _course.course_group,
+        'course_key': _course.course_key,
         'course_desc': _course.course_desc,
     }
 
@@ -218,14 +225,14 @@ def api_edit_course(course_id: int, **kwargs) -> tuple:
     Bash:
     curl -X PUT -H "Authorization: Bearer json.web.token" \
         -H "Content-Type: application/json" \
-        -d '{"course_name": "Building Good Python Applications", "course_desc": "Much better!"}' \
+        -d '{"course_name": "Building Good Python Applications", "course_key": "Change.Me.123", "course_desc": "Much better!"}' \
         http://127.0.0.1:5000/api/courses/edit/17
 
     PS:
     Invoke-WebRequest -Method Put \
         -ContentType "application/json" \
         -Headers "Authorization: Bearer json.web.token" \
-        -Body "{`"course_name`": `"Building Good Python Applications`", `"course_desc`": `"Much better!`"}' \
+        -Body "{`"course_name`": `"Building Good Python Applications`", `"course_key`": `"Change.Me.123`", `"course_desc`": `"Much better!`"}' \
         -Uri "http://127.0.0.1:5000/api/courses/edit/17"
 
     :returns: A status message with the HTTP status code (Response, int)
@@ -288,6 +295,9 @@ def api_edit_course(course_id: int, **kwargs) -> tuple:
         if 'course_group' in _data:
             validate_input("_data['course_group']", _data['course_group'], str)
             _course.course_group = _data['course_group']
+        if 'course_key' in _data:
+            validate_input("_data['course_key']", _data['course_key'], str)
+            _course.course_key = _data['course_key']
         if 'course_desc' in _data:
             validate_input("_data['course_desc']", _data['course_desc'], str)
             _course.course_desc = _data['course_desc']
@@ -296,6 +306,7 @@ def api_edit_course(course_id: int, **kwargs) -> tuple:
         SET course_name = "Building Bad Python Applications",
             course_code = "SDEV 301",
             course_group = "SDEV",
+            course_key = b'\xe1<\x9c\x01~\xd0_S\x8fR\xf8\x92W\x80|\xc1AAJ\xeb\xd8\xf3\xa4f\xd4&%1\r\xe7\xfaI\x1eO5\xa0\xa1\x9f\x99W\xab'
             course_desc = "Not recommended!"
         WHERE course_id = 17;
         """

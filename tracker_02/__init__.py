@@ -23,6 +23,7 @@ import flask
 
 __author__ = 'Rob Garcia'
 
+
 # Get the Python version number and convert it to float (e.g., 3.9 -> 3.09)
 python_version = float(f"{sys.version_info.major}.{sys.version_info.minor:02d}")
 
