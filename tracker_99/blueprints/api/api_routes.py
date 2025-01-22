@@ -272,7 +272,7 @@ def api_assign_course(**kwargs) -> tuple:  # NOSONAR
             # _assoc.course_id=_course_id
             # _assoc.member_id=_member_id
             _assoc.role_id = _role_id
-            print(_assoc.role_id)
+
             """
             UPDATE association SET role_id = 2 WHERE course_id = 1 AND member_id == 6;
             """

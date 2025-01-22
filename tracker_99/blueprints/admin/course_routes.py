@@ -14,7 +14,7 @@ from tracker_99.blueprints.admin.course_forms import (
     EditCourseForm,
     DeleteCourseForm,
 )
-from tracker_99.models.models import Course, Association
+from tracker_99.models.models import Course, Association, Member, Role
 
 
 # Allow `except Exception as e` so issues can percolate up, like ValueErrors from the model
@@ -105,13 +105,41 @@ def view_course(course_id: int) -> Union[str, Response]:
     """
     _course = Course.query.get_or_404(course_id)
 
-    _course.course_key = Course.decrypt_text(_course.course_key)
+    # Use a new variable since SQLAlchemy keeps track of objects and their attributes,
+    # and redefining _course.course_key will cause an error
+    _decrypted_key = Course.decrypt_text(_course.course_key)
+
+    # Get a list of chairs to show to the viewer
+    """
+    SELECT members.member_name
+    FROM courses,
+        members,
+        associations,
+        roles
+    WHERE courses.course_id = 3 AND
+        roles.role_privilege >= 20 AND
+        courses.course_id = associations.course_id AND
+        members.member_id = associations.member_id AND
+        roles.role_id = associations.role_id;
+    """
+    _chairs = (db.session.query(Member.member_name)
+        .join(Association, Association.member_id == Member.member_id)
+        .join(Course, Course.course_id == Association.course_id)
+        .join(Role, Role.role_id == Association.role_id)
+        .filter(Course.course_id == course_id,
+                Role.role_privilege >= c.CUTOFF_PRIVILEGE_OWNER)
+        .all())
+
+    # Convert list of one-item tuples [('liet.kynes',)] to a list of str ['liet.kynes']
+    _chairs = [item[0] for item in _chairs]
 
     return render_template(
         'view_course.html',
         page_title=_page_title,
         page_description=_page_description,
         course=_course,
+        decrypted_key=_decrypted_key,
+        chairs=_chairs
     )
 
 

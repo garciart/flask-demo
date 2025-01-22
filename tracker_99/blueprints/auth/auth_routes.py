@@ -50,8 +50,6 @@ def login() -> Union[str, Response]:
 
         return redirect(_next_page)
 
-    print(_next_page)
-
     return render_template(
         'login.html', page_title=_page_title, page_description=_page_description,
         form=_form, next_page=_next_page

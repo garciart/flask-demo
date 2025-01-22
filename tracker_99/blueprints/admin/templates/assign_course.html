@@ -22,6 +22,7 @@
         <tr>
             <th scope="col">Member Name</th>
             <th scope="col">Member ID</th>
+            <th scope="col">Super Admin?</th>
             <th scope="col">Access</th>
         </tr>
         </thead>
@@ -30,6 +31,7 @@
         <tr>
             <td class="text-nowrap">{{ m.member_name }}</td>
             <td class="text-nowrap">{{ m.member_id }}</td>
+            <td class="text-nowrap">{{ m.is_admin }}</td>
             <td>
                 {% for r in roles_list %}
                 {% if m.role_id == r.role_id %}

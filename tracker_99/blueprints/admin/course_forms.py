@@ -146,12 +146,11 @@ class EditCourseForm(FlaskForm):
                 course_name.data != self.current_course_name
                 or self.course_code.data != self.current_course_code
         ):
-            print(course_name.data, self.current_course_name)
             _result = db.session.query(Course.course_name, Course.course_code).filter(
-                    func.lower(Course.course_name) == func.lower(course_name.data),
-                    func.lower(Course.course_code) == func.lower(self.course_code.data),
+                func.lower(Course.course_name) == func.lower(course_name.data),
+                func.lower(Course.course_code) == func.lower(self.course_code.data),
             ).all()
-            print(f'Result = {_result}')
+
             if _result:
                 raise ValidationError(
                     f"A course named '{course_name.data}' ({self.course_code.data}) already exists."

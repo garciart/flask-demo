@@ -37,13 +37,14 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
 
     # Get the members assigned to the course
     # The query will generate a list of tuples
-    # Each tuple in the list will have the role_id, member_id, member_name, and role_privilege
-    # of member assigned to the course in that order, like
-    # [(1, 16, 'Stilgar.Tabr', 20), (2, 2, 'Leto.Atreides', 10), ...]
+    # Each tuple in the list will have the role_id, member_id, member_name, is_admin,
+    # and role_privilege of member assigned to the course in that order, like
+    # [(1, 16, 0, 'Stilgar.Tabr', 20), (2, 2, 0, 'Leto.Atreides', 10), ...]
     """
     SELECT associations.role_id,
         members.member_id,
         members.member_name,
+        members.is_admin,
         roles.role_privilege
     FROM associations,
         members,
@@ -54,7 +55,8 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     """
     _assigned_members = (
         db.session.query(
-            Association.role_id, Member.member_id, Member.member_name, Role.role_privilege
+            Association.role_id, Member.member_id, Member.member_name,
+            Member.is_admin, Role.role_privilege
         )
         .join(Member, Association.member_id == Member.member_id)
         .join(Role, Association.role_id == Role.role_id)
@@ -64,7 +66,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
 
     # Convert _assigned_members to a list of dictionaries
     # Make sure the keys correspond to the values
-    _keys = ['role_id', 'member_id', 'member_name', 'role_privilege']
+    _keys = ['role_id', 'member_id', 'member_name', 'is_admin', 'role_privilege']
     _assigned_members = [dict(zip(_keys, row)) for row in _assigned_members]
 
     # Get the ID of the current user
@@ -86,16 +88,19 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # Get a list of unassigned members
     """
     SELECT members.member_id,
-           members.member_name
+           members.member_name,
+           members.is_admin
     FROM members
     WHERE members.member_id NOT IN (2, 3, 4, 16);
     """
-    _unassigned_members = (db.session.query(Member.member_id, Member.member_name).filter(
+    _unassigned_members = (db.session.query(Member.member_id,
+                                            Member.member_name,
+                                            Member.is_admin).filter(
         Member.member_id.notin_(_assigned_member_ids)).all())
 
     # Convert _unassigned_members to a list of dictionaries
     # Make sure the keys correspond to their values
-    _keys = ['member_id', 'member_name']
+    _keys = ['member_id', 'member_name', 'is_admin']
     _unassigned_members = [dict(zip(_keys, row)) for row in _unassigned_members]
 
     # Members cannot elevate their privileges

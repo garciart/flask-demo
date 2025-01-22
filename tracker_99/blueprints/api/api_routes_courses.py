@@ -376,8 +376,6 @@ def api_delete_course(course_id: int, **kwargs) -> tuple:
         else:
             return jsonify({'error': c.NOT_FOUND_MSG}), 404
 
-        print(_role_privilege, c.CUTOFF_PRIVILEGE_OWNER)
-
         if _role_privilege < c.CUTOFF_PRIVILEGE_OWNER:
             return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
