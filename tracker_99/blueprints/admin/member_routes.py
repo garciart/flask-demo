@@ -1,7 +1,6 @@
 """Member Administration Routing Manager.
 """
 
-import sqlite3
 from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
@@ -11,7 +10,7 @@ from sqlalchemy import exc
 from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.admin import admin_bp
-from tracker_99.blueprints.admin.admin_forms import (
+from tracker_99.blueprints.admin.member_forms import (
     AddMemberForm,
     EditMemberForm,
     DeleteMemberForm,
@@ -61,9 +60,9 @@ def add_member() -> Union[str, Response]:
             db.session.commit()
             flash('Addition successful.')
             return redirect(url_for(c.MEMBERS_PAGE))
-        except exc.IntegrityError:
-            db.session.rollback()
-            flash('Addition failed: Member exists', 'error')
+        # except exc.IntegrityError:
+        #     db.session.rollback()
+        #     flash('Addition failed: Member exists', 'error')
         except Exception as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
@@ -141,6 +140,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
     SELECT * FROM MEMBERS WHERE member_id = 17;
     """
     _member = Member.query.get_or_404(member_id)
+    # Pass the current member name for validation
     _form = EditMemberForm(_member.member_name, _member.member_email)
 
     # Pre-populate form with current member details
@@ -170,9 +170,9 @@ def edit_member(member_id: int) -> Union[str, Response]:
             db.session.commit()
             flash('Update successful.')
             return redirect(url_for(c.MEMBERS_PAGE))
-        except exc.IntegrityError:
-            db.session.rollback()
-            flash('Update failed: Member exists', 'error')
+        # except exc.IntegrityError:
+        #     db.session.rollback()
+        #     flash('Update failed: Member exists', 'error')
         except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')

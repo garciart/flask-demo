@@ -20,11 +20,11 @@ INVALID_NAME_MSG = (
     + 'and contain only letters, numbers, periods, underscores, and dashes.'
 )
 INVALID_PASSWORD_MSG = (
-    'Password must be between 8-15 characters long, '
+    'Password and keys must be between 8-15 characters long, '
     + 'contain at least one uppercase letter, one lowercase letter, and one number.'
 )
 INVALID_TEXT_MSG = (
-    'Text fields must Be at least 3 characters long, start with a letter or number, '
+    'Text fields must be at least 3 characters long, start with a letter or number, '
     + 'and contain only letters, numbers, periods, underscores, dashes, and spaces.'
 )
 LOGIN_PAGE = 'auth_bp.login'
@@ -38,7 +38,7 @@ NAME_REGEX = r'^[A-Za-z][A-Za-z0-9\.\_\-]{2,}$'
 
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 NOT_FOUND_MSG = 'No courses found.'
-PASSWORD_FIELD_LABEL = 'Repeat Password'
+PASSWORD_FIELD_LABEL = 'Repeat Password or Key'
 
 # Ensure the password meets validation criteria:
 # - A minimum of eight characters

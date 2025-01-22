@@ -1,17 +1,15 @@
 """Course Administration Routing Manager.
 """
 
-import sqlite3
 from typing import Union
 
 from flask import Response, flash, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
-from sqlalchemy import exc
 
 from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
 from tracker_99.blueprints.admin import admin_bp
-from tracker_99.blueprints.admin.admin_forms import (
+from tracker_99.blueprints.admin.course_forms import (
     AddCourseForm,
     EditCourseForm,
     DeleteCourseForm,
@@ -68,9 +66,9 @@ def add_course() -> Union[str, Response]:
 
             flash('Addition successful.')
             return redirect(url_for(c.COURSES_PAGE))
-        except exc.IntegrityError:
-            db.session.rollback()
-            flash('Addition failed: Course exists', 'error')
+        # except exc.IntegrityError:
+        #     db.session.rollback()
+        #     flash('Addition failed: Course exists', 'error')
         except Exception as e:
             db.session.rollback()
             flash(f'Addition failed: {str(e)}', 'error')
@@ -138,7 +136,8 @@ def edit_course(course_id: int) -> Union[str, Response]:
     SELECT * FROM courses WHERE course_id = 17;
     """
     _course = Course.query.get_or_404(course_id)
-    _form = EditCourseForm()
+    # Pass the current course name and code to check for duplicates
+    _form = EditCourseForm(_course.course_name, _course.course_code)
 
     # Pre-populate form with current course details
     if request.method == 'GET':
@@ -170,9 +169,9 @@ def edit_course(course_id: int) -> Union[str, Response]:
             db.session.commit()
             flash('Update successful.')
             return redirect(url_for(c.COURSES_PAGE))
-        except exc.IntegrityError:
-            db.session.rollback()
-            flash('Update failed: Course exists', 'error')
+        # except exc.IntegrityError:
+        #     db.session.rollback()
+        #     flash('Update failed: Course exists', 'error')
         except Exception as e:
             db.session.rollback()
             flash(f'Update failed: {str(e)}', 'error')
