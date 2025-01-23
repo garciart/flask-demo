@@ -37,23 +37,25 @@
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <p><b>{{ form.course_key.label }}:</b></p>
-    <p>{{ form.course_key(size=32) }}</p>
-    {% for error in form.course_key.errors %}
-    <p class="message-text">{{ error }}</p>
-    {% endfor %}
-
-    <p><b>{{ form.course_key2.label }}:</b></p>
-    <p>{{ form.course_key2(size=32) }}</p>
-    {% for error in form.course_key2.errors %}
-    <p class="message-text">{{ error }}</p>
-    {% endfor %}
-
     <p><b>{{ form.course_desc.label }}:</b></p>
     <p>{{ form.course_desc(rows="4", cols="64") }}</p>
     {% for error in form.course_desc.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
+
+    <div style="border: 1px black solid; padding: 1em;"></div>
+        <p><b>{{ form.course_key.label }}:</b></p>
+        <p>{{ form.course_key(size=32) }}</p>
+        {% for error in form.course_key.errors %}
+        <p class="message-text">{{ error }}</p>
+        {% endfor %}
+
+        <p><b>{{ form.course_key2.label }}:</b></p>
+        <p>{{ form.course_key2(size=32) }}</p>
+        {% for error in form.course_key2.errors %}
+        <p class="message-text">{{ error }}</p>
+        {% endfor %}
+    </div>
 
     <hr/>
     {{ form.submit(class="btn btn-primary") }}

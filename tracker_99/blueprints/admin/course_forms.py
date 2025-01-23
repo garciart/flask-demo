@@ -66,7 +66,7 @@ class AddCourseForm(FlaskForm):
     )
     course_group = StringField('Group', validators=[Length(max=64)])
     course_key = PasswordField(
-        'Course Key',
+        c.PASSWORD_FIELD_LABEL,
         validators=[
             DataRequired(),
             Length(max=15),
@@ -74,7 +74,7 @@ class AddCourseForm(FlaskForm):
         ],
     )
     course_key2 = PasswordField(
-        'Repeat Course Key', validators=[DataRequired(), EqualTo('course_key')]
+        c.PASSWORD_REPEAT_FIELD_LABEL, validators=[DataRequired(), EqualTo('course_key')]
     )
     course_desc = StringField('Description', widget=TextArea(), validators=[Length(max=256)])
     submit = SubmitField('Add Course')
@@ -104,14 +104,14 @@ class EditCourseForm(FlaskForm):
     )
     course_group = StringField('Group', validators=[Length(max=64)])
     course_key = PasswordField(
-        'Course Key',
+        c.PASSWORD_FIELD_LABEL,
         validators=[
             Optional(),
             Length(max=15),
             Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG),
         ],
     )
-    course_key2 = PasswordField('Repeat Course Key', validators=[EqualTo('course_key')])
+    course_key2 = PasswordField(c.PASSWORD_REPEAT_FIELD_LABEL, validators=[EqualTo('course_key')])
     course_desc = StringField('Description', widget=TextArea(), validators=[Length(max=256)])
     submit = SubmitField('Update Course')
 

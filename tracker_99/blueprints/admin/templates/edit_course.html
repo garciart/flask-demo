@@ -37,6 +37,12 @@
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
+    <p><b>{{ form.course_desc.label }}:</b></p>
+    <p>{{ form.course_desc(rows="4", cols="64") }}</p>
+    {% for error in form.course_desc.errors %}
+    <p class="message-text">{{ error }}</p>
+    {% endfor %}
+
     <div style="border: 1px black solid; padding: 1em;">
         <p><i>(Leave both fields blank to continue using the current key.)</i></p>
         <p><b>{{ form.course_key.label }}:</b></p>
@@ -51,12 +57,6 @@
         <p class="message-text">{{ error }}</p>
         {% endfor %}
     </div>
-
-    <p><b>{{ form.course_desc.label }}:</b></p>
-    <p>{{ form.course_desc(rows="4", cols="64") }}</p>
-    {% for error in form.course_desc.errors %}
-    <p class="message-text">{{ error }}</p>
-    {% endfor %}
 
     <hr/>
     {{ form.submit(class="btn btn-primary") }}

@@ -96,6 +96,11 @@ def view_course(course_id: int) -> Union[str, Response]:
     # Validate inputs
     validate_input('course_id', course_id, int)
 
+    # Ensure the current user can view the course
+    if _get_privilege_level(course_id=course_id) < 1:
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
+
     _page_title = 'View Course'
     _page_description = 'View Course'
 
@@ -117,7 +122,7 @@ def view_course(course_id: int) -> Union[str, Response]:
         associations,
         roles
     WHERE courses.course_id = 3 AND
-        roles.role_privilege >= 20 AND
+        roles.role_privilege >= 30 AND
         courses.course_id = associations.course_id AND
         members.member_id = associations.member_id AND
         roles.role_id = associations.role_id;
@@ -127,7 +132,7 @@ def view_course(course_id: int) -> Union[str, Response]:
         .join(Course, Course.course_id == Association.course_id)
         .join(Role, Role.role_id == Association.role_id)
         .filter(Course.course_id == course_id,
-                Role.role_privilege >= c.CUTOFF_PRIVILEGE_OWNER)
+                Role.role_privilege >= c.PRIVILEGE_LVL_OWNER)
         .all())
 
     # Convert list of one-item tuples [('liet.kynes',)] to a list of str ['liet.kynes']
@@ -156,6 +161,11 @@ def edit_course(course_id: int) -> Union[str, Response]:
     # Validate inputs
     validate_input('course_id', course_id, int)
 
+    # Ensure the current user can view the course
+    if _get_privilege_level(course_id=course_id) < c.PRIVILEGE_LVL_EDITOR:
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
+
     _page_title = 'Edit Course'
     _page_description = 'Edit Course'
 
@@ -164,6 +174,7 @@ def edit_course(course_id: int) -> Union[str, Response]:
     SELECT * FROM courses WHERE course_id = 17;
     """
     _course = Course.query.get_or_404(course_id)
+
     # Pass the current course name and code to check for duplicates
     _form = EditCourseForm(_course.course_name, _course.course_code)
 
@@ -224,9 +235,13 @@ def delete_course(course_id: int) -> Union[str, Response]:
     :returns: The HTML code to display with {{ placeholders }} populated
     :rtype: str/Response
     """
-
     # Validate inputs
     validate_input('course_id', course_id, int)
+
+    # Ensure the current user can view the course
+    if _get_privilege_level(course_id=course_id) < c.PRIVILEGE_LVL_OWNER:
+        flash(c.NOT_AUTH_MSG)
+        return redirect(url_for(c.INDEX_PAGE))
 
     _page_title = 'Delete Course'
     _page_description = 'Delete Course'
@@ -266,3 +281,38 @@ def delete_course(course_id: int) -> Union[str, Response]:
         course=_course,
         form=_form,
     )
+
+def _get_privilege_level(course_id: int) -> int:
+    """Get the current user's privilege level in the course.
+
+    :param int course_id: The course ID to check against the Association table
+
+    :returns: The privilege level of the user
+    :rtype: int
+    """
+    if current_user.is_admin:
+        return 99
+    else:
+        # Get the ID of the current user
+        _member_id = int(current_user.get_id())
+
+        # Ensure the current user has the right privileges
+        """
+        SELECT roles.role_privilege
+        FROM associations,
+            roles
+        WHERE associations.course_id = 3 AND
+            associations.member_id = 2 AND
+            associations.role_id = roles.role_id
+        LIMIT 1;
+        """
+        _role_privilege = (db.session.query(Role.role_privilege)
+            .join(Association, Association.role_id == Role.role_id)
+            .filter(Association.course_id == course_id,
+                    Association.member_id == _member_id)
+            .first())
+
+        if _role_privilege is None:
+            return 0
+        else:
+            return _role_privilege[0]

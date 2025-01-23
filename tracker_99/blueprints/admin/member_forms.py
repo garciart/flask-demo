@@ -34,7 +34,7 @@ class AddMemberForm(FlaskForm):
     )
     member_email = StringField('Email', validators=[DataRequired(), Email(), Length(max=320)])
     password = PasswordField(
-        'Password',
+        c.PASSWORD_FIELD_LABEL,
         validators=[
             DataRequired(),
             Length(max=15),
@@ -42,7 +42,7 @@ class AddMemberForm(FlaskForm):
         ],
     )
     password2 = PasswordField(
-        c.PASSWORD_FIELD_LABEL, validators=[DataRequired(), EqualTo('password')]
+        c.PASSWORD_REPEAT_FIELD_LABEL, validators=[DataRequired(), EqualTo('password')]
     )
     is_admin = BooleanField('This member an administrator')
     submit = SubmitField('Add Member')
@@ -100,14 +100,14 @@ class EditMemberForm(FlaskForm):
     )
     member_email = StringField('Email', validators=[DataRequired(), Email(), Length(max=320)])
     password = PasswordField(
-        'Password',
+        c.PASSWORD_FIELD_LABEL,
         validators=[
             Optional(),
             Length(max=15),
             Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG),
         ],
     )
-    password2 = PasswordField(c.PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
+    password2 = PasswordField(c.PASSWORD_REPEAT_FIELD_LABEL, validators=[EqualTo('password')])
     is_admin = BooleanField('This member is an administrator')
     submit = SubmitField('Update Member')
 
@@ -171,14 +171,14 @@ class UpdateProfileForm(FlaskForm):
 
     member_email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField(
-        'Password',
+        c.PASSWORD_FIELD_LABEL,
         validators=[
             Optional(),
             Length(max=15),
             Regexp(c.PASSWORD_REGEX, message=c.INVALID_PASSWORD_MSG),
         ],
     )
-    password2 = PasswordField(c.PASSWORD_FIELD_LABEL, validators=[EqualTo('password')])
+    password2 = PasswordField(c.PASSWORD_REPEAT_FIELD_LABEL, validators=[EqualTo('password')])
     submit = SubmitField('Update Member')
 
     def __init__(self, current_member_email: str, *args, **kwargs) -> None:

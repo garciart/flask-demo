@@ -278,7 +278,7 @@ def api_edit_course(course_id: int, **kwargs) -> tuple:
         else:
             return jsonify({'error': c.NOT_FOUND_MSG}), 404
 
-        if _role_privilege < c.CUTOFF_PRIVILEGE_EDITOR:
+        if _role_privilege < c.PRIVILEGE_LVL_EDITOR:
             return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     try:
@@ -376,7 +376,7 @@ def api_delete_course(course_id: int, **kwargs) -> tuple:
         else:
             return jsonify({'error': c.NOT_FOUND_MSG}), 404
 
-        if _role_privilege < c.CUTOFF_PRIVILEGE_OWNER:
+        if _role_privilege < c.PRIVILEGE_LVL_OWNER:
             return jsonify({'error': c.NOT_AUTH_MSG}), 403
 
     # Save name for message after deletion

@@ -1,5 +1,6 @@
 """Main content routing manager.
 """
+
 from typing import Union
 
 from flask import Response
@@ -32,15 +33,16 @@ def index() -> Union[str, Response]:
     else:
         _member_id = int(current_user.get_id())
 
+        # This works, but I can't figure out how to simplify the SQLAlchemy query
+        # I have to break out the columns either in the query or afterwards
+        # to use with Jinja templating
         """
-        SELECT courses.course_id, courses.course_name, courses.course_code, courses.course_group,
-            courses.course_key, courses.course_desc, roles.role_id, roles.role_name
+        SELECT courses.*, roles.*
         FROM courses
         JOIN associations ON courses.course_id = associations.course_id
         JOIN roles ON roles.role_id = associations.role_id
         WHERE associations.member_id = 2;
         """
-
         _courses = (
             db.session.query(
                 Course.course_id,
@@ -51,6 +53,7 @@ def index() -> Union[str, Response]:
                 Course.course_desc,
                 Role.role_id,
                 Role.role_name,
+                Role.role_privilege,
             )
             .join(Association, Course.course_id == Association.course_id)
             .join(Role, Role.role_id == Association.role_id)
@@ -61,11 +64,18 @@ def index() -> Union[str, Response]:
     # Convert to list if there is only one result
     _courses = [_courses] if not isinstance(_courses, list) else _courses
 
+    _privilege = {
+        'assigner': c.PRIVILEGE_LVL_ASSIGNER,
+        'editor': c.PRIVILEGE_LVL_EDITOR,
+        'owner': c.PRIVILEGE_LVL_OWNER,
+    }
+
     return render_template(
         'index.html',
         page_title=_page_title,
         page_description=_page_description,
         courses=_courses,
+        privilege=_privilege,
     )
 
 
@@ -79,9 +89,7 @@ def about() -> Union[str, Response]:
     _page_title = 'About...'
     _page_description = 'About Page'
 
-    return render_template(
-        'about.html', page_title=_page_title, page_description=_page_description
-    )
+    return render_template('about.html', page_title=_page_title, page_description=_page_description)
 
 
 @main_bp.route('/courses')
@@ -147,9 +155,6 @@ def roles() -> Union[str, Response]:
     _roles = [_roles] if not isinstance(_roles, list) else _roles
 
     _html = render_template(
-        'roles.html',
-        page_title=_page_title,
-        page_description=_page_description,
-        roles=_roles
+        'roles.html', page_title=_page_title, page_description=_page_description, roles=_roles
     )
     return _html

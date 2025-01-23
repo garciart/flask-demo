@@ -4,13 +4,6 @@ regardless of the configuration used.
 
 COURSES_PAGE = 'main_bp.courses'
 
-# Only members with role_privileges greater than or equal to 10,
-# like chairs and teachers of the course and admins, can edit a course
-CUTOFF_PRIVILEGE_EDITOR = 10
-# Only members with role_privileges greater than or equal to 20,
-# like chairs of the course and admins, can edit a course
-CUTOFF_PRIVILEGE_OWNER = 20
-
 EMAIL_REGEX = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}$'
 
 INDEX_PAGE = 'main_bp.index'
@@ -38,13 +31,24 @@ NAME_REGEX = r'^[A-Za-z][A-Za-z0-9\.\_\-]{2,}$'
 
 NOT_AUTH_MSG = 'You do not have permission to perform that action.'
 NOT_FOUND_MSG = 'No courses found.'
-PASSWORD_FIELD_LABEL = 'Repeat Password or Key'
+PASSWORD_FIELD_LABEL = 'Password or Key'
+PASSWORD_REPEAT_FIELD_LABEL = 'Repeat Password or Key'
 
 # Ensure the password meets validation criteria:
 # - A minimum of eight characters
 # - A maximum of fifteen characters
 # - At least one uppercase letter, one lowercase letter and one number
 PASSWORD_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$'
+
+# Only members with role_privileges greater than or equal to 10,
+# like chairs, teachers, and associates, can assign a course
+PRIVILEGE_LVL_ASSIGNER = 10
+# Only members with role_privileges greater than or equal to 20,
+# like chairs and teachers, and associates, can edit a course
+PRIVILEGE_LVL_EDITOR = 20
+# Only members with role_privileges greater than or equal to 30,
+# like chairs, can delete a course
+PRIVILEGE_LVL_OWNER = 30
 
 ROLES_PAGE = 'main_bp.roles'
 

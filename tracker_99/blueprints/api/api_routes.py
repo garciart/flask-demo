@@ -233,7 +233,7 @@ def api_assign_course(**kwargs) -> tuple:  # NOSONAR
 
         # Compare the requestor's privilege to the _assignee_role_privilege
         # Remember, non-admins cannot assign at or above their privilege level
-        if (_requestor_role_privilege < c.CUTOFF_PRIVILEGE_EDITOR or
+        if (_requestor_role_privilege < c.PRIVILEGE_LVL_EDITOR or
                 _requestor_role_privilege <= _assignee_role_privilege):
             return jsonify({'error': c.NOT_AUTH_MSG}), 403
 

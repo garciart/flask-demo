@@ -13,7 +13,10 @@
 <h1>Welcome to Tracker!</h1>
 <p>This page is restricted to administrators and members only.</p>
 {% else %}
-<h1>Assign Members to Course</h1>
+<h1>Assign Members to a Course</h1>
+<ul class="text-info font-italic">
+    <li>Assigning or unassigning super administrators does not affect their privileges.</li>
+</ul>
 <hr/>
 <h2>{{ course_name }}</h2>
 <form action="" method="post" class="no-break-submit-btn">
