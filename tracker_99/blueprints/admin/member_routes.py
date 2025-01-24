@@ -3,9 +3,8 @@
 
 from typing import Union
 
-from flask import Response, flash, redirect, url_for, render_template, request
+from flask import Response, abort, flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
-from sqlalchemy import exc
 
 from tracker_99 import db, constants as c
 from tracker_99.app_utils import validate_input
@@ -34,8 +33,7 @@ def add_member() -> Union[str, Response]:
     """
     # Only administrators can add members
     if not current_user.is_admin:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'Add Member'
     _page_description = 'Add Member'
@@ -93,8 +91,7 @@ def view_member(member_id: int) -> Union[str, Response]:
 
     # Admins can view any profile, and members can view their own profile
     if not current_user.is_admin and current_user.member_id != member_id:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'View Member'
     _page_description = 'View Member'
@@ -129,8 +126,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
 
     # Admins can edit any profile, and members can edit their own profile
     if not current_user.is_admin and current_user.member_id != member_id:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'Edit Member'
     _page_description = 'Edit Member'
@@ -204,13 +200,12 @@ def delete_member(member_id: int) -> Union[str, Response]:
 
     # Only administrators can delete members
     if not current_user.is_admin:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     # Do not let members delete themselves!
     if current_user.get_id() == member_id:
-        flash('You cannot delete yourself!')
-        return redirect(url_for(c.INDEX_PAGE))
+        flash(c.SUICIDE_MSG)
+        return redirect(url_for(c.INDEX_PAGE), code=303)
 
     _page_title = 'Delete Member'
     _page_description = 'Delete Member'
@@ -271,8 +266,7 @@ def update_profile(member_id: int) -> Union[str, Response]:
 
     # Only you can update your profile
     if current_user.get_id() != member_id:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'Update Profile'
     _page_description = 'Update Profile'

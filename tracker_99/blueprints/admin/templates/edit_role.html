@@ -20,13 +20,13 @@
     {{ form.hidden_tag() }}
 
     <p><b>{{ form.role_name.label }}:</b></p>
-    <p>{{ form.role_name(size=64) }}</p>
+    <p>{{ form.role_name(style="width:100%;") }}</p>
     {% for error in form.role_name.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
     <p><b>{{ form.role_privilege.label }}:</b></p>
-    <p>{{ form.role_privilege(size=64) }}</p>
+    <p>{{ form.role_privilege(style="width:100%;") }}</p>
     {% for error in form.role_privilege.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}

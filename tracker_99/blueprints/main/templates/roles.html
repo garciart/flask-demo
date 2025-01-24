@@ -19,37 +19,45 @@
     <li>Members with a privilege level less than 10 can only view course information.</li>
     <li>[Name: 'Unassigned'], [ID: 1], and [Privilege Level: 0] are reserved and cannot be used.</li>
 </ul>
-<table id="data-table" class="table table-striped display caption-top">
+<table id="filter-table" class="table table-striped display caption-top responsive" style="width:100%">
     <caption class="text-center">List of Roles</caption>
     <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">ID</th>
-        <th scope="col">Privilege Level</th>
-        {% if current_user.is_admin %}
-        <th scope="col">Actions</th>
-        {% endif %}
-    </tr>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">ID</th>
+            <th scope="col">Privilege Level</th>
+            {% if current_user.is_admin %}
+            <th scope="col">Actions</th>
+            {% endif %}
+        </tr>
     </thead>
     <tbody class="table-group-divider">
-    {% for role in roles %}
-    <tr>
-        <th scope="row" class="text-nowrap">{{ role.role_name }}</th>
-        <td class="text-nowrap">{{ role.role_id }}</td>
-        <td class="text-nowrap">{{ role.role_privilege }}</td>
-        {% if current_user.is_admin %}
-        <td class="text-nowrap">
-            <a class="btn btn-primary disabled"
-               href="{{ url_for('admin_bp.edit_role', role_id=role.role_id) }}"
-               title="Edit">Edit</a>
-            <a class="btn btn-danger disabled"
-               href="{{ url_for('admin_bp.delete_role', role_id=role.role_id) }}"
-               title="Delete">Delete</a>
-        </td>
-        {% endif %}
-    </tr>
-    {% endfor %}
+        {% for role in roles %}
+        <tr>
+            <th scope="row" class="text-nowrap">{{ role.role_name }}</th>
+            <td class="text-nowrap">{{ role.role_id }}</td>
+            <td class="text-nowrap">{{ role.role_privilege }}</td>
+            {% if current_user.is_admin %}
+            <td class="text-nowrap">
+                <a class="btn btn-primary disabled" href="{{ url_for('admin_bp.edit_role', role_id=role.role_id) }}"
+                    title="Edit">Edit</a>
+                <a class="btn btn-danger disabled" href="{{ url_for('admin_bp.delete_role', role_id=role.role_id) }}"
+                    title="Delete">Delete</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+            <th scope="col">Search in Name</th>
+            <th scope="col">ID</th>
+            <th scope="col">Privilege Level</th>
+            {% if current_user.is_admin %}
+            <th scope="col"></th>
+            {% endif %}
+        </tr>
+    </tfoot>
 </table>
 {% endif %}
 {% endblock %}
@@ -62,18 +70,22 @@
 {{ super() }}
 {% if current_user.is_admin %}
 <script type="text/javascript">
-    let table = new DataTable('#data-table', {
-      columnDefs: [{ orderable: false, targets: 3 }],
-      scrollX: true,
-      autoWidth: false
-    });
+    filterTable.columnDefs = [
+        // Applies to Actions column
+        { orderable: false, targets: 3 },
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 2, targets: 3 },
+        { responsivePriority: 3, targets: 1 },
+        { responsivePriority: 4, targets: 2 },
+    ]
 </script>
 {% else %}
 <script type="text/javascript">
-    let table = new DataTable('#data-table', {
-      scrollX: true,
-      autoWidth: false
-    });
+    filterTable.columnDefs = [
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 3, targets: 1 },
+        { responsivePriority: 4, targets: 2 },
+    ]
 </script>
 {% endif %}
 {% endblock %}

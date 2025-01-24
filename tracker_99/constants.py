@@ -21,6 +21,9 @@ INVALID_TEXT_MSG = (
     + 'and contain only letters, numbers, periods, underscores, dashes, and spaces.'
 )
 LOGIN_PAGE = 'auth_bp.login'
+
+LOG_SIZE = 1024 * 1000
+
 MEMBERS_PAGE = 'main_bp.index'
 
 # Member names must:
@@ -51,6 +54,8 @@ PRIVILEGE_LVL_EDITOR = 20
 PRIVILEGE_LVL_OWNER = 30
 
 ROLES_PAGE = 'main_bp.roles'
+
+SUICIDE_MSG = 'You cannot delete yourself!'
 
 # Text fields must:
 # - Start with a letter or number

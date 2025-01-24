@@ -20,7 +20,7 @@
     {{ form.hidden_tag() }}
 
     <p><b>{{ form.member_email.label }}:</b></p>
-    <p>{{ form.member_email(size=128) }}</p>
+    <p>{{ form.member_email(style="width:100%;") }}</p>
     {% for error in form.member_email.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
@@ -29,13 +29,13 @@
         <p><i>(Leave both fields blank to continue using the current password.)</i></p>
 
         <p><b>{{ form.password.label }}:</b></p>
-        <p>{{ form.password(size=32) }}</p>
+        <p>{{ form.password(style="width:100%;") }}</p>
         {% for error in form.password.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}
 
         <p><b>{{ form.password2.label }}:</b></p>
-        <p>{{ form.password2(size=32) }}</p>
+        <p>{{ form.password2(style="width:100%;") }}</p>
         {% for error in form.password2.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}

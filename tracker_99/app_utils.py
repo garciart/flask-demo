@@ -12,8 +12,11 @@ from logging.handlers import RotatingFileHandler
 from types import UnionType
 from typing import Union
 
+from flask_login import current_user
 import jwt
 from flask import Flask, Request, Response, current_app
+
+from tracker_99 import constants as c
 
 __all__ = [
     'validate_input',
@@ -126,7 +129,7 @@ def start_log_file(
 
     # Use multiple small logs for easy reading
     _file_handler = RotatingFileHandler(
-        _log_path, mode='a', maxBytes=10240, backupCount=10, encoding='utf-8'
+        _log_path, mode='a', maxBytes=c.LOG_SIZE, backupCount=10, encoding='utf-8'
     )
 
     _server_hostname = socket.gethostname()
@@ -184,11 +187,20 @@ def log_page_request(app: Flask, request: Request, response: Response) -> None:
     # Get the address of the requester
     _client_address = request.environ.get('HTTP_X_FORWARDED_FOR') or request.environ['REMOTE_ADDR']
 
-    # Log the requested page and client address
-    app.logger.info(
-        f'{request.path} requested by {_client_address} using {request.method}; '
-        f'{response.status}.'
-    )
+    _requester = 'ANON'
+
+    if current_user:
+        _requester = f'USER:{current_user.get_id()}'
+
+    # Check if requests for static content should be logged (default is false)
+    _log_flag = current_app.config['LOG_STATIC_REQUESTS'] or not request.path.startswith('/static')
+
+    if _log_flag:
+        # Log the requested page, client address, and user ID
+        app.logger.info(
+            f'{request.path} requested by {_client_address} ({_requester}) using {request.method}; '
+            f'{response.status}.'
+        )
 
 
 def encode_auth_token(member_id: int, expiration_in_min: int = 15) -> str:

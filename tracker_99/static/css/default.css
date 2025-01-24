@@ -31,7 +31,7 @@ footer a {
     color: deepskyblue;
 }
 
-nav {
+header {
     background-color: black;
     color: white;
     /* Fix the header and its height so the logo appears correctly */
@@ -89,4 +89,19 @@ footer {
     /* Ensure the footer is on the bottom of the page when content does not fill the page */
     min-height: 5vh;
     padding-top: 1vh;
+}
+
+.truncate {
+    max-width: 10em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* For DataTables */
+tfoot {
+    width: 100%;
+}
+tfoot input {
+    width: 100%;
 }

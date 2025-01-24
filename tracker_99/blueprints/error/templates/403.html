@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+{% block page_description %}{{ page_description }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block main_content %}
+<div class="text-center">
+    <h1>I have you now.</h1>
+    <p><i>({{ e.code }}: {{ e.name }})</i></p>
+    <img alt="My Logo" src="{{ url_for('static', filename='img/logo.png') }}" />
+    <p>Don't act so surprised:</p>
+    <p>You are part of the Rebel Alliance and a traitor!</p>
+    <p>Take her away to the <a href='/index' rel='nofollow' target='_self' title='Home'>home page</a>!</p>
+</div>
+{% endblock %}

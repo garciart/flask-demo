@@ -3,8 +3,9 @@
 This application uses [DataTables](https://datatables.net/ "DataTables | Javascript table library") to display, search, sort, and manipulate tables. DataTables requires:
 
 - Bootstrap 5.3.3
-- DataTables 2.0.0
-- jQuery 3.7
+- DataTables 2.2.1
+- jQuery 3.7.0
+- Responsive 3.0.3
 
 These files are stored locally in the `static/js` directory.
 

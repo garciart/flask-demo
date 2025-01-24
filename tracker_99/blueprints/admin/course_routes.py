@@ -3,7 +3,7 @@
 
 from typing import Union
 
-from flask import Response, flash, redirect, url_for, render_template, request
+from flask import Response, abort, flash, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
 
 from tracker_99 import db, constants as c
@@ -57,9 +57,22 @@ def add_course() -> Union[str, Response]:
             # Get row_id of the new course
             _new_id = _course.course_id
 
+            # Get the first role_id that has owner privileges
+            # instead of using a hard-coded int or ID
+            """
+            SELECT roles.role_id
+            FROM roles
+            WHERE roles.role_privilege = 30
+            LIMIT 1;
+            """
+            _role_id = (db.session.query(Role.role_id)
+                .filter(Role.role_privilege == 30)
+                .limit(1)
+                .scalar())
+
             # Add the course and chair to the association table
             _member_id = int(current_user.get_id())
-            _assoc = Association(course_id=_new_id, role_id=4, member_id=_member_id)
+            _assoc = Association(course_id=_new_id, role_id=_role_id, member_id=_member_id)
 
             db.session.add(_assoc)
             db.session.commit()
@@ -98,8 +111,7 @@ def view_course(course_id: int) -> Union[str, Response]:
 
     # Ensure the current user can view the course
     if _get_privilege_level(course_id=course_id) < 1:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'View Course'
     _page_description = 'View Course'
@@ -163,8 +175,7 @@ def edit_course(course_id: int) -> Union[str, Response]:
 
     # Ensure the current user can view the course
     if _get_privilege_level(course_id=course_id) < c.PRIVILEGE_LVL_EDITOR:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'Edit Course'
     _page_description = 'Edit Course'
@@ -240,8 +251,7 @@ def delete_course(course_id: int) -> Union[str, Response]:
 
     # Ensure the current user can view the course
     if _get_privilege_level(course_id=course_id) < c.PRIVILEGE_LVL_OWNER:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'Delete Course'
     _page_description = 'Delete Course'

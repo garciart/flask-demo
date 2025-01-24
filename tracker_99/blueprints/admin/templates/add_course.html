@@ -20,38 +20,38 @@
     {{ form.hidden_tag() }}
 
     <p><b>{{ form.course_name.label }}:</b></p>
-    <p>{{ form.course_name(size=64) }}</p>
+    <p>{{ form.course_name(style="width:100%;") }}</p>
     {% for error in form.course_name.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
     <p><b>{{ form.course_code.label }}:</b></p>
-    <p>{{ form.course_code(size=64) }}</p>
+    <p>{{ form.course_code(style="width:100%;") }}</p>
     {% for error in form.course_code.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
     <p><b>{{ form.course_group.label }}:</b></p>
-    <p>{{ form.course_group(size=64) }}</p>
+    <p>{{ form.course_group(style="width:100%;") }}</p>
     {% for error in form.course_group.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
     <p><b>{{ form.course_desc.label }}:</b></p>
-    <p>{{ form.course_desc(rows="4", cols="64") }}</p>
+    <p>{{ form.course_desc(style="height: 5em; width: 100%; resize: none;") }}</p>
     {% for error in form.course_desc.errors %}
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
     <div style="border: 1px black solid; padding: 1em;"></div>
         <p><b>{{ form.course_key.label }}:</b></p>
-        <p>{{ form.course_key(size=32) }}</p>
+        <p>{{ form.course_key(style="width:100%;") }}</p>
         {% for error in form.course_key.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}
 
         <p><b>{{ form.course_key2.label }}:</b></p>
-        <p>{{ form.course_key2(size=32) }}</p>
+        <p>{{ form.course_key2(style="width:100%;") }}</p>
         {% for error in form.course_key2.errors %}
         <p class="message-text">{{ error }}</p>
         {% endfor %}

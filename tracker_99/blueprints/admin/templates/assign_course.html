@@ -14,65 +14,69 @@
 <p>This page is restricted to administrators and members only.</p>
 {% else %}
 <h1>Assign Members to a Course</h1>
-<ul class="text-info font-italic">
+<ul class="font-italic">
     <li>Assigning or unassigning super administrators does not affect their privileges.</li>
 </ul>
-<hr/>
+<hr />
 <h2>{{ course_name }}</h2>
 <form action="" method="post" class="no-break-submit-btn">
-    <table id="data-table" class="table table-striped display caption-top">
+    <table id="data-table" class="table table-striped display caption-top responsive" style="width:100%">
         <thead>
-        <tr>
-            <th scope="col">Member Name</th>
-            <th scope="col">Member ID</th>
-            <th scope="col">Super Admin?</th>
-            <th scope="col">Access</th>
-        </tr>
+            <tr>
+                <th scope="col">Member Name</th>
+                <th scope="col">Member ID</th>
+                <th scope="col">Super Admin?</th>
+                <th scope="col">Access</th>
+            </tr>
         </thead>
         <tbody>
-        {% for m in members_list %}
-        <tr>
-            <td class="text-nowrap">{{ m.member_name }}</td>
-            <td class="text-nowrap">{{ m.member_id }}</td>
-            <td class="text-nowrap">{{ m.is_admin }}</td>
-            <td>
-                {% for r in roles_list %}
-                {% if m.role_id == r.role_id %}
-                <span class="border-start border-end px-3">
-                <input type="radio" name="{{ m.member_id }}_role" value="{{ r.role_id }}" checked/>
-                    {{ r.role_name }}
-                </span>
-                {% else %}
-                <span class="border-start border-end px-3">
-                <input type="radio" name="{{ m.member_id }}_role" value="{{ r.role_id }}"/>
-                    {{ r.role_name }}
-                </span>
-                {% endif %}
-                {% endfor %}
-            </td>
-        </tr>
-        {% endfor %}
+            {% for m in members_list %}
+            <tr>
+                <td class="text-nowrap">{{ m.member_name }}</td>
+                <td class="text-nowrap">{{ m.member_id }}</td>
+                <td class="text-nowrap">{{ m.is_admin }}</td>
+                <td class="text-nowrap">
+                    <table>
+                        <tbody>
+                            <tr>
+                                {% for r in roles_list %}
+                                {% if m.role_id == r.role_id %}
+                                <td class="border-start border-end px-2">
+                                    <input type="radio" name="{{ m.member_id }}_role" value="{{ r.role_id }}" checked />
+                                    {{ r.role_name }}
+                                </td>
+                                {% else %}
+                                <td class="border-start border-end px-2">
+                                    <input type="radio" name="{{ m.member_id }}_role" value="{{ r.role_id }}" />
+                                    {{ r.role_name }}
+                                </td>
+                                {% endif %}
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
-    <hr/>
+    <hr />
     {{ form.submit(class="btn btn-primary") }}
 </form>
 {% endif %}
-<input type="button" class="btn btn-secondary"
-       value="Cancel"
-       onclick="window.location.href='{{ url_for('main_bp.courses') }}'">
+<input type="button" class="btn btn-secondary" value="Cancel"
+    onclick="window.location.href='{{ url_for('main_bp.courses') }}'">
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">
-    let table = new DataTable('#data-table', {
-      order: [[0, 'asc']],
-      paging: false,
-      scrollCollapse: true,
-      scrollY: '50vh',
-      scrollX: true,
-      autoWidth: false
-    });
+    dataTable.paging = false
+    dataTable.scrollCollapse = true
+    dataTable.scrollY = '50vh'
+    dataTable.columnDefs = [
+        // Applies to Assign column
+        { orderable: false, targets: 3 },
+    ]
 </script>
 {% endblock %}

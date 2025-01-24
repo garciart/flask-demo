@@ -3,7 +3,7 @@
 
 from typing import Union
 
-from flask import Response, flash, redirect, url_for, render_template, request
+from flask import Response, abort, flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
 
 from tracker_99 import db, constants as c
@@ -82,8 +82,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
         a['member_id'] == _member_id and a['role_privilege'] >= c.PRIVILEGE_LVL_ASSIGNER
         for a in _assigned_members
     ):
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     # Get a list of ID for assigned members
     _assigned_member_ids = [a['member_id'] for a in _assigned_members]

@@ -6,8 +6,11 @@ place before Flask starts, like FLASK_RUN_PORT. Place those variables in .flaske
 Usage:
 - app.config.from_object(Config)
 - app.config['LOGGING_LEVEL']
+
+NOTE - I have included a dictionary of all configuration variables at the bottom of this file
 """
 
+import datetime
 import logging
 import os
 
@@ -27,9 +30,13 @@ class Config:
     # Explicitly default to True to ensure rotating logs on production servers
     LOGGING_ENABLED = True
 
-    # Explicitly default to WARNING,
+    # Set default to INFO to capture requests and requesters (for auditing),
     # even though WARNING is the default level for the logging module
-    LOGGING_LEVEL = logging.WARNING
+    LOGGING_LEVEL = logging.INFO
+
+    # Do not log requests for static content, like images, etc.
+    # to reduce the size of the log files
+    LOG_STATIC_REQUESTS = False
 
     # Return error pages, instead of the stack trace, when not testing
     TESTING = False
@@ -67,6 +74,10 @@ class DevelopmentConfig(Config):
 
     # Override default logging level during development
     LOGGING_LEVEL = logging.DEBUG
+
+    # Log requests for everything, including static content, like images, etc.
+    # WARNING: This will increase the size of the log files
+    LOG_STATIC_REQUESTS = True
 
 
 class ProfilingConfig(Config):
@@ -109,4 +120,50 @@ CONFIGS = {
     'development': DevelopmentConfig,
     'profile': ProfilingConfig,
     'testing': TestingConfig,
+}
+
+#################################################
+# FOR INFO ONLY: Config variable names and values
+#################################################
+default_config_vars = {
+    'DEBUG': False,
+    'TESTING': False,
+    'PROPAGATE_EXCEPTIONS': None,
+    'SECRET_KEY': None,
+    'SECRET_KEY_FALLBACKS': None,
+    'PERMANENT_SESSION_LIFETIME': datetime.timedelta(days=31),
+    'USE_X_SENDFILE': False,
+    'TRUSTED_HOSTS': None,
+    'SERVER_NAME': None,
+    'APPLICATION_ROOT': '/',
+    'SESSION_COOKIE_NAME': 'session',
+    'SESSION_COOKIE_DOMAIN': None,
+    'SESSION_COOKIE_PATH': None,
+    'SESSION_COOKIE_HTTPONLY': True,
+    'SESSION_COOKIE_SECURE': False,
+    'SESSION_COOKIE_PARTITIONED': False,
+    'SESSION_COOKIE_SAMESITE': None,
+    'SESSION_REFRESH_EACH_REQUEST': True,
+    'MAX_CONTENT_LENGTH': None,
+    'MAX_FORM_MEMORY_SIZE': 500000,
+    'MAX_FORM_PARTS': 1000,
+    'SEND_FILE_MAX_AGE_DEFAULT': None,
+    'TRAP_BAD_REQUEST_ERRORS': None,
+    'TRAP_HTTP_EXCEPTIONS': False,
+    'EXPLAIN_TEMPLATE_LOADING': False,
+    'PREFERRED_URL_SCHEME': 'http',
+    'TEMPLATES_AUTO_RELOAD': None,
+    'MAX_COOKIE_SIZE': 4093,
+    'PROVIDE_AUTOMATIC_OPTIONS': True,
+}
+
+app_config_vars = {
+    'CONFIG_MSG': 'You are using the default configuration.',
+    'LOGGING_ENABLED': True,
+    'LOGGING_LEVEL': 20,
+    'LOG_STATIC_REQUESTS': False,
+    'PROFILING_ENABLED': False,
+    'SQLALCHEMY_DATABASE_URI': 'sqlite:///tracker.db',
+    'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+    'WTF_CSRF_ENABLED': True,
 }

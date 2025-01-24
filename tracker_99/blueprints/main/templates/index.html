@@ -14,49 +14,61 @@
 <p>You should log in.</p>
 {% else %}
 <h1>Welcome, {{ current_user.member_name }}!</h1>
-<table id="data-table" class="table table-striped display caption-top">
+<ul class="font-italic">
+    <li>To view the full description, hover over the text or click on <kbd>View</kbd></li>
+</ul>
+<table id="filter-table" class="table table-striped display caption-top responsive" style="width:100%">
     <caption class="text-center">List of Courses</caption>
     <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">ID</th>
-        <th scope="col">Code</th>
-        <th scope="col">Group</th>
-        <th scope="col">Description</th>
-        <th scope="col">Role</th>
-        <th scope="col">Actions</th>
-    </tr>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">ID</th>
+            <th scope="col">Code</th>
+            <th scope="col">Group</th>
+            <th scope="col">Description</th>
+            <th scope="col">Role</th>
+            <th scope="col">Actions</th>
+        </tr>
     </thead>
     <tbody class="table-group-divider">
-    {% for course in courses %}
-    <tr>
-        <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
-        <td class="text-nowrap">{{ course.course_id }}</td>
-        <td class="text-nowrap">{{ course.course_code }}</td>
-        <td class="text-nowrap">{{ course.course_group }}</td>
-        <td>{{ course.course_desc }}</td>
-        <td class="text-nowrap">{{ course.role_name }}</td>
-        <td class="no-sort text-nowrap">
-            <a class="btn btn-primary"
-               href="{{ url_for('admin_bp.view_course', course_id=course.course_id) }}"
-               title="View">View</a>
-            {% if current_user.is_admin or (course.role_privilege | default(1)) >= privilege.assigner %}
-            <a class="btn btn-secondary"
-               href="{{ url_for('admin_bp.assign_course', course_id=course.course_id) }}"
-               title="Assign">Assign</a>
-            {% endif %} {% if current_user.is_admin or (course.role_privilege | default(1)) >= privilege.editor %}
-            <a class="btn btn-warning"
-               href="{{ url_for('admin_bp.edit_course', course_id=course.course_id) }}"
-               title="Edit">Edit</a>
-            {% endif %} {% if current_user.is_admin or (course.role_privilege | default(1)) >= privilege.owner %}
-            <a class="btn btn-danger"
-               href="{{ url_for('admin_bp.delete_course', course_id=course.course_id) }}"
-               title="Delete">Delete</a>
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
+        {% for course in courses %}
+        <tr>
+            <th scope="row" class="text-nowrap">{{ course.course_name }}</th>
+            <td class="text-nowrap">{{ course.course_id }}</td>
+            <td class="text-nowrap">{{ course.course_code }}</td>
+            <td class="text-nowrap">{{ course.course_group }}</td>
+            <td>
+                <div class="truncate" title="{{ course.course_desc }}">{{ course.course_desc }}</div>
+            </td>
+            <td class="text-nowrap">{{ course.role_name }}</td>
+            <td class="no-sort text-nowrap">
+                <a class="btn btn-primary" href="{{ url_for('admin_bp.view_course', course_id=course.course_id) }}"
+                    title="View">View</a>
+                {% if current_user.is_admin or (course.role_privilege | default(1)) >= privilege.assigner %}
+                <a class="btn btn-secondary" href="{{ url_for('admin_bp.assign_course', course_id=course.course_id) }}"
+                    title="Assign">Assign</a>
+                {% endif %} {% if current_user.is_admin or (course.role_privilege | default(1)) >= privilege.editor %}
+                <a class="btn btn-warning" href="{{ url_for('admin_bp.edit_course', course_id=course.course_id) }}"
+                    title="Edit">Edit</a>
+                {% endif %} {% if current_user.is_admin or (course.role_privilege | default(1)) >= privilege.owner %}
+                <a class="btn btn-danger" href="{{ url_for('admin_bp.delete_course', course_id=course.course_id) }}"
+                    title="Delete">Delete</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+            <th scope="col">Search in Name</th>
+            <th scope="col">ID</th>
+            <th scope="col">Code</th>
+            <th scope="col">Group</th>
+            <th scope="col">Description</th>
+            <th scope="col">Role</th>
+            <th scope="col"></th>
+        </tr>
+    </tfoot>
 </table>
 {% endif %}
 {% endblock %}
@@ -68,11 +80,11 @@
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">
-    let table = new DataTable("#data-table", {
-      order: [[0, "asc"]],
-      columnDefs: [{ orderable: false, targets: 6 }],
-      scrollX: true,
-      autoWidth: false,
-    });
+    filterTable.columnDefs = [
+        // Applies to Actions column
+        { orderable: false, targets: 6 },
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 2, targets: -1 }
+    ]
 </script>
 {% endblock %}

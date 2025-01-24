@@ -3,7 +3,7 @@
 
 from typing import Union
 
-from flask import Response
+from flask import Response, abort
 from flask import flash
 from flask import redirect
 from flask import render_template
@@ -30,6 +30,8 @@ def index() -> Union[str, Response]:
 
     if current_user.is_admin:
         _courses = Course.query.all()
+        for course in _courses:
+            course.role_name = 'Admin'
     else:
         _member_id = int(current_user.get_id())
 
@@ -113,8 +115,7 @@ def members() -> Union[str, Response]:
     """
     # Redirect if not an Administrator
     if not current_user.is_admin:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'View Members'
     _page_description = 'List of Members'
@@ -143,8 +144,7 @@ def roles() -> Union[str, Response]:
     """
     # Redirect if not an Administrator
     if not current_user.is_admin:
-        flash(c.NOT_AUTH_MSG)
-        return redirect(url_for(c.INDEX_PAGE))
+        abort(403, c.NOT_AUTH_MSG)
 
     _page_title = 'View Roles'
     _page_description = 'List of Roles'
