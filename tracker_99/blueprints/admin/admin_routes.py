@@ -113,7 +113,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     # Therefore, set the cutoff to one less than the privilege level of the current user
     # This sets the default to assigning members as students only
     if not current_user.is_admin:
-        _PRIVILEGE_LVL_level = (
+        _privilege_lvl_level = (
             int(
                 next(
                     (
@@ -127,11 +127,11 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
             - 1
         )
     else:
-        _PRIVILEGE_LVL_level = 99
+        _privilege_lvl_level = 99
 
     # Get members with privilege less than the level of the current user
     _touchable_members = [
-        a for a in _assigned_members if int(a['role_privilege']) <= _PRIVILEGE_LVL_level
+        a for a in _assigned_members if int(a['role_privilege']) <= _privilege_lvl_level
     ]
 
     # Match the structure of _unassigned_members and _touchable_members
@@ -151,7 +151,7 @@ def assign_course(course_id: int) -> Union[str, Response]:  # NOSONAR
     """
     _roles_list = (
         db.session.query(Role.role_id, Role.role_name)
-        .filter(Role.role_privilege <= _PRIVILEGE_LVL_level)
+        .filter(Role.role_privilege <= _privilege_lvl_level)
         .order_by(Role.role_privilege.desc())
         .all()
     )

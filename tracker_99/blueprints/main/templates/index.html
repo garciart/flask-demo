@@ -80,11 +80,12 @@
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">
-    filterTable.columnDefs = [
+    filterTableOptions.columnDefs = [
         // Applies to Actions column
         { orderable: false, targets: 6 },
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 2, targets: -1 }
-    ]
+    ];
+    let filterTable = new DataTable("#filter-table", filterTableOptions);
 </script>
 {% endblock %}

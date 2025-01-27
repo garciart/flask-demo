@@ -3,14 +3,18 @@ let date = new Date();
 let fullYear = date.getFullYear();
 document.getElementById("currentYear").innerHTML = (fullYear !== 2024 ? "2024 -" : "") + fullYear;
 
-let dataTable = new DataTable("#data-table", {
+// let assignTable = new DataTable("#data-table", assignTableOptions)
+
+let assignTableOptions = {
     order: [[0, "asc"]],
     responsive: true,
     scrollX: true,
     autoWidth: false,
-});
+};
 
-let filterTable = new DataTable("#filter-table", {
+// let filterTable = new DataTable("#filter-table", filterTableOptions)
+
+let filterTableOptions = {
     order: [[0, "asc"]],
     responsive: true,
     scrollX: true,
@@ -41,4 +45,4 @@ let filterTable = new DataTable("#filter-table", {
                 });
             });
     },
-});
+};

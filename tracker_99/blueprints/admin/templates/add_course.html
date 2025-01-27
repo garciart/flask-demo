@@ -43,7 +43,7 @@
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
-    <div style="border: 1px black solid; padding: 1em;"></div>
+    <div style="border: 1px black solid; padding: 1em;">
         <p><b>{{ form.course_key.label }}:</b></p>
         <p>{{ form.course_key(style="width:100%;") }}</p>
         {% for error in form.course_key.errors %}

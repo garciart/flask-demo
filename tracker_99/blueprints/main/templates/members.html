@@ -72,7 +72,8 @@
         { responsivePriority: 2, targets: 3 },
         { responsivePriority: 3, targets: 1 },
         { responsivePriority: 4, targets: 2 },
-    ]
+    ];
+    let filterTable = new DataTable("#filter-table", filterTableOptions);
 </script>
 {% else %}
 <script type="text/javascript">
@@ -80,7 +81,8 @@
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 3, targets: 1 },
         { responsivePriority: 4, targets: 2 },
-    ]
+    ];
+    let filterTable = new DataTable("#filter-table", filterTableOptions);
 </script>
 {% endif %}
 {% endblock %}
