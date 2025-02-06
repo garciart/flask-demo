@@ -28,6 +28,7 @@ class Member(UserMixin, db.Model):
     # Using RFC 5321, 5322, and 3696 for member name and email lengths
     member_name: Mapped[str] = mapped_column(String(64), nullable=False)
     member_email: Mapped[str] = mapped_column(String(320), nullable=False, unique=True)
+    member_group: Mapped[Optional[str]] = mapped_column(String(256))
     password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
     is_admin: Mapped[bool] = mapped_column(nullable=False)
 
@@ -39,6 +40,7 @@ class Member(UserMixin, db.Model):
         self,
         member_name: str,
         member_email: str,
+        member_group: str,
         password: Union[str, None] = None,
         is_admin: bool = False,
     ) -> None:
@@ -46,6 +48,7 @@ class Member(UserMixin, db.Model):
 
         :param str member_name: The name of the member
         :param str member_email: The email address of the member
+        :param str member_group: An optional string containing the groups the member belongs to
         :param str password: A password for the member in plain text, defaults to None,
             which prevents the database from accepting the member
             unless the password is set using `set_password()`
@@ -54,6 +57,7 @@ class Member(UserMixin, db.Model):
         # Validate inputs
         validate_input('member_name', member_name, str)
         validate_input('member_email', member_email, str)
+        validate_input('member_group', member_group, str)
         validate_input('password', password, Union[str, None])
         validate_input('is_admin', is_admin, bool)
 
@@ -67,6 +71,11 @@ class Member(UserMixin, db.Model):
         # Set the member_name and member_email
         self.member_name = member_name
         self.member_email = member_email
+
+        if member_group is not None and member_group.strip() != '':
+            if not re.fullmatch(c.GROUP_REGEX, member_group):
+                raise ValueError('Invalid member group.')
+            self.member_group = member_group
 
         if password is not None:
             self.validate_password(password)
@@ -137,6 +146,7 @@ class Member(UserMixin, db.Model):
         return {
             'member_id': self.member_id,
             'member_name': self.member_name,
+            'member_group': self.member_group,
             'member_email': self.member_email,
             'is_admin': self.is_admin,
         }
@@ -211,7 +221,7 @@ class Course(db.Model):
         self.course_code = course_code
 
         if course_group is not None and course_group.strip() != '':
-            if not re.fullmatch(c.TEXT_REGEX, course_group):
+            if not re.fullmatch(c.GROUP_REGEX, course_group):
                 raise ValueError('Invalid course group.')
             self.course_group = course_group
 

@@ -46,12 +46,13 @@ def add_member() -> Union[str, Response]:
             _member = Member(
                 member_name=_form.member_name.data,
                 member_email=_form.member_email.data,
+                member_group=_form.member_group.data,
                 is_admin=_form.is_admin.data,
             )
             # Use the setter in the Member class to set Member.password_hash
             _member.set_password(_form.password.data)
             """
-            INSERT INTO members (member_name, member_email, password_hash, is_admin)
+            INSERT INTO members (member_name, member_email, member_group, password_hash, is_admin)
             VALUES ("farok.tabr", "farok.tabr@fremen.com", "scrypt:32768:8:1$...", 0);
             """
             db.session.add(_member)
@@ -143,12 +144,14 @@ def edit_member(member_id: int) -> Union[str, Response]:
     if request.method == 'GET':
         _form.member_name.data = _member.member_name
         _form.member_email.data = _member.member_email
+        _form.member_group.data = _member.member_group
         _form.is_admin.data = _member.is_admin
 
     if _form.validate_on_submit():
         try:
             _member.member_name = _form.member_name.data
             _member.member_email = _form.member_email.data
+            _member.member_group = _form.member_group.data
             _member.is_admin = _form.is_admin.data
             # Only update the password if data was entered in the password fields
             if _form.password.data.strip() != '':
@@ -158,6 +161,7 @@ def edit_member(member_id: int) -> Union[str, Response]:
             UPDATE members
             SET member_name = "Farok.Tabr",
                 member_email = "farok.tabr@fremen.com",
+                member_group = "fremen",
                 password_hash = "scrypt:32768:8:1$...",
                 is_admin = 0
             WHERE member_id = 17;

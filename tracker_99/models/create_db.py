@@ -121,22 +121,22 @@ def create_db():
     db.session.commit()
 
     _members = [
-        Member(member_name='Admin', member_email='admin@tracker.com', is_admin=True),
-        Member(member_name='Leto.Atreides', member_email='leto.atreides@atreides.com'),
-        Member(member_name='Paul.Atreides', member_email='paul.atreides@atreides.com'),
-        Member(member_name='Jessica.Nerus', member_email='jessica.nerus@atreides.com'),
-        Member(member_name='Thufir.Hawat', member_email='thufir.hawat@atreides.com'),
-        Member(member_name='Gurney.Halleck', member_email='gurney.halleck@atreides.com'),
-        Member(member_name='Duncan.Idaho', member_email='duncan.idaho@atreides.com'),
-        Member(member_name='Vladimir.Harkonnen', member_email='vladmir.harkonnen@harkonnen.com'),
-        Member(member_name='Glossu.Rabban', member_email='glossu.rabban@harkonnen.com'),
-        Member(member_name='Feyd-Rautha.Rabban', member_email='feyd-rautha.rabban@harkonnen.com'),
-        Member(member_name='Piter.DeVries', member_email='piter.devries@harkonnen.com'),
-        Member(member_name='Shaddam.Corrino', member_email='shaddam.corrino@corrino.com'),
-        Member(member_name='Irulan.Corrino', member_email='irulan.corrino@corrino.com'),
-        Member(member_name='Liet.Kynes', member_email='liet.kynes@fremen.com'),
-        Member(member_name='Chani.Kynes', member_email='chani.kynes@fremen.com'),
-        Member(member_name='Stilgar.Tabr', member_email='stilgar.tabr@fremen.com'),
+        Member(member_name='Admin', member_group='admins', member_email='admin@tracker.com', is_admin=True),
+        Member(member_name='Leto.Atreides', member_group='atreides', member_email='leto.atreides@atreides.com'),
+        Member(member_name='Paul.Atreides', member_group='atreides, fremen', member_email='paul.atreides@atreides.com'),
+        Member(member_name='Jessica.Nerus', member_group='atreides', member_email='jessica.nerus@atreides.com'),
+        Member(member_name='Thufir.Hawat', member_group='atreides', member_email='thufir.hawat@atreides.com'),
+        Member(member_name='Gurney.Halleck', member_group='atreides', member_email='gurney.halleck@atreides.com'),
+        Member(member_name='Duncan.Idaho', member_group='atreides', member_email='duncan.idaho@atreides.com'),
+        Member(member_name='Vladimir.Harkonnen', member_group='harkonnen', member_email='vladmir.harkonnen@harkonnen.com'),
+        Member(member_name='Glossu.Rabban', member_group='harkonnen', member_email='glossu.rabban@harkonnen.com'),
+        Member(member_name='Feyd-Rautha.Rabban', member_group='harkonnen', member_email='feyd-rautha.rabban@harkonnen.com'),
+        Member(member_name='Piter.DeVries', member_group='harkonnen', member_email='piter.devries@harkonnen.com'),
+        Member(member_name='Shaddam.Corrino', member_group='corrino', member_email='shaddam.corrino@corrino.com'),
+        Member(member_name='Irulan.Corrino', member_group='corrino', member_email='irulan.corrino@corrino.com'),
+        Member(member_name='Liet.Kynes', member_group='fremen', member_email='liet.kynes@fremen.com'),
+        Member(member_name='Chani.Kynes', member_group='fremen, atreides', member_email='chani.kynes@fremen.com'),
+        Member(member_name='Stilgar.Tabr', member_group='fremen', member_email='stilgar.tabr@fremen.com'),
     ]
 
     # Set admin password

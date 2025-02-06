@@ -26,6 +26,7 @@
                 <th scope="col">Member Name</th>
                 <th scope="col">Member ID</th>
                 <th scope="col">Super Admin?</th>
+                <th scope="col">Groups</th>
                 <th scope="col">Access</th>
             </tr>
         </thead>
@@ -35,6 +36,7 @@
                 <td class="text-nowrap">{{ m.member_name }}</td>
                 <td class="text-nowrap">{{ m.member_id }}</td>
                 <td class="text-nowrap">{{ m.is_admin }}</td>
+                <td class="text-nowrap">{{ m.member_group }}</td>
                 <td class="text-nowrap">
                     <table>
                         <tbody>

@@ -31,6 +31,12 @@
     <p class="message-text">{{ error }}</p>
     {% endfor %}
 
+    <p><b>{{ form.member_group.label }}:</b></p>
+    <p>{{ form.member_group(style="width:100%;") }}</p>
+    {% for error in form.member_group.errors %}
+    <p class="message-text">{{ error }}</p>
+    {% endfor %}
+
     <div style="border: 1px black solid; padding: 1em;">
         <p><i>(Leave both fields blank to continue using the current password.)</i></p>
         <p><b>{{ form.password.label }}:</b></p>

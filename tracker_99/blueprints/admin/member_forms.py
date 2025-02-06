@@ -33,6 +33,7 @@ class AddMemberForm(FlaskForm):
         ],
     )
     member_email = StringField('Email', validators=[DataRequired(), Email(), Length(max=320)])
+    member_group = StringField('Groups', validators=[Length(max=256)])
     password = PasswordField(
         c.PASSWORD_FIELD_LABEL,
         validators=[
@@ -99,6 +100,7 @@ class EditMemberForm(FlaskForm):
         ],
     )
     member_email = StringField('Email', validators=[DataRequired(), Email(), Length(max=320)])
+    member_group = StringField('Groups', validators=[Length(max=256)])
     password = PasswordField(
         c.PASSWORD_FIELD_LABEL,
         validators=[

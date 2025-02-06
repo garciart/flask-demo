@@ -64,7 +64,7 @@ class AddCourseForm(FlaskForm):
             Regexp(c.TEXT_REGEX, message=c.INVALID_TEXT_MSG),
         ],
     )
-    course_group = StringField('Group', validators=[Length(max=64)])
+    course_group = StringField('Groups', validators=[Length(max=64)])
     course_key = PasswordField(
         c.PASSWORD_FIELD_LABEL,
         validators=[
@@ -102,7 +102,7 @@ class EditCourseForm(FlaskForm):
             Regexp(c.TEXT_REGEX, message=c.INVALID_TEXT_MSG),
         ],
     )
-    course_group = StringField('Group', validators=[Length(max=64)])
+    course_group = StringField('Groups', validators=[Length(max=64)])
     course_key = PasswordField(
         c.PASSWORD_FIELD_LABEL,
         validators=[

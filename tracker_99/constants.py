@@ -6,6 +6,12 @@ COURSES_PAGE = 'main_bp.courses'
 
 EMAIL_REGEX = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}$'
 
+# Groups must:
+# - Start with a letter or number
+# - Contain only letters, numbers, periods, underscores, dashes, spaces, and commas
+# - Be at least 3 characters long
+GROUP_REGEX = r'^[A-Za-z0-9][A-Za-z0-9 \.\_\-\,]{2,}$'
+
 INDEX_PAGE = 'main_bp.index'
 INVALID_EMAIL_MSG = 'Email address already exists.'
 INVALID_NAME_MSG = (
@@ -24,7 +30,7 @@ LOGIN_PAGE = 'auth_bp.login'
 
 LOG_SIZE = 1024 * 1000
 
-MEMBERS_PAGE = 'main_bp.index'
+MEMBERS_PAGE = 'main_bp.members'
 
 # Member names must:
 # - Start with a letter

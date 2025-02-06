@@ -21,6 +21,7 @@
             <th scope="col">Name</th>
             <th scope="col">ID</th>
             <th scope="col">Email</th>
+            <th scope="col">Group</th>
             {% if current_user.is_admin %}
             <th scope="col">Actions</th>
             {% endif %}
@@ -32,8 +33,9 @@
             <th scope="row" class="text-nowrap">{{ member.member_name }}</th>
             <td class="text-nowrap">{{ member.member_id }}</td>
             <td class="text-nowrap">{{ member.member_email }}</td>
+            <td class="text-nowrap">{{ member.member_group }}</td>
             {% if current_user.is_admin %}
-            <td class="text-nowrap">
+            <td class="no-sort text-nowrap">
                 <a class="btn btn-primary" href="{{ url_for('admin_bp.edit_member', member_id=member.member_id) }}"
                     title="Edit">Edit</a>
                 <a class="btn btn-danger" href="{{ url_for('admin_bp.delete_member', member_id=member.member_id) }}"
@@ -48,6 +50,7 @@
             <th scope="col">Search in Name</th>
             <th scope="col">ID</th>
             <th scope="col">Email</th>
+            <th scope="col">Group</th>
             {% if current_user.is_admin %}
             <th scope="col"></th>
             {% endif %}
@@ -65,22 +68,24 @@
 {{ super() }}
 {% if current_user.is_admin %}
 <script type="text/javascript">
-    filterTable.columnDefs = [
+    filterTableOptions.columnDefs = [
         // Applies to Actions column
-        { orderable: false, targets: 3 },
+        { orderable: false, targets: 4 },
         { responsivePriority: 1, targets: 0 },
-        { responsivePriority: 2, targets: 3 },
+        { responsivePriority: 2, targets: 4 },
         { responsivePriority: 3, targets: 1 },
         { responsivePriority: 4, targets: 2 },
+        { responsivePriority: 5, targets: 3 },
     ];
     let filterTable = new DataTable("#filter-table", filterTableOptions);
 </script>
 {% else %}
 <script type="text/javascript">
-    filterTable.columnDefs: [
+    filterTableOptions.columnDefs: [
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 3, targets: 1 },
         { responsivePriority: 4, targets: 2 },
+        { responsivePriority: 5, targets: 3 },
     ];
     let filterTable = new DataTable("#filter-table", filterTableOptions);
 </script>
