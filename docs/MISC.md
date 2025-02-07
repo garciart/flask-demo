@@ -59,3 +59,34 @@ Flexibility:
 WSGI allows you to build complex web applications by chaining multiple WSGI applications together (middleware).
 Scalability:
 WSGI servers like Gunicorn and uWSGI provide advanced features for handling multiple requests concurrently, improving the performance of your application.
+
+-----
+
+## Best Practices
+
+Use a virtual environment
+Change maximum line length to 100 characters
+Use PEP-8 naming conventions
+Write docstrings per PEP 257 using reStructuredText style.
+Include "Usage:" comments in the header docstring of modules
+Include type hints when defining the parameters of an function or method
+Pass keyword arguments instead of depending on positional parsing
+Consolidate repeated code into functions or methods (DRY)
+Organize related code and modules into packages
+Use relative imports; check them after any changes!
+Stick to the Standard Library when possible
+Use input validation
+Do not hard code sensitive information
+Use parentheses instead of slashes for long line continuations
+Use simple and readable code instead of LEET code
+Use comments often
+
+Include logging module
+Include profiling to find bottlenecks
+
+
+Lint code with PyLint after making any changes
+Add, update, and run unit tests for edge cases with unittest after making any changes
+Run application using the 'development' configuration first and check the logs
+Do not log when running the application in hotfix or 'debug' mode
+
